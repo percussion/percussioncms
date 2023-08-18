@@ -59,6 +59,7 @@
       "type": "js",
       "name": "shared-finder.js",
       "files": [
+        "jslib/profiles/3x/jquery/plugins/jquery-fancytree/jquery.fancytree-all.min.js",
         "jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js",
         "widgets/perc_imageselect.js",
         "widgets/perc_wizard.js",
@@ -134,7 +135,8 @@
         "widgets/PercWizard/PercWizard.css",
         "widgets/PercDataTable/PercDataTable.css",
         "widgets/PercFinderListView/PercFinderListView.css",
-        "widgets/PercFinderTree/PercFinderTree.css"
+        "widgets/PercFinderTree/PercFinderTree.css",
+        "jslib/profiles/3x/jquery/plugins/jquery-fancytree/skin-win8/ui.fancytree.min.css"
       ]
     }
   ]

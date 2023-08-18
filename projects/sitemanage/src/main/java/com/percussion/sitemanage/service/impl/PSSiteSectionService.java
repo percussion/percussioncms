@@ -25,8 +25,8 @@ import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSFolder;
 import com.percussion.comments.data.PSCommentsSummary;
 import com.percussion.comments.service.IPSCommentsService;
-import com.percussion.error.PSNotFoundException;
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.fastforward.managednav.IPSManagedNavService;
 import com.percussion.fastforward.managednav.IPSNavigationErrors;
@@ -71,21 +71,9 @@ import com.percussion.share.validation.PSAbstractBeanValidator;
 import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.sitemanage.dao.IPSiteDao;
-import com.percussion.sitemanage.data.PSCreateExternalLinkSection;
-import com.percussion.sitemanage.data.PSCreateSectionFromFolderRequest;
-import com.percussion.sitemanage.data.PSCreateSiteSection;
-import com.percussion.sitemanage.data.PSMoveSiteSection;
-import com.percussion.sitemanage.data.PSReplaceLandingPage;
-import com.percussion.sitemanage.data.PSSectionNode;
-import com.percussion.sitemanage.data.PSSite;
-import com.percussion.sitemanage.data.PSSiteBlogPosts;
-import com.percussion.sitemanage.data.PSSiteBlogProperties;
-import com.percussion.sitemanage.data.PSSiteSection;
+import com.percussion.sitemanage.data.*;
 import com.percussion.sitemanage.data.PSSiteSection.PSSectionTargetEnum;
 import com.percussion.sitemanage.data.PSSiteSection.PSSectionTypeEnum;
-import com.percussion.sitemanage.data.PSSiteSectionProperties;
-import com.percussion.sitemanage.data.PSSiteSummary;
-import com.percussion.sitemanage.data.PSUpdateSectionLink;
 import com.percussion.sitemanage.service.IPSSiteSectionService;
 import com.percussion.sitemanage.service.IPSSiteTemplateService;
 import com.percussion.utils.guid.IPSGuid;
@@ -104,22 +92,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
-import javax.jcr.ValueFormatException;
 import javax.ws.rs.WebApplicationException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import static com.percussion.share.dao.PSFolderPermissionUtils.getFolderPermission;
 import static com.percussion.share.dao.PSFolderPermissionUtils.setFolderPermission;
@@ -666,14 +644,10 @@ public class PSSiteSectionService implements IPSSiteSectionService
                         for (Value value : values) {
                             multiValues.add(value.getString());
                         }
-                    } catch (ValueFormatException e1) {
-                        log.error(tagsError, e1);
-                    } catch (PathNotFoundException e1) {
-                        log.error(tagsError, e1);
                     } catch (RepositoryException e1) {
                         log.error(tagsError, e1);
                     }
-                    
+
                     PSItemProperties postProps = new PSItemProperties();
                     try {
                         postProps.setAuthor(postPage.getProperty("page_authorname").getString());
@@ -1200,7 +1174,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
     public PSSiteSection move(PSMoveSiteSection req) throws PSValidationException, PSSiteSectionException {
         moveRequestValidator.validate(req).throwIfInvalid();
          
-        if (req.getSourceId().indexOf("_") > -1)
+        if (req.getSourceId().contains("_"))
         {
             moveSectionLink(req);
         }
@@ -1760,8 +1734,7 @@ public class PSSiteSectionService implements IPSSiteSectionService
      */
     public PSSectionNode loadTree(String siteName) throws PSSiteSectionException, com.percussion.services.error.PSNotFoundException {
         PSSiteSection root = loadRoot(siteName);
-        PSSectionNode tree = loadSectionTree(root);
-        return tree;
+        return loadSectionTree(root);
     }
 
     /**
