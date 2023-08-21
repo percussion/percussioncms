@@ -45,7 +45,7 @@ if(locale==null){
                              <div id="perc-new-wf-name-label" class = "perc-required-field"><label class="perc-name-label"><i18n:message key = "perc.ui.workflow@Name"/><br></label>
                                 <input tabindex="0" maxlength = '50' required pattern='^[a-zA-Z0-9-_\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' id="perc-new-workflow-name">
                             </div>
-							<div class = "perc-wf-default"><input tabindex="0" title='<i18n:message key = "perc.ui.workflow@Make Default"/>' type="checkbox" id="perc-wf-default-new-checkbox" /> <label for ="perc-wf-default-new-checkbox"><i18n:message key = "perc.ui.workflow@Make Default"/></label></div>
+							<div class = "perc-wf-default"><input tabindex="0" aria-required='true' title='<i18n:message key = "perc.ui.workflow@Make Default"/>' type="checkbox" id="perc-wf-default-new-checkbox" /> <label for ="perc-wf-default-new-checkbox"><i18n:message key = "perc.ui.workflow@Make Default"/></label></div>
                             <!-- control gets generated here in percWorkflowView -->
                            <div id="perc-publish-now-roles-control-new" style="display:block; width:340px;"></div>
                             <div style="width: 100%; height: 50px;" id="perc-new-wf-save-cancel-block"> 
@@ -58,7 +58,7 @@ if(locale==null){
                         <div  id="perc-wf-update-editor"  class="perc-wf-editor" style="display: none;">
                             <span class="perc-required-label"><label><i18n:message key = "perc.ui.general@Denotes Required Field"/></label></span>
                              <div id="perc-update-wf-name-label" class = "perc-required-field" ><label class="perc-name-label"><i18n:message key = "perc.ui.workflow@Name"/><br></label>
-                                <input maxlength = '50' required pattern='^[a-zA-Z0-9-_\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' id="perc-update-workflow-name">
+                                <input maxlength = '50' aria-required='true' required pattern='^[a-zA-Z0-9-_\. ]{1,50}$' title='1 to 50 letters,numbers,-, _, or space' id="perc-update-workflow-name">
                             </div>
 							 <div class = "perc-wf-default"><input tabindex="0" title='<i18n:message key = "perc.ui.workflow@Make Default"/>' type = "checkbox" id="perc-wf-default-update-checkbox" /> <label for="perc-wf-default-update-checkbox"><i18n:message key = "perc.ui.workflow@Make Default"/></label></div>
                              <!-- control gets generated here in percWorkflowView -->

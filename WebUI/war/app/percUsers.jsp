@@ -110,18 +110,18 @@
                     <div role="button" tabindex="0" id="perc-users-edit-user-button" title="<i18n:message key='perc.ui.users@Edit User Details' />"></div>
                     <div id="perc-users-username-label">
                         <i18n:message key="perc.ui.workflow@Name" /><br />
-						<input tabindex="0" id="perc-users-username-field" maxlength="50" autocomplete="nope" title='<i18n:message key="perc.ui.workflow@Name" />'/>
+						<input tabindex="0" aria-required='true' id="perc-users-username-field" maxlength="50" autocomplete="nope" title='<i18n:message key="perc.ui.workflow@Name" />'/>
                     </div><br />
                     <div id="perc-users-external-user-label" style="display : none">
                         <i18n:message key="perc.ui.users.import.label@ThisIsLDAPUser" />.</div>
                     <div id="perc-users-password-block">
                         <div id="perc-users-password-label">
                             <i18n:message key="perc.ui.users@Password" /><br />
-							<input tabindex="0" id="perc-users-password-field" type="password" value="*******" autocomplete="new-password" title='<i18n:message key="perc.ui.users@Password" />' />
+							<input tabindex="0" aria-required='true' id="perc-users-password-field" type="password" value="*******" autocomplete="new-password" title='<i18n:message key="perc.ui.users@Password" />' />
                         </div><br />
                         <div id="perc-users-password-confirm-label">
                             <i18n:message key="perc.ui.users@Confirm Password" /><br />
-							<input tabindex="0" id="perc-users-password-confirm-field" type="password" value="*******" autocomplete="new-password" title='<i18n:message key="perc.ui.users@Confirm Password" />' />
+							<input tabindex="0" aria-required='true' id="perc-users-password-confirm-field" type="password" value="*******" autocomplete="new-password" title='<i18n:message key="perc.ui.users@Confirm Password" />' />
                         </div><br />
                         <div id="perc-users-email-label">
                             <i18n:message key="perc.ui.users@Email" /><br />
@@ -143,7 +143,7 @@
                         <div id="perc-users-assigned-roles-label" class="perc-required-field">
                             <i18n:message key="perc.ui.users@Assigned Roles" />
                         </div>
-                        <select tabindex="0" title='<i18n:message key="perc.ui.users@Assigned Roles" />' size="5">
+                        <select tabindex="0" aria-required='true' title='<i18n:message key="perc.ui.users@Assigned Roles" />' size="5">
                         </select>
                     </div>
                 </div>
