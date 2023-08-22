@@ -17,6 +17,7 @@
 package com.percussion.utils.jsr170;
 
 import com.percussion.utils.collections.PSMultiMapIterator;
+//TODO: Replace with commons collections 4
 import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.iterators.FilterIterator;

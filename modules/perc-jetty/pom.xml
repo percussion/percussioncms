@@ -399,11 +399,11 @@
     <distributionManagement>
         <snapshotRepository>
             <id>percussion.s3.repo</id>
-            <url>s3://percussion-maven-repo/repositories/snapshots</url>
+            <url>s3://percussioncms-maven.intsof.com/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
             <id>percussion.s3.repo</id>
-            <url>s3://percussion-maven-repo/repositories/releases/</url>
+            <url>s3://percussioncms-maven.intsof.com/repositories/releases/</url>
         </repository>
     </distributionManagement>
 </project>
