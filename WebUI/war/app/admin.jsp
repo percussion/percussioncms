@@ -164,7 +164,7 @@
             }
         }
 
-        // dont allow navigation and window events if template is dirty
+        // don't allow navigation and window events if template is dirty
         // this method is bound to body's onbeforeunload event
         // if method returns string, it's used to display message and confirmation to navigate away
         // if method returns nothing, navigation is allowed

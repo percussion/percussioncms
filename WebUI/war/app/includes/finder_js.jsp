@@ -1,3 +1,5 @@
+<link href="../jslib/profiles/3x/jquery/plugins/jquery-fancytree/skin-win8/ui.fancytree.min.css" rel="stylesheet">
+<script src="../jslib/profiles/3x/jquery/plugins/jquery-fancytree/jquery.fancytree-all.min.js"></script>
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js"></script>
 <script src="../widgets/perc_imageselect.js"></script>
 <script src="../widgets/perc_wizard.js"></script>

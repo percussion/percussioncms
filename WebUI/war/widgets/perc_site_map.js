@@ -863,21 +863,22 @@
              * @param image (String) the name of the image without ext of the image that
              * will serve as the button.
              * @param tooltip (String) the tooltip text for the button.
-             * @param onclick (Function) the callback function to call when
+             * @param callback (Function) the callback function to call when
              * a click event occurs.
              * @param data (Object) extra data that can be passed to the event handler
              * callback when the event fires.
              * @param namespace (String) event namspace that will be added to the click event.
              */
-            createImageButton: function(image, tooltip, onclick, data, namespace)
+            createImageButton: function(image, tooltip, callback, data, namespace)
             {
                 var self = this;
+                data.callback = callback;
                 var $button = $("<img/>")
                     .attr("src", this.getImageSrc(image))
                     .attr("alt", tooltip)
                     .attr("title", tooltip)
                     .on("click." + namespace, data, function(evt){
-                        onclick(evt);
+                        evt.data.callback(evt);
                     })
                     .on("keydown." + namespace, data, function(eventHandler){
                         if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
