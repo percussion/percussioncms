@@ -14,10 +14,10 @@
         <div class="row">
             <div class="col-md-4 order-sm-first order-md-2 mb-3">
                 <div class="btn-group btn-group-toggle d-flex" data-toggle="buttons">
-                    <label tabindex="3" role="button" class="sr-only" title='<i18n:message key = "perc.ui.publish.title@Card"/>' class="btn btn-secondary perc-site-view-toggle-button active">
+                    <label tabindex="3" role="button" title='<i18n:message key = "perc.ui.publish.title@Card"/>' class="btn btn-secondary perc-site-view-toggle-button active">
                         <input value="card" type="radio" name="percSiteView" id="percSiteCardOption" autocomplete="off" checked><i aria-hidden="true" class="fas fa-th fa-fw"></i>&nbsp;&nbsp;<i18n:message key = "perc.ui.publish.title@Card"/>
                     </label>
-                    <label tabindex="4" role="Button" class="sr-only" title='<i18n:message key = "perc.ui.publish.title@List"/>' class="btn btn-secondary perc-site-view-toggle-button">
+                    <label tabindex="4" role="button" title='<i18n:message key = "perc.ui.publish.title@List"/>' class="btn btn-secondary perc-site-view-toggle-button">
                         <input value="list" type="radio" name="percSiteView" id="percSiteListOption" autocomplete="off"><i aria-hidden="true" class="fas fa-th-list"></i>&nbsp;&nbsp;<i18n:message key = "perc.ui.publish.title@List"/>
                     </label>
                 </div>
