@@ -125,7 +125,7 @@
                 var roleTableBody = $('<tbody></tbody>');
                 var roleHeaderRow = $('<tr class="perc-wfconfig-row-header"></tr>');
                 $(roleHeaderRow).attr('class',generateRowId(0));
-                var roleHeader = $('<th style="text-align: left;">Roles</th>');
+                var roleHeader = $('<th scope="col" style="text-align: left;">Roles</th>');
                 $(roleHeader).attr('class',generateColumnId(0));
                 $(roleHeaderRow).append(roleHeader);
                 var stepPermissions = workflowStep.permissionNames;
@@ -143,7 +143,7 @@
                     possiblePermissions = $.PercEditWorkflowStepDialog().tempPossiblePermissions;
 
                 $.each(possiblePermissions, function(index){
-                    var roleHeader = $('<th>' + this + '</th>');
+                    var roleHeader = $('<th scope="col">' + this + '</th>');
                     $(roleHeader).attr('class',generateColumnId(index+1));
                     $(roleHeaderRow).append(roleHeader);
                 });
@@ -154,7 +154,7 @@
                 for (var i=0; i < roleListObject.RoleList.roles.length; i++) {
                     var roleRow = $('<tr class="perc-wfconfig-row"></tr>');
                     roleRow.addClass(generateRowId(i+1));
-                    var roleNameElement=$('<td style="text-align:left;"><span class = "perc-roleName-wrapper perc-ellipsis"></span></td>');
+                    var roleNameElement=$('<td scope = "row" style="text-align:left;"><span class = "perc-roleName-wrapper perc-ellipsis"></span></td>');
                     $(roleNameElement).addClass(generateColumnId(0));
                     var roleName = roleListObject.RoleList.roles[i];
                     roleRow.attr("data", roleName);
