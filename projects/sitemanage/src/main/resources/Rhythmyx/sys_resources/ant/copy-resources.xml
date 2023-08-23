@@ -5,6 +5,12 @@
 		</classpath>
 	</taskdef>
 
+	<taskdef name="ftp" classname="org.apache.tools.ant.taskdefs.optional.net.FTP">
+		<classpath>
+			<pathelement location="../../rxconfig/Installer/perc-ant-${project.parent.version}.jar"/>
+		</classpath>
+	</taskdef>
+
 	<!-- Copy web_resources to our new site. -->
 	<target name="default">
 		<fail unless="perc.site.root" message="perc.site.root" />
@@ -100,11 +106,7 @@
 	</target>
 
 	<target name="publishingFTP" if="perc.publishingFtp.set" >
-		<taskdef name="ftp" classname="org.apache.tools.ant.taskdefs.optional.net.FTP">
-			<classpath>
-				<pathelement location="../../rxconfig/Installer/perc-ant-${project.parent.version}.jar"/>
-			</classpath>
-		</taskdef>
+		<echo>Starting FTP file transfer...</echo>
 		 <ftp server="${perc.ftp.serverAddress}"
 			 port="${perc.ftp.port}"
            	   remotedir="${perc.ftp.remoteDir}" 
@@ -118,7 +120,8 @@
                >
                <fileset dir="${perc.ftp.all_resources}"  />
            </ftp>
-    </target>
+		<echo>Finished FTP file transfer.</echo>
+	</target>
 	<!-- Publish web_resources to the secure FTP server. -->
     <target name="publishingSecureFTP" if="perc.publishSecureFtp.set" >
     	<if>
