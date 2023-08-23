@@ -505,14 +505,15 @@
             <fileset file="${rxbase}/../projects/sitemanage/src/main/resources/category-xyz.xml">
             </fileset>
         </copy>
-        <copy todir="${assembly-directory}/sys_resources" overwrite="false">
+
+        <!-- Includes web_resources task files and secure site config-->
+        <copy todir="${assembly-directory}/sys_resources" overwrite="false" filtering="true">
             <fileset file="${rxbase}/../projects/sitemanage/src/main/resources/Rhythmyx/sys_resources/**">
             </fileset>
         </copy>
 
         <mkdir dir="${assembly-directory}/sys_resources/webapps/secure/WEB-INF/lib"/>
         <mkdir dir="${assembly-directory}/sys_resources/webapps/secure/WEB-INF/classes"/>
-        <mkdir dir="${assembly-directory}/sys_resources/ant/lib"/>
 
         <copy todir="${assembly-directory}/sys_resources/webapps/secure/WEB-INF/lib" overwrite="true">
             <fileset file="${rxbase}/../deliverytiersuite/delivery-tier-suite/secure-membership/target/dependency/**">
@@ -524,10 +525,6 @@
             </fileset>
         </copy>
 
-        <copy todir="${assembly-directory}/sys_resources/ant/lib" overwrite="true">
-            <fileset file="${rxbase}/../modules/perc-ant/lib/**">
-            </fileset>
-        </copy>
 
         <path id="ant2.deps">
             <fileset dir="${assembly-directory}/jetty/defaults/lib/perc" includes="*.jar"/>

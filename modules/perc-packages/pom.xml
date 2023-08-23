@@ -24,7 +24,6 @@
         <db.backend>DERBY</db.backend>
         <db.server>CMDB;create=true</db.server>
         <ds.name>PercussionData</ds.name>
-        <ant.contrib.resource>${basedir}/../perc-ant/lib/ant-contrib-0.6.jar</ant.contrib.resource>
         <exts.store>${basedir}/target/distribution/Extensions</exts.store>
         <pkg.tmp.dir>${basedir}/target/distribution/Packages</pkg.tmp.dir>
         <REFRESH_PROP_NAME>REFRESH</REFRESH_PROP_NAME>

@@ -2,6 +2,7 @@
 <project name="updateConfiguration" default="updateConfiguration">
     <target name="updateConfiguration">
         <echo>Updating configuration files...</echo>
+
         <!-- i18n -->
         <delete file="${install.dir}/rxconfig/I18n/ResourceBundle.tmx.bak" failonerror="false" verbose="true"/>
 
@@ -395,6 +396,13 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">]]></repla
         <delete verbose="true" failonerror="false">
             <fileset dir="${install.dir}/jetty/base/logs">
                 <include name="**/*.jetty.log" />
+            </fileset>
+        </delete>
+
+        <echo message="Removing retired ant dependencies..."/>
+        <delete verbose="true" failonerror="false" includeemptydirs="true">
+            <fileset dir="${install.dir}/sys_resources/ant/lib">
+                <include name="**/*"/>
             </fileset>
         </delete>
 
