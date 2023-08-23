@@ -520,13 +520,17 @@
         <dependency>
             <groupId>jmock</groupId>
             <artifactId>jmock-cglib</artifactId>
-            <version>1.2.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>cglib</groupId>
+                    <artifactId>cglib</artifactId>
+                </exclusion>
+            </exclusions>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>jmock</groupId>
             <artifactId>jmock</artifactId>
-            <version>1.2.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -1468,11 +1472,11 @@
     <distributionManagement>
         <snapshotRepository>
             <id>percussion.s3.repo</id>
-            <url>s3://percussion-maven-repo/repositories/snapshots</url>
+            <url>s3://percussioncms-maven.intsof.com/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
             <id>percussion.s3.repo</id>
-            <url>s3://percussion-maven-repo/repositories/releases/</url>
+            <url>s3://percussioncms-maven.intsof.com/repositories/releases/</url>
         </repository>
     </distributionManagement>
 </project>

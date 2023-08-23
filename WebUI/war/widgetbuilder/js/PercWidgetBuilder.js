@@ -518,6 +518,18 @@ $(window).on('load', function() {
 		tbl.find('tr').each(function (i, el) {
 			$(this).attr('tabindex', tabCounter++);
 		});
+
+		$("#perc-wb-defs-container  .backgrid thead tr th").each(function (i, el) {
+			$(this).attr('scope', "col");
+		});
+
+		$("#perc-wb-defs-container  .backgrid tbody tr").each(function (i, el) {
+			var myRow = $(this);
+			myRow.find('td').each(function(j) {
+				$(this).attr('scope', "row");
+				return false;
+			});
+		});
    }
 });
 

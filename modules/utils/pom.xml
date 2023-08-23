@@ -15,6 +15,24 @@
     </properties>
     <build>
         <plugins>
+            <!-- Scan for Java 11 jdkinternal violations -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jdeps-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jdkinternals</goal> <!-- verify main classes -->
+                            <goal>test-jdkinternals</goal> <!-- verify test classes -->
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <failOnWarning>${jdeps.fail.build}</failOnWarning>
+                    <recursive>false</recursive>
+                    <verbose>false</verbose>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -150,8 +168,8 @@
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
-
         </dependency>
+
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
@@ -171,7 +189,7 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
-
+      
         <dependency>
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
