@@ -663,7 +663,7 @@
                 'selectedWorkflow' : selectedWorkflow
             };
             $.PercDataTree.init(assign_container, dataTreeConfig);
-            assign_container.append('<div class="perc-sa-loading-warning-message"><img src="../css/dynatree/skin/loading.gif" alt="perc.ui.assign.workflow@LoadingGifAlt" style="vertical-align:bottom"/>' +I18N.message("perc.ui.assign.workflow@Workflow Loading") + '</div>');
+            assign_container.append('<div role="status" class="perc-sa-loading-warning-message"><img src="../css/dynatree/skin/loading.gif" alt="perc.ui.assign.workflow@LoadingGifAlt" style="vertical-align:bottom"/>' +I18N.message("perc.ui.assign.workflow@Workflow Loading") + '</div>');
 
         }
 
