@@ -26,12 +26,8 @@ import com.percussion.services.notification.PSNotificationEvent;
 import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.util.PSBaseBean;
 import com.percussion.utils.guid.IPSGuid;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheException;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Ehcache;
-import net.sf.ehcache.Element;
-import net.sf.ehcache.statistics.LiveCacheStatistics;
+import net.sf.ehcache.*;
+import net.sf.ehcache.statistics.StatisticsGateway;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,7 +35,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -268,11 +263,9 @@ public class PSEhCacheAccessor implements IPSCacheAccess
          statList.add(cacheStat);
       }
 
-      Collections.sort(statList, new Comparator<PSCacheStatisticsSnapshot>()
-      {
+      statList.sort(new Comparator<PSCacheStatisticsSnapshot>() {
          public int compare(PSCacheStatisticsSnapshot o1,
-               PSCacheStatisticsSnapshot o2)
-         {
+                            PSCacheStatisticsSnapshot o2) {
             return o1.getName().compareToIgnoreCase(o2.getName());
          }
       });
@@ -373,15 +366,15 @@ public class PSEhCacheAccessor implements IPSCacheAccess
    private PSCacheStatisticsSnapshot getCacheStatistics(Ehcache cache)
    {
 
-      LiveCacheStatistics stat = cache.getLiveCacheStatistics();
+      StatisticsGateway stat = cache.getStatistics();
 
       long memItems = stat.getSize();
       long memUsage = stat.getLocalHeapSizeInBytes();
-      long misses = stat.getCacheMissCount();
-      long totalHits = stat.getCacheHitCount();
+      long misses = stat.cacheMissCount();
+      long totalHits = stat.cacheHitCount();
 
-      long diskHits = stat.getOnDiskHitCount();
-      long diskItems = stat.getLocalDiskSize();
+      long diskHits = stat.localDiskHitCount();
+      long diskItems = stat.localDiskPutAddedCount();
       long diskUsage = 0;
       if (diskItems > 0 && memItems > 0)
          diskUsage = diskItems * (memUsage / memItems);
