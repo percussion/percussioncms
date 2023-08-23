@@ -58,6 +58,7 @@
                 '<label for="perc-canonical-url-dist-sections" id="perc-canonical-url-dist-sections-label">' + I18N.message("perc.ui.editSiteSectionDialog.label@Sections") + '</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<input type="radio" id="perc-canonical-url-dist-pages" name="perc-canonical-url-dist" value="pages" checked style="width:20px" disabled tabindex="' + taborder + '"/>&nbsp;&nbsp;' +
                 '<label for="perc-canonical-url-dist-pages" id="perc-canonical-url-dist-pages-label">' + I18N.message("perc.ui.editSiteSectionDialog.label@Landing Pages") + '</label> <br/>' +
+                "<label for='perc-arrow-key-message'(>" + I18N.message( "perc.ui.users@ArrowKeys") + ")</label> <br/> " +
 
                 '<input type="checkbox" id="perc-replace-canonical-tags" name="perc-replace-canonical-tags" style="width:20px" disabled tabindex="' + taborder + '"/>' +
                 '<label for="perc-replace-canonical-tags" id="perc-replace-canonical-tags-label">' + I18N.message("perc.ui.editSiteSectionDialog.label@Replace existing Canonical Tags if present") + '</label> <br/>' +
