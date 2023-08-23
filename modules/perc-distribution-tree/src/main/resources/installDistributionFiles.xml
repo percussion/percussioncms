@@ -507,7 +507,7 @@
         </copy>
 
         <!-- Includes web_resources task files and secure site config-->
-        <copy todir="${assembly-directory}/sys_resources" overwrite="false" filtering="true">
+        <copy todir="${assembly-directory}/sys_resources" overwrite="true" filtering="true">
             <fileset file="${rxbase}/../projects/sitemanage/src/main/resources/Rhythmyx/sys_resources/**">
             </fileset>
         </copy>

@@ -1,13 +1,13 @@
 <project name="copy-resources" default="all" basedir=".">
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
-			<pathelement location="../../rxconfig/Installer/perc-ant-${project.parent.version}.jar"/>
+			<pathelement location="../../rxconfig/Installer/perc-ant-@@perc.version@@.jar"/>
 		</classpath>
 	</taskdef>
 
 	<taskdef name="ftp" classname="org.apache.tools.ant.taskdefs.optional.net.FTP">
 		<classpath>
-			<pathelement location="../../rxconfig/Installer/perc-ant-${project.parent.version}.jar"/>
+			<pathelement location="../../rxconfig/Installer/perc-ant-@@perc.version@@.jar"/>
 		</classpath>
 	</taskdef>
 
