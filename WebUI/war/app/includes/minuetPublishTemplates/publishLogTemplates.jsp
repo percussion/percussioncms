@@ -76,7 +76,7 @@
     {{#each SitePublishJob}}
     {{#if status}}
     <tr>
-        <td class="align-middle"><button data-perc-log-object="{{#JSONstring this}}{{/JSONstring}}" class="btn btn-sm perc-btn-primary perc-log-details" type="button"><i18n:message key="perc.ui.publish.title@Details"/></button></td>
+        <td scope = "row" class="align-middle"><button data-perc-log-object="{{#JSONstring this}}{{/JSONstring}}" class="btn btn-sm perc-btn-primary perc-log-details" type="button"><i18n:message key="perc.ui.publish.title@Details"/></button></td>
         <td class="align-middle">{{startDate}} {{startTime}}</td>
         <td class="align-middle">{{pubServerName}}</td>
         <td class="align-middle">{{#duration elapsedTime}}{{/duration}}</td>
