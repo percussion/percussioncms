@@ -241,7 +241,21 @@
 
         function expandTableBorders(expand)
         {
-            if (percFinderListviewContainer)
+			$('#perc-finder-listview table thead tr th').each(function(){
+				$(this).attr('scope', "col");
+
+			});
+
+			$('#perc-finder-listview table tbody tr').each(function(){
+				var myRow = $(this);
+				myRow.find('td').each(function(j) {
+					$(this).attr('scope', "row");
+					return false;
+				});
+
+			});
+
+		    if (percFinderListviewContainer)
             {
                 var finder = $(".perc-finder");
 
