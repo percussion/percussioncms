@@ -27,7 +27,7 @@
 <script id="templatePercPublishStatusList" type="text/x-handlebars-template">
     {{#each SitePublishJob}}
     <tr>
-        <td class="align-middle">{{siteName}}</td>
+        <td scope = "row" class="align-middle">{{siteName}}</td>
         <td role="status" class="align-middle">{{status}}</td>
         <td class="align-middle">{{startDate}} {{startTime}}</td>
         <td class="align-middle">{{#duration elapsedTime}}{{/duration}}</td>
