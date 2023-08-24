@@ -75,7 +75,6 @@
         <cactus.version>13-1.7.1</cactus.version>
         <cactus.sysproperties>cactus.contextURL</cactus.sysproperties>
         <cactus.contextURL>http://localhost:9992/Rhythmyx</cactus.contextURL>
-        <jetty.version>9.4.26.v20200117</jetty.version>
         <trinidad.version>1.0.2</trinidad.version>
         <derby.version>10.14.2.0</derby.version>
         <oracle.version>12.1.0.1</oracle.version>

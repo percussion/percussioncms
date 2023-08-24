@@ -247,7 +247,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -739,6 +738,10 @@
                     <groupId>org.apache.poi</groupId>
                     <artifactId>poi-ooxml</artifactId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>ehcache-core</artifactId>
+                    <groupId>net.sf.ehcache</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
 
@@ -1146,7 +1149,7 @@
         </dependency>
         <!-- https://mvnrepository.com/artifact/ant/ant-apache-oro  old for perfoce tasks-->
         <dependency>
-            <groupId>ant</groupId>
+            <groupId>org.apache.ant</groupId>
             <artifactId>ant-apache-oro</artifactId>
         </dependency>
 
@@ -1155,24 +1158,16 @@
             <artifactId>ant-launcher</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/ant-contrib/ant-contrib -->
-        <dependency>
-            <groupId>ant-contrib</groupId>
-            <artifactId>ant-contrib</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.apache.ant</groupId>
             <artifactId>ant-jsch</artifactId>
         </dependency>
 
-        <!-- Is needed in main ?
         <dependency>
-            <groupId>perforce</groupId>
-            <artifactId>p4</artifactId>
-
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant-commons-net</artifactId>
         </dependency>
--->
+
         <dependency>
             <groupId>expectj</groupId>
             <artifactId>expectj</artifactId>

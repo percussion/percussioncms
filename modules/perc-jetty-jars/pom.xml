@@ -123,5 +123,9 @@
           <groupId>xml-apis</groupId>
           <artifactId>xml-apis</artifactId>
       </dependency>
+      <dependency>
+      <groupId>org.apache.geronimo.components</groupId>
+      <artifactId>geronimo-jaspi</artifactId>
+      </dependency>
   </dependencies>
 </project>

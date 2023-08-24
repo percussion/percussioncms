@@ -395,6 +395,10 @@
         <version>${project.version}</version>
         <scope>provided</scope>
     </dependency>
+      <dependency>
+          <groupId>org.apache.geronimo.components</groupId>
+          <artifactId>geronimo-jaspi</artifactId>
+      </dependency>
   </dependencies>
     <distributionManagement>
         <snapshotRepository>

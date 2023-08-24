@@ -286,12 +286,10 @@
                         <artifactId>ant</artifactId>
                         <version>${ant.version}</version>
                     </dependency>
-                    <!-- https://mvnrepository.com/artifact/ant/ant-apache-oro old
-                        for perfoce tasks -->
                     <dependency>
-                        <groupId>ant</groupId>
+                        <groupId>org.apache.ant</groupId>
                         <artifactId>ant-apache-oro</artifactId>
-                        <version>1.6.5</version>
+                        <version>${ant.version}</version>
                     </dependency>
 
                     <dependency>
@@ -304,7 +302,11 @@
                         <artifactId>ant-launcher</artifactId>
                         <version>${ant.version}</version>
                     </dependency>
-                    <!-- https://mvnrepository.com/artifact/org.apache.ant/ant-commons-logging -->
+                    <dependency>
+                        <groupId>org.apache.ant</groupId>
+                        <artifactId>ant-commons-net</artifactId>
+                        <version>${ant.version}</version>
+                    </dependency>
                     <dependency>
                         <groupId>org.apache.ant</groupId>
                         <artifactId>ant-commons-logging</artifactId>
@@ -315,24 +317,36 @@
                         <artifactId>ant-apache-regexp</artifactId>
                         <version>${ant.version}</version>
                     </dependency>
-                    <!-- https://mvnrepository.com/artifact/ant-contrib/ant-contrib -->
                     <dependency>
                         <groupId>ant-contrib</groupId>
                         <artifactId>ant-contrib</artifactId>
-                        <version>1.0b3</version>
+                        <version>${ant.contrib.version}</version>
                         <exclusions>
-                            <exclusion>
-                                <!-- old naming -->
-                                <groupId>ant</groupId>
-                                <artifactId>ant</artifactId>
-
-                            </exclusion>
+                                <exclusion>
+                                    <groupId>ant</groupId>
+                                    <artifactId>ant</artifactId>
+                                </exclusion>
+                                <exclusion>
+                                    <groupId>commons-httpclient</groupId>
+                                    <artifactId>commons-httpclient</artifactId>
+                                </exclusion>
+                                <exclusion>
+                                    <groupId>org.apache.ivy</groupId>
+                                    <artifactId>ivy</artifactId>
+                                </exclusion>
+                                <exclusion>
+                                    <groupId>org.jvnet.hudson</groupId>
+                                    <artifactId>ivy</artifactId>
+                                </exclusion>
+                                <exclusion>
+                                    <groupId>junit</groupId>
+                                    <artifactId>junit</artifactId>
+                                </exclusion>
+                                <exclusion>
+                                    <groupId>org.apache.bcel</groupId>
+                                    <artifactId>bcel</artifactId>
+                                </exclusion>
                         </exclusions>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.ant</groupId>
-                        <artifactId>ant-nodeps</artifactId>
-                        <version>1.8.1</version>
                     </dependency>
                 </dependencies>
             </plugin>

@@ -127,7 +127,7 @@
        <maven.jxr.plugin.version>3.0.0</maven.jxr.plugin.version>
        <maven.war.plugin.version>3.3.1</maven.war.plugin.version>
        <plexus.component.metadata.version>2.1.0</plexus.component.metadata.version>
-       <jetty.maven.plugin.version>9.4.40.v20210413</jetty.maven.plugin.version>
+       <jetty.maven.plugin.version>9.4.51.v20230217</jetty.maven.plugin.version>
        <lifecycle.mapping.plugin>1.0.0</lifecycle.mapping.plugin>
        <jacoco.maven.plugin.version>0.8.5</jacoco.maven.plugin.version>
        <java.version>1.8.0</java.version>
@@ -159,7 +159,8 @@
         <poi.version>5.2.2</poi.version>
         <esapi.version>2.3.0.0</esapi.version>
         <esapi.encoder.version>1.2.3</esapi.encoder.version>
-        <ant.version>1.10.11</ant.version>
+        <ant.version>1.10.14</ant.version>
+        <ant.contrib.version>1.0b3</ant.contrib.version>
         <shindig.version>1.1-BETA5-incubating</shindig.version>
         <any23.version>2.3</any23.version>
         <owl.version>5.1.10</owl.version>
@@ -172,7 +173,7 @@
         <cactus.version>13-1.7.1</cactus.version>
         <cactus.sysproperties>cactus.contextURL</cactus.sysproperties>
         <cactus.contextURL>http://localhost:9992/Rhythmyx</cactus.contextURL>
-        <jetty.version>9.4.43.v20210629</jetty.version>
+        <jetty.version>9.4.51.v20230217</jetty.version>
         <trinidad.version>1.0.2</trinidad.version>
        <derby.version>10.14.2.0</derby.version>
        <mssql.version>9.2.1.jre8</mssql.version>
@@ -656,13 +657,10 @@
                 <groupId>org.eclipse.jetty</groupId>
                   <artifactId>jetty-maven-plugin</artifactId>
                   <version>${jetty.maven.plugin.version}</version>
-
                 <configuration>
-
                   <scanIntervalSeconds>10</scanIntervalSeconds>
                   <stopPort>8005</stopPort>
                   <stopKey>STOP</stopKey>
-
                 </configuration>
               </plugin>
                 <plugin>
@@ -1285,6 +1283,13 @@
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-start</artifactId>
                 <version>${jetty.version}</version>
+            </dependency>
+
+            <!-- needed for https://github.com/eclipse/jetty.project/issues/4746 -->
+            <dependency>
+                <groupId>org.apache.geronimo.components</groupId>
+                <artifactId>geronimo-jaspi</artifactId>
+                <version>2.0.0</version>
             </dependency>
 
             <dependency>
@@ -2358,6 +2363,26 @@
                         <groupId>ant</groupId>
                         <artifactId>ant</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>commons-httpclient</groupId>
+                        <artifactId>commons-httpclient</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.ivy</groupId>
+                        <artifactId>ivy</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jvnet.hudson</groupId>
+                        <artifactId>ivy</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>junit</groupId>
+                        <artifactId>junit</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.bcel</groupId>
+                        <artifactId>bcel</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -2421,14 +2446,16 @@
                 <artifactId>ant</artifactId>
                 <version>${ant.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/ant/ant-apache-oro old 
-                for perfoce tasks -->
             <dependency>
-                <groupId>ant</groupId>
+                <groupId>org.apache.ant</groupId>
                 <artifactId>ant-apache-oro</artifactId>
-                <version>1.6.5</version>
+                <version>${ant.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.apache.ant</groupId>
+                <artifactId>ant-nodeps</artifactId>
+                <version>${ant.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.ant</groupId>
                 <artifactId>ant-jsch</artifactId>
@@ -2436,10 +2463,27 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.ant</groupId>
+                <artifactId>ant-commons-net</artifactId>
+                <version>${ant.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ant-contrib</groupId>
+                <artifactId>ant-contrib</artifactId>
+                <version>${ant.contrib.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>*</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.ant</groupId>
                 <artifactId>ant-launcher</artifactId>
                 <version>${ant.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.ant/ant-commons-logging -->
             <dependency>
                 <groupId>org.apache.ant</groupId>
                 <artifactId>ant-commons-logging</artifactId>
@@ -2449,19 +2493,6 @@
                 <groupId>org.apache.ant</groupId>
                 <artifactId>ant-apache-regexp</artifactId>
                 <version>${ant.version}</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/ant-contrib/ant-contrib -->
-            <dependency>
-                <groupId>ant-contrib</groupId>
-                <artifactId>ant-contrib</artifactId>
-                <version>1.0b3</version>
-                <exclusions>
-                    <exclusion>
-                        <!-- old naming -->
-                        <groupId>ant</groupId>
-                        <artifactId>ant</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>perforce</groupId>
@@ -2764,11 +2795,6 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-csv</artifactId>
                 <version>1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.beust</groupId>
-                <artifactId>jcommander</artifactId>
-                <version>1.35</version>
             </dependency>
             <dependency>
                 <groupId>com.rometools</groupId>

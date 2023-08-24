@@ -2,6 +2,19 @@
 <project name="updateConfiguration" default="updateConfiguration">
     <target name="updateConfiguration">
         <echo>Updating configuration files...</echo>
+        <property file="${install.dir}/Version.properties" prefix="version"/>
+        <if>
+            <equals arg1="" arg2="${version.optionalId}"/>
+            <then>
+                <property name="optionalId" value=""/>
+            </then>
+            <else>
+                <property name="optionalId" value="-${version.optionalId}"/>
+            </else>
+        </if>
+        <property name="buildversion" value="${version.majorVersion}.${version.minorVersion}.${version.microVersion}${optionalId}"/>
+
+        <echoproperties/>
         <!-- i18n -->
         <delete file="${install.dir}/rxconfig/I18n/ResourceBundle.tmx.bak" failonerror="false" verbose="true"/>
 
@@ -206,6 +219,12 @@
         </if>
         <replace file="${install.dir}/PercussionXMLCatalog.xml" token="@@rxdir@@" value="${lead.slash}${normalized.install.dir}" />
         <replace file="${install.dir}/var/config/CustomXMLCatalog.xml" token="@@rxdir@@" value="${lead.slash}${normalized.install.dir}" />
+        <if>
+            <available file="${install.dir}/sys_resources/ant/copy-resources.xml"/>
+            <then>
+                <replace file="${install.dir}/sys_resources/ant/copy-resources.xml" token="@@perc.version@@" value="${buildversion}" />
+            </then>
+        </if>
 
         <macrodef name="add-config-if-missing">
             <attribute name="srcFile"/>
@@ -395,6 +414,13 @@ http://www.springframework.org/schema/context/spring-context-4.2.xsd">]]></repla
         <delete verbose="true" failonerror="false">
             <fileset dir="${install.dir}/jetty/base/logs">
                 <include name="**/*.jetty.log" />
+            </fileset>
+        </delete>
+
+        <echo message="Removing retired ant dependencies..."/>
+        <delete verbose="true" failonerror="false" includeemptydirs="true">
+            <fileset dir="${install.dir}/sys_resources/ant/lib">
+                <include name="**/*"/>
             </fileset>
         </delete>
 

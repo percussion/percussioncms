@@ -83,13 +83,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>com.percussion</groupId>
-            <artifactId>perc-system</artifactId>
-            <version>${project.parent.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
 
         <dependency>
             <groupId>com.percussion</groupId>
@@ -101,23 +94,12 @@
             <artifactId>rxutils</artifactId>
             <version>${project.parent.version}</version>
             <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>cactus</groupId>
-            <artifactId>cactus</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>perforce</groupId>
-            <artifactId>p4</artifactId>
-            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.ant</groupId>
@@ -150,15 +132,60 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>ant</groupId>
-            <artifactId>ant-apache-oro</artifactId>
-            <version>1.6.5</version>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.ant</groupId>
-            <artifactId>ant-nodeps</artifactId>
-            <version>1.8.1</version>
+            <artifactId>ant-apache-oro</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant-jsch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant-commons-net</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant-commons-logging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant-apache-regexp</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>ant-contrib</groupId>
+            <artifactId>ant-contrib</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>ant</groupId>
+                    <artifactId>ant</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-httpclient</groupId>
+                    <artifactId>commons-httpclient</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.ivy</groupId>
+                    <artifactId>ivy</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.jvnet.hudson</groupId>
+                    <artifactId>ivy</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.bcel</groupId>
+                    <artifactId>bcel</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
@@ -190,11 +217,6 @@
         <dependency>
             <groupId>saxon</groupId>
             <artifactId>saxon</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.ant</groupId>
-            <artifactId>ant</artifactId>
             <scope>compile</scope>
         </dependency>
         <dependency>
