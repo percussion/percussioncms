@@ -136,7 +136,7 @@
         "widgets/PercDataTable/PercDataTable.css",
         "widgets/PercFinderListView/PercFinderListView.css",
         "widgets/PercFinderTree/PercFinderTree.css",
-        "jslib/profiles/3x/jquery/plugins/jquery-fancytree/skin-win8/ui.fancytree.min.css"
+        "jslib/profiles/3x/jquery/plugins/jquery-fancytree/skin-win8/ui.fancytree.css"
       ]
     }
   ]
