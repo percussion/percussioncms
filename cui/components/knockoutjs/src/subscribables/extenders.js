@@ -16,7 +16,7 @@ ko.extenders = {
                 writeTimeoutInstance = setTimeout(function() {
                     target(value);
                 }, timeout);
-            }``
+            }
         });
     },
 
