@@ -451,10 +451,7 @@
         <plugin>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-maven-plugin</artifactId>
-            <version>4.0.0</version>
-            <configuration>
-                <propertyFile>src/main/resources/diff-liquibase-changelog.properties</propertyFile>
-            </configuration>
+            <version>4.23.1</version>
             <dependencies>
                 <dependency>
                     <groupId>org.liquibase.ext</groupId>

@@ -155,4 +155,13 @@
       autowire="constructor">
    </bean>
 
+	<!-- Using Liquibase to create database tables -->
+	<!--
+   <bean id="metadataLiquibase"
+         class="liquibase.integration.spring.SpringLiquibase">
+      <property name="dataSource" ref="percDataSource" />
+      <property name="changeLog" value="classpath:masterChangeLog.xml" />
+   </bean>
+   -->
+
 </beans>
