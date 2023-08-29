@@ -69,6 +69,7 @@ import com.percussion.pagemanagement.service.IPSWidgetService;
 import com.percussion.pathmanagement.data.PSFolderProperties;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
+import com.percussion.pathmanagement.service.impl.PSSitePathItemService;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
 import com.percussion.services.contentmgr.IPSContentPropertyConstants;
@@ -1019,7 +1020,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 
         /*
          * Add the folder id of where we should create the asset into return object.
-         * The UI can then decided whether or not to use it.
+         * The UI can then decide whether or not to use it.
          */
         if (isNotBlank(request.getAssetId())) {
             PSAssetSummary sum = find(request.getAssetId());
@@ -1031,10 +1032,25 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
             }
         }
         else {
-            ceCrit.setLegacyFolderId(getUploadLegacyFolderIdForType(ctName));
+			String parentFolderForAsset;
+			if(isPage  && ! producesResource){
+				IPSGuid parentGuid = idMapper.getGuid(request.getParentId());
+				IPSGuid folderId = this.folderHelper.getParentFolderId(parentGuid,true);
 
-            // Set the workflow id only for new items.
-            String parentFolderForAsset = assetUploadFolderPathMap.getFolderPathForType(ctName);
+				ceCrit.setLegacyFolderId(folderId.getUUID());
+
+				try {
+					parentFolderForAsset = folderHelper.findPathFromLegacyFolderId((Number) folderId.getUUID());
+				}catch(Exception e){
+					log.error(PSExceptionUtils.getMessageForLog(e));
+					parentFolderForAsset = assetUploadFolderPathMap.getFolderPathForType(ctName);
+				}
+			}else {
+				ceCrit.setLegacyFolderId(getUploadLegacyFolderIdForType(ctName));
+				// Set the workflow id only for new items.
+				parentFolderForAsset = assetUploadFolderPathMap.getFolderPathForType(ctName);
+			}
+
             int workflowId = getWorkflowId(ctName, producesResource, parentFolderForAsset);
             if(workflowId == -1)
             {
@@ -1191,7 +1207,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         try {
 			String processedParentFolderPath = parentFolderPath;
 
-			if (!startsWith(parentFolderPath, PSAssetPathItemService.ASSET_ROOT_SUB)) {
+			if (!startsWith(parentFolderPath, PSAssetPathItemService.ASSET_ROOT_SUB) && !startsWith(parentFolderPath,PSSitePathItemService.SITE_ROOT)) {
 				processedParentFolderPath = PSAssetPathItemService.ASSET_ROOT_SUB + "/" + parentFolderPath;
 			}
 
