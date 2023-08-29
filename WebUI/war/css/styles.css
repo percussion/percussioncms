@@ -3601,7 +3601,7 @@ li.ui-tabs-active #perc-tab-style,#perc-tab-style:hover,#ui-state-active
 /* .ui-disabled state */
 .ui-disabled.perc-font-icon,
 .ui-disabled .perc-font-icon {
-    color: #CCC;
+    color: #808484;
     text-shadow: none;
     background: transparent;
 }
