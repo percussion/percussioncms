@@ -18,7 +18,8 @@ db.schema=APP
 # the JDBC driver class name
 # "Oracle" - oracle.jdbc.driver.OracleDriver
 #  MariaDB"  - org.mariadb.jdbc.Driver
-#  MySQL - com.mysql.jdbc.Driver
+#  MySQL 5.7 - com.mysql.jdbc.Driver
+#  MySQL 8.0 - com.mysql.cj.jdbc.Driver
 # "MS SQL" - com.microsoft.sqlserver.jdbc.SQLServerDriver
 # "Derby"  - org.apache.derby.jdbc.ClientDriver
 # "Microsoft SQL Server - Native JDBC" -  com.microsoft.sqlserver.jdbc.SQLServerDriver
@@ -29,7 +30,7 @@ jdbcDriver=org.apache.derby.jdbc.ClientDriver
 #         Eg: jdbc:oracle:thin:@10.10.10.61:1521/ORCL
 # "MySQL"  --  jdbc:mysql://<host>:<port>/dtsdb?useUnicode=true&characterEncoding=UTF-8&useSSL=true&requireSSL=false&verifyServerCertificate=false
 #         Eg: jdbc\:mysql\://localhost\:3306/dtsdb?useUnicode\=true&characterEncoding\=UTF-8&useSSL\=true&requireSSL\=false&verifyServerCertificate\=false
-# "MS SQL" -  jdbc:sqlserver://<host>:<port>/<database>
+# "MS SQL" -  jdbc:sqlserver://<host>:<port>/<database>;trustServerCertificate\=true
 #         Eg: jdbc:sqlserver://localhost/delivery_database
 # "Derby"  -  jdbc:derby://<host>:<port>/<database>
 #         Eg: jdbc:derby:percforms;create=true
