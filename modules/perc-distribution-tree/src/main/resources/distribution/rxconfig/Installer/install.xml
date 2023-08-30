@@ -606,7 +606,6 @@
         <antcall target="updateExtensions" inheritall="true" inheritrefs="true"/>
         <ant antfile="removeOldPatches.xml" target="removeOldPatches" inheritAll="true" inheritRefs="true" />
         <antcall target="alwaysCopyIfMissing" inheritall="true" inheritrefs="true"/>
-        <ant antfile="updateConfiguration.xml" target="updateConfiguration" inheritAll="true" inheritRefs="true" />
         <antcall target="updateConfigXMLForPasswordFilter" inheritall="true" inheritrefs="true"/>
         <antcall target="upgradeSiteConfig" inheritall="true" inheritrefs="true" />
         <antcall target="replaceOldFontAwesome"  inheritall="true" inheritrefs="true"/>
@@ -617,6 +616,7 @@
         <antcall target="backupTinymceRxresources"  inheritall="true" inheritrefs="true"/>
         <echo>Upgrade Done...Update Version.properties</echo>
         <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
+        <ant antfile="updateConfiguration.xml" target="updateConfiguration" inheritAll="true" inheritRefs="true" />
     </target>
 
     <target name="deleteOldLog4jJars">
