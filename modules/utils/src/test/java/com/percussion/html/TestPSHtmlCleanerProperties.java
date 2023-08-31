@@ -46,7 +46,7 @@ public class TestPSHtmlCleanerProperties {
 
         assertFalse(props.isEmpty());
 
-        Safelist sl = PSHtmlUtils.getSafeListFromProperties(props);
+        Safelist sl = PSHtmlUtils.getSafeListFromProperties(props,"");
 
         assertNotNull(sl);
 
