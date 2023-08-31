@@ -90,7 +90,6 @@
   /* order of following 3 rules important for fallbacks to work */
   border: 5px solid transparent;
   border-top-color: #133C55; /* edit this to suit design (no rgba in IE8) */
-  border-top-color: rgba(19,60,85,.5);
 }
 .sf-arrows > li > .sf-with-ul:focus:after,
 .sf-arrows > li:hover > .sf-with-ul:after,

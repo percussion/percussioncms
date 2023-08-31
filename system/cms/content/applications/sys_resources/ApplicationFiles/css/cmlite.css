@@ -80,7 +80,7 @@ body{
     font-family: 'Open Sans', sans-serif;
     font-size: 11px;
     font-weight: normal;
-    color: #0099CC ;
+    color: #133C55;
     text-decoration: none;
     background-color:#E6E6E9;
     padding: 15px 30px 15px 33px;
@@ -258,7 +258,7 @@ input.perc-rss-disabled, textarea.perc-rss-disabled {
     font-weight: normal;
 }
 .perc-section-label{
-    color:#0099CC;
+    color:#133C55;
     font-size:11px;
     font-family: 'Open Sans', sans-serif;
     font-weight:bold;
