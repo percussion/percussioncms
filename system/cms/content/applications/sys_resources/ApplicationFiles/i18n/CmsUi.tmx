@@ -8187,10 +8187,10 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	    <prop type="sectionname" xml:lang="en-us">Warning</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>Confirm Deletion</seg>
+	        <seg>Remove Gadget From Your Dashboard</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
-	        <seg>Confirmar la eliminación</seg>
+	        <seg>Eliminar gadget del panel</seg>
 	    </tuv>
 	 </tu>
 	 <tu tuid="perc.ui.dashboard@Confirm Deletion Question">
@@ -8207,10 +8207,10 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	    <prop type="sectionname" xml:lang="en-us">Warning</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>\' gadget?</seg>
+	        <seg>\' gadget from your Dashboard?  You can add the gadget back to your Dashboard by dragging and dropping from the Gadget tray.</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
-	        <seg>\' artilugio?</seg>
+	        <seg>\' gadget desde tu Dashboard? Puedes volver a añadir el gadget al panel arrastrando y soltando desde la bandeja del gadget.</seg>
 	    </tuv>
 	 </tu>
 	 <tu tuid="perc.ui.dashboard@Reset Dashboard">
