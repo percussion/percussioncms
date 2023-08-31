@@ -1652,6 +1652,7 @@ input[type =
 #perc-ui-permission-usernamefield
 {
     width:284px;
+    color:#000000 !important;
 }
 
 #perc-ui-permission-plusbutton
