@@ -225,6 +225,8 @@ public class PSServer {
    public static final String BROKEN_MANAGED_LINK_BEHAVIOR_REMOVELINK = "removeLink";
    public static final String BROKEN_MANAGED_LINK_BEHAVIOR_LEAVELINK = "leaveLink";
 
+   public static final String PROP_DISABLE_HTML_CLEANING = "disableHTMLCleaningExtensions";
+
    /**
     * No external construction of this allowed.
     */
@@ -2017,6 +2019,10 @@ public class PSServer {
    public static String getBrokenLinkBehavior()
    {
       return ms_serverProps.getProperty(BROKEN_MANAGED_LINK_BEHAVIOR);
+   }
+
+   public static boolean isHtmlCleaningDisabled(){
+         return Boolean.parseBoolean(ms_serverProps.getProperty(PROP_DISABLE_HTML_CLEANING, "false"));
    }
 
    /**

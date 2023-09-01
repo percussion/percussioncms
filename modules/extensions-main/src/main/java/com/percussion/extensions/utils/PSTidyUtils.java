@@ -96,7 +96,7 @@ public class PSTidyUtils
        }
        catch (Exception e)
        {
-          String msg = e.getLocalizedMessage();
+          String msg = e.getMessage();
           if (e instanceof IOException)
           {
              msg = "Failed to apply tidy to source = \"" + source + "\"";

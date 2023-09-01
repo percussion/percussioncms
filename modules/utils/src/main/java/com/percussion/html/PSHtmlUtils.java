@@ -37,7 +37,7 @@ import java.util.Arrays;
 import java.util.Properties;
 
 /**
- * Utility class for handling handling HTML documents and
+ * Utility class for handling HTML documents and
  * document fragments.  Intended for use with HTML content.
  * @see PSXmlUtils for XML content.
  */
@@ -82,6 +82,7 @@ public class PSHtmlUtils {
                                               String configFile) throws PSHtmlParsingException{
         Document ret = null;
         W3CDom w3dom = new W3CDom();
+
 
         Properties props;
         if(configFile != null) {
@@ -165,6 +166,10 @@ public class PSHtmlUtils {
 
         Properties props;
         if(configFile != null) {
+            //Catch any extensions or customizations that may be using the old system default and autowire to the new default.
+            if(configFile.equals("rxW2Ktidy.properties")){
+                configFile = "html-cleaner.properties";
+            }
             props = getCleanerProperties(configFile);
         }else{
             props = getDefaultCleanerProperties();
@@ -343,12 +348,18 @@ public class PSHtmlUtils {
 
     /**
      * Gets the html cleaner properties from the specified filename.
-     * @param filename
-     * @return
+     * @param filename The path and filename of the html-cleaner.properties file. Will assume installroot if filename matches the system default filename.
+     * @return The configured properties for the cleaner to use.
      */
     //TODO: Add caching
     public static Properties getCleanerProperties(String filename){
         Properties props = new Properties();
+
+        //Load the properties file from the system root if the default is passed in.
+        if("html-cleaner.properties".equals(filename)){
+            String basePath = System.getProperty("rxdeploydir") + File.separatorChar;
+            filename = basePath + filename;
+        }
 
         try(FileInputStream is = new FileInputStream(new File(filename))){
             props.load(is);
