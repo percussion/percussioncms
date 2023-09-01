@@ -24,8 +24,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.helper.W3CDom;
+import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.safety.Safelist;
+import org.jsoup.select.Elements;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,7 +36,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -170,7 +175,7 @@ public class PSHtmlUtils {
             props = getDefaultCleanerProperties();
         }
 
-        Safelist safe = getSafeListFromProperties(props);
+        Safelist safe = getSafeListFromProperties(props, fragment);
         Document.OutputSettings settings = getOutputSettings(props, encoding);
 
         cleansed  = Jsoup.clean(fragment, "https://parser", safe,settings);
@@ -181,10 +186,11 @@ public class PSHtmlUtils {
 
     /**
      * Builds a safe list based on the supplied properties.
-     * @param props a set of properties from an html-cleaner properties file
+     * @param props a set of properties from a html-cleaner.properties file
+     * @param fragment The fragment that will be cleansed.  Needed to handle wildcard attrs like aria- or data-
      * @return A safelist based on the configured property values.
      */
-    protected static Safelist getSafeListFromProperties(Properties props){
+    protected static Safelist getSafeListFromProperties(Properties props, String fragment){
         Safelist ret = new Safelist();
 
         String propVal = props.getProperty(PROP_BASE_SAFELIST,"relaxed");
@@ -217,10 +223,10 @@ public class PSHtmlUtils {
         ret = processAllowedTags(propVal, ret);
 
         propVal = props.getProperty(PROP_ALLOWED_ATTRS);
-        ret = processAllowedAttributes(propVal,ret);
+        ret = processAllowedAttributes(fragment, propVal,ret);
 
         propVal = props.getProperty(PROP_ENFORCED_ATTRS);
-        ret = processEnforcedAttrs(propVal,ret);
+        ret = processEnforcedAttrs( propVal,ret);
 
         propVal = props.getProperty(PROP_REMOVE_TAGS);
         ret = processRemovedTags(propVal, ret);
@@ -294,21 +300,44 @@ public class PSHtmlUtils {
         return ret;
     }
 
-    protected static Safelist processAllowedAttributes(String propVal, Safelist ret) {
+    protected static Safelist processAllowedAttributes(String fragment, String propVal, Safelist ret) {
 
         if(propVal == null || StringUtils.isEmpty(propVal.trim()))
             return ret;
 
         String[] attrs = propVal.split(",");
         String[] attrsTrimmed = Arrays.stream(attrs).map(String::trim).toArray(String[]::new);
+        Document doc = Jsoup.parse(fragment);
 
         for(String a : attrsTrimmed){
-            String[] args = a.split(";");
-            String tag = args[0];
-            ret.addAttributes(tag,Arrays.copyOfRange(args,1,args.length));
+            ArrayList<String> args = new ArrayList<>(Arrays.asList(a.split(";")));
+            String tag = args.get(0);
+            ArrayList<String> extraAttrs = new ArrayList<>();
+            for(String attrName : args){
+                if(attrName.endsWith("-*")){
+                    String subKey = attrName.substring(0,attrName.lastIndexOf("-*"));
+                    //We need to handle wildcard tags
+                    Elements elems = doc.getElementsByAttributeStarting(subKey);
+                    for(Element e : elems){
+                        for(Attribute ea : e.attributes()){
+                            if(ea.getKey().startsWith(subKey)){
+                                if(!extraAttrs.contains(ea.getKey())){
+                                    extraAttrs.add(ea.getKey());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            args.remove(0);
+            args.addAll(extraAttrs);
+            ret.addAttributes(tag, args.toArray(new String[0]));
         }
+
+
         return ret;
     }
+
 
     protected static Safelist processAllowedTags(String propVal, Safelist ret) {
 
