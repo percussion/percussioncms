@@ -427,6 +427,7 @@
 
         <PSCopy todir="${assembly-directory}">
             <fileset dir="${releasedir}/installer/config" includes="rxW2KserverPageTags.xml,rxW2Ktidy.properties" />
+            <fileset dir="${basedir}/../../modules/utils/src/main/resources/com/percussion/html" includes="html-cleaner.properties" />
         </PSCopy>
 
 

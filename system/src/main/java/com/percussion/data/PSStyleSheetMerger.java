@@ -235,7 +235,7 @@ public abstract class PSStyleSheetMerger
     * the style sheet MIME type (eg, text/css) and the value is an
     * instance of the appropriate PSStyleSheetMerger subclass.
     */
-   private static HashMap ms_StyleSheetMergers = new HashMap();
+   private static HashMap ms_StyleSheetMergers = new HashMap<>();
 
    /**
     * Initializes the static merger map so that the appropriate mergers can
@@ -248,7 +248,7 @@ public abstract class PSStyleSheetMerger
       ms_StyleSheetMergers.put("text/css", new PSCssStyleSheetMerger());
       ms_StyleSheetMergers.put("text/xsl", xslMerger);
 
-      /* Default case for when we need to use the the default style sheet */
+      /* Default case for when we need to use the default style sheet */
       ms_StyleSheetMergers.put(null, xslMerger);
    }
 

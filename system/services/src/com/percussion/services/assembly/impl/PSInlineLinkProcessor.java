@@ -21,6 +21,7 @@ import com.percussion.html.PSHtmlParsingException;
 import com.percussion.html.PSHtmlUtils;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.SecureStringUtils;
+import com.percussion.server.PSServer;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.filter.IPSItemFilter;
 import com.percussion.utils.jsr170.IPSPropertyInterceptor;
@@ -131,7 +132,7 @@ public class PSInlineLinkProcessor implements IPSPropertyInterceptor
       try {
          //Don't bother trying to parse if the string doesn't contain html / xml
          if(SecureStringUtils.isHTML(body) || SecureStringUtils.isXML(body)) {
-            Document htmlDoc = PSHtmlUtils.createHTMLDocument(body, StandardCharsets.UTF_8,true,null);
+            Document htmlDoc = PSHtmlUtils.createHTMLDocument(body, StandardCharsets.UTF_8,!PSServer.isHtmlCleaningDisabled(),"html-cleaner.properties");
             return contentHandler.processDocument(htmlDoc,this);
          }
       }catch (PSHtmlParsingException e){

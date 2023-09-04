@@ -371,7 +371,7 @@ public class PSAssemblerUtils extends PSJexlUtilBase
             .getRequestInfo(PSRequestInfo.KEY_PSREQUEST);
       PSXmlDomContext contxt = new PSXmlDomContext(PSAssemblerUtils.class
             .getName(), new PSRequestContext(req));
-    //  contxt.setRxCommentHandling(true);
+
       contxt.setTidyProperties("rxW2Ktidy.properties");
       contxt.setServerPageTags("rxW2KserverPageTags.xml");
       contxt.setUsePrettyPrint(false);

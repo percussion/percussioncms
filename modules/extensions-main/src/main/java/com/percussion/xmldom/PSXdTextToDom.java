@@ -111,7 +111,7 @@ import java.nio.charset.StandardCharsets;
  * {@link ProcessServerPageTags ProcessServerPageTags}. The pathname is
  * relative to the server root.
  * <p>
- * Rhythmyx provides default files for Tidy (rxW2Ktidy.properties) and
+ * Rhythmyx provides default files for Tidy (html-cleaner.properties) and
  * ServerPageTags (rxW2KServerPageTags.xml).
  *
  **/

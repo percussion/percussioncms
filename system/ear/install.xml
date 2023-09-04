@@ -344,7 +344,7 @@
       <copy todir="${rxdeploydir}">
          <fileset dir="${basedir}/release/installer/config">
             <include name="rxW2KserverPageTags.xml" />
-            <include name="rxW2Ktidy.properties" />
+            <include name="html-cleaner.properties" />
          </fileset>
       </copy>
       <mkdir dir="${rxdeploydir}/rxconfig/XSpLit" />

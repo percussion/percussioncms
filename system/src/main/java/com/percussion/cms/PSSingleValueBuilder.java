@@ -45,14 +45,7 @@ import com.percussion.html.PSHtmlUtils;
 import com.percussion.log.PSLogManager;
 import com.percussion.log.PSLogServerWarning;
 import com.percussion.security.PSSecurityToken;
-import com.percussion.server.IPSInternalRequest;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.server.IPSServerErrors;
-import com.percussion.server.PSRequest;
-import com.percussion.server.PSRequestContext;
-import com.percussion.server.PSRequestParsingException;
-import com.percussion.server.PSUserSession;
-import com.percussion.server.PSUserSessionManager;
+import com.percussion.server.*;
 import com.percussion.server.cache.PSFolderRelationshipCache;
 import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.IPSAssemblyResult.Status;
@@ -328,7 +321,8 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
             Document contentDoc = null;
             try
             {
-               org.jsoup.nodes.Document jsoupDoc = PSHtmlUtils.createHTMLDocument(content, StandardCharsets.UTF_8,true,null);
+               org.jsoup.nodes.Document jsoupDoc = PSHtmlUtils.createHTMLDocument(content, StandardCharsets.UTF_8,
+                       !PSServer.isHtmlCleaningDisabled(),"html-cleaner.properties");
                contentDoc = W3CDom.convert(jsoupDoc);
                isModified = PSInlineLinkField.expandEmptyElement(contentDoc);
                

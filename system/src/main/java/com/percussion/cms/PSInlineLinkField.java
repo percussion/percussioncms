@@ -186,7 +186,7 @@ public class PSInlineLinkField
          try {
             //Don't bother trying to parse if the string doesn't contain html / xml
             if(SecureStringUtils.isHTML(fieldValue) || SecureStringUtils.isXML(fieldValue)) {
-               document = PSHtmlUtils.createHTMLDocument(fieldValue, StandardCharsets.UTF_8,true,null);
+               document = PSHtmlUtils.createHTMLDocument(fieldValue, StandardCharsets.UTF_8,!PSServer.isHtmlCleaningDisabled(),"html-cleaner.properties");
             }
          }catch (PSHtmlParsingException e){
             log.error("Error parsing content for inline links in Content Type field. Error: {}. The offending source code was: {}",
