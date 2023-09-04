@@ -534,6 +534,8 @@ div#perc-finder-selected-label
 .perc-finder-menu {
     padding-right: 20px;
     width: 240px;
+    line-height: normal;
+    vertical-align: top;
 }
 
 #perc_finder_inline_field_edit
