@@ -55,7 +55,7 @@ hibernateProperties=percHibernateProperties
 # "Oracle" - org.hibernate.dialect.Oracle10gDialect, Oracle12cDialect
 # "MySQL" / "MariaDB"  - org.hibernate.dialect.MySQL5InnoDBDialect, MySQL57InnoDBDialect, or MySQL8Dialect
 # "MS SQL" - com.percussion.delivery.rdbms.PSUnicodeSQLServerDialect
-# "MS SQL" -  SQLServer2012Dialect, SQLServer2008Dialect, SQLServer2005Dialect
+# "MS SQL" -  SQLServer2012Dialect, SQLServer2008Dialect, SQLServer2005Dialect, SQLServer2016Dialect
 # "Derby"  - com.percussion.delivery.rdbms.DerbyTenOneFourDialect
 hibernate.dialect=com.percussion.delivery.rdbms.DerbyTenOneFourDialect
 
