@@ -88,7 +88,7 @@ public class PSDbMetadataEntry implements IPSMetadataEntry, Serializable
     private String site;
 
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,
             orphanRemoval = true, mappedBy = "entry", targetEntity = PSDbMetadataProperty.class)
     private Set<PSDbMetadataProperty> properties = new HashSet<>();
 
