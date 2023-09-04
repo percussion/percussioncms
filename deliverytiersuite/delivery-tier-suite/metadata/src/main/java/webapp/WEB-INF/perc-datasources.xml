@@ -8,7 +8,6 @@
       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-
    <!-- This file contains database-specific beans -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 	    <property name="jdbcUrl" value="${jdbcUrl}" />
@@ -47,7 +46,7 @@
              <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.internal.EhcacheRegionFactory</prop>
              <prop key="hibernate.query.in_clause_parameter_padding">true</prop>
              <prop key="hibernate.criteria.literal_handling_mode">bind</prop>
-             <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+             <!--<prop key="hibernate.enable_lazy_load_no_trans">true</prop>-->
          </props>
       </property>
    </bean>
