@@ -194,7 +194,7 @@
                     var groupHtml =
                         "<div class='perc-section-header'>" +
                         "<div class='perc-section-label' data-group='" + this.groupName + "'>" +
-                        "<span  class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
+                        "<span tabindex='30' title='"+this.groupLabel+"' class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
                         "</div>" +
                         "</div>";
                     dialog.find('#' + this.groupName).before(groupHtml);
@@ -211,6 +211,12 @@
                         .toggleClass('perc-items-minimizer')
                         .toggleClass('perc-items-maximizer');
                     dialog.find('#' + self.attr('data-group')).toggle();
+                });
+
+				dialog.find(".perc-section-label").off("keydown").on("keydown",function() {
+                    if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+					}
                 });
             }
 
