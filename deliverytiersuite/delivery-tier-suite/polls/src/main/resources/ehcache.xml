@@ -10,7 +10,7 @@
          user.home - User's home directory
          user.dir - User's current working directory
          java.io.tmpdir - Default temp file path -->
-    <diskStore path="user.dir/perc-metadata-cache"/>
+    <diskStore path="user.dir/perc-polls-cache"/>
 
 
     <!--Default Cache configuration. These will be applied to caches programmatically created through
