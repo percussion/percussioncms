@@ -68,7 +68,7 @@
 
                 "<label id='perc-site-protocol-label' for='perc-site-protocol'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Protocol" ) + ":</label> <br/> " +
                 // refactored from radio buttons to drop downs
-                "<select name='perc-site-protocol' id='perc-site-protocol'>" +
+                "<select tabindex='" + taborder + "' name='perc-site-protocol' id='perc-site-protocol'>" +
                 "     <option id='perc-site-protocol-http' value='http'>http</option>" +
                 "     <option id='perc-site-protocol-https' value='https' selected>https</option>" +
                 "</select> <br/> " +
@@ -83,7 +83,7 @@
                 "<div id='perc-site-users-container' style='display:inline-block;' >" +
                 "<label id='perc-site-folder-permission-label' for='perc-site-folder-permission'>" + I18N.message( "perc.ui.folderPropsDialog.label@Permission" ) + ":</label> <br/> " +
                 // refactored from radio buttons to drop downs
-                "<select name='perc-site-folder-permission' id='perc-site-folder-permission'>" +
+                "<select name='perc-site-folder-permission' tabindex='" + taborder + "' id='perc-site-folder-permission'>" +
                 "     <option id='perc-folder-permission-option-read' value='" + $.PercFolderHelper().PERMISSION_READ  + "'>" + I18N.message( "perc.ui.folderPropsDialog.permissionValue@Read"  ) + "</option>" +
                 "     <option id='perc-folder-permission-option-write' value='" + $.PercFolderHelper().PERMISSION_WRITE + "'>" + I18N.message( "perc.ui.folderPropsDialog.permissionValue@Write" ) + "</option>" +
                 "</select>" +
@@ -194,7 +194,7 @@
                     var groupHtml =
                         "<div class='perc-section-header'>" +
                         "<div class='perc-section-label' data-group='" + this.groupName + "'>" +
-                        "<span tabindex='30' title='"+this.groupLabel+"' class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
+                        "<span tabindex='"+ taborder +"' title='"+this.groupLabel+"' class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
                         "</div>" +
                         "</div>";
                     dialog.find('#' + this.groupName).before(groupHtml);
@@ -265,6 +265,12 @@
                     var inputElemName = 'perc-site-login-page';
                     handleBrowseButtonClick(dlgTitle, inputElemName );
                 });
+
+				 $("#perc-site-login-page-browse").off("keydown").on("keydown",function(){
+                     if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+					}
+                });
             }
 
             // Enabling/disabling fields depending on check/uncheck option
@@ -311,18 +317,18 @@
                     '<input type="checkbox" id="perc-enable-site-security" name="perc-enable-site-security" style="width:20px" tabindex="' + taborder + '"/>' +
                     '<label for="perc-enable-site-security">' + I18N.message("perc.ui.editSiteSectionDialog.label@Use site security") + '</label> <br/>' +
                     '<label for="perc-site-login-page" id="perc-site-login-page-label">' + I18N.message("perc.ui.editSiteSectionDialog.label@Login page") + ':</label><br/>' +
-                    '<table class="perc-site-login-page-table"><tr><td><input id="perc-site-login-page" name="perc-site-login-page" readonly = "readonly" maxlength="2000" type="text" tabindex="' + taborder + '"/></td><td style="vertical-align: top;"> <span id="perc-site-login-page-browse">Browse</span></td></tr></table>' +
+                    '<table class="perc-site-login-page-table"><tr><td><input id="perc-site-login-page" name="perc-site-login-page" readonly = "readonly" maxlength="2000" type="text" tabindex="' + taborder + '"/></td><td style="vertical-align: top;"> <span id="perc-site-login-page-browse" tabindex="' + taborder + '">Browse</span></td></tr></table>' +
                     '</div>' +
                     '</div>' +
 
                     '<div class="fieldGroup">' +
                     '<div id="perc-site-membership-container">' +
                     '<label for="perc-site-registration-confirmation-page">' + I18N.message("perc.ui.editSiteSectionDialog.label@Confirmation page") + ':</label><br/>' +
-                    '<input id="perc-site-registration-confirmation-page" name="perc-site-registration-confirmation-page" maxlength="2000" type="text" tabindex="' + taborder + '"/><span id="perc-site-registration-confirmation-page-browse">Browse</span><br/>' +
+                    '<input id="perc-site-registration-confirmation-page" name="perc-site-registration-confirmation-page" maxlength="2000" type="text" tabindex="' + taborder + '"/><span id="perc-site-registration-confirmation-page-browse" tabindex="' + taborder + '">Browse</span><br/>' +
                     '<label for="perc-site-reset-pw-request-page">' + I18N.message("perc.ui.editSiteSectionDialog.label@Password reset request page") + ':</label><br/>' +
-                    '<input id="perc-site-reset-pw-request-page" name="perc-site-reset-pw-request-page" maxlength="2000" type="text" tabindex="' + taborder + '"/><span id="perc-site-reset-pw-request-page-browse">Browse</span><br/>' +
+                    '<input id="perc-site-reset-pw-request-page" name="perc-site-reset-pw-request-page" maxlength="2000" type="text" tabindex="' + taborder + '"/><span id="perc-site-reset-pw-request-page-browse" tabindex="' + taborder + '">Browse</span><br/>' +
                     '<label for="perc-site-reset-password-page">' + I18N.message("perc.ui.editSiteSectionDialog.label@Password reset page") + ':</label><br/>' +
-                    '<input id="perc-site-reset-password-page" name="perc-site-reset-password-page" maxlength="2000" type="text" tabindex="' + taborder + '"/><span id="perc-site-reset-password-page-browse">Browse</span><br/>' +
+                    '<input id="perc-site-reset-password-page" name="perc-site-reset-password-page" maxlength="2000" type="text" tabindex="' + taborder + '"/><span id="perc-site-reset-password-page-browse" tabindex="' + taborder + '">Browse</span><br/>' +
                     '</div>' +
                     '</div>';
                 return fieldGroups;
@@ -359,6 +365,29 @@
             });
             $("#perc-enable-site-security").off("click").on("click", function() {
                 _handleSecurityOption();
+            });
+
+
+
+            $("#perc-site-registration-confirmation-page-browse").on("keydown",function() {
+               if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+					}
+            });
+            $("#perc-site-reset-pw-request-page-browse").on("keydown",function() {
+               if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+					}
+            });
+            $("#perc-site-reset-password-page-browse").on("keydown",function() {
+               if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+					}
+            });
+            $("#perc-enable-site-security").off("keydown").on("keydown", function() {
+                if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+					}
             });
 
             $("#perc-site-login-page").on('paste', function(evt){evt.preventDefault();})

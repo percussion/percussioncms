@@ -46,15 +46,15 @@
             '    </div>' +
             '' +
             '    <div id="perc-ui-listedit-listitemfield">' +
-            '        <input id="perc-ui-permission-usernamefield" title="'+I18N.message("perc.ui.rolePropsDialog.title@Enter a role")+'" name="perc-ui-permission-usernamefield"/>' +
-            '        <div id="perc-ui-permission-plusbutton" role="button" title="'+I18N.message("perc.ui.rolePropsDialog.title@Add User")+'"></div>' +
+            '        <input id="perc-ui-permission-usernamefield" tabindex="30" title="'+I18N.message("perc.ui.rolePropsDialog.title@Enter a role")+'" name="perc-ui-permission-usernamefield"/>' +
+            '        <div id="perc-ui-permission-plusbutton" tabindex="30" role="button" title="'+I18N.message("perc.ui.rolePropsDialog.title@Add User")+'"></div>' +
             '    </div>' +
             '' +
             '    <div id="perc-ui-permission-user-list-scroll-pane">' +
             '        <ul id="perc-ui-permission-user-list">' +
             '            <li>' +
             '                <span>Username</span>' +
-            '                <div class="perc-ui-permission-deletebutton" id="Username"></div>' +
+            '                <div tabindex="30" class="perc-ui-permission-deletebutton" id="Username"></div>' +
             '            </li>' +
             '        </ul>' +
             '    </div>';
@@ -63,7 +63,7 @@
         var listItem = '' +
             '            <li>' +
             '                <span>_username_</span>' +
-            '                <div class="perc-ui-permission-deletebutton" id="_username_" title="Remove user"></div>' +
+            '                <div tabindex="30"  class="perc-ui-permission-deletebutton" id="_username_" title="Remove user"></div>' +
             '            </li>';
 
         // ID of the DIV element where this widget will render
@@ -113,6 +113,11 @@
         plusButton.on("click",function() {
             var itemText = inputField.val();
             addListItem(itemText);
+        });
+		plusButton.on("keydown",function(event) {
+            if(event.code == "Enter" || event.code == "Space"){
+				document.activeElement.click();
+			}
         });
 
         // handle enter key to add a new item
@@ -302,6 +307,11 @@
                 var id = $(this).attr("id");
                 removeListItem(id);
             });
+			deleteButtons.on("keydown",function() {
+               if(event.code == "Enter" || event.code == "Space"){
+					document.activeElement.click();
+				}
+            });
         }
         function removeListItem(listItem) {
 
@@ -384,6 +394,11 @@
                 .on("click",function() {
                     var itemText = inputField.val();
                     addListItem(itemText);
+                })
+				.on("keydown",function(event) {
+                    if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+					}
                 });
         }
 
