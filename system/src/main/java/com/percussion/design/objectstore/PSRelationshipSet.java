@@ -51,6 +51,7 @@ public class PSRelationshipSet extends PSCollectionComponent
     * (non-Javadoc)
     * @see java.util.AbstractList#iterator()
     */
+   @Override
    @SuppressWarnings("unchecked")
    public Iterator<PSRelationship> iterator()
    {

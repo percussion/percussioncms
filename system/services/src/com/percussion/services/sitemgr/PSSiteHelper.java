@@ -17,7 +17,7 @@
 package com.percussion.services.sitemgr;
 
 import com.percussion.cms.PSCmsException;
-import com.percussion.cms.objectstore.PSRelationshipProcessorProxy;
+import com.percussion.cms.objectstore.PSProcessorProxy;
 import com.percussion.cms.objectstore.server.PSRelationshipProcessor;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
@@ -38,12 +38,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Common code related to using a site
@@ -57,7 +52,7 @@ public class PSSiteHelper
 
    private static final Logger ms_log = LogManager.getLogger(PSSiteHelper.class);
    /**
-    * Setup the information for the site. The bindings may be used for the
+    * Set up the information for the site. The bindings may be used for the
     * assembly subsystem or location generation
     * 
     * @param eval evaluator object, never <code>null</code>
@@ -93,12 +88,12 @@ public class PSSiteHelper
       }
    }
 
-   public synchronized static void initializeSiteGroups()
+   public static synchronized void initializeSiteGroups()
    {
       if (m_siteIdToGroup == null)
       {
          // Setup configuration map.
-         m_siteIdToGroup = new HashMap<Integer, String>();
+         m_siteIdToGroup = new HashMap<>();
          for (Map.Entry<Object, Object> entry : PSServer.getServerProps().entrySet())
          {
             String key = entry.getKey().toString();
@@ -175,10 +170,9 @@ public class PSSiteHelper
 
       PSRelationshipProcessor relProc = null;
       relProc = PSRelationshipProcessor.getInstance();
-      int folderid = relProc.getIdByPath(
-            PSRelationshipProcessorProxy.RELATIONSHIP_COMPTYPE, folderRoot,
+      return relProc.getIdByPath(
+              PSProcessorProxy.RELATIONSHIP_COMPTYPE, folderRoot,
             PSRelationshipConfig.TYPE_FOLDER_CONTENT);
-      return folderid;
    }
 
 
@@ -236,7 +230,7 @@ public class PSSiteHelper
     *
     * @param params
     */
-   public static void fixupSiteFolderId(HashMap<String, String> params)
+   public static void fixupSiteFolderId(Map<String, String> params)
    {
       if (shouldFixIds())
       {
@@ -271,7 +265,7 @@ public class PSSiteHelper
          }
          catch (PSCmsException e)
          {
-            ms_log.warn("No folder found for item " + id, e);
+            ms_log.warn("No folder found for item {}. Error: {}", id, e.getMessage());
             params.remove(IPSHtmlParameters.SYS_FOLDERID);
             return;
          }
@@ -288,7 +282,7 @@ public class PSSiteHelper
             }
             else
             {
-               ms_log.debug("item " + id + " is in more than one folder need to find one to link to");
+               ms_log.debug("item [{}] is in more than one folder need to find one to link to",id);
 
                // checking current folder specified in assembly item
                if (folderId > 0)
@@ -306,7 +300,7 @@ public class PSSiteHelper
                      }
                      catch (PSNotFoundException e)
                      {
-                        ms_log.error("sys_folderid " + folderId + " specified that does not exist");
+                        ms_log.error("sys_folderid [{}] specified that does not exist",folderId);
                      }
                      if (selectedFolderPaths != null && selectedFolderPaths.length > 0)
                      {
@@ -317,7 +311,7 @@ public class PSSiteHelper
                                            + folderId
                                            + " has multiple paths, this item or one of its parent folders has multiple parent folders."
                                            + " These relationships need to be resolved manually contact percussion support for help. "
-                                           + selectedFolderPaths);
+                                           + Arrays.toString(selectedFolderPaths));
                         }
 
                         selectedFolderPath = selectedFolderPaths[0];
@@ -326,8 +320,9 @@ public class PSSiteHelper
                         {
                            if (path.equals(selectedFolderPath))
                            {
-                              ms_log.debug("item " + id + " " + selectedFolderPath
-                                      + " id in folder specified by sys_folderid using this.");
+                              ms_log.debug("item [{}] id in folder [{}] specified by sys_folderid using this.",
+                                      id,selectedFolderPath
+                                      );
 
                               calculatedFolderPath = path;
                               break;
@@ -337,16 +332,13 @@ public class PSSiteHelper
                   }
                   catch (PSCmsException e)
                   {
-                     ms_log.error("Cannot find folder for id " + folderId);
+                     ms_log.error("Cannot find folder for id {}" , folderId);
                   }
 
-                  if (ms_log.isDebugEnabled())
-                  {
-                     if (calculatedFolderPath == null)
+                  if (ms_log.isDebugEnabled() && (calculatedFolderPath == null))
                      {
-                        ms_log.debug("Item is not in folderid " + folderId);
+                        ms_log.debug("Item is not in folderid {}" , folderId);
                      }
-                  }
                }
 
                // If site id is specified see if we can filter by site
@@ -358,7 +350,7 @@ public class PSSiteHelper
                // check. If site specified and more than one
                // match pass filtered list. If a single matches we are done.
 
-               List<String> pathsForSite = new ArrayList<String>();
+               List<String> pathsForSite = new ArrayList<>();
 
                if (calculatedFolderPath == null && siteGuid != null)
                {
@@ -400,7 +392,7 @@ public class PSSiteHelper
                      {
                         // If we still have more than one path we will try and
                         // filter further in the next step
-                        currentFolderPaths = pathsForSite.toArray(new String[pathsForSite.size()]);
+                        currentFolderPaths = pathsForSite.toArray(new String[0]);
                      }
                      // If we can't find the item in the site we will continue
                      // with the original list.
@@ -423,12 +415,13 @@ public class PSSiteHelper
 
                }
                // Cannot filter down to unique path.
-               if (calculatedFolderPath == null && currentFolderPaths.length > 1)
+               if (calculatedFolderPath == null)
                {
                   calculatedFolderPath = currentFolderPaths[0];
-                  ms_log.debug("Cannot find unique folder for id " + id + " paths="
-                          + Arrays.toString(currentFolderPaths)
-                          + " picking first. Must select to include folder when linking to this item");
+                  ms_log.debug("Cannot find unique folder for id [{}] paths=[{}] picking first. Must select to include folder when linking to this item",
+                          id,
+                          currentFolderPaths
+                          );
 
                }
                // We found a unique folder to use. In this case we try to
@@ -436,7 +429,7 @@ public class PSSiteHelper
                if (calculatedFolderPath != null)
                {
                   calculatedSite = findSiteForFolder(originalSiteGuid, siteGuid, calculatedFolderPath, id);
-                  ms_log.debug("using site " + calculatedSite + " for folder " + calculatedFolderPath);
+                  ms_log.debug("using site [{}] for folder [{}]" ,calculatedSite, calculatedFolderPath);
                }
 
             }
@@ -446,8 +439,7 @@ public class PSSiteHelper
          {
             if (!StringUtils.equals(PSServer.getProperty("allowLinksToOrphans"), "true"))
             {
-               ms_log.error("Processing relationship to item " + id
-                       + " that is not in any folder.  This item should be moved");
+               ms_log.error("Processing relationship to item {} that is not in any folder.  This item should be moved",id);
             }
          }
 
@@ -466,7 +458,7 @@ public class PSSiteHelper
          }
          catch (PSCmsException e)
          {
-            ms_log.error("cannot get folder id for path " + calculatedFolderPath);
+            ms_log.error("cannot get folder id for path {}" , calculatedFolderPath);
          }
          if (calculatedSite != null)
          {
@@ -509,14 +501,14 @@ public class PSSiteHelper
       }
       catch (PSCmsException | PSNotFoundException e)
       {
-         ms_log.error("Cannot find folder for id " + folderId);
+         ms_log.error("Cannot find folder for id {}" , folderId);
       }
 
       int index = 0;
-      ArrayList<String> matchPaths = new ArrayList<String>();
+      ArrayList<String> matchPaths = new ArrayList<>();
       if (originalFolderPath != null)
       {
-         ms_log.debug("Finding folder item is in with closest match to original original folder " + originalFolderPath);
+         ms_log.debug("Finding folder item is in with closest match to original original folder {}" , originalFolderPath);
          for (String path : currentFolderPaths)
          {
             int testIndex = StringUtils.indexOfDifference(path, originalFolderPath);
@@ -526,7 +518,7 @@ public class PSSiteHelper
                // found exact match use this path
                matchPaths.clear();
                matchPaths.add(path);
-               ms_log.debug("item is in same folder as original item, using this folder " + path);
+               ms_log.debug("item is in same folder as original item, using this folder {}" , path);
 
                break;
             }
@@ -551,10 +543,10 @@ public class PSSiteHelper
             ms_log.debug("Item is in more than one sub paths at same level will pick first. should link with specific folder in relationship");
          }
 
-         if (matchPaths.size() > 0)
+         if (!matchPaths.isEmpty())
          {
             calculatedFolderPath = matchPaths.get(0);
-            ms_log.debug("Setting folder path to " + calculatedFolderPath);
+            ms_log.debug("Setting folder path to {}" , calculatedFolderPath);
          }
       }
       return calculatedFolderPath;
@@ -586,9 +578,9 @@ public class PSSiteHelper
 
       if (shouldFixIds())
       {
-         HashMap<String, String> params = new HashMap<String, String>();
+         HashMap<String, String> params = new HashMap<>();
 
-         // If site and folder id are not in the relationship and we are creating a link within
+         // If site and folder id are not in the relationship, and we are creating a link within
          // a snippet and the snippet was originally inserted with a site id of a different site
          // we need to assume we are using the same site id as the parent item.
          if (itemSiteStr==null && itemFolderStr == null) {
@@ -609,7 +601,7 @@ public class PSSiteHelper
          String newSitesidStr = params.get(IPSHtmlParameters.SYS_SITEID);
          if (newFolderidStr != null && !newFolderidStr.equals(itemFolderStr))
          {
-            item.setParameterValue(IPSHtmlParameters.SYS_FOLDERID, String.valueOf(newFolderidStr));
+            item.setParameterValue(IPSHtmlParameters.SYS_FOLDERID, newFolderidStr);
 
          }
          if (item.getParameterValue(IPSHtmlParameters.SYS_ORIGINALFOLDERID, null) == null)
@@ -618,7 +610,7 @@ public class PSSiteHelper
          }
          if (newSitesidStr != null && !newSitesidStr.equals(itemSiteStr))
          {
-            item.setParameterValue(IPSHtmlParameters.SYS_SITEID, String.valueOf(newSitesidStr));
+            item.setParameterValue(IPSHtmlParameters.SYS_SITEID, newSitesidStr);
 
          }
          if (item.getParameterValue(IPSHtmlParameters.SYS_ORIGINALSITEID, null) == null)
@@ -665,7 +657,7 @@ public class PSSiteHelper
       }
       catch (PSCmsException e)
       {
-         ms_log.debug("Cannot find site for path " + calculatedFolderPath);
+         ms_log.debug("Cannot find site for path {}" , calculatedFolderPath);
          return null;
       }
 
@@ -679,7 +671,7 @@ public class PSSiteHelper
       {
          calculatedSite = findSiteWhenDuplicateMappings(originalSiteId, site, calculatedFolderPath, folderSites, id);
       }
-      else if (folderSites.size() == 0)
+      else if (folderSites.isEmpty())
       {
          calculatedSite = originalSiteId;
       }
@@ -709,17 +701,16 @@ public class PSSiteHelper
        * for staging,public etc. We need to know how to map a staging site to an
        * equivalent staging version of the site.
        */
-      ms_log.debug("Folder " + calculatedFolderPath
-              + " is mapped to more than one site definition finding which one to use");
+      ms_log.debug("Folder {} is mapped to more than one site definition finding which one to use",calculatedFolderPath);
 
       initializeSiteGroups();
 
-      // Calculate current group from original site id if it exisits or site id
+      // Calculate current group from original site id if it exists or site id
       // otherwise
 
       // If we have a site id and no original site id we assume this is an
-      // initial assmbly item from a preview request
-      // or publish, On publish site id is allways passed in.
+      // initial assembly item from a preview request
+      // or publish, On publish site id is always passed in.
       if (m_siteIdToGroup.size() > 0)
       {
 
@@ -751,7 +742,7 @@ public class PSSiteHelper
             {
                linkSitePath = siteTestItem.getFolderRoot();
             }
-            if (originalSiteId != null && siteTestItem.getGUID().equals(originalSiteId.getUUID()))
+            if (originalSiteId != null && siteTestItem.getGUID().equals(originalSiteId))
             {
                currentSitePath = siteTestItem.getFolderRoot();
             }
@@ -768,14 +759,14 @@ public class PSSiteHelper
 
          }
 
-         if (groupSites.size() > 0 || defaultSites.size() > 0)
+         if (!groupSites.isEmpty() || !defaultSites.isEmpty())
          {
             // Filtered sites may be subfolders of each other. If the link
             // specifies a site that matches one of these then we will use that
             // particular site id.
-            // Otherwise if one of these is the current site we will use that
+            // Otherwise, if one of these is the current site we will use that
             // site id. If we still cannot decide which site we will try the
-            // default site, .
+            // default site.
 
             if (linkSitePath != null)
             {
@@ -793,11 +784,11 @@ public class PSSiteHelper
             {
                calculatedSite = findSiteInSiteGroup(originalSiteId, defaultSites, currentSitePath);
             }
-            if (calculatedSite == null && groupSites.size() > 0)
+            if (calculatedSite == null && !groupSites.isEmpty())
             {
                calculatedSite = groupSites.get(0).getGUID();
             }
-            if (calculatedSite == null && defaultSites.size() > 0)
+            if (calculatedSite == null && !defaultSites.isEmpty())
             {
                calculatedSite = defaultSites.get(0).getGUID();
             }
@@ -807,20 +798,19 @@ public class PSSiteHelper
       }
       else
       {
-         ms_log.error("Found multiple sites mapped to path " + calculatedFolderPath
-                 + " need to configure site groups in server.properties or do not have more than one"
-                 + " site definition matching the same site root or subfolder.");
+         ms_log.error("Found multiple sites mapped to path {} need to configure site groups in server.properties or do not have more than one"
+                 + " site definition matching the same site root or subfolder.",calculatedFolderPath);
          for (IPSSite destSite : folderSites)
          {
             int siteid = destSite.getGUID().getUUID();
-            ms_log.error("Mapped site =" + destSite.getName() + " id=" + siteid);
+            ms_log.error("Mapped site = {} id={}" ,destSite.getName(),siteid);
          }
 
       }
       // Work out site without help of site groups
       if (calculatedSite == null)
       {
-         List<IPSGuid> folderSiteGuids = new ArrayList<IPSGuid>();
+         List<IPSGuid> folderSiteGuids = new ArrayList<>();
 
          for (IPSSite siteTestItem : folderSites)
             folderSiteGuids.add(siteTestItem.getGUID());

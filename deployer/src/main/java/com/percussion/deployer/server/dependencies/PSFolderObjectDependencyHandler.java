@@ -614,7 +614,7 @@ public abstract class PSFolderObjectDependencyHandler
       catch (Exception e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
-            e.getLocalizedMessage());
+            e.getMessage());
       }
    }
 
@@ -1027,7 +1027,7 @@ public abstract class PSFolderObjectDependencyHandler
    }
 
    /**
-    * Separator used for folder paths, a foward slash ("/").
+    * Separator used for folder paths, a forward slash ("/").
     */
    protected static final String PATH_SEP = "/";
 
@@ -1035,8 +1035,7 @@ public abstract class PSFolderObjectDependencyHandler
     * Component type string to pass to process calls, never <code>null</code>,
     * empty or modified.
     */
-   protected static final String FOLDER_TYPE = PSFolder.getComponentType(
-      PSFolder.class);
+   protected static final String FOLDER_TYPE = "FolderContent";
 
    /**
     * Locator to reference the virtual root folder, which is the

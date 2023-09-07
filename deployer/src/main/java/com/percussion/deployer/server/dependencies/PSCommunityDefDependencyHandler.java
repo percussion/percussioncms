@@ -94,7 +94,7 @@ public class PSCommunityDefDependencyHandler
    }
 
    // see base class
-   public Iterator getChildDependencies(PSSecurityToken tok, PSDependency dep)
+   public Iterator<PSDependency> getChildDependencies(PSSecurityToken tok, PSDependency dep)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
@@ -106,7 +106,8 @@ public class PSCommunityDefDependencyHandler
       String parentId = dep.getDependencyId();
 
       // get Component child dependencies
-      List<PSDependency> childDeps = getChildDepsFromParentID(COMM_CP_TABLE,
+      List<PSDependency> childDeps =
+      getChildDepsFromParentID(COMM_CP_TABLE,
          COMM_CP_ID, COMMUNITY_ID, parentId,
          PSComponentDependencyHandler.DEPENDENCY_TYPE, tok);
 

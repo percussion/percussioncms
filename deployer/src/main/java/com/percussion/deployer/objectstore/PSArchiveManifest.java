@@ -25,12 +25,7 @@ import com.percussion.xml.PSXmlTreeWalker;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 
 /**
  * Encapsulates a list of <code>PSDependencyFile</code> and
@@ -73,26 +68,26 @@ public class PSArchiveManifest  implements IPSDeployComponent
     * @param    dep The <code>PSDependency</code> object which relates to
     * the list of <code>PSDependencyFile</code> objects. It may not be
     * <code>null</code>.
-    * @param    files    An iterator over one or more
+    * @param    depfiles    An iterator over one or more
     * <code>PSDependencyFile</code> objects, it may not be <code>null</code>
     * or empty.
     *
     * @throws IllegalArgumentException If any param is invalid.
     */
-   public void addFiles(PSDependency dep, Iterator depfiles)
+   public void addFiles(PSDependency dep, Iterator<PSDependencyFile> depfiles)
    {
       if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
+         throw new IllegalArgumentException(DEP_NOT_NULL_MSG);
       if (depfiles == null || (!depfiles.hasNext()))
          throw new IllegalArgumentException(
             "depfiles may not be null or empty");
 
       // make a new list from the Iterator.
-      List depFileList = new ArrayList();
+      List<PSDependencyFile> depFileList = new ArrayList<>();
       while (depfiles.hasNext())
          depFileList.add(depfiles.next());
 
-      DepFilesIdTypes value = (DepFilesIdTypes) m_depMap.get(dep.getKey());
+      DepFilesIdTypes value = m_depMap.get(dep.getKey());
       if ( value == null )
       {
          value = new DepFilesIdTypes(dep.getKey(), depFileList, null, null);
@@ -116,14 +111,14 @@ public class PSArchiveManifest  implements IPSDeployComponent
     *
     * @throws IllegalArgumentException If any param is invalid.
     */
-   public Iterator getFiles(PSDependency dep)
+   public Iterator<PSDependencyFile> getFiles(PSDependency dep)
    {
       if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
+         throw new IllegalArgumentException(DEP_NOT_NULL_MSG);
 
-      DepFilesIdTypes value = (DepFilesIdTypes) m_depMap.get(dep.getKey());
+      DepFilesIdTypes value = m_depMap.get(dep.getKey());
       if (value == null || value.m_depFiles == null )
-         return new ArrayList().iterator();
+         return Collections.emptyIterator();
       else
          return value.m_depFiles.iterator();
    }
@@ -135,21 +130,13 @@ public class PSArchiveManifest  implements IPSDeployComponent
     * @return an Iterator over zero or more <code>PSDependencyFile</code>
     * objects. It will never be <code>null</code>.
     */
-   @SuppressWarnings("unchecked")
-   public Iterator getFiles()
+   public Iterator<PSDependencyFile> getFiles()
    {
-      List files = new ArrayList();
-      
-      Iterator keys = m_depMap.keySet().iterator();
-      while (keys.hasNext())
-      {
-         DepFilesIdTypes value = (DepFilesIdTypes) m_depMap.get(keys.next());
-         if (value == null || value.m_depFiles == null )
-         {
-            continue;
-         }
-         else
-         {
+      List<PSDependencyFile> files = new ArrayList<>();
+
+      for (Map.Entry<String, DepFilesIdTypes> entry : m_depMap.entrySet()) {
+         DepFilesIdTypes value = m_depMap.get(entry.getKey());
+         if (value != null && value.m_depFiles != null) {
             files.addAll(value.m_depFiles);
          }
       }
@@ -173,9 +160,9 @@ public class PSArchiveManifest  implements IPSDeployComponent
    public boolean hasDependencyFiles(PSDependency dep)
    {
       if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
+         throw new IllegalArgumentException(DEP_NOT_NULL_MSG);
 
-      DepFilesIdTypes value = (DepFilesIdTypes) m_depMap.get(dep.getKey());
+      DepFilesIdTypes value =  m_depMap.get(dep.getKey());
       return value != null && value.m_depFiles != null;
    }
 
@@ -194,11 +181,11 @@ public class PSArchiveManifest  implements IPSDeployComponent
    public void addIdTypes(PSDependency dep, PSApplicationIDTypes idTypes)
    {
       if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
+         throw new IllegalArgumentException(DEP_NOT_NULL_MSG);
       if (idTypes == null)
          throw new IllegalArgumentException("idTypes may not be null");
 
-      DepFilesIdTypes value = (DepFilesIdTypes) m_depMap.get(dep.getKey());
+      DepFilesIdTypes value =  m_depMap.get(dep.getKey());
       if ( value == null )
       {
          value = new DepFilesIdTypes(dep.getKey(), null, idTypes, null);
@@ -219,7 +206,7 @@ public class PSArchiveManifest  implements IPSDeployComponent
     * 
     * @throws IllegalArgumentException if any param is invalid.
     */
-   public void addDbmsInfoList(PSDependency dep, List infoList)
+   public void addDbmsInfoList(PSDependency dep, List<PSDatasourceMap> infoList)
    {
       if (dep == null)
          throw new IllegalArgumentException("pkg may not be null");
@@ -227,7 +214,7 @@ public class PSArchiveManifest  implements IPSDeployComponent
       if (infoList == null)
          throw new IllegalArgumentException("infoList may not be null");
          
-      DepFilesIdTypes value = (DepFilesIdTypes) m_depMap.get(dep.getKey());
+      DepFilesIdTypes value = m_depMap.get(dep.getKey());
       if ( value == null )
       {
          value = new DepFilesIdTypes(dep.getKey(), null, null, infoList);
@@ -254,9 +241,9 @@ public class PSArchiveManifest  implements IPSDeployComponent
    public PSApplicationIDTypes getIdTypes(PSDependency dep)
    {
       if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
+         throw new IllegalArgumentException(DEP_NOT_NULL_MSG);
 
-      DepFilesIdTypes value = (DepFilesIdTypes) m_depMap.get(dep.getKey());
+      DepFilesIdTypes value = m_depMap.get(dep.getKey());
       if (value == null || value.m_idtypes == null )
          return null;
       else
@@ -275,13 +262,13 @@ public class PSArchiveManifest  implements IPSDeployComponent
     *
     * @throws IllegalArgumentException If any param is invalid.
     */
-   public List getDbmsInfoList(PSDependency dep)
+   public List<PSDatasourceMap> getDbmsInfoList(PSDependency dep)
    {
       if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
+         throw new IllegalArgumentException(DEP_NOT_NULL_MSG);
       
-      List infoList = null;
-      DepFilesIdTypes value = (DepFilesIdTypes) m_depMap.get(dep.getKey());
+      List<PSDatasourceMap> infoList = null;
+      DepFilesIdTypes value = m_depMap.get(dep.getKey());
       if (value != null)
          infoList = value.m_dbmsInfoList;
          
@@ -308,10 +295,7 @@ public class PSArchiveManifest  implements IPSDeployComponent
 
       Element root = doc.createElement(XML_NODE_NAME);
 
-      Iterator depList = m_depMap.values().iterator();
-      while (depList.hasNext())
-      {
-         DepFilesIdTypes depChild = (DepFilesIdTypes) depList.next();
+      for (DepFilesIdTypes depChild : m_depMap.values()) {
          Element depChildXml = depChild.toXml(doc);
          root.appendChild(depChildXml);
       }
@@ -370,7 +354,7 @@ public class PSArchiveManifest  implements IPSDeployComponent
    // see IPSDeployComponent interface
    public boolean equals(Object obj)
    {
-      boolean bEqual = false;
+      boolean bEqual;
 
       if (!(obj instanceof PSArchiveManifest))
       {
@@ -406,17 +390,17 @@ public class PSArchiveManifest  implements IPSDeployComponent
     * of the Map) to its related Dependency's key (as the key of the Map in
     * <code>String</code>). It will never <code>null</code>, but may be empty.
     */
-   private Map m_depMap = new HashMap();
+   private Map<String, DepFilesIdTypes> m_depMap = new HashMap<>();
 
    /**
-    * flags to walk to a child node of a XML tree
+    * flags to walk to a child node of an XML tree
     */
    private static final int FIRST_FLAGS =
       PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN |
       PSXmlTreeWalker.GET_NEXT_RESET_CURRENT;
 
    /**
-    * flags to walk to a sibling node of a XML tree
+    * flags to walk to a sibling node of an XML tree
     */
    private static final int NEXT_FLAGS =
       PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS |
@@ -428,7 +412,7 @@ public class PSArchiveManifest  implements IPSDeployComponent
     * <code>PSDependency</code> (via its key), as well as a list of external
     * <code>PSDbmsInfo</code> objects.
     */
-   private class DepFilesIdTypes implements IPSDeployComponent
+   private static class DepFilesIdTypes implements IPSDeployComponent
    {
       /**
        * Constructing the object with given parameters.
@@ -439,15 +423,14 @@ public class PSArchiveManifest  implements IPSDeployComponent
        * may be <code>null</code>.
        * @param idtypes The <code>PSApplicationIdTypes</code> object, it may be
        * <code>null</code>.
-       * @param The list of external dbmsinfo objects for this dependency, it
-       * may be <code>null</code>.
-       * 
-       *
+       * @param dbmsInfoList The list of external dbmsinfo objects for this dependency, it
+       * may be <code>null</code>
+       * <br/>
        * NOTE: Assuming any of the parameters may be <code>null</code>, but not 
        * all are <code>null</code>.
        */
-      public DepFilesIdTypes(String key, List files,
-         PSApplicationIDTypes idtypes, List dbmsInfoList)
+      public DepFilesIdTypes(String key, List<PSDependencyFile> files,
+         PSApplicationIDTypes idtypes, List<PSDatasourceMap> dbmsInfoList)
       {
          m_key = key;
          m_depFiles = files;
@@ -483,8 +466,6 @@ public class PSArchiveManifest  implements IPSDeployComponent
        * &lt;!ELEMENT DBMSInfoList (PSXDbmsInfo*)>
        * </code></pre>
        *
-       * @param depKey The Dependency key, assume it not <code>null</code> or
-       * empty.
        * @param doc The Document for creating XML Element. Assumed not
        * <code>null</code>.
        *
@@ -505,21 +486,15 @@ public class PSArchiveManifest  implements IPSDeployComponent
          {
             Element dbmsListEl = PSXmlDocumentBuilder.addEmptyElement(doc, root, 
                XML_DBMS_LIST_EL);
-            Iterator infos = m_dbmsInfoList.iterator();
-            while (infos.hasNext())
-            {
-               PSDatasourceMap dsMap = (PSDatasourceMap)infos.next();
-               Element dsElem = dsMap.toXml(doc);
+            for (PSDatasourceMap psDbmsInfo : m_dbmsInfoList) {
+               Element dsElem =  psDbmsInfo.toXml(doc);
                dbmsListEl.appendChild(dsElem);
             }
          }
          
          if ( m_depFiles != null )
          {
-            Iterator depFileList = m_depFiles.iterator();
-            while (depFileList.hasNext())
-            {
-               PSDependencyFile depFile = (PSDependencyFile) depFileList.next();
+            for (PSDependencyFile depFile : m_depFiles) {
                root.appendChild(depFile.toXml(doc));
             }
          }
@@ -597,10 +572,6 @@ public class PSArchiveManifest  implements IPSDeployComponent
          {
             isEqual = false;  // not the same type of object
          }
-         else if (obj == this) // compare to itself
-         {
-            isEqual = true;
-         }
          else
          {
             DepFilesIdTypes other = (DepFilesIdTypes) obj;
@@ -638,10 +609,10 @@ public class PSArchiveManifest  implements IPSDeployComponent
        *
        * @throws PSUnknownNodeTypeException if MALFORMED XML occurs.
        */
-      private List getDepFilesFromXml(Element depfileEl, PSXmlTreeWalker tree)
+      private List<PSDependencyFile> getDepFilesFromXml(Element depfileEl, PSXmlTreeWalker tree)
          throws PSUnknownNodeTypeException
       {
-         List depFiles = new ArrayList();
+         List<PSDependencyFile> depFiles = new ArrayList<>();
 
          while (depfileEl != null)
          {
@@ -668,17 +639,15 @@ public class PSArchiveManifest  implements IPSDeployComponent
        *
        * @throws PSUnknownNodeTypeException if MALFORMED XML occurs.
        */
-      private List getInfoListFromXml(PSXmlTreeWalker tree)
+      private List<PSDatasourceMap> getInfoListFromXml(PSXmlTreeWalker tree)
          throws PSUnknownNodeTypeException
       {
-         List infoList = new ArrayList();
+         List<PSDatasourceMap> infoList = new ArrayList<>();
          Element infoEl = tree.getNextElement(PSDatasourceMap.XML_NODE_NAME, FIRST_FLAGS);
          while (infoEl != null)
          {
             PSDatasourceMap dsMap = new PSDatasourceMap(infoEl);
-            PSXmlTreeWalker infoTree = new PSXmlTreeWalker(infoEl);
-            
-            
+
             infoList.add(dsMap);
 
             infoEl = tree.getNextElement(PSDbmsInfo.DATASOURCE_XML_ELEMENT,
@@ -697,6 +666,7 @@ public class PSArchiveManifest  implements IPSDeployComponent
             throw new IllegalArgumentException(
                "obj wrong type, expecting PSArchiveManifest");
 
+         //TODO: Not sure how this has been working
          DepFilesIdTypes obj2 = (DepFilesIdTypes) obj;
 
          m_key = obj2.m_key;
@@ -704,15 +674,15 @@ public class PSArchiveManifest  implements IPSDeployComponent
 
          if (obj2.m_depFiles != null)
          {
-            m_depFiles = new ArrayList();
+            m_depFiles = new ArrayList<>();
             m_depFiles.addAll(obj2.m_depFiles);
          }
          else
             m_depFiles = null;
-            
+
          if (obj2.m_dbmsInfoList != null)
          {
-            m_dbmsInfoList = new ArrayList();
+            m_dbmsInfoList = new ArrayList<>();
             m_dbmsInfoList.addAll(obj2.m_dbmsInfoList);
          }
          else
@@ -721,14 +691,14 @@ public class PSArchiveManifest  implements IPSDeployComponent
 
       /**
        * The key of the related Dependency object. Initialized by the
-       * contructor, it may not be <code>null</code> or empty after that.
+       * constructor, it may not be <code>null</code> or empty after that.
        */
       protected String m_key;
       /**
        * A list of <code>PSDependencyFile</code> objects, it may be
        * <code>null</code>, never empty if not null.
        */
-      protected List m_depFiles;
+      protected List<PSDependencyFile> m_depFiles;
       /**
        * The <code>PSApplicationIdTypes</code> object, it may be
        * <code>null</code>
@@ -739,10 +709,13 @@ public class PSArchiveManifest  implements IPSDeployComponent
        * A <code>List</code> of <code>PSDbmsInfo</code> objects, it may be 
        * <code>null</code> or empty.
        */
-      protected List m_dbmsInfoList = null;
+      protected List<PSDatasourceMap> m_dbmsInfoList = null;
       
       // Private xml constants   
       private static final String XML_DBMS_LIST_EL = "DBMSInfoList";
-      
+
+
    }
+
+   private static final String DEP_NOT_NULL_MSG = "dep may not be null";
 }
