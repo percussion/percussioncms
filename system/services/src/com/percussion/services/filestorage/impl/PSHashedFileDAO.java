@@ -149,17 +149,22 @@ public class PSHashedFileDAO implements IPSHashedFileDAO
 
       if (hash != null && StringUtils.isNotBlank(hash))
       {
+         PSBinary ret = null;
+         try {
+            CriteriaBuilder builder = getSession().getCriteriaBuilder();
+            CriteriaQuery<PSBinary> criteria = builder.createQuery(PSBinary.class);
+            Root<PSBinary> critRoot = criteria.from(PSBinary.class);
+            criteria.where(builder.equal(critRoot.get("hash"), hash));
+            ret =  entityManager.createQuery(criteria).getSingleResult();
+         }catch(javax.persistence.NoResultException ne){
+            return ret;
+         }
 
-         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-         CriteriaQuery<PSBinary> criteria = builder.createQuery(PSBinary.class);
-         Root<PSBinary> critRoot = criteria.from(PSBinary.class);
-         criteria.where(builder.equal(critRoot.get("hash"),hash));
-         return entityManager.createQuery(criteria).getSingleResult();
-
+      return ret;
       }
-      else
+      else {
          return null;
-
+      }
    }
 
    /* (non-Javadoc)

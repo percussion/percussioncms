@@ -249,12 +249,14 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
             {
                try
                {
-                  //The parameter passed in seems to be 1 not the actual
-                  //workflowid of the page.  So get the workflow from the request instead.
-                  localParams.m_workflowAppID =
-                          Integer.parseInt(
-                                  request.getParameter("sys_workflowid"));
+                  String wfid = request.getParameter("sys_workflowid");
+                  if(wfid == null || wfid.trim().equals("")){
+                     wfid = request.getParameter("sys_workflowappid");
+                  }
+
+                  localParams.m_workflowAppID = Integer.parseInt(wfid);
                   localParams.m_workflowIdSupplied = true;
+
                }
                catch (Exception e)
                {

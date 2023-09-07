@@ -140,8 +140,8 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
     * requested type was not found in the relationship configuration.
     * @param owner the owner from which to delete the dependents, must be 
     * a valid key to a persisted object, see {@link #validateKey(PSKey)} for 
-    * whats a valid key.
-    * @param rids an array of relationship ids to be deletded. If 
+    * what's a valid key.
+    * @param rids an array of relationship ids to be deleted. If
     * <code>null</code>, returns immediately.
     * @throws PSCmsException if any errors occur processing the request.
     */
@@ -237,7 +237,7 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
     *  not <code>null</code> or empty.
     * @param object the object key for which to get the ancestors, must be a 
     * valid key to a persisted object, see {@link #validateKey(PSKey)} for 
-    * whats a valid key.
+    * what's a valid key.
     *
     * @param doNotApplyFilters mask to restrict the filtering of relationships 
     * based on community or folder permissions (bitwise OR the FILTER_BY_xxx 
@@ -276,9 +276,9 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
    }
 
    /**
-    * This API checks incase a relationship with
+    * This API checks if a relationship with
     *   Same ownerId , same dependentId, same RelationshipConfig, and same revisions
-    *   already exists, tehn don't create a new Relationship.
+    *   already exists, then don't create a new Relationship.
     * @param rel
     * @return
     */
@@ -372,7 +372,7 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
     *    not found in the relationship configuration.
     * @param owner the owner for which to catalog the dependents, must be
     *    a valid key to a persisted object, see {@link #validateKey(PSKey)} for
-    *    whats a valid key.
+    *    what's a valid key.
     *
     * @param doNotApplyFilters mask to restrict the filtering of relationships
     * based on community or folder permissions (bitwise OR the FILTER_BY_xxx
@@ -384,7 +384,7 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
     *    the supplied owner. Never <code>null</code>, may be empty.
     * @throws PSCmsException if any errors occur processing the request.
     */
-   public List getDependentLocators(
+   public List<PSLocator> getDependentLocators(
       String relationshipType,
       PSKey owner,
       int doNotApplyFilters)
@@ -393,13 +393,10 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
       PSRelationshipSet relationships =
          getDependents(relationshipType, owner, doNotApplyFilters);
 
-      List result = new ArrayList();
-      Iterator it = relationships.iterator();
-      while (it.hasNext())
-      {
-         PSRelationship relationship = (PSRelationship) it.next();
-         if (relationship.getConfig().getName().equalsIgnoreCase(relationshipType))
-            result.add(relationship.getDependent());
+      List<PSLocator> result = new ArrayList<>();
+      for (PSRelationship psRelationship : (Iterable<PSRelationship>) relationships) {
+         if (psRelationship.getConfig().getName().equalsIgnoreCase(relationshipType))
+            result.add(psRelationship.getDependent());
       }
 
       return result;
@@ -425,7 +422,7 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
     *    not found in the relationship configuration.
     * @param owner the owner for which to catalog the dependents, must be
     *    a valid key to a persisted object, see {@link #validateKey(PSKey)} for
-    *    whats a valid key.
+    *    what's a valid key.
     *
     * @param doNotApplyFilters mask to restrict the filtering of relationships
     * based on community or folder permissions (bitwise OR the FILTER_BY_xxx
@@ -466,7 +463,7 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
     *    <code>null</code> or empty.
     * @param object the object key for which to get the parents, must be
     *    a valid key to a persisted object, see {@link #validateKey(PSKey)} for
-    *    whats a valid key.
+    *    what's a valid key.
     *
     * @param doNotApplyFilters mask to restrict the filtering of relationships
     * based on community or folder permissions (bitwise OR the FILTER_BY_xxx
@@ -523,7 +520,7 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
    }
    
    /**
-    * Just like {@link #getRelationships(PSRelationshipFilter)}, except this
+    * Just like {@link #getRelationships(PSRelationshipFilter)}, except
     * returns all relationships in a list.
     * 
     * @return a list of zero or more relationships with no particular order,
@@ -577,7 +574,7 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
     *
     * @param object the object key for which to get the siblings, must be
     *    a valid key to a persisted object, see {@link #validateKey(PSKey)} for
-    *    whats a valid key.
+    *    what is a valid key.
     *
     * @param doNotApplyFilters mask to restrict the filtering of relationships
     * based on community or folder permissions (bitwise OR the FILTER_BY_xxx
@@ -704,11 +701,11 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
     *    in the relationship configuration.
     * @param owner the owner of the new relationships beeing created, must be
     *    a valid key to a persisted object, see {@link #validateKey(PSKey)} for
-    *    whats a valid key.
+    *    what is a valid key.
     * @param dependents a list of <code>PSKey</code> of all dependents which
     *    need to be related to the supplied owner. All supplied keys must
     *    reference persisted objects and must be valid, see
-    *    {@link #validateKey(PSKey)} for whats a valid key.
+    *    {@link #validateKey(PSKey)} for what is a valid key.
     * @param index the index where to insert the new relationships, must be > 0.
     *    If the index is bigger then the current size of relationships, the
     *    new dependents will be appendend.
@@ -1079,7 +1076,7 @@ public class PSRelationshipProcessor implements IPSRelationshipProcessor
          // First check to be sure that this item has
          // not yet been processed, we don't want to
          // accidently fall into an infinite recursion loop if
-         // a child some how links back to itself
+         // a child somehow links back to itself
          if(results.contains(depLocator))
             continue;
          

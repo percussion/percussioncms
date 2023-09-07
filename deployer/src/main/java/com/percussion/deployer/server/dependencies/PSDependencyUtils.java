@@ -36,6 +36,7 @@ import com.percussion.design.objectstore.PSTableRef;
 import com.percussion.design.objectstore.PSTableSet;
 import com.percussion.error.IPSDeploymentErrors;
 import com.percussion.error.PSDeployException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.server.PSServer;
 import com.percussion.services.assembly.data.PSAssemblyTemplate;
@@ -64,6 +65,8 @@ import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.utils.types.PSPair;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.persistence.Table;
 import java.io.BufferedInputStream;
@@ -85,6 +88,8 @@ import java.util.Set;
  */
 public class PSDependencyUtils
 {
+
+   private static final Logger log = LogManager.getLogger("Deployer");
    /**
     * Given a guid as a string, get the long value 
     * @param depId may not be <code>null</code> or empty
@@ -484,10 +489,20 @@ public class PSDependencyUtils
       
       String appName = getColumnAppName(((PSNodeDefinition) node).getNewRequest());
 
-      PSApplication app = PSAppObjectDependencyHandler
-            .getApplication(tok, appName);
+      PSApplication app=null;
 
-      PSCollection dataSetColl = app.getDataSets();
+      try {
+         app = PSAppObjectDependencyHandler
+                 .getApplication(tok, appName);
+      }catch( PSDeployException e){
+         log.error(PSExceptionUtils.getDebugMessageForLog(e));
+      }
+
+      PSCollection dataSetColl=null;
+      if(app!=null) {
+        dataSetColl = app.getDataSets();
+      }
+
       if (dataSetColl == null)
          return Collections.emptyList();
       

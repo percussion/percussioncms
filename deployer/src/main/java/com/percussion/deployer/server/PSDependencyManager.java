@@ -19,23 +19,7 @@ package com.percussion.deployer.server;
 
 import com.percussion.deployer.client.IPSDeployConstants;
 import com.percussion.deployer.client.PSDeploymentManager;
-import com.percussion.deployer.objectstore.PSApplicationIDTypes;
-import com.percussion.deployer.objectstore.PSArchiveDetail;
-import com.percussion.deployer.objectstore.PSArchiveInfo;
-import com.percussion.deployer.objectstore.PSDatasourceMap;
-import com.percussion.deployer.objectstore.PSDependency;
-import com.percussion.deployer.objectstore.PSDependencyContext;
-import com.percussion.deployer.objectstore.PSDependencyTreeContext;
-import com.percussion.deployer.objectstore.PSDeployComponentUtils;
-import com.percussion.deployer.objectstore.PSDeployableElement;
-import com.percussion.deployer.objectstore.PSExportDescriptor;
-import com.percussion.deployer.objectstore.PSIdMap;
-import com.percussion.deployer.objectstore.PSIdMapping;
-import com.percussion.deployer.objectstore.PSImportPackage;
-import com.percussion.deployer.objectstore.PSTransactionSummary;
-import com.percussion.deployer.objectstore.PSUserDependency;
-import com.percussion.deployer.objectstore.PSValidationResult;
-import com.percussion.deployer.objectstore.PSValidationResults;
+import com.percussion.deployer.objectstore.*;
 import com.percussion.deployer.server.dependencies.PSAclDefDependencyHandler;
 import com.percussion.deployer.server.dependencies.PSCustomDependencyHandler;
 import com.percussion.deployer.server.dependencies.PSDependencyHandler;
@@ -55,7 +39,6 @@ import com.percussion.services.pkginfo.data.PSPkgElement;
 import com.percussion.services.pkginfo.utils.PSIdNameHelper;
 import com.percussion.services.system.IPSDependencyBaseline;
 import com.percussion.services.system.IPSDependencyManagerBaseline;
-import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.apache.commons.lang.StringUtils;
@@ -67,15 +50,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * Manager class for all dependency handlers. The {@link PSDeploymentHandler}
@@ -85,7 +60,7 @@ import java.util.StringTokenizer;
 public class PSDependencyManager implements IPSDependencyManagerBaseline
 {
    /**
-    * Singleton instance of this class. Intialized when first instance of the
+    * Singleton instance of this class. Initialized when first instance of the
     * class is constructed, never <code>null</code> or modified after that.
     */
    private static PSDependencyManager INSTANCE;
@@ -94,8 +69,6 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    /**
     * Loads the <code>PSDependencyMap</code> using the XML document found in
     * the <code>server/cfg</code> directory below the deployment root.
-    * 
-    * @throws PSDeployException if there are any errors.
     * 
     * @throws IllegalStateException if an instance has already been created. The
     * {@link PSDeploymentHandler} creates and holds an instance when
@@ -112,7 +85,6 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
          if (ms_configDir == null)
          {
             configDir = PSDeploymentHandler.CFG_DIR.getPath();
-            buildDepMaps = true;
          }
          loadConfigFiles(configDir, buildDepMaps);
       }
@@ -127,7 +99,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    /**
     * Set the configuration directory which contains the configure files
     * 
-    * @param configDir the configure directory, may not be <code>null</code>
+    * @param configDir the configuration directory, may not be <code>null</code>
     * or empty.
     */
    public static void setConfigDir(String configDir)
@@ -141,7 +113,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    /**
     * Loads the configure files from the specified directory.
     * 
-    * @param dir the configure directory, assumed not <code>null</code> or
+    * @param dir the configuration directory, assumed not <code>null</code> or
     * empty.
     */
    private void loadConfigFiles(String dir, boolean buildDepMaps) throws PSDeployException {
@@ -180,15 +152,15 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * @throws IllegalArgumentException if any param is invalid.
     * @throws PSDeployException if there are any other errors.
     */
-   public Iterator getDependencies(PSSecurityToken tok, PSDependency dep)
+   public Iterator<PSDependency> getDependencies(PSSecurityToken tok, PSDependency dep)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(NULL_SECURITY_TOKEN);
 
       if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
+         throw new IllegalArgumentException(NULL_DEPENDENCY);
 
-      Iterator deps = null;
+      Iterator<PSDependency> deps;
       deps = m_depCache.getChildDependencies(dep);
 
       if (deps == null)
@@ -196,13 +168,16 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
          // get child dependencies
          PSDependencyDef def = getDependencyDef(dep.getObjectType());
          PSDependencyHandler handler = m_depMap.getDependencyHandler(def);
-         Iterator children = handler.getChildDependencies(tok, dep);
+         Iterator<PSDependency> children = handler.getChildDependencies(tok, dep);
 
          // get user dependencies
-         Iterator userDeps = getUserDependencies(dep);
+         Iterator<PSUserDependency> userDeps = getUserDependencies(dep);
 
-         deps = PSIteratorUtils.joinedIterator(children, userDeps);
-         deps = m_depCache.setChildDependencies(dep, deps);
+         List<PSDependency> list = new ArrayList<>();
+         children.forEachRemaining(list::add);
+         userDeps.forEachRemaining(list::add);
+
+         deps = m_depCache.setChildDependencies(dep, list.iterator());
       }
 
       return deps;
@@ -212,27 +187,25 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * Gets all dependencies that have the supplied dependency as a child. Will
     * return an empty iterator if the supplied dependency is of type
     * {@link PSDependency#TYPE_USER}
-    * 
+    *
     * @param tok The security token to use if objectstore access is required,
-    * may not be <code>null</code>.
+    *            may not be <code>null</code>.
     * @param dep The dependency to return ancestors for, may not be
-    * <code>null</code>.
-    * 
+    *            <code>null</code>.
     * @return an iterator over zero or more <code>PSDependency</code> objects.
-    * 
     * @throws IllegalArgumentException if any param is invalid.
-    * @throws PSDeployException for any other errors.
+    * @throws PSDeployException        for any other errors.
     */
-   public Iterator getAncestors(PSSecurityToken tok, IPSDependencyBaseline dep)
+   public Iterator<IPSDependencyBaseline> getAncestors(PSSecurityToken tok, IPSDependencyBaseline dep)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(NULL_SECURITY_TOKEN);
 
       if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
+         throw new IllegalArgumentException(NULL_DEPENDENCY);
 
       if (dep.getDependencyType() == PSDependency.TYPE_USER)
-         return PSIteratorUtils.emptyIterator();
+         return  Collections.emptyIterator();
 
       return getParentDependencies(tok, (PSDependency) dep);
    }
@@ -257,7 +230,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
          PSArchiveHandler archiveHandler, IPSJobHandle jobHandle)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(NULL_SECURITY_TOKEN);
 
       if (dependency == null)
          throw new IllegalArgumentException("dependency may not be null");
@@ -276,7 +249,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
          updateJobStatus(dependency, jobHandle);
          if (!archiveHandler.hasDependencyFiles(dependency))
          {
-            Iterator files = handler.getDependencyFiles(tok, dependency);
+            Iterator<PSDependencyFile> files = handler.getDependencyFiles(tok, dependency);
             if (files.hasNext())
                archiveHandler.addFiles(dependency, files);
 
@@ -322,7 +295,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * This is used to reorder the packaged elements, separate and group the
     * elements by their object-type.
     */
-   private class OrderedElement
+   private static class OrderedElement
    {
       /**
        * The object type of the ordered element.
@@ -356,7 +329,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
 
    /**
     * Returns the list of type enum names of the types that can be ignored for
-    * unistall.
+    * uninstall.
     * 
     * @return never <code>null</code> may be empty.
     */
@@ -489,9 +462,9 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
 
       for (PSImportPackage elem : elements)
       {
-         log.debug("\t objectType=\"" + getObjectType(elem)
-               + "\", displayName=\"" + elem.getPackage().getDisplayName()
-               + "\".");
+         log.debug("\t objectType=\"{}" +
+                "\", displayName=\"{}" +
+                "\".", getObjectType(elem),elem.getPackage().getDisplayName() );
       }
    }
 
@@ -505,7 +478,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * <code>null</code>.
     * @param archiveHandler The archive handler to use to retrieve files from
     * the archive, may not be <code>null</code>.
-    * @param ctx The import context that provides access to some of the runtime
+    * @param ctx The import context that provides access to some runtime
     * context and managers, may not be <code>null</code>.
     * @param jobHandle The job handle to use to update the status, may not be
     * <code>null</code>.
@@ -517,7 +490,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
          PSDeployableElement dependency, PSArchiveHandler archiveHandler,
          PSImportCtx ctx, IPSJobHandle jobHandle) throws PSDeployException, PSAssemblyException, PSNotFoundException {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(NULL_SECURITY_TOKEN);
 
       if (dependency == null)
          throw new IllegalArgumentException("dependency may not be null");
@@ -536,17 +509,17 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
       if (curMap != null)
          reserveNewIds(dependency, curMap);
 
-      List deferList = new ArrayList();
+      List<PSDependency> deferList = new ArrayList<>();
 
       try
       {
          // now install children
-         Iterator deps = dependency.getDependencies();
+         Iterator<PSDependency> deps = dependency.getDependencies();
          if (deps != null)
          {
             while (deps.hasNext() && !jobHandle.isCancelled())
             {
-               PSDependency child = (PSDependency) deps.next();
+               PSDependency child = deps.next();
                restoreDependencyFromArchive(tok, child, dependency,
                      archiveHandler, ctx, deferList, jobHandle);
             }
@@ -556,7 +529,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
          deps = deferList.iterator();
          while (deps.hasNext() && !jobHandle.isCancelled())
          {
-            PSDependency dep = (PSDependency) deps.next();
+            PSDependency dep = deps.next();
             PSDependencyDef def = getDependencyDef(dep.getObjectType());
             PSDependencyHandler depHandler = m_depMap
                   .getDependencyHandler(def);
@@ -584,7 +557,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * <code>null</code>.
     * @param archiveHandler The archive handler to use to retrieve files from
     * the archive, assumed not <code>null</code>.
-    * @param ctx The import context that provides access to some of the runtime
+    * @param ctx The import context that provides access to some runtime
     * context and managers, assumed not <code>null</code>.
     * @param deferList A List of dependencies whose installation should be
     * deferred until all others have been installed, assumed not
@@ -597,7 +570,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     */
    private void restoreDependencyFromArchive(PSSecurityToken tok,
          PSDependency dependency, PSDeployableElement root,
-         PSArchiveHandler archiveHandler, PSImportCtx ctx, List deferList,
+         PSArchiveHandler archiveHandler, PSImportCtx ctx, List<PSDependency> deferList,
          IPSJobHandle jobHandle) throws PSDeployException, PSAssemblyException, PSNotFoundException {
       // if we hit an element down in the tree, we are done
       if (dependency instanceof PSDeployableElement)
@@ -637,12 +610,12 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
       }
 
       // now install children
-      Iterator deps = dependency.getDependencies();
+      Iterator<PSDependency> deps = dependency.getDependencies();
       if (deps != null)
       {
          while (deps.hasNext() && !jobHandle.isCancelled())
          {
-            PSDependency child = (PSDependency) deps.next();
+            PSDependency child = deps.next();
             restoreDependencyFromArchive(tok, child, root, archiveHandler,
                   ctx, deferList, jobHandle);
          }
@@ -659,7 +632,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * <code>null</code> and of the correct type.
     * @param archiveHandler The archive handler to use to retrieve files from
     * the archive, assumed not <code>null</code>.
-    * @param ctx The import context that provides access to some of the runtime
+    * @param ctx The import context that provides access to some runtime
     * context and managers, assumed not <code>null</code>.
     * @param jobHandle The job handle to use to update the status, assumed not
     * <code>null</code>.
@@ -809,7 +782,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * @param type The type to get, may not be <code>null</code> or empty. For
     * Custom types, supply the custom object type ({@link IPSDeployConstants#DEP_OBJECT_TYPE_CUSTOM})
     * concatenated with the supported local dependency type using a forward
-    * slash as a delimeter (e.g. "Custom/Application"). For each instance of the
+    * slash as a delimiter (e.g. "Custom/Application"). For each instance of the
     * child dependency type that exists, a custom deployable element will be
     * returned with the child dependency as a local child. If "Custom/User" is
     * specified, a single custom deployable element with no children will be
@@ -820,15 +793,15 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * @throws IllegalArgumentException if any param is invalid.
     * @throws PSDeployException if there are any other errors.
     */
-   public Iterator getDependencies(PSSecurityToken tok, String type)
+   public Iterator<PSDependency> getDependencies(PSSecurityToken tok, String type)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(NULL_SECURITY_TOKEN);
 
       if (type == null || type.trim().length() == 0)
          throw new IllegalArgumentException("type may not be null or empty");
 
-      Iterator result = m_depCache.getDependencies(type);
+      Iterator<PSDependency> result = m_depCache.getDependencies(type);
       if (result == null)
       {
          // see if it is a Custom type
@@ -850,7 +823,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
 
          if (custType != null)
          {
-            List customDeps = new ArrayList();
+            List<PSDependency> customDeps = new ArrayList<>();
             if (custType.equals(PSUserDependency.USER_DEPENDENCY_TYPE))
             {
                PSDependency userDep = handler.getDependency(tok, custType);
@@ -862,15 +835,27 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
                // get all child deps of the specified custom type
                PSDependencyHandler childHandler = m_depMap
                      .getDependencyHandler(getDependencyDef(custType));
-               Iterator childDeps = childHandler.getDependencies(tok);
-               while (childDeps.hasNext())
-               {
-                  // create a custom deployable element with the child
-                  PSDependency childDep = (PSDependency) childDeps.next();
-                  PSDependency dep = handler.getDependency(tok, childDep
-                        .getKey());
-                  if (dep != null)
-                     customDeps.add(dep);
+               Iterator<PSDependency> childDeps = null;
+               try {
+                  childDeps = childHandler.getDependencies(tok);
+               }catch(PSDeployException e){
+                  log.error(PSExceptionUtils.getMessageForLog(e));
+               }
+
+               if(childDeps!=null) {
+                  while (childDeps.hasNext()) {
+                     try {
+                        // create a custom deployable element with the child
+                        PSDependency childDep = childDeps.next();
+                        PSDependency dep = handler.getDependency(tok, childDep
+                                .getKey());
+                        if (dep != null)
+                           customDeps.add(dep);
+                     }catch(PSDeployException e){
+                        log.error(PSExceptionUtils.getMessageForLog(e));
+                        //Log the error but continue so one child issue doesn't block them all.
+                     }
+                  }
                }
             }
             result = customDeps.iterator();
@@ -903,11 +888,11 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * @throws IllegalArgumentException if any param is invalid.
     * @throws PSDeployException if there are any other errors.
     */
-   public Iterator getDependencies(PSSecurityToken tok, String type,
+   public Iterator<PSDependency> getDependencies(PSSecurityToken tok, String type,
          String parentId) throws PSDeployException
    {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(NULL_SECURITY_TOKEN);
 
       if (type == null || type.trim().length() == 0)
          throw new IllegalArgumentException("type may not be null or empty");
@@ -936,14 +921,14 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * 
     * @throws PSDeployException if there are any errors.
     */
-   public Map getParentTypes() throws PSDeployException
+   public Map<String,String> getParentTypes() throws PSDeployException
    {
       if (m_parentTypeMap == null) {
-         Map types = new HashMap();
+         Map<String,String> types = new HashMap<>();
          if (m_depMap != null) {
-            Iterator defs = m_depMap.getDefs();
+            Iterator<PSDependencyDef> defs = m_depMap.getDefs();
             while (defs.hasNext()) {
-               PSDependencyDef def = (PSDependencyDef) defs.next();
+               PSDependencyDef def = defs.next();
                if (def.supportsParentId()) {
                   PSDependencyHandler handler = PSDependencyHandler
                           .getHandlerInstance(def, m_depMap);
@@ -996,7 +981,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
          PSDeployableElement pkg, PSDependencyTreeContext treeCtx,
          IPSJobHandle jobHandle) throws PSDeployException, PSNotFoundException {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(NULL_SECURITY_TOKEN);
 
       if (pkg == null)
          throw new IllegalArgumentException("pkg may not be null");
@@ -1009,8 +994,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
 
       // IMPORTANT: must call setIsAutoDependency(true) for any dependency
       // added.
-      Set loaded = new HashSet<>();
-      addMissingDependencies(tok, pkg, true, loaded, treeCtx, jobHandle);
+      addMissingDependencies(tok, pkg, true, new HashSet<>(), treeCtx, jobHandle);
 
    }
 
@@ -1029,22 +1013,22 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    public void validatePackages(PSSecurityToken tok,
          PSExportDescriptor exportDesc) throws PSDeployException, PSNotFoundException {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(NULL_SECURITY_TOKEN);
       if (exportDesc == null)
          throw new IllegalArgumentException("exportDesc may not be null");
 
       setIsDependencyCacheEnabled(true);
       try
       {
-         Iterator pkgs = exportDesc.getPackages();
+         Iterator<PSDeployableElement> pkgs = exportDesc.getPackages();
 
          // handle the missing and modified packages
-         List exportPkgs = new ArrayList();
-         List missingPkgNames = new ArrayList();
-         List modPkgNames = new ArrayList();
+         List<PSDeployableElement> exportPkgs = new ArrayList<>();
+         List<String> missingPkgNames = new ArrayList<>();
+         List<String> modPkgNames = new ArrayList<>();
          while (pkgs.hasNext())
          {
-            PSDeployableElement pkg = (PSDeployableElement) pkgs.next();
+            PSDeployableElement pkg = pkgs.next();
             PSDependencyDef depDef = getDependencyDef(pkg.getObjectType());
             PSDependencyHandler depHandler = PSDependencyHandler
                   .getHandlerInstance(depDef, m_depMap);
@@ -1113,10 +1097,10 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
       PSExportDescriptor desc = detail.getExportDescriptor();
 
       // transforming IDs
-      Iterator pkgs = desc.getPackages();
+      Iterator<PSDeployableElement> pkgs = desc.getPackages();
       while (pkgs.hasNext())
       {
-         PSDeployableElement pkg = (PSDeployableElement) pkgs.next();
+         PSDeployableElement pkg = pkgs.next();
          {
             transformDeps(pkg, idMap);
          }
@@ -1137,17 +1121,18 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    public void saveUserDependency(PSUserDependency dep)
       throws PSDeployException
    {
-      if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
-         // save dep as Xml file in directory named using its parent's key
-         String name = "UserDep" + dep.getKey();
-         File depDir = new File(USER_DEP_DIR, dep.getParentKey());
-         depDir.mkdirs();
-         File depFile = new File(depDir, name + ".xml");
-         try(FileOutputStream out = new FileOutputStream(depFile)){
-            Document doc = PSXmlDocumentBuilder.createXmlDocument();
-            PSXmlDocumentBuilder.write(dep.toXml(doc), out);
-         }
+      if (dep == null) {
+         throw new IllegalArgumentException(NULL_DEPENDENCY);
+      }
+      // save dep as Xml file in directory named using its parent's key
+      String name = "UserDep" + dep.getKey();
+      File depDir = new File(USER_DEP_DIR, dep.getParentKey());
+      depDir.mkdirs();
+      File depFile = new File(depDir, name + ".xml");
+      try(FileOutputStream out = new FileOutputStream(depFile)){
+         Document doc = PSXmlDocumentBuilder.createXmlDocument();
+         PSXmlDocumentBuilder.write(dep.toXml(doc), out);
+      }
       catch (Exception e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, e
@@ -1166,7 +1151,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    public void deleteUserDependency(PSUserDependency dep)
    {
       if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
+         throw new IllegalArgumentException(NULL_DEPENDENCY);
 
       // check for saved dep as Xml file in directory named using its parent's
       // key
@@ -1195,7 +1180,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    public PSDependency findDependency(PSSecurityToken tok, String type,
          String depId) throws PSDeployException, PSNotFoundException {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(NULL_SECURITY_TOKEN);
       if (StringUtils.isBlank(type))
          throw new IllegalArgumentException("type may not be null or empty");
       if (StringUtils.isBlank(depId))
@@ -1220,16 +1205,16 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * 
     * @throws PSDeployException if there are any errors.
     */
-   public Iterator getDependencies(PSSecurityToken tok, int flags)
+   public Iterator<PSDependency> getDependencies(PSSecurityToken tok, int flags)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(NULL_SECURITY_TOKEN);
 
-      List depList = new ArrayList();
-      Iterator defs = m_depMap.getDefs();
+      List<PSDependency> depList = new ArrayList<>();
+      Iterator<PSDependencyDef> defs = m_depMap.getDefs();
       while (defs.hasNext())
       {
-         PSDependencyDef def = (PSDependencyDef) defs.next();
+         PSDependencyDef def = defs.next();
 
          // skip non-id types if supports id types is specified
          if (((flags & TYPE_SUPPORTS_ID_TYPES) == TYPE_SUPPORTS_ID_TYPES)
@@ -1238,10 +1223,10 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
             continue;
          }
 
-         Iterator deps = getDependencies(tok, def.getObjectType());
+         Iterator<PSDependency> deps = getDependencies(tok, def.getObjectType());
          while (deps.hasNext())
          {
-            PSDependency dep = (PSDependency) deps.next();
+            PSDependency dep = deps.next();
 
             // skip non-deployable if type deployable is specified
             if (((flags & TYPE_DEPLOYABLE) == TYPE_DEPLOYABLE)
@@ -1263,14 +1248,14 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * @return An iterator over zero or more <code>PSDependencyDef</code>
     * objects, never <code>null</code>.
     */
-   public Iterator getElementTypes()
+   public Iterator<PSDependencyDef> getElementTypes()
    {
-      List types = new ArrayList();
+      List<PSDependencyDef> types = new ArrayList<>();
 
       if(m_depMap!=null) {
-          Iterator defs = m_depMap.getDefs();
+          Iterator<PSDependencyDef> defs = m_depMap.getDefs();
           while (defs.hasNext()) {
-             PSDependencyDef def = (PSDependencyDef) defs.next();
+             PSDependencyDef def = defs.next();
              if (def.isDeployableElement()
                      && !def.getObjectType().equals(
                      IPSDeployConstants.DEP_OBJECT_TYPE_CUSTOM)) {
@@ -1287,13 +1272,13 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * @return An iterator over zero or more <code>PSDependencyDef</code>
     * objects, never <code>null</code>.
     */
-   public Iterator getObjectTypes()
+   public Iterator<PSDependencyDef> getObjectTypes()
    {
-      List types = new ArrayList();
-      Iterator defs = m_depMap.getDefs();
+      List<PSDependencyDef> types = new ArrayList<>();
+      Iterator<PSDependencyDef> defs = m_depMap.getDefs();
       while (defs.hasNext())
       {
-         PSDependencyDef def = (PSDependencyDef) defs.next();
+         PSDependencyDef def = defs.next();
          if (!def.isDeployableElement())
             types.add(def);
       }
@@ -1314,19 +1299,19 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * 
     * @throws PSDeployException if there are any errors.
     */
-   public Iterator getPossibleIdTypes(PSSecurityToken tok, String id)
+   public Iterator<PSDependencyDef> getPossibleIdTypes(PSSecurityToken tok, String id)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(NULL_SECURITY_TOKEN);
 
       if (id == null || id.trim().length() == 0)
          throw new IllegalArgumentException("id may not be null or empty");
 
-      List types = new ArrayList();
-      Iterator defs = m_depMap.getDefs();
+      List<PSDependencyDef> types = new ArrayList<>();
+      Iterator<PSDependencyDef> defs = m_depMap.getDefs();
       while (defs.hasNext())
       {
-         PSDependencyDef def = (PSDependencyDef) defs.next();
+         PSDependencyDef def = defs.next();
          if (!def.isDeployableElement() && def.supportsIdMapping())
          {
             PSDependencyHandler handler = m_depMap.getDependencyHandler(def);
@@ -1343,10 +1328,10 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
                   {
                      PSDependencyHandler parentHandler = m_depMap
                            .getDependencyHandler(parentDef);
-                     Iterator parentDeps = parentHandler.getDependencies(tok);
+                     Iterator<PSDependency> parentDeps = parentHandler.getDependencies(tok);
                      while (parentDeps.hasNext() && !existsForType)
                      {
-                        PSDependency parentDep = (PSDependency) parentDeps
+                        PSDependency parentDep = parentDeps
                               .next();
                         existsForType = handler.doesDependencyExist(tok, id,
                               parentDep.getDependencyId());
@@ -1374,9 +1359,9 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * 
     * @throws PSDeployException if there are any errors.
     */
-   public Iterator getCustomElementTypes() throws PSDeployException
+   public Iterator<PSDependencyDef> getCustomElementTypes() throws PSDeployException
    {
-      List types = new ArrayList();
+      List<PSDependencyDef> types = new ArrayList<>();
       if(m_depMap !=null) {
          PSDependencyDef custDef = m_depMap
                  .getDependencyDef(IPSDeployConstants.DEP_OBJECT_TYPE_CUSTOM);
@@ -1384,9 +1369,9 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
          {
             PSDependencyHandler custHandler = PSDependencyHandler
                     .getHandlerInstance(custDef, m_depMap);
-            Iterator childTypes = custHandler.getChildTypes();
+            Iterator<String> childTypes = custHandler.getChildTypes();
             while (childTypes.hasNext()) {
-               String type = (String) childTypes.next();
+               String type = childTypes.next();
                PSDependencyDef childDef = m_depMap.getDependencyDef(type);
                if (childDef != null)
                   types.add(childDef);
@@ -1414,7 +1399,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
       throws PSDeployException
    {
       if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
+         throw new IllegalArgumentException(NULL_DEPENDENCY);
 
       if (!dep.supportsIdTypes())
          throw new IllegalArgumentException("dep must support id types: "
@@ -1443,8 +1428,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     */
    public void setIsDependencyCacheEnabled(boolean isEnabled)
    {
-   // todo: re-enable when MSM dependencies are supported, make thread safe
-   // m_depCache.setIsCacheEnabled(isEnabled);
+      m_depCache.setIsCacheEnabled(isEnabled);
    }
 
    /**
@@ -1484,11 +1468,11 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
       }
 
       // handle child dependencies
-      Iterator childDeps = dep.getDependencies();
+      Iterator<PSDependency> childDeps = dep.getDependencies();
       if (childDeps != null)
       {
          while (childDeps.hasNext())
-            transformDeps((PSDependency) childDeps.next(), idMap);
+            transformDeps(childDeps.next(), idMap);
       }
    }
 
@@ -1523,7 +1507,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * 
     * @param dep never <code>null</code>
     * @return the dependency handler based on the type never <code>null</code>
-    * @throws PSDeployException
+    * @throws PSDeployException On error.
     */
    public PSDependencyHandler getDependencyHandler(PSDependency dep)
       throws PSDeployException
@@ -1562,33 +1546,31 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * 
     * @throws PSDeployException if there are any other errors.
     */
-   private Iterator getUserDependencies(PSDependency dep)
+   private Iterator<PSUserDependency> getUserDependencies(PSDependency dep)
       throws PSDeployException
    {
-      List deps = new ArrayList();
+      List<PSUserDependency> deps = new ArrayList<>();
       File depDir = new File(USER_DEP_DIR, dep.getKey());
       if (depDir.exists())
       {
          File[] depFiles = depDir.listFiles();
-         for (int i = 0; i < depFiles.length; i++)
-         {
-            try(FileInputStream in = new FileInputStream(depFiles[i])){
-               Document doc = PSXmlDocumentBuilder
-                     .createXmlDocument(in, false);
-               PSUserDependency userDep = new PSUserDependency(doc
-                     .getDocumentElement());
-               if (!userDep.getPath().exists())
-                  depFiles[i].delete();
-               else
-               {
-                  deps.add(userDep);
+         if(depFiles != null) {
+            for (File depFile : depFiles) {
+               try (FileInputStream in = new FileInputStream(depFile)) {
+                  Document doc = PSXmlDocumentBuilder
+                          .createXmlDocument(in, false);
+                  PSUserDependency userDep = new PSUserDependency(doc
+                          .getDocumentElement());
+                  if (!userDep.getPath().exists())
+                     depFile.delete();
+                  else {
+                     deps.add(userDep);
+                  }
+               } catch (Exception e) {
+                  throw new PSDeployException(
+                          IPSDeploymentErrors.UNEXPECTED_ERROR, e
+                          .getMessage());
                }
-            }
-            catch (Exception e)
-            {
-               throw new PSDeployException(
-                     IPSDeploymentErrors.UNEXPECTED_ERROR, e
-                           .getLocalizedMessage());
             }
          }
       }
@@ -1597,7 +1579,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    }
 
    /**
-    * For any new item, reserves a new Id for it in the system and updates the
+    * For any new item, reserves a new ID for it in the system and updates the
     * id map. Recursively performs this action for each included child
     * dependency.
     * 
@@ -1658,10 +1640,10 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * @throws PSDeployException if there are any other errors.
     */
    private void addMissingDependencies(PSSecurityToken tok, PSDependency dep,
-         boolean checkElements, Set loaded, PSDependencyTreeContext treeCtx,
-         IPSJobHandle jobHandle) throws PSDeployException, PSNotFoundException {
+                                       boolean checkElements, Set<PSDependencyIdentifier> loaded, PSDependencyTreeContext treeCtx,
+                                       IPSJobHandle jobHandle) throws PSDeployException, PSNotFoundException {
       PSDependencyIdentifier depId = new PSDependencyIdentifier(dep,
-            !checkElements);
+              !checkElements);
 
       if (loaded.contains(depId) || jobHandle.isCancelled())
          return;
@@ -1696,7 +1678,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
       {
          // IMPORTANT: must call setIsAutoDependency(true) for any dependency
          // added.
-         List depList = new ArrayList<>();
+         List<PSDependency> depList = new ArrayList<>();
          deps = getDependencies(tok, dep);
          while (deps.hasNext())
          {
@@ -1737,12 +1719,12 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
          // sub-dependencies of that child.
          PSDependencyDef def = getDependencyDef(dep.getObjectType());
          PSDependencyHandler handler = m_depMap.getDependencyHandler(def);
-         List all = PSDeployComponentUtils.cloneList(deps);
-         List included = new ArrayList();
+         List<PSDependency> all = PSDeployComponentUtils.cloneList(deps);
+         List<PSDependency> included = new ArrayList<>();
          deps = all.iterator();
          while (deps.hasNext() && !jobHandle.isCancelled())
          {
-            PSDependency child = (PSDependency) deps.next();
+            PSDependency child = deps.next();
             if (child.isIncluded()
                   || handler.isRequiredChild(child.getObjectType())
                   || child.containsIncludedDependency())
@@ -1767,7 +1749,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
          // now recurse children
          while (deps.hasNext() && !jobHandle.isCancelled())
          {
-            PSDependency child = (PSDependency) deps.next();
+            PSDependency child = deps.next();
             addMissingDependencies(tok, child, checkElements, loaded, treeCtx,
                   jobHandle);
          }
@@ -1786,7 +1768,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    public void updateJobStatus(PSDependency dep, IPSJobHandle jobHandle)
    {
       if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
+         throw new IllegalArgumentException(NULL_DEPENDENCY);
 
       if (jobHandle == null)
          throw new IllegalArgumentException("jobHandle may not be null");
@@ -1794,7 +1776,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
       ResourceBundle bundle = PSDeploymentManager.getBundle();
       String depString = formatDependencyString(dep);
       String msg = MessageFormat.format(bundle.getString("processing"),
-            new Object[] { depString });
+              depString);
       jobHandle.updateStatus(msg);
    }
 
@@ -1821,12 +1803,12 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
          boolean exists = doesDependencyExist(tok, pkg);
          if (exists)
          {
-            Iterator childDeps;
+            Iterator<PSDependency> childDeps;
             if (pkg.getObjectType().equals(
                   IPSDeployConstants.DEP_OBJECT_TYPE_CUSTOM))
             {
                // its custom, so just check to be sure the child deps exist
-               List newList = new ArrayList();
+               List<PSDependency> newList = new ArrayList<>();
                while (deps.hasNext())
                {
                   PSDependency childDep =  deps.next();
@@ -1852,28 +1834,28 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
             else
             {
                // build map of actual dependencies using key
-               List newList = new ArrayList<>();
-               List depList = PSDeployComponentUtils
+               List<PSDependency> newList = new ArrayList<>();
+               List<PSDependency> depList = PSDeployComponentUtils
                      .cloneList(getDependencies(tok, pkg));
 
-               Map depMap = new HashMap();
+               Map<String,PSDependency> depMap = new HashMap<>();
                childDeps = depList.iterator();
                while (childDeps.hasNext())
                {
-                  PSDependency childDep = (PSDependency) childDeps.next();
+                  PSDependency childDep = childDeps.next();
                   depMap.put(childDep.getKey(), childDep);
                }
 
                // walk listed dependencies and see if in the actual map
-               Set newDepSet = new HashSet();
+               Set<String> newDepSet = new HashSet<>();
                while (deps.hasNext())
                {
-                  PSDependency childDep = (PSDependency) deps.next();
-                  PSDependency curDep = (PSDependency) depMap.get(childDep
+                  PSDependency childDep = deps.next();
+                  PSDependency curDep = depMap.get(childDep
                         .getKey());
                   if (curDep == null)
                   {
-                     // its not still actually a dependency, leave it out
+                     // it's not still actually a dependency, leave it out
                      isMod = true;
                   }
                   else
@@ -1889,12 +1871,8 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
                }
 
                // now walk actual deps and add any not already listed
-               Iterator newDeps = depList.iterator();
-               while (newDeps.hasNext())
-               {
-                  PSDependency childDep = (PSDependency) newDeps.next();
-                  if (!newDepSet.contains(childDep.getKey()))
-                  {
+               for (PSDependency childDep : depList) {
+                  if (!newDepSet.contains(childDep.getKey())) {
                      isMod = true;
                      newList.add(childDep);
                   }
@@ -1909,7 +1887,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
             // now recurse the child deps
             while (childDeps.hasNext())
             {
-               PSDependency childDep = (PSDependency) childDeps.next();
+               PSDependency childDep = childDeps.next();
                isMod = checkModifiedDependencies(tok, childDep) || isMod;
             }
          }
@@ -1980,18 +1958,18 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    public PSDependency getActualDependency(PSSecurityToken tok,
          PSDependency dep, PSIdMap idMap) throws PSDeployException, PSNotFoundException {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(NULL_SECURITY_TOKEN);
 
       if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
+         throw new IllegalArgumentException(NULL_DEPENDENCY);
 
       PSDependencyDef depDef = getDependencyDef(dep.getObjectType());
       PSDependencyHandler handler = PSDependencyHandler.getHandlerInstance(
             depDef, m_depMap);
 
       PSDependency result = null;
-      String newId = null;
-      String newParentId = null;
+      String newId;
+      String newParentId;
 
       if (idMap != null
             && (dep.supportsIDMapping() || handler.delegatesIdMapping()))
@@ -2058,33 +2036,33 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * 
     * @throws PSDeployException if there are any errors.
     */
-   public Iterator getParentDependencies(PSSecurityToken tok, PSDependency dep)
+   public Iterator<IPSDependencyBaseline> getParentDependencies(PSSecurityToken tok, PSDependency dep)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
-         throw new IllegalArgumentException("tok may not be null");
+         throw new IllegalArgumentException(NULL_SECURITY_TOKEN);
 
       if (dep == null)
-         throw new IllegalArgumentException("dep may not be null");
+         throw new IllegalArgumentException(NULL_DEPENDENCY);
 
-      List parentDeps = new ArrayList();
+      List<IPSDependencyBaseline> parentDeps = new ArrayList<>();
 
       // not supported for custom
       if (dep.getObjectType()
             .equals(IPSDeployConstants.DEP_OBJECT_TYPE_CUSTOM))
-         return PSIteratorUtils.emptyIterator();
+         return Collections.emptyIterator();
 
-      Iterator defs = m_depMap.getParentDependencyTypes(getDependencyDef(dep
+      Iterator<PSDependencyDef> defs = m_depMap.getParentDependencyTypes(getDependencyDef(dep
             .getObjectType()));
       while (defs.hasNext())
       {
-         PSDependencyDef def = (PSDependencyDef) defs.next();
+         PSDependencyDef def = defs.next();
          if (!def.canBeAncestor())
             continue;
 
-         Iterator deps = getDependencies(tok, def.getObjectType());
+         Iterator<PSDependency> deps = getDependencies(tok, def.getObjectType());
          while (deps.hasNext())
          {
-            PSDependency parent = (PSDependency) deps.next();
+            PSDependency parent = deps.next();
             if (isChild(tok, dep, parent))
                parentDeps.add(parent);
          }
@@ -2128,13 +2106,13 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
             || child.getDependencyType() == PSDependency.TYPE_SYSTEM)
       {
          // may have loaded dependencies
-         Iterator children = parent.getDependencies();
+         Iterator<PSDependency> children = parent.getDependencies();
          if (children == null)
             children = getDependencies(tok, parent);
 
          while (children.hasNext() && !isChild)
          {
-            PSDependency aChild = (PSDependency) children.next();
+            PSDependency aChild = children.next();
             isChild = child.getKey().equals(aChild.getKey());
          }
       }
@@ -2150,8 +2128,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * 
     * @return The list of deployment types, never <code>null</code> or empty.
     */
-   public List<String> getDeploymentType(PSTypeEnum type)
-   {
+   public List<String> getDeploymentType(PSTypeEnum type) throws PSDeployException {
       if (type == null)
          throw new IllegalArgumentException("type may not be null");
 
@@ -2161,16 +2138,14 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
       List<String> depTypes = m_guidToDepTypeMap.get(type);
       if (depTypes == null)
       {
-         throw new RuntimeException(
-               "No deployment type mapping found for guid type: "
-                     + type.toString());
+         throw new PSDeployException(IPSDeploymentErrors.NO_TYPE_MAPPING_FOR_GUID,type);
       }
 
       return depTypes;
    }
 
    /**
-    * Get the guid type from an deployment type.
+    * Get the guid type from a deployment type.
     * 
     * @param deploymentType The deployment type, may not be <code>null</code>
     * or empty, must be a valid deployment type.
@@ -2199,10 +2174,10 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
       m_guidToDepTypeMap = new HashMap<>();
 
       // add all mappings
-      Iterator defs = m_depMap.getDefs();
+      Iterator<PSDependencyDef> defs = m_depMap.getDefs();
       while (defs.hasNext())
       {
-         PSDependencyDef def = (PSDependencyDef) defs.next();
+         PSDependencyDef def = defs.next();
          String guidType = def.getGuidType();
          if (guidType != null)
          {
@@ -2222,17 +2197,12 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
    {
       m_depToGuidTypeMap.put(depType, guidType);
       // could be multiple dep types for same guid type
-      List<String> typeList = m_guidToDepTypeMap.get(guidType);
-      if (typeList == null)
-      {
-         typeList = new ArrayList<>();
-         m_guidToDepTypeMap.put(guidType, typeList);
-      }
+      List<String> typeList = m_guidToDepTypeMap.computeIfAbsent(guidType, k -> new ArrayList<>());
       typeList.add(depType);
    }
    
    /**
-    * Flag to indicate a dependency supports Id types. If included, then
+    * Flag to indicate a dependency supports ID types. If included, then
     * identifies those dependencies for which
     * {@link PSDependency#supportsIdTypes()} returns <code>true</code>.
     */
@@ -2251,7 +2221,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     */
    private static final File USER_DEP_DIR = new File(PSServer.getRxDir()
          .getAbsolutePath()
-         + "/" + PSDeploymentHandler.OBJECTSTORE_DIR, "UserDependencies");
+         + File.separatorChar + PSDeploymentHandler.OBJECTSTORE_DIR, "UserDependencies");
 
 
    /**
@@ -2274,7 +2244,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * {@link #getParentTypes()}, never <code>null</code> or modified after
     * that, may be empty.
     */
-   private Map m_parentTypeMap = null;
+   private Map<String, String> m_parentTypeMap = null;
 
    /**
     * The deployment order sequence, as a list of object type of the packaged
@@ -2325,7 +2295,7 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
     * Object to handle the caching of dependencies. Cache is disabled by
     * default.
     */
-   private class PSDependencyCache
+   private static final class PSDependencyCache
    {
       /**
        * Get the cached dependency list for the supplied type. The returned list
@@ -2344,12 +2314,12 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
        * <code>null</code> if caching is disabled or if no list has yet been
        * cached for the specified type.
        */
-      public Iterator getDependencies(String objectType)
+      public Iterator<PSDependency> getDependencies(String objectType)
       {
-         Iterator deps = null;
+         Iterator<PSDependency> deps = null;
          if (m_isEnabled)
          {
-            List depList = (List) m_dependenciesMap.get(objectType);
+            List<PSDependency> depList = m_dependenciesMap.get(objectType);
             if (depList != null)
                deps = cloneDepList(depList).iterator();
          }
@@ -2368,12 +2338,12 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
        * <code>null</code> if caching is disabled or if no list has yet been
        * cached for the supplied dependency.
        */
-      public Iterator getChildDependencies(PSDependency dep)
+      public Iterator<PSDependency> getChildDependencies(PSDependency dep)
       {
-         Iterator deps = null;
+         Iterator<PSDependency> deps = null;
          if (m_isEnabled)
          {
-            List depList = (List) m_childDependenciesMap.get(dep.getKey());
+            List<PSDependency> depList =  m_childDependenciesMap.get(dep.getKey());
             if (depList != null)
                deps = cloneDepList(depList).iterator();
          }
@@ -2395,11 +2365,11 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
        * <code>deps</code> parameter, never <code>null</code>, may be the
        * same iterator passed in if caching is not enabled.
        */
-      public Iterator setDependencies(String objectType, Iterator deps)
+      public Iterator<PSDependency> setDependencies(String objectType, Iterator<PSDependency> deps)
       {
          if (m_isEnabled)
          {
-            List depList = PSDeployComponentUtils.cloneList(deps);
+            List<PSDependency> depList = PSDeployComponentUtils.cloneList(deps);
             m_dependenciesMap.put(objectType, depList);
             deps = depList.iterator();
          }
@@ -2421,11 +2391,11 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
        * <code>deps</code> parameter, never <code>null</code>, may be the
        * same iterator passed in if caching is not enabled.
        */
-      public Iterator setChildDependencies(PSDependency dep, Iterator deps)
+      public Iterator<PSDependency> setChildDependencies(PSDependency dep, Iterator<PSDependency> deps)
       {
          if (m_isEnabled)
          {
-            List depList = PSDeployComponentUtils.cloneList(deps);
+            List<PSDependency> depList = PSDeployComponentUtils.cloneList(deps);
             m_childDependenciesMap.put(dep.getKey(), depList);
             deps = depList.iterator();
          }
@@ -2459,13 +2429,10 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
        * 
        * @return The cloned list, never <code>null</code>.
        */
-      private List cloneDepList(List depList)
+      private List<PSDependency> cloneDepList(List<PSDependency> depList)
       {
-         List copy = new ArrayList();
-         Iterator deps = depList.iterator();
-         while (deps.hasNext())
-         {
-            PSDependency dep = (PSDependency) deps.next();
+         List<PSDependency> copy = new ArrayList<>();
+         for (PSDependency dep : depList) {
             dep = (PSDependency) dep.clone();
             dep.setDependencies(null);
             dep.setAncestors(null);
@@ -2487,22 +2454,22 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
        * <code>PSDependency</code> objects, never <code>null</code>, may be
        * empty.
        */
-      private Map m_dependenciesMap = new HashMap();
+      private Map<String, List<PSDependency>> m_dependenciesMap = new HashMap<>();
 
       /**
        * Map of cached child dependencies by parent, where the key is the parent
-       * <code>PSDependency</code> and the value is a <code>List</code> of
+       * <code>PSDependency</code> name as a String and the value is a <code>List</code> of
        * child <code>PSDependency</code> objects, never <code>null</code>,
        * may be empty.
        */
-      private Map m_childDependenciesMap = new HashMap();
+      private Map<String,List<PSDependency>> m_childDependenciesMap = new HashMap<>();
    }
 
    /**
-    * Class to identify a dependency by it's key, type, and location within a
+    * Class to identify a dependency by its key, type, and location within a
     * dependency tree.
     */
-   private class PSDependencyIdentifier
+   private static class PSDependencyIdentifier
    {
       /**
        * Construct an identifier
@@ -2575,6 +2542,10 @@ public class PSDependencyManager implements IPSDependencyManagerBaseline
        * Determines if the dependency for which this identifier is constructed
        * is found in a sub-package of another package.
        */
-      private boolean m_isFromSubPackage = false;
+      private boolean m_isFromSubPackage;
    }
+
+   private static final String NULL_SECURITY_TOKEN = "tok may not be null";
+   private static final String NULL_DEPENDENCY = "dep may not be null";
+
 }

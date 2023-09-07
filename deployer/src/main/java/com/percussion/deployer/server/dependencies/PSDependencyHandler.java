@@ -17,18 +17,8 @@
 
 package com.percussion.deployer.server.dependencies;
 
-import com.percussion.deployer.objectstore.PSDatasourceMap;
-import com.percussion.deployer.objectstore.PSDependency;
-import com.percussion.deployer.objectstore.PSDeployableElement;
-import com.percussion.deployer.objectstore.PSDeployableObject;
-import com.percussion.deployer.objectstore.PSIdMap;
-import com.percussion.deployer.objectstore.PSIdMapping;
-import com.percussion.deployer.objectstore.PSTransactionSummary;
-import com.percussion.deployer.server.PSArchiveHandler;
-import com.percussion.deployer.server.PSDependencyDef;
-import com.percussion.deployer.server.PSDependencyMap;
-import com.percussion.deployer.server.PSImportCtx;
-import com.percussion.deployer.server.PSLogHandler;
+import com.percussion.deployer.objectstore.*;
+import com.percussion.deployer.server.*;
 import com.percussion.error.IPSDeploymentErrors;
 import com.percussion.error.PSDeployException;
 import com.percussion.security.PSSecurityToken;
@@ -40,23 +30,14 @@ import com.percussion.services.security.IPSAclService;
 import com.percussion.services.security.PSAclServiceLocator;
 import com.percussion.services.security.data.PSAclImpl;
 import com.percussion.util.PSPurgableTempFile;
-import com.percussion.utils.collections.PSIteratorUtils;
 import com.percussion.utils.tools.IPSUtilsConstants;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import org.w3c.dom.Document;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -119,13 +100,12 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
          throw new IllegalArgumentException("map may not be null");
 
       String className = def.getHandlerClassName();
-      PSDependencyHandler handler = null;
+      PSDependencyHandler handler;
 
       try
       {
-         Class handlerClass = Class.forName(className);
-         Constructor handlerCtor = handlerClass.getConstructor( new Class[]
-            { PSDependencyDef.class, PSDependencyMap.class });
+         Class<?> handlerClass = Class.forName(className);
+         Constructor<?> handlerCtor = handlerClass.getConstructor(PSDependencyDef.class, PSDependencyMap.class);
          handler = (PSDependencyHandler)handlerCtor.newInstance(
             new Object[] {def, map} );
 
@@ -173,7 +153,7 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
       boolean isChildTypeOk = false;
 
       String childType = child.getObjectType();
-      Iterator childTypes = getChildTypes();
+      Iterator<String> childTypes = getChildTypes();
       while (childTypes.hasNext() && !isChildTypeOk)
       {
          if (childType.equals(childTypes.next()))
@@ -187,7 +167,7 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
    }
 
    /**
-    * Gets all dependencies that are child dependecies of the supplied
+    * Gets all dependencies that are child dependencies of the supplied
     * dependency.
     * Note: Add IDType dependencies this method
     * @param tok The security token to use if objectstore access is required,
@@ -201,7 +181,7 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
     * @throws IllegalArgumentException if dep is invalid.
     * @throws PSDeployException if there are any errors.
     */
-   public abstract Iterator getChildDependencies(PSSecurityToken tok,
+   public abstract Iterator<PSDependency> getChildDependencies(PSSecurityToken tok,
       PSDependency dep)
            throws PSDeployException, PSNotFoundException;
 
@@ -221,7 +201,7 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
     * @throws PSDeployException if there are any errors.
     */
    @Override
-   public Iterator getDependencyFiles(PSSecurityToken tok, PSDependency dep)
+   public Iterator<PSDependencyFile> getDependencyFiles(PSSecurityToken tok, PSDependency dep)
            throws PSDeployException, PSNotFoundException {
       if (tok == null)
          throw new IllegalArgumentException("tok may not be null");
@@ -229,7 +209,7 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
       if (dep == null)
          throw new IllegalArgumentException("dep may not be null");
 
-      return PSIteratorUtils.emptyIterator();
+      return Collections.emptyIterator();
    }
 
    /**
@@ -296,7 +276,7 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
     * @throws PSDeployException if there are any errors.
     */
    @Override
-   public Iterator getDependencies(PSSecurityToken tok, String parentType,
+   public Iterator<PSDependency> getDependencies(PSSecurityToken tok, String parentType,
                                    String parentId) throws PSDeployException
    {
       if (!m_def.supportsParentId())
@@ -419,8 +399,7 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
          aclDep = h.getDependency(tok, String.valueOf(acl.getGUID().longValue()));
          if (aclDep != null)
             childDeps.add(aclDep);
-      }    
-      return;
+      }
    }
    /**
     * Derived classes must override this method to provide the list of child
@@ -430,7 +409,7 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
     * objects, never <code>null</code>, does not contain <code>null</code> or
     * empty entries.
     */
-   public abstract Iterator getChildTypes();
+   public abstract Iterator<String> getChildTypes();
 
    /**
     * Must be overriden by derived classes to supply the correct type.
@@ -793,9 +772,10 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
          throw new IllegalArgumentException("type may not be null or empty");
 
       PSDependencyDef def = m_map.getDependencyDef(type);
-      if (def == null)
+      if (def == null) {
          throw new RuntimeException("DependencyDef for type " + type +
-            " cannot be located.");
+                 " cannot be located.");
+      }
 
       return def;
    }
@@ -837,7 +817,7 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
     * @throws IllegalArgumentException if any param is invalid.
     */
    protected PSDeployableObject createDependency(PSDependencyDef def,
-      Map.Entry entry)
+      Map.Entry<String,String> entry)
    {
       if (def == null)
          throw new IllegalArgumentException("def may not be null");
@@ -845,12 +825,12 @@ public abstract class PSDependencyHandler implements IPSDependencyHandler {
       if (entry == null)
          throw new IllegalArgumentException("entry may not be null");
 
-      String key = (String)entry.getKey();
+      String key = entry.getKey();
       if (key == null || key.trim().length() == 0)
          throw new IllegalArgumentException(
             "entry's key may not be null or empty");
 
-      String value = (String)entry.getValue();
+      String value = entry.getValue();
       if (value == null || value.trim().length() == 0)
          throw new IllegalArgumentException(
             "entry's value may not be null or empty");
@@ -1431,13 +1411,11 @@ try {
     *
     * @return The retrieved child dependency object, it may be <code>null</code>
     * if the specified child could not be found.
-    * @throws PSDeployException 
     *
     * @throws IllegalArgumentException if any param is invalid.
     */
    protected PSDependency doGetChildDependency(PSDependency dep, String childId,
-      String childObjType) throws PSDeployException
-   {
+      String childObjType)   {
       if (dep == null)
          throw new IllegalArgumentException("dep may not be null");
       if (childId == null || childId.trim().length() == 0)
@@ -1449,12 +1427,12 @@ try {
       PSDependency childDep = dep.getChildDependency(childId, childObjType);
       if (childDep == null)
       {
-         Iterator children = dep.getDependencies();
+         Iterator<PSDependency> children = dep.getDependencies();
          if (children != null)
          {
             while (children.hasNext() && childDep == null)
             {
-               PSDependency child = (PSDependency)children.next();
+               PSDependency child = children.next();
                childDep = doGetChildDependency(child, childId, childObjType);
             }
          }
@@ -1532,7 +1510,7 @@ try {
       if (type == null)
          throw new IllegalArgumentException("type may not be null");
 
-      int transAction = (isNew == false)
+      int transAction = (!isNew)
             ? PSTransactionSummary.ACTION_MODIFIED
             : PSTransactionSummary.ACTION_CREATED;
       
@@ -1654,15 +1632,15 @@ try {
     * @return An iterator over zero or more types as <code>String</code> 
     * objects, never <code>null</code>, may be empty.
     */
-   private List getIdTypes()
+   private List<String> getIdTypes()
    {
       if (m_idTypes == null)
       {
          List<String> types = new ArrayList<>();
-         Iterator defs = m_map.getDefs();
+         Iterator<PSDependencyDef> defs = m_map.getDefs();
          while (defs.hasNext())
          {
-            PSDependencyDef def = (PSDependencyDef)defs.next();
+            PSDependencyDef def = defs.next();
             if (def.supportsIdTypes())
                types.add(def.getObjectType());
          }
@@ -1683,7 +1661,7 @@ try {
     * call to {@link #getIdTypes()}, never <code>null</code> or modified after
     * that, may be empty.
     */
-   private List m_idTypes = null;
+   private List<String> m_idTypes = null;
    
    /**
     * Constant for app name containing system control library file.

@@ -61,8 +61,7 @@ public class PSDatasourceMap implements IPSDeployComponent
 
    
    /**
-    * set the sourceDataSource
-    * @return may be <code>null</code>
+    * set the sourceDataSource may be <code>null</code>
     */
    public void setSrc(String datasrc)
    {
@@ -81,8 +80,7 @@ public class PSDatasourceMap implements IPSDeployComponent
   
    
    /**
-    * set the targetDataSource
-    * @return may be <code>null</code>
+    * set the targetDataSource may be <code>null</code>
     */
    public void setTarget(String datasrc)
    {
@@ -102,7 +100,6 @@ public class PSDatasourceMap implements IPSDeployComponent
     * A convenience method which will return either the sourceDataSource or
     * targetDataSource depending on the index from the tabledata.
     * @param ix
-    * @return
     */
    public String getColumnData(int ix)
    {
@@ -114,10 +111,7 @@ public class PSDatasourceMap implements IPSDeployComponent
    }
 
    /**
-    * Serialize this object's state to its XML representation.  See
-    * {@link #toXml(Document)} for format of XML.  See 
-    * {@link IPSDeployComponent#toXml(Element)} for more info on method
-    * signature.
+    * Serialize this object's state to its XML representation.
     */
 
    public Element toXml(Document doc)
@@ -134,8 +128,7 @@ public class PSDatasourceMap implements IPSDeployComponent
    }
 
    /**
-    * Restores this object's state from its XML representation.  See
-    * {@link #fromXml(Document)} for format of XML.  See 
+    * Restores this object's state from its XML representation. See
     * {@link IPSDeployComponent#fromXml(Element)} for more info on method
     * signature, like this:
     * Get the <PSXDataSourceMap source=""  target="" />
@@ -156,7 +149,7 @@ public class PSDatasourceMap implements IPSDeployComponent
             XML_ATTR_SOURCE_DATASRC);
       String tgtStr = sourceNode.getAttribute(XML_ATTR_TARGET_DATASRC);
       m_tgtDataSource = "";
-      if ( tgtStr != null && tgtStr.length() > 0 )
+      if (tgtStr.length() > 0)
          m_tgtDataSource = tgtStr;
    }
 
@@ -216,7 +209,7 @@ public class PSDatasourceMap implements IPSDeployComponent
    /**
     * Target datasource as a string, initially <code>null</code>
     */
-   private String m_tgtDataSource = null;;
+   private String m_tgtDataSource = null;
 
    private static final int SOURCE_INDEX = 0;
    private static final int TARGET_INDEX = 1;

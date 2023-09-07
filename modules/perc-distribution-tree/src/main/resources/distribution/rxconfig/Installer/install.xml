@@ -493,7 +493,6 @@
         <include name="Synchronizer.bin"/>
         <include name="Synchronizer.exe"/>
         <include name="Synchronizer.lax"/>
-        <include name="sys_search/lucene/indexes/**"/>
     </patternset>
 
     <patternset id="upgrade.overwrite">
@@ -914,11 +913,11 @@
             </fileset>
         </copy>
 
-        <property name="fastforwardfile.list" value="psx_cerffAutoIndex.xml,psx_cerffBrief.xml,psx_cerffCalendar.xml,psx_cerffContacts.xml,psx_cerffEvent.xml,psx_cerffExternalLink.xml,psx_cerffFile.xml,psx_cerffGeneric.xml,psx_cerffGenericWord.xml,psx_cerffHome.xml,psx_cerffImage.xml,psx_cerffNavImage.xml,psx_cerffPressRelease.xml,psx_cerffNavImage.xml,psx_cerffNavon.xml,psx_cerffNavTree.xml"/>
+        <property name="fastforwardfile.list" value="psx_cerffAutoIndex.xml,psx_cerffBrief.xml,psx_cerffCalendar.xml,psx_cerffContacts.xml,psx_cerffEvent.xml,psx_cerffExternalLink.xml,psx_cerffFile.xml,psx_cerffGeneric.xml,psx_cerffGenericWord.xml,psx_cerffHome.xml,psx_cerffImage.xml,psx_cerffPressRelease.xml"/>
 
         <echo>Update ObjectStore with latest files </echo>
-        <copy todir="${install.dir}/ObjectStore" failonerror="false" overwrite="true">
-            <fileset dir="${install.src}/ObjectStore" followsymlinks="false" excludes="${fastforwardfile.list}" includes="**">
+        <copy todir="${install.dir}/ObjectStore" failonerror="false" overwrite="false">
+            <fileset dir="${install.src}/ObjectStore" followsymlinks="false" excludes="${fastforwardfile.list}" includes="**" >
                 <!-- <present present="srconly" targetdir="${install.dir}/ObjectStore"/> don't copy fastforward files -->
             </fileset>
         </copy>
@@ -1599,9 +1598,9 @@
         <echo>Updating Audit Log Property file ...</echo>
         <delete file="${install.dir}/rxconfig/Server/audit-log.properties" failonerror="false" verbose="true" />
         <copy verbose="true" overwrite="true" file="${install.src}/rxconfig/Installer/audit-log.properties" tofile="${install.dir}/rxconfig/Server/audit-log.properties" />
-
+        <mkdir dir="${install.dir}/jetty/base/logs/audit" />
         <propertyfile file="${install.dir}/rxconfig/Server/audit-log.properties">
-            <entry key="filePath" value="${install.dir}/jetty/base/logs"/>
+            <entry key="filePath" value="${install.dir}/jetty/base/logs/audit"/>
         </propertyfile>
         <delete file="${install.dir}/rxconfig/Installer/audit-log.properties" failonerror="false" verbose="true" />
 

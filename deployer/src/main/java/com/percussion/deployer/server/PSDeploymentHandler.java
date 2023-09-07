@@ -459,10 +459,10 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
       String name = null;
       int logId = -1;
       name = root.getAttribute(DESC_NAME);
-      if (name == null || name.trim().length() == 0)
+      if (name.trim().length() == 0)
       {
          name = null;
-         logId = getAttrNumberFromRequest(req, "archiveLogId");
+         logId = getAttrNumberFromRequest(req, ARCHIVE_LOG_ID);
       }
 
       PSExportDescriptor exportDesc;
@@ -542,7 +542,7 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
       if (req == null)
          throw new IllegalArgumentException(NULL_REQUEST_ERROR);
 
-      String name = getRequiredAttrFromRequest(req, "archiveRef");
+      String name = getRequiredAttrFromRequest(req, ARCHIVE_REF);
 
       // load the validation results
       File descFile = new File(getValidationDir(), name + ".xml");
@@ -610,7 +610,7 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
       }
 
       // Get the list of objects
-      List depList = new ArrayList();
+      List<PSDeployableObject> depList = new ArrayList<>();
       PSXmlTreeWalker tree = new PSXmlTreeWalker(doc);
       Element depEl = tree
               .getNextElement(PSXmlTreeWalker.GET_NEXT_ALLOW_CHILDREN);
@@ -774,49 +774,39 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
       PSXmlTreeWalker tree = new PSXmlTreeWalker(req.getInputDocument());
       Element xmlContent = tree.getNextElement("xmlContent");
       File tempFile=null;
-      FileWriter fw = null;
+
+
       try {
 
          String content = (String) decoder.encode(PSXmlTreeWalker
                  .getElementData(xmlContent));
          tempFile = createTempFile("PSX", null);
+         tempFile.deleteOnExit();
+         try(FileWriter fw =new FileWriter(tempFile)) {
 
-         fw =new FileWriter(tempFile) ;
+            fw.write(content);
+            fw.flush();
 
-         fw.write(content);
-         fw.flush();
+            File xsdFile = new File(PSServer.getRxDir(),
+                    IPSDeployConstants.DEPLOYMENT_ROOT + "/schema/localConfig.xsd");
+            List<Exception> errors = new ArrayList<>();
+            boolean isValid = PSXmlValidator.validateXmlAgainstSchema(tempFile,
+                    xsdFile, errors);
 
-         File xsdFile = new File(PSServer.getRxDir(),
-                 IPSDeployConstants.DEPLOYMENT_ROOT + "/schema/localConfig.xsd");
-         List<Exception> errors = new ArrayList<>();
-         boolean isValid = PSXmlValidator.validateXmlAgainstSchema(tempFile,
-                 xsdFile, errors);
-
-         Document respDoc = PSXmlDocumentBuilder.createXmlDocument();
-         Element root = PSXmlDocumentBuilder.createRoot(respDoc,
-                 "PSXValidateLocalConfigResponse");
-         for (Exception ex : errors)
-         {
-            Element error = respDoc.createElement("error");
-            error.appendChild(respDoc.createTextNode(ex.getLocalizedMessage()));
-            root.appendChild(error);
+            Document respDoc = PSXmlDocumentBuilder.createXmlDocument();
+            Element root = PSXmlDocumentBuilder.createRoot(respDoc,
+                    "PSXValidateLocalConfigResponse");
+            for (Exception ex : errors) {
+               Element error = respDoc.createElement("error");
+               error.appendChild(respDoc.createTextNode(ex.getLocalizedMessage()));
+               root.appendChild(error);
+            }
+            return respDoc;
          }
-         return respDoc;
       }
       catch (Exception e)
       {
          throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, PSExceptionUtils.getMessageForLog(e));
-      }finally
-      {
-         if (fw != null) {
-            try {
-               fw.close();
-            } catch (IOException ignore) {
-            }
-         }
-         if(tempFile != null && tempFile.exists()) {
-            tempFile.delete();
-         }
       }
    }
 
@@ -1710,9 +1700,13 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
          List<PSPkgElement> pkgEls = pkgInfoSvc.findPkgElements(info.getGuid());
          for(PSPkgElement el : pkgEls)
          {
-            addPackageIndexEntry(dm, index,
-                    info.getPackageDescriptorName(), info.getPackageVersion(),
-                    el.getObjectGuid());
+            try {
+               addPackageIndexEntry(dm, index,
+                       info.getPackageDescriptorName(), info.getPackageVersion(),
+                       el.getObjectGuid());
+            } catch (PSDeployException e) {
+               ms_log.error(PSExceptionUtils.getMessageForLog(e));
+            }
          }
       }
       for(String[] entry : index)
@@ -1742,8 +1736,7 @@ public class PSDeploymentHandler implements IPSDeploymentHandler, IPSLoadableReq
     */
    private void addPackageIndexEntry(PSDependencyManager dm,
                                      final List<String[]> index, final String packageName,
-                                     final String packageVersion, final IPSGuid guid)
-   {
+                                     final String packageVersion, final IPSGuid guid) throws PSDeployException {
       String dID = String.valueOf(guid.longValue());
       PSTypeEnum type = PSTypeEnum.valueOf(guid.getType());
       List<String> dTypes = dm.getDeploymentType(type);

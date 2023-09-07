@@ -263,30 +263,12 @@ public class PSDbmsHelper
       try
       {
          jndiSrcList = os.getJndiDatasources(null, secTok);
+      } catch (PSLockedException | PSNotLockedException | PSServerException | PSAuthorizationException e)
+      {
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+               e.getMessage());
       }
-      catch (PSAuthenticationRequiredException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-               e.getLocalizedMessage());
-      }
-      catch (PSServerException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-               e.getLocalizedMessage());      }
-      catch (PSNotLockedException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-               e.getLocalizedMessage());      }
-      catch (PSLockedException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-               e.getLocalizedMessage());      }
-      catch (PSAuthorizationException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-               e.getLocalizedMessage());
-      }
-      
+
       if (jndiSrcList == null || jndiSrcList.isEmpty())
          throw new IllegalStateException("Datasource cannot be null or empty");
       
@@ -307,31 +289,10 @@ public class PSDbmsHelper
       try
       {
          dsResolver = os.getDatasourceConfigs(null, secTok);
-      }
-      catch (PSAuthenticationRequiredException e)
+      } catch (PSServerException | PSNotLockedException | PSLockedException | PSAuthorizationException e)
       {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-               e.getLocalizedMessage());      
-      }
-      catch (PSAuthorizationException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-               e.getLocalizedMessage());      
-      }
-      catch (PSServerException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-               e.getLocalizedMessage());      
-      }
-      catch (PSNotLockedException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-               e.getLocalizedMessage());      
-      }
-      catch (PSLockedException e)
-      {
-         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-               e.getLocalizedMessage());      
+         throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR,
+               e.getMessage());
       }
       return dsResolver;
    }
@@ -488,30 +449,18 @@ public class PSDbmsHelper
       PSJdbcTableSchema schema, String[] columns, PSJdbcSelectFilter filter)
       throws PSDeployException
    {
-      Connection conn = null;
-      try
-      {
-         conn = getRepositoryConnection();
+      try (Connection conn = getRepositoryConnection()) {
          PSJdbcDbmsDef dbmsDef = getDbmsDef();
-         
-         if ( schema == null )
+
+         if (schema == null)
             schema = getTableSchema(tableName);
 
          return PSJdbcTableFactory.catalogTableData(conn, dbmsDef, schema,
-            columns, filter, PSJdbcRowData.ACTION_INSERT);
-      }
-      catch (PSJdbcTableFactoryException e)
-      {
+                 columns, filter, PSJdbcRowData.ACTION_INSERT);
+      } catch (SQLException | PSJdbcTableFactoryException e) {
          throw new PSDeployException(
-            IPSDeploymentErrors.REPOSITORY_READ_WRITE_ERROR,
-               e.getLocalizedMessage());
-      }
-      finally
-      {
-         if (conn != null)
-         {
-            try {conn.close();} catch (SQLException e) {}
-         }
+                 IPSDeploymentErrors.REPOSITORY_READ_WRITE_ERROR,
+                 e.getMessage());
       }
 
    }
@@ -531,25 +480,13 @@ public class PSDbmsHelper
       if (schema == null)
          throw new IllegalArgumentException("schema may not be null");
 
-      Connection conn = null;
-      try
-      {
-         conn = getRepositoryConnection();
+      try (Connection conn = getRepositoryConnection()) {
          PSJdbcDbmsDef dbmsDef = getDbmsDef();
          PSJdbcTableFactory.processTable(conn, dbmsDef, schema, null, false);
-      }
-      catch (PSJdbcTableFactoryException e)
-      {
+      } catch (PSJdbcTableFactoryException | SQLException e) {
          throw new PSDeployException(
-            IPSDeploymentErrors.REPOSITORY_READ_WRITE_ERROR,
-               e.getLocalizedMessage());
-      }
-      finally
-      {
-         if (conn != null)
-         {
-            try {conn.close();} catch (SQLException e) {}
-         }
+                 IPSDeploymentErrors.REPOSITORY_READ_WRITE_ERROR,
+                 e.getMessage());
       }
    }
 
@@ -646,17 +583,12 @@ public class PSDbmsHelper
          {
             conn = PSConnectionHelper.getConnectionDetail();
          }
-         catch (NamingException nex)
+         catch (NamingException | SQLException nex)
          {
             throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
                   nex.toString());
          }
-         catch (SQLException sqe)
-         {
-            throw new PSDeployException(IPSDeploymentErrors.UNEXPECTED_ERROR, 
-                  sqe.toString());
-         }
-         
+
          try
          {
             m_dataTypeMap = new PSJdbcDataTypeMap(
@@ -921,7 +853,7 @@ public class PSDbmsHelper
    public void setUpdateKeyForSchema(Iterator columns, PSJdbcTableSchema schema)
       throws PSDeployException
    {
-       if (columns == null || columns.hasNext() == false)
+       if (columns == null || !columns.hasNext())
           throw new IllegalArgumentException(
             "columns may not be null or empty");
        if (schema == null)
@@ -982,7 +914,7 @@ public class PSDbmsHelper
     */
    public PSJdbcSelectFilter getFilterInFromIds(Iterator ids, String idCol)
    {
-      if (ids == null || ids.hasNext() == false)
+      if (ids == null || !ids.hasNext())
          throw new IllegalArgumentException("ids may not be null or empty");
       if (idCol == null || idCol.trim().length() == 0)
          throw new IllegalArgumentException("idCol may not be null or empty");
@@ -993,9 +925,9 @@ public class PSDbmsHelper
       {
          String id = (String) ids.next();
          if ( sIds.length() == 0 )
-            sIds.append("(" + id);
+            sIds.append("(").append(id);
          else
-            sIds.append("," + id);
+            sIds.append(",").append( id);
       }
       sIds.append(")");
 
@@ -1035,7 +967,7 @@ public class PSDbmsHelper
 
       Connection conn = null;
 
-      Integer iResult;
+      int iResult;
       PreparedStatement stmt = null;
       ResultSet rs = null;
       
@@ -1059,10 +991,10 @@ public class PSDbmsHelper
          }
 
          rs = stmt.executeQuery();
-         if(false == rs.next())
-            iResult = new Integer(1);
+         if(!rs.next())
+            iResult = 1;
          else
-            iResult = new Integer(rs.getInt(1)+1);
+            iResult = rs.getInt(1) + 1;
       }
       catch (SQLException e)
       {
@@ -1072,9 +1004,9 @@ public class PSDbmsHelper
       finally
       {
          if(null != rs)
-            try {rs.close();} catch (Exception e){};
+            try {rs.close();} catch (Exception e){}
          if(null != stmt)
-            try {stmt.close();} catch (Exception e) {};
+            try {stmt.close();} catch (Exception e) {}
 
          if (conn != null)
          {
@@ -1142,7 +1074,7 @@ public class PSDbmsHelper
       else
          key = table + ":" + filterCol + ":" + filterColValue;
          
-      Integer nextNumber = (Integer) nextNumberMap.get(key); 
+      Integer nextNumber = nextNumberMap.get(key);
 
       if (nextNumber == null)
       {
@@ -1150,12 +1082,12 @@ public class PSDbmsHelper
       }
       else
       {
-         nextNumber = new Integer(nextNumber.intValue() + 1);
+         nextNumber = nextNumber + 1;
       }
 
       nextNumberMap.put(key, nextNumber);
 
-      return nextNumber.intValue();
+      return nextNumber;
    }
 
    /**
@@ -1252,7 +1184,7 @@ public class PSDbmsHelper
       int type;
       
       loadTableTypeDefs();
-      Integer objType = (Integer)m_tableTypes.get(tableName);
+      Integer objType = m_tableTypes.get(tableName);
       
       if (objType != null)
       {

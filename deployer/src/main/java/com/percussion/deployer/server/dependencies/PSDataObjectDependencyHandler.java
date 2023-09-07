@@ -494,12 +494,9 @@ public abstract class PSDataObjectDependencyHandler extends PSDependencyHandler
       // get all registered content types
       List<PSDependency> deps = new ArrayList<>();
 
-      Iterator regEntries = PSDbmsHelper.getInstance().getRegistrationEntries(
-         table, idCol, nameCol, null).iterator();
-      while (regEntries.hasNext())
-      {
-         Map.Entry entry = (Map.Entry)regEntries.next();
-         deps.add(createDependency(m_def, entry));
+      for (Map.Entry<String, String> stringStringEntry : (Iterable<Map.Entry<String, String>>) PSDbmsHelper.getInstance().getRegistrationEntries(
+              table, idCol, nameCol, null)) {
+         deps.add(createDependency(m_def, stringStringEntry));
       }
 
       return deps.iterator();
