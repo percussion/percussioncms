@@ -16,10 +16,7 @@
  */
 package com.percussion.utils.collections;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * PSIteratorUtils is a factory for many kinds of Iterators, including
@@ -46,10 +43,12 @@ public abstract class PSIteratorUtils
 
    /**
     * Returns an empty iterator.
+    * @deprecated Use Collections.emptyIterator
     */
-   public static Iterator emptyIterator()
+   @Deprecated
+   public static  Iterator emptyIterator()
    {
-      return new CountedIterator(null, 0);
+      return Collections.emptyIterator();
    }
 
    /**
@@ -65,7 +64,7 @@ public abstract class PSIteratorUtils
     *
     * @param i The iterator to wrap.  May not be <code>null</code>.
     *
-    * @throws IllegalArgumentException If i is <code>null</code>
+    * @throws IllegalArgumentException If it is <code>null</code>
     */
    public static Iterator protectedIterator(Iterator i)
    {
@@ -289,7 +288,7 @@ public abstract class PSIteratorUtils
        *
        * @param i The iterator to wrap, may not be <code>null</code>.
        * 
-       * @throws IllegalArgumentException If i is <code>null</code>.
+       * @throws IllegalArgumentException If it is <code>null</code>.
        */
       public ProtectedIterator(Iterator i)
       {

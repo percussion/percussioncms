@@ -145,6 +145,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
             });
             getWorkflows();
             getAssetTypes();
+            self.isAdvancedSearch(false);
             self.isSearchVisible(true);
         };
         

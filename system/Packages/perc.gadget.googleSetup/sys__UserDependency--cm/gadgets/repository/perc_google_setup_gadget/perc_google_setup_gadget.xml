@@ -816,11 +816,11 @@
 
               if(hasUser && hasPass && _validCreds)
               {
-                 $("#perc-ga-save").removeClass("perc-inactive");
+                 $("#perc-ga-save").removeClass("perc-inactive").attr( "aria-disabled", "false" );
               }
               else
               {
-                 $("#perc-ga-save").addClass("perc-inactive");
+                 $("#perc-ga-save").addClass("perc-inactive").attr( "aria-disabled", "true" );
               }
 
            }
@@ -880,7 +880,7 @@
             </div>
            </div>
            <div id="perc-ga-command-panel">
-             <a href="javascript:void(0);" id="perc-ga-save" class="perc-inactive" title="Save analytics settings to the server."></a>
+             <a href="javascript:void(0);" id="perc-ga-save" aria-disabled="true" class="perc-inactive" title="Save analytics settings to the server."></a>
              <a href="javascript:void(0);" id="perc-ga-cancel" title="Revert any unsaved changes."></a>
            </div>
            <div style="clear: both;"></div>

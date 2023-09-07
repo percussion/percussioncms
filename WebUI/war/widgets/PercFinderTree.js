@@ -71,7 +71,7 @@
     };
     
     /**
-     * Finder tree widget. See descrption at the top of the class for the usage.
+     * Finder tree widget. See description at the top of the class for the usage.
      */ 
     $.widget("ui.PercFinderTree", 
     {

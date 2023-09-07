@@ -220,12 +220,12 @@
 
         var selectTextLinkDom = percJQuery("<div class='perc-select-blog-text-link-ui'>")
             .append("<div class='perc-select-blog-text-link-label perc-label'>* Blog link text:</div>")
-            .append("<div class='perc-select-blog-text-link-input perc-new-blog-input'><input type='text' id='perc-blog-text-link'/>")
+            .append("<div class='perc-select-blog-text-link-input perc-new-blog-input'><input type='text' aria-required='true' id='perc-blog-text-link'/>")
             .append("<div class='perc-blog-text-link-error-message perc-error-message'>Blog link text is a required field.</div>");
             
         var selectPageNameDom = percJQuery("<div class='perc-select-page-name-ui'>")
             .append("<div class='perc-select-page-name-label perc-label'>* Blog name:</div>")
-            .append("<div class='perc-select-page-name-input perc-new-blog-input'><input type='text' id='perc-page-name' maxlength='50'/>")
+            .append("<div class='perc-select-page-name-input perc-new-blog-input'><input type='text' aria-required='true' id='perc-page-name' maxlength='50'/>")
             .append("<div class='perc-blog-page-name-error-message perc-error-message'>Blog name is a required field.</div>")
             .append("<div class='perc-blog-page-name-unique-error-message perc-error-message'>Blog name must be unique.</div>");
         

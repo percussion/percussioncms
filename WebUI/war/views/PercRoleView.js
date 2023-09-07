@@ -75,8 +75,20 @@
                 disableButtons();
                 unhighlightAllUsers();
             });
+			$("#perc-roles-edit-role-button").off("keydown").on("keydown", function(evt){
+               if(evt.code == "Enter" || evt.code == "Space"){
+						document.activeElement.click();
+				}
+            });
 
             //Bind Add Users to Role event
+			 $(".perc-roles-addusers-button").off("keydown").on("keydown",
+                function(evt){
+                    if(evt.code == "Enter" || evt.code == "Space"){
+						document.activeElement.click();
+					}
+                });
+
             $(".perc-roles-addusers-button").off("click").on("click",
                 function(evt){
                     addUsers(evt);
@@ -85,6 +97,12 @@
             $(".perc-roles-removeusers-button").off("click").on("click",
                 function(evt){
                     removeUsers(evt);
+                });
+			$(".perc-roles-removeusers-button").off("keydown").on("keydown",
+                function(evt){
+                    if(evt.code == "Enter" || evt.code == "Space"){
+						document.activeElement.click();
+					}
                 });
 
             //Bind Save event
@@ -263,7 +281,7 @@
             // iterate over the list of users and add it to the user option
             for(i in assignedUsersArray) {
                 var userName = assignedUsersArray[i];
-                var liUser = $("<li class='perc-assigned-user-entry'/>")
+                var liUser = $("<li tabindex='0' class='perc-assigned-user-entry'/>")
                     .append(
                         $("<span />")
                             .html(userName)
@@ -278,6 +296,13 @@
                     liUser.on("click",
                         function(evt){
                             selectUser.call(this,[evt]);
+                        });
+					liUser.on("keydown",
+                        function(eventHandler){
+                            if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+								document.activeElement.click();
+							}
+
                         });
                 }
                 ulUsers.append(liUser);
@@ -369,6 +394,7 @@
             if (editingRole){
                 $(".perc-roles-addusers-button")
                     .addClass("perc-item-disabled")
+					.attr("aria-disabled","true")
                     .off();
                 disableRemoveUsers();
             }
@@ -378,24 +404,45 @@
             $.PercDataList.enableButtons(container);
             $(".perc-roles-addusers-button")
                 .removeClass("perc-item-disabled")
+				.attr("aria-disabled","false")
                 .off("click")
                 .on("click", function(evt){
                     addUsers(evt);
+                });
+			$(".perc-roles-addusers-button")
+                .removeClass("perc-item-disabled")
+				.attr("aria-disabled","false")
+                .off("keydown")
+                .on("keydown", function(evt){
+                    if(evt.code == "Enter" || evt.code == "Space"){
+						document.activeElement.click();
+				}
                 });
         }
 
         function enableRemoveUsers(){
             $(".perc-roles-removeusers-button")
                 .removeClass("perc-item-disabled")
+				.attr("aria-disabled","false")
                 .off("click")
                 .on("click", function(evt){
                     removeUsers(evt);
+                });
+			$(".perc-roles-removeusers-button")
+                .removeClass("perc-item-disabled")
+				.attr("aria-disabled","false")
+                .off("click")
+                .on("click", function(evt){
+                    if(event.code == "keydown" || event.code == "keydown"){
+						document.activeElement.click();
+					}
                 });
         }
 
         function disableRemoveUsers(){
             $(".perc-roles-removeusers-button")
                 .addClass("perc-item-disabled")
+				.attr("aria-disabled","true")
                 .off();
         }
 

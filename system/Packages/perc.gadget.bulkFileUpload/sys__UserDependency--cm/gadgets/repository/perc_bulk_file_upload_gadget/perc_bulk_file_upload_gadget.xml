@@ -81,9 +81,9 @@
                 <span id="perc-upload-add" class="btn perc-button btn-primary fileinput-button">
                     <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
                     <label for="perc-files-upload" >Add files for upload</label>
-                    <input type="file" id="perc-files-upload" name="files[]" title="" multiple>
+                    <input type="file" id="perc-files-upload" name="files[]" title="Add files for upload" multiple>
                 </span>
-                <button id="perc-upload-start" type="submit" class="btn perc-button btn-primary" aria-label="Start upload">
+                <button id="perc-upload-start" title="Start upload" type="submit" class="btn perc-button btn-primary" aria-label="Start upload">
                     <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
                     <span>Start upload</span>
                 </button>
@@ -91,11 +91,11 @@
                 <button id="perc-upload-trigger" type="button" aria-hidden="true" hidden></button>
                 <br/>
                 <br/>
-                <button id="perc-upload-cancel" type="button" class="btn perc-button btn-primary" aria-label="Cancel upload">
+                <button id="perc-upload-cancel" title="Cancel upload" type="button" class="btn perc-button btn-primary" aria-label="Cancel upload">
                     <span aria-hidden="true" class="glyphicon glyphicon-ban-circle"></span>
                     <span>Cancel upload</span>
                 </button>
-                <button id="perc-upload-clear" type="button" class="btn btn-primary perc-button delete" aria-label="Clear uploads">
+                <button id="perc-upload-clear" title="Clear uploads" type="button" class="btn btn-primary perc-button delete" aria-label="Clear uploads">
                     <span aria-hidden="true" class="glyphicon glyphicon-trash"></span>
                     <span>Clear All</span>
                 </button>

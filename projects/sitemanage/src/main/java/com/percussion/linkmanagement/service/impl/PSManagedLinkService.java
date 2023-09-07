@@ -625,7 +625,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
     
     /**
      * Update the href attribute of the supplied link element with the correct rendering based on the supplied context.
-     * If the link id of the element is not found, or doen't resolve to a dependent page or asset, the href resolves to "#".
+     * If the link id of the element is not found, or doesn't resolve to a dependent page or asset, the href resolves to "#".
      * 
      * @param linkContext The context to use, may be <code>null</code>.
      * @param link The element to update, assumed not <code>null</code>.
@@ -750,7 +750,7 @@ public class PSManagedLinkService implements IPSManagedLinkService
 
     /**
      * Update the src attribute of the supplied image link element with the correct rendering based on the supplied context.
-     * If the link id of the element is not found, or doen't resolve to a dependent asset, the src resolves to "#".
+     * If the link id of the element is not found, or doesn't resolve to a dependent asset, the src resolves to "#".
      * 
      * @param linkContext The context to use, may be <code>null</code>.
      * @param link The element to update, assumed not <code>null</code>.

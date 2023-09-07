@@ -122,20 +122,24 @@ public class PSDeployComponentUtils
    }
 
    /**
-    * Clone a list from an iterator.
+    * Copy a list from an iterator.
     *
-    * @param iter The iterator to be cloned, may not <code>null</code>.
+    * @param iter The iterator to be copied, may not <code>null</code>.
     *
-    * @return The cloned list, will not be <code>null</code>, but may be empty.
+    * @return The copied list, will not be <code>null</code>, but may be empty.
     */
-   public static List cloneList(Iterator iter)
+   public static <T> List<T> cloneList(Iterator<T> iter)
    {
       if (iter == null)
          throw new IllegalArgumentException("iter may not be null");
 
-      List list = new ArrayList();
-      while (iter.hasNext())
-         list.add(iter.next());
+      // Create an empty list
+      List<T> list = new ArrayList<>();
+
+      // Add each element of iterator to the List
+      iter.forEachRemaining(list::add);
+
+      // Return the List
       return list;
    }
 

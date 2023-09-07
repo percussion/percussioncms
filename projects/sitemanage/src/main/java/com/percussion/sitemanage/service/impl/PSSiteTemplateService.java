@@ -358,26 +358,27 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
             validate(siteTemplates);
             for(CreateTemplate createTemplate : siteTemplates.getCreateTemplates()){
                 String createTemplateName = createTemplate.getName();
-                if (StringUtils.containsAny(createTemplateName, SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS)){
 
-                    for (int i = 0; i < SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.length(); i++){
+                if (StringUtils.containsAny(createTemplateName, SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS)) {
+                    for (int i = 0; i < SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.length(); i++) {
                         // Replace any invalid characters present. output eg. createTemplateName = Box-Copy-2-
                         createTemplateName = StringUtils.replace(createTemplateName, String.valueOf(SecureStringUtils.INVALID_ITEM_NAME_CHARACTERS.charAt(i)), "-");
                     }
-
-                    if(createTemplateName.substring(createTemplateName.length()-1).equalsIgnoreCase("-")){
-                        //eg. createTemplateName = Box-Copy //the base name for copied template
-                        createTemplateName = createTemplateName.substring(0, createTemplateName.length()-3);
-                    }
-
-                    IPSSite site = siteMgr.findSite(createTemplate.getSiteIds().get(0));
-                    String templateFolderPathForSite = folderHelper.concatPath(site.getFolderRoot(), SECTION_SYSTEM_FOLDER_NAME, TEMPLATES);
-                    //find unique name for copied template.
-                    createTemplateName = folderHelper.getUniqueNameInFolder(templateFolderPathForSite, createTemplateName, "", 2, false);
-
-                    createTemplate.setName(createTemplateName);
                 }
+
+                if(createTemplateName.substring(createTemplateName.length()-1).equalsIgnoreCase("-")){
+                    //eg. createTemplateName = Box-Copy //the base name for copied template
+                    createTemplateName = createTemplateName.substring(0, createTemplateName.length()-3);
+                }
+
+                IPSSite site = siteMgr.findSite(createTemplate.getSiteIds().get(0));
+                String templateFolderPathForSite = folderHelper.concatPath(site.getFolderRoot(), SECTION_SYSTEM_FOLDER_NAME, TEMPLATES);
+                //find unique name for copied template.
+                createTemplateName = folderHelper.getUniqueNameInFolder(templateFolderPathForSite, createTemplateName, "", 2, false);
+
+                createTemplate.setName(createTemplateName);
             }
+
             List<CreateTemplate> createTemplates = siteTemplates.getCreateTemplates();
             List<AssignTemplate> assignTemplates = siteTemplates.getAssignTemplates();
             List<AssignTemplate> created = createTemplates(createTemplates);

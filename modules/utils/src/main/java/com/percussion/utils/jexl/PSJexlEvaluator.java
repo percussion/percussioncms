@@ -302,7 +302,7 @@ public class PSJexlEvaluator
             ArrayList setval = (ArrayList) val;
             if (setval == null)
             {
-               setval = new ArrayList();
+               setval = new ArrayList<>();
                ((Map) current).put(component, setval);
             }
             matchLength(setval, index);
@@ -312,7 +312,8 @@ public class PSJexlEvaluator
          {
             if (!(current instanceof Map))
             {
-               throw new IllegalStateException("Did not find a Map when setting " + "component " + component);
+              log.debug("Did not find a Map when setting component {}" , component);
+              return;
             }
             ((Map) current).put(component, value);
          }

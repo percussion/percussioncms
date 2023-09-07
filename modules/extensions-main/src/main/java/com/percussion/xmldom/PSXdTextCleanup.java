@@ -16,10 +16,12 @@
  */
 package com.percussion.xmldom;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSInvalidContentTypeException;
 import com.percussion.cms.objectstore.PSItemDefinition;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
 import com.percussion.design.objectstore.PSField;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSRequestPreProcessor;
 import com.percussion.extension.PSDefaultExtension;
 import com.percussion.extension.PSExtensionProcessingException;
@@ -29,9 +31,12 @@ import com.percussion.html.PSHtmlUtils;
 import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequestValidationException;
+import com.percussion.server.PSServer;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSPurgableTempFile;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -117,12 +122,10 @@ import java.util.Collection;
  * automatically detect if the uploaded field is an attached file or an HTML
  * field, and process it accordingly.
  * <p>
- * The Tidy properties file is optional. If it is provided, the text will be
- * run through the HTML Tidy program before parsing. See the
- * {@link <a href="http://www.w3.org/People/Raggett/tidy" target="_blank">
- * W3C HTML Tidy</a>} page for details and properties file formats. Note that
- * this implementation uses the Java version of Tidy, which is not exactly
- * identical to the C implementation. The pathname provided must be relative
+ * The html cleaner properties file is optional. If it is provided, the text will be
+ * run through the HTML cleaner before parsing. See the
+ * {@link <a href="https://jsoup.org/cookbook/cleaning-html/safelist-sanitizer" target="_blank">
+ * JSoup Parser</a>} page for details and properties file formats. The pathname provided must be relative
  * to the Rhythmyx server root.
  * <p>
  * The ServerPageTags.xml file is used to eliminate certain non-parsable text
@@ -130,7 +133,7 @@ import java.util.Collection;
  * {@link ProcessServerPageTags ProcessServerPageTags}. The pathname is
  * relative to the server root.
  * <p>
- * Rhythmyx provides default files for Tidy (rxW2Ktidy.properties) and
+ * Rhythmyx provides default files for JSoup (html-cleaner.properties) and
  * ServerPageTags (rxW2KServerPageTags.xml).
  * <p>
  */
@@ -138,6 +141,8 @@ import java.util.Collection;
 public class PSXdTextCleanup extends PSDefaultExtension
         implements IPSRequestPreProcessor
 {
+   private static final Logger log = LogManager.getLogger(IPSConstants.EXTENSIONS_LOG);
+
    /**
     * This method handles the pre-exit request.
     *
@@ -184,12 +189,6 @@ public class PSXdTextCleanup extends PSDefaultExtension
       //Get the cleanup file param.
       String param = PSXmlDomUtils.getParameter(params, 1, null);
       String htmlcleanupFile = param;
-      if(htmlcleanupFile != null){
-         //replace the legacy tidy reference with system default
-         if(htmlcleanupFile.equalsIgnoreCase("rxw2ktidy.properties")){
-            htmlcleanupFile = null;
-         }
-      }
 
       String contenttypeid = request.getParameter(IPSHtmlParameters.SYS_CONTENTTYPEID);
       PSField field = null;
@@ -243,7 +242,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
 
                tempDocument = PSHtmlUtils.createHTMLDocument(
                        (File) inputSourceObj
-               , encoding,true,htmlcleanupFile);
+               , encoding,!PSServer.isHtmlCleaningDisabled(),htmlcleanupFile);
          }
          else
          {
@@ -256,7 +255,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
             }
 
             tempDocument = PSHtmlUtils.createHTMLDocument(inputSourceString,
-                    Charset.forName(encodingDefault),true,htmlcleanupFile);
+                    Charset.forName(encodingDefault), !PSServer.isHtmlCleaningDisabled(),htmlcleanupFile);
 
          }
 
@@ -290,7 +289,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
 
          request.setParameter(fileParamName, cleansedString);
       } catch (PSHtmlParsingException e) {
-         e.printStackTrace();
+         log.error(PSExceptionUtils.getMessageForLog(e));
       }
    }
 
@@ -321,6 +320,7 @@ public class PSXdTextCleanup extends PSDefaultExtension
       Collection<PSField> fields = idm.getFieldsByName(ctypeids, name);
       if (fields == null || fields.size() == 0)
       {
+         log.error("No field found for {}" , name);
          throw new IllegalStateException("No field found for " + name);
       }
       return fields.iterator().next();

@@ -34,6 +34,7 @@ import com.percussion.error.PSException;
 import com.percussion.error.PSExceptionUtils;
 import com.percussion.html.PSHtmlUtils;
 import com.percussion.server.PSRequest;
+import com.percussion.server.PSServer;
 import com.percussion.server.webservices.PSWebServicesRequestHandler;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.xml.PSNodePrinter;
@@ -309,8 +310,8 @@ public class PSInlineLinkProcessor
       {
          org.jsoup.nodes.Document jDoc = PSHtmlUtils.createHTMLDocument(text,
                  StandardCharsets.UTF_8,
-                 false,
-                 null);
+                 !PSServer.isHtmlCleaningDisabled(),
+                 "html-cleaner.properties");
 
          //Just get the body contents
          jDoc.html(jDoc.body().html());

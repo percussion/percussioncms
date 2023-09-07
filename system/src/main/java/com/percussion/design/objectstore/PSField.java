@@ -780,7 +780,7 @@ public class PSField extends PSComponent
     * cleanup properties.
     *
     * @return the cleanup properties file, never <code>null</code>
-    *    or empty, defaults to 'rxW2Ktidy.properties'. All slashes normalized
+    *    or empty, defaults to 'html-cleaner.properties'. All slashes normalized
     *    to forward slash.
     */
    public String getCleanupPropertiesFile()
@@ -790,7 +790,7 @@ public class PSField extends PSComponent
       if (property != null)
          return (String) property.getValue();
 
-      return "rxW2Ktidy.properties";
+      return "html-cleaner.properties";
    }
 
    /**
@@ -3318,7 +3318,7 @@ public class PSField extends PSComponent
     * <code>PSProperty.TYPE_STRING</code>. The value of this property is a
     * path relative to the Rhythmyx server root. The designer is responsible to
     * make sure that the referenced file exists. Defaults to
-    * 'rxW2Ktidy.properties' available in every installation from the Rhythmyx
+    * 'html-cleaner.properties' available in every installation from the Rhythmyx
     * root.
     */
    public static final String CLEANUP_PROPERTIES_PROPERTY = "cleanupProperties";

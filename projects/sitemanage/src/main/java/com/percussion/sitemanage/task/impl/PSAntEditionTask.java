@@ -49,25 +49,12 @@ import org.apache.tools.ant.Project;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.configFilesExist;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.filesModifiedAfterPublished;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.getNonSecureConfigurationFolder;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.getSecureFilesPath;
-import static com.percussion.utils.service.impl.PSSiteConfigUtils.updatePublishedDate;
-import static org.apache.commons.lang.StringUtils.EMPTY;
-import static org.apache.commons.lang.StringUtils.isBlank;
-import static org.apache.commons.lang.StringUtils.isNotBlank;
-import static org.apache.commons.lang.StringUtils.startsWithIgnoreCase;
-import static org.apache.commons.lang.Validate.isTrue;
-import static org.apache.commons.lang.Validate.notEmpty;
-import static org.apache.commons.lang.Validate.notNull;
+import static com.percussion.utils.service.impl.PSSiteConfigUtils.*;
+import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.Validate.*;
 
 /**
  * 
@@ -194,13 +181,13 @@ public class PSAntEditionTask implements IPSEditionTask
                     "temp" + File.separator + "publish" + File.separator + jobId + File.separator + "sitemaps");
             prepareFtpProperties(props, site, pubServer);
 
-            // If the publish server uses an absolute path, the configuration files are
-            // not copyied over.
+            // If the publishing server uses an absolute path, the configuration files are
+            // not copied over.
             if (!Boolean.parseBoolean(pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, "false"))) {
                 preparePublishConfigFiles(props, site, pubServer.getServerId());
             }
 
-            if (Boolean.parseBoolean(pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, "false")) && Boolean.valueOf(pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_SECURE_SITE_CONF, "false"))) {
+            if (Boolean.parseBoolean(pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, "false")) && Boolean.parseBoolean(pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_SECURE_SITE_CONF, "false"))) {
                 preparePublishConfigFiles(props, site, pubServer.getServerId());
             }
 
@@ -457,7 +444,7 @@ public class PSAntEditionTask implements IPSEditionTask
         String fullpath = pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_FOLDER_PROPERTY, "");
 
         // do we need to publish to absolute path?
-        if (!Boolean.valueOf(pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, "false")))
+        if (!Boolean.parseBoolean(pubServer.getPropertyValue(IPSPubServerDao.PUBLISH_OWN_SERVER_PROPERTY, "false")))
         {
             boolean isAbsolutePath = fullpath.startsWith("/");
             if (isAbsolutePath)
@@ -614,16 +601,26 @@ public class PSAntEditionTask implements IPSEditionTask
          * org.apache.tools.ant.BuildListener#messageLogged(org.apache.tools
          * .ant.BuildEvent)
          * 
-         * The messages that must be logged are the ones that detail the files
-         * being copyied. The priority of them is 3 (Verbose)
+         * Pass log messages through based on event priority levels. Verbose goes to info instead of trace.
          */
         @Override
         public void messageLogged(BuildEvent event)
         {
-            if (Project.MSG_VERBOSE == event.getPriority()
-                    && startsWithIgnoreCase(event.getMessage(), COPYING_PREFIX))
-            {
-                log.info(event.getMessage());
+            switch(event.getPriority()) {
+                case Project.MSG_DEBUG:
+                    log.debug(event.getMessage());
+                    break;
+                case Project.MSG_ERR:
+                    log.error(event.getMessage());
+                    break;
+                case Project.MSG_VERBOSE:
+                    log.info(event.getMessage());
+                    break;
+                case Project.MSG_WARN:
+                    log.warn(event.getMessage());
+                    break;
+                default:
+                    log.info(event.getMessage());
             }
         }
 

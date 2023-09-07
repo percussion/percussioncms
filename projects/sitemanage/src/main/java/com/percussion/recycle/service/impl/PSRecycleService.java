@@ -348,6 +348,11 @@ public class PSRecycleService implements IPSRecycleService {
                     if (navService.getNavonContentTypeIds().contains(summ.getContentTypeId())) {
                         recycleItem(rel.getDependent().getId());
                         foundNavonType = true;
+                    } else if(101==summ.getContentTypeId()) {
+                        IPSGuid itemGuid = idMapper.getGuid(rel.getDependent());
+                        recycleFolder(itemGuid);
+                    } else {
+                        recycleItem(rel.getDependent().getId());
                     }
                 }
             }

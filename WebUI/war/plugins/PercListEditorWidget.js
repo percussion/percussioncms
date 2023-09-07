@@ -46,8 +46,8 @@
             '    </div>' +
             '' +
             '    <div id="perc-ui-listedit-listitemfield">' +
-            '        <input id="perc-ui-permission-usernamefield" name="perc-ui-permission-usernamefield"/>' +
-            '        <div id="perc-ui-permission-plusbutton" title="Add user"></div>' +
+            '        <input id="perc-ui-permission-usernamefield" title="'+I18N.message("perc.ui.rolePropsDialog.title@Enter a role")+'" name="perc-ui-permission-usernamefield"/>' +
+            '        <div id="perc-ui-permission-plusbutton" role="button" title="'+I18N.message("perc.ui.rolePropsDialog.title@Add User")+'"></div>' +
             '    </div>' +
             '' +
             '    <div id="perc-ui-permission-user-list-scroll-pane">' +
@@ -373,12 +373,14 @@
         function disablePlusButton() {
             plusButton
                 .addClass("disabled")
+				.attr("aria-disabled","true")
                 .off();
         }
 
         function enablePlusButton() {
             plusButton
                 .removeClass("disabled")
+				.attr("aria-disabled","false")
                 .on("click",function() {
                     var itemText = inputField.val();
                     addListItem(itemText);

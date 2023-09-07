@@ -46,6 +46,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -97,10 +98,11 @@ public class PSSecurityFilterTest
 }
 
    @BeforeClass
-   public static void setupClass() throws IOException {
+   public static void setupClass() throws IOException, URISyntaxException {
       System.setProperty(PathUtils.DEPLOY_DIR_PROP, tempFolder.getRoot().getAbsolutePath());
 
-      copyDirectory(PSSecurityFilterTest.class.getResource(PSSecurityFilterTest.TEST_FILE_DIR).getPath(),
+      copyDirectory(Paths.get(
+              PSSecurityFilterTest.class.getResource(PSSecurityFilterTest.TEST_FILE_DIR).toURI()).toString(),
               tempFolder.getRoot().getAbsolutePath() );
 
    }

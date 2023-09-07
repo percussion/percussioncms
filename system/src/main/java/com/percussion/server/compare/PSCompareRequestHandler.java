@@ -61,7 +61,7 @@ public class PSCompareRequestHandler implements IPSLoadableRequestHandler
    @SuppressWarnings("rawtypes")
    public void init(Collection requestRoots, InputStream cfgFileIn)
    {
-      if (requestRoots == null || requestRoots.size() == 0)
+      if (requestRoots == null || requestRoots.isEmpty())
          throw new IllegalArgumentException(
                  "must provide at least one request root");
 
@@ -78,15 +78,11 @@ public class PSCompareRequestHandler implements IPSLoadableRequestHandler
       {
          try
          {
-            configDoc = PSXmlDocumentBuilder.createXmlDocument(cfgFileIn, true);
+            configDoc = PSXmlDocumentBuilder.createXmlDocument(cfgFileIn, false);
          }
-         catch (IOException ioe)
+         catch (IOException | SAXException ioe)
          {
             PSConsole.printMsg(HANDLER, ioe.getMessage());
-         }
-         catch (SAXException sxe)
-         {
-            PSConsole.printMsg(HANDLER, sxe.getMessage());
          }
 
       }

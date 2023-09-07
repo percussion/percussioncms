@@ -106,7 +106,7 @@ public class PSDeployableElement extends PSDependency
    /** 
     * Sets the description for this object.
     * 
-    * @param desc The description, may not be <code>null</code>.
+    * @param description The description, may not be <code>null</code>.
     * 
     * @throws IllegalArgumentException if <code>desc</code> is invalid.
     */
@@ -143,6 +143,7 @@ public class PSDeployableElement extends PSDependency
     * 
     * @throws IllegalArgumentException if doc is <code>null</code>.
     */
+   @Override
    public Element toXml(Document doc)
    {
       if (doc == null)
@@ -167,6 +168,7 @@ public class PSDeployableElement extends PSDependency
     * @throws PSUnknownNodeTypeException if the XML element node does not 
     * represent a type supported by the class.
     */
+   @Override
    public void fromXml(Element sourceNode) throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
@@ -201,6 +203,7 @@ public class PSDeployableElement extends PSDependency
    }
    
    // see IPSDeployComponent
+   @Override
    public boolean equals(Object obj)
    {
       boolean isEqual = true;
@@ -224,6 +227,7 @@ public class PSDeployableElement extends PSDependency
    }
    
    // see IPSDeployComponent
+   @Override
    public void copyFrom(IPSDeployComponent obj)
    {
       if (obj == null)
@@ -238,6 +242,7 @@ public class PSDeployableElement extends PSDependency
    }
    
    // see IPSDeployComponent interface
+   @Override
    public int hashCode()
    {
       return super.hashCode() + m_description.hashCode();

@@ -23,7 +23,7 @@
     <head>
         <title>Logout Page</title> 
         <style type="text/css">
-        body {background-color: #6C717C; font-family: Verdana; margin: 0; padding: 0; }
+        body { font-family: Verdana; margin: 0; padding: 0; }
         .perc-login-logo {color: #121212; margin-top: 160px; margin-bottom: 100px;}
         #loginform .perc-form    { }
         #perc-forgot {color: #fff;}

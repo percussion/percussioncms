@@ -44,7 +44,7 @@ public class PSDependencyMap
 {
    private static final Logger log = LogManager.getLogger(IPSConstants.PACKAGING_LOG);
    /**
-    * Construct this map from a list of dependency type defintions.
+    * Construct this map from a list of dependency type definitions.
     * 
     * @param defs An iterator over zero or more <code>PSDependencyDef</code>
     * objects.  May not be <code>null</code>, or contain <code>null</code> 
@@ -61,17 +61,13 @@ public class PSDependencyMap
          
       while(defs.hasNext())
       {
-         Object obj = defs.next();
+         PSDependencyDef obj = defs.next();
          if (obj == null)
             throw new IllegalArgumentException(
                "defs may not contain <code>null</code> entries");
-         if (!(obj instanceof PSDependencyDef))
-            throw new IllegalArgumentException(
-               "defs must only contain PSDependencyDef objects");
-         
-         PSDependencyDef def = (PSDependencyDef)obj;
-         String type = def.getObjectType();
-         m_dependencyMap.put(type, def);
+
+         String type = obj.getObjectType();
+         m_dependencyMap.put(type, obj);
       }
       
       buildDependencyMaps();
@@ -80,7 +76,7 @@ public class PSDependencyMap
    /**
     * Construct this map from its XML representation.
     * 
-    * @param sourceNode The element containing the XML defintion. May not be
+    * @param sourceNode The element containing the XML definition. May not be
     * <code>null</code>.  Format is:
     * 
     * <pre><code>
@@ -106,7 +102,7 @@ public class PSDependencyMap
     * exceptions not noted below.
     * 
     * @param buildDepMaps If <code>true</code>, handler, parent and child maps
-    * will be built (requires <code>PSDependencyHandler</code> to be implemented
+    * will be built (requires <code>PSDependencyHandler</code>) to be implemented
     * for each <code>PSDependencyDef</code> to be defined, otherwise only loads
     * the defs.  If <code>false</code>, then any calls made to  
     * <code>getDependencyHandler()</code>, 
@@ -115,7 +111,7 @@ public class PSDependencyMap
     * <code>IllegalArgumentException</code>s.
     */
    PSDependencyMap(Element sourceNode, boolean buildDepMaps)
-      throws PSUnknownNodeTypeException, PSDeployException
+      throws PSUnknownNodeTypeException
    {
       if (sourceNode == null)
          throw new IllegalArgumentException("sourceNode may not be null");
@@ -149,7 +145,7 @@ public class PSDependencyMap
     * 
     * @param type The type to return, may not be <code>null</code> or empty.
     * 
-    * @return The def, or <code>null</code> if a defintion of that type is not
+    * @return The def, or <code>null</code> if a definition of that type is not
     * found in this map.
     * 
     * @throws IllegalArgumentException if <code>type</code> is <code>null</code> 
@@ -160,7 +156,7 @@ public class PSDependencyMap
       if (type == null || type.trim().length() == 0)
          throw new IllegalArgumentException("type may not be null or empty");
          
-      return (PSDependencyDef)m_dependencyMap.get(type);
+      return m_dependencyMap.get(type);
    }
 
    /**
@@ -179,8 +175,8 @@ public class PSDependencyMap
       if (def == null)
          throw new IllegalArgumentException("def may not be null");
       
-      PSDependencyHandler handler = 
-         (PSDependencyHandler)m_handlerMap.get(def.getObjectType());
+      PSDependencyHandler handler =
+              m_handlerMap.get(def.getObjectType());
       if (handler == null)
          throw new IllegalArgumentException("def not found in this map");
       
@@ -200,12 +196,12 @@ public class PSDependencyMap
     * @throws IllegalArgumentException if <code>def</code> is invalid or not
     * defined by this map.
     */
-   public Iterator getChildDependencyTypes(PSDependencyDef def) 
+   public Iterator<PSDependencyDef> getChildDependencyTypes(PSDependencyDef def)
    {
       if (def == null)
          throw new IllegalArgumentException("def may not be null");
       
-      List childList = (List)m_childDefMap.get(def.getObjectType());
+      List<PSDependencyDef> childList = m_childDefMap.get(def.getObjectType());
       if (childList == null)
          throw new IllegalArgumentException("def not found in this map");
          
@@ -225,7 +221,7 @@ public class PSDependencyMap
     * @throws IllegalArgumentException if <code>def</code> is invalid or not
     * defined by this map.
     */
-   public Iterator getParentDependencyTypes(PSDependencyDef def)
+   public Iterator<PSDependencyDef> getParentDependencyTypes(PSDependencyDef def)
    {
       if (def == null)
          throw new IllegalArgumentException("def may not be null");
@@ -233,18 +229,18 @@ public class PSDependencyMap
       if (!m_handlerMap.containsKey(def.getObjectType()))
          throw new IllegalArgumentException("def not found in this map");
       
-      List parentList = (List)m_parentDefMap.get(def.getObjectType());
+      List<PSDependencyDef> parentList = m_parentDefMap.get(def.getObjectType());
       if (parentList == null)
       {
          // that's okay, just means no one reports this def as a child
-         parentList = new ArrayList();
+         parentList = new ArrayList<>();
       }
       
       return parentList.iterator();
    }
 
    /**
-    * Gets all dependency defintions from this map
+    * Gets all dependency definitions from this map
     * 
     * @return An iterator over zero or more <code>PSDependencyDef</code>
     * objects, never <code>null</code>.
@@ -257,50 +253,45 @@ public class PSDependencyMap
    /**
     * Adds entries to the handler map, parent map, and child map.  Handler
     * classes for each dependency type are instantiated and added to the handler 
-    * map ({@link #m_handlerMap}), the child type defintions for each dependency 
+    * map ({@link #m_handlerMap}), the child type definitions for each dependency
     * type are determined and added to the child map ({@link #m_childDefMap}), 
     * and the parent type definitions for each dependency type are determined 
     * and added to the parent map ({@link #m_parentDefMap}).
-    * 
-    * @throws PSDeployException if there are any errors.
+    *
     */
-   private void buildDependencyMaps() throws PSDeployException
+   private void buildDependencyMaps()
    {
-      m_handlerMap = new HashMap();
-      m_parentDefMap = new HashMap();
-      m_childDefMap = new HashMap();
+      m_handlerMap = new HashMap<>();
+      m_parentDefMap = new HashMap<>();
+      m_childDefMap = new HashMap<>();
 
-         Iterator defs = m_dependencyMap.values().iterator();
+         Iterator<PSDependencyDef> defs = m_dependencyMap.values().iterator();
          while (defs.hasNext()) {
             try{
                // create handler and add to handler map
-               PSDependencyDef def = (PSDependencyDef) defs.next();
+               PSDependencyDef def = defs.next();
                String defType = def.getObjectType();
                PSDependencyHandler handler = PSDependencyHandler.getHandlerInstance(
                        def, this);
                m_handlerMap.put(defType, handler);
 
-               Iterator childTypes = handler.getChildTypes();
-               List childList = new ArrayList();
+               Iterator<String> childTypes = handler.getChildTypes();
+               List<PSDependencyDef> childList = new ArrayList<>();
                m_childDefMap.put(defType, childList);
                while (childTypes.hasNext()) {
                   try {
                      // get child defs and add them as children in the child map
-                     String childType = (String) childTypes.next();
+                     String childType = childTypes.next();
                      PSDependencyDef childDef = getDependencyDef(childType);
                      if (childDef == null) {
-                        Object args[] = {childType, defType};
+                        Object[] args = {childType, defType};
                         throw new PSDeployException(
                                 IPSDeploymentErrors.CHILD_DEPENDENCY_TYPE_NOT_FOUND, args);
                      }
                      childList.add(childDef);
 
                      // for each child, add the current def as its parent in parent map
-                     List parentList = (List) m_parentDefMap.get(childType);
-                     if (parentList == null) {
-                        parentList = new ArrayList();
-                        m_parentDefMap.put(childType, parentList);
-                     }
+                     List<PSDependencyDef> parentList = m_parentDefMap.computeIfAbsent(childType, k -> new ArrayList<>());
                      parentList.add(def);
                   }catch(Exception e){
                      log.error(PSExceptionUtils.getMessageForLog(e));
@@ -319,7 +310,7 @@ public class PSDependencyMap
    public static final String XML_NODE_NAME = "PSXDependencyMap";
 
    /**
-    * Map of dependency defintions by type.  Key is the dependency type as a
+    * Map of dependency definitions by type.  Key is the dependency type as a
     * <code>String</code>, never <code>null</code>, and the  value is the 
     * <code>PSDependencyDef</code> object, never <code>null</code>.  Map is 
     * never <code>null</code>, entries are added during ctor, never modified
@@ -333,27 +324,27 @@ public class PSDependencyMap
     * <code>PSDependencyHandler</code> object, never <code>null</code>.  Map is 
     * initialized and filled during construction, never modified after that.
     */
-   private Map m_handlerMap = new HashMap();
+   private Map<String, PSDependencyHandler> m_handlerMap = new HashMap<>();
    
    /**
-    * Map of parent dependency defintions by child type.  Key is the child's 
+    * Map of parent dependency definitions by child type.  Key is the child's
     * dependency type as a <code>String</code>, never <code>null</code>, and the  
-    * value is the a list of parent <code>PSDependencyDef</code> objects, never
+    * value is a list of parent <code>PSDependencyDef</code> objects, never
     * <code>null</code> or empty.  Map is never <code>null</code>, entries are 
     * added during ctor, never modified after that.  Not every type represented
     * by this map will have an entry - only those that are children of another
     * dependency.
     */
-   private Map m_parentDefMap;
+   private Map<String,List<PSDependencyDef>> m_parentDefMap;
    
    /**
-    * Map of child dependency defintions by parent type.  Key is the parent's 
+    * Map of child dependency definitions by parent type.  Key is the parent's
     * dependency type as a <code>String</code>, never <code>null</code>, and the  
-    * value is the a list of child <code>PSDependencyDef</code> objects, never
+    * value is a list of child <code>PSDependencyDef</code> objects, never
     * <code>null</code> or empty.  Map is never <code>null</code>, entries are 
     * added during ctor, never modified after that.  Every type represented by 
     * this map will have an entry - those that do not have child dependencies
     * will have an empty list.
     */
-   private Map m_childDefMap;
+   private Map<String,List<PSDependencyDef>> m_childDefMap;
 }

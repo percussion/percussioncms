@@ -16,8 +16,12 @@
  */
 package com.percussion.workflow;
 
+import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionErrors;
 import com.percussion.util.PSPreparedStatement;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,7 +35,7 @@ import java.util.Map;
 
 /**
  * A class that provides methods for accessing and setting fields in the
- * transitions context. The table joins are hidden from the user.
+ * transitions' context. The table joins are hidden from the user.
  *
  * @author Rammohan Vangapalli
  * @version 1.0
@@ -41,9 +45,9 @@ import java.util.Map;
 public class PSTransitionsContext implements IPSTransitionsContext
 {
    private int workflowID = 0;
-   private PreparedStatement statement = null;
-   private Connection connection = null;
-   private ResultSet m_Rs = null;
+   private PreparedStatement statement;
+   private Connection connection;
+   private ResultSet m_Rs;
    private int m_nCount = 0;
 
    private int m_nTransitionID = 0;
@@ -57,22 +61,24 @@ public class PSTransitionsContext implements IPSTransitionsContext
    private String m_sTransitionComment = "";
    private String m_sTransitionActions = "";
    private String m_sTransitionRoles = "";
-   private List m_TransitionRoleNames_List = null;
-   private List m_TransitionRoleIds_List = null;
-   private Map m_transitionRoleNamesIdMap = new HashMap();
+   private List<String> m_TransitionRoleNames_List = null;
+   private List<Integer> m_TransitionRoleIds_List = null;
+   private Map<Integer,String> m_transitionRoleNamesIdMap = new HashMap<>();
 
-   private List  m_TransitionActions_List = null;
+   private List<String>  m_TransitionActions_List = null;
    private int m_nTransitionType = 0;
    private int m_nAgingType = 0;
    private int m_nAgingInterval = 0;
    private String m_sSystemField = "";
    private boolean m_bIsAgingTransition = false;
+
+   private static final Logger log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
    
    /**
     * Constructor specifying the transition ID.
     *
     * @param transitionID        ID of the transition
-    * @param connection          data base connection
+    * @param connection          database connection
     * @throws                    SQLException if an SQL error occurs
     * @throws                    PSEntryNotFoundException if no records
     *                            were returned corresponding to this set
@@ -93,7 +99,7 @@ public class PSTransitionsContext implements IPSTransitionsContext
          statement.setInt(1, transitionID);
          statement.setInt(2, workflowid);
          m_Rs = statement.executeQuery();
-         if(false == moveNext())
+         if(!moveNext())
          {
             close();
             throw new PSEntryNotFoundException(IPSExtensionErrors.NO_RECORDS);
@@ -112,7 +118,7 @@ public class PSTransitionsContext implements IPSTransitionsContext
     * and state which the content item is transitioning from.
     *
     * @param workFlowID          ID of the workflow for this item
-    * @param connection          data base connection
+    * @param connection          database connection
     * @param transitionTrigger   trigger for the action associated with this
     *                            transition, e.g. "reject"
     * @param transitionFromStateID  state which item is transitioning from
@@ -141,16 +147,12 @@ public class PSTransitionsContext implements IPSTransitionsContext
          statement.setString(2, transitionTrigger);
          statement.setInt(3, transitionFromStateID);
          m_Rs = statement.executeQuery();
-         if(false == moveNext())
+         if(!moveNext())
          {
             close();
             throw new PSEntryNotFoundException(IPSExtensionErrors.NO_RECORDS);
          }
          m_nCount = 1;
-      }
-      catch(SQLException e)
-      {
-         throw e;
       }
       finally
       {
@@ -163,7 +165,7 @@ public class PSTransitionsContext implements IPSTransitionsContext
     * and state which the content item is transitioning from.
     *
     * @param workFlowID          ID of the workflow for this item
-    * @param connection          data base connection
+    * @param connection          database connection
     * @param transitionFromStateID  state which item is transitioning from
     * @throws                    SQLException if an SQL error occurs
     * @throws                    PSEntryNotFoundException if no records
@@ -206,6 +208,7 @@ public class PSTransitionsContext implements IPSTransitionsContext
          }
          catch(Exception e)
          {
+            log.error(PSExceptionUtils.getMessageForLog(e));
          }
 
          //redo the whole thing!!!
@@ -236,7 +239,7 @@ public class PSTransitionsContext implements IPSTransitionsContext
    private void buildRolesList(int transitionID, int workflowid)
       throws SQLException
    {
-      PreparedStatement stmt = null;
+      PreparedStatement stmt;
       String queryString = "SELECT ROLES.ROLENAME, " +
       "TRANSITIONROLES.TRANSITIONROLEID " +
       "FROM ROLES, TRANSITIONROLES WHERE ROLES.WORKFLOWAPPID = " +
@@ -245,7 +248,7 @@ public class PSTransitionsContext implements IPSTransitionsContext
       "AND TRANSITIONROLES.TRANSITIONID = ? AND " +
       "TRANSITIONROLES.WORKFLOWAPPID = ? ";
 
-      ResultSet resSet = null;
+      ResultSet resSet;
 
       try
       {
@@ -256,16 +259,16 @@ public class PSTransitionsContext implements IPSTransitionsContext
          stmt.setInt(2, workflowid);
          resSet = stmt.executeQuery();
 
-         m_TransitionRoleNames_List = new ArrayList();
-         m_TransitionRoleIds_List = new ArrayList();
+         m_TransitionRoleNames_List = new ArrayList<>();
+         m_TransitionRoleIds_List = new ArrayList<>();
          while(resSet.next())
          {  /** @todo refactor to remove these lists and get from Map */
             m_TransitionRoleNames_List.add(resSet.getString("ROLENAME"));
             m_TransitionRoleIds_List.add(
-               new Integer(resSet.getInt("TRANSITIONROLEID")));
+                    resSet.getInt("TRANSITIONROLEID"));
 
             m_transitionRoleNamesIdMap.put(
-               new Integer(resSet.getInt("TRANSITIONROLEID")),
+                    resSet.getInt("TRANSITIONROLEID"),
                resSet.getString("ROLENAME"));
          }
          try
@@ -275,13 +278,9 @@ public class PSTransitionsContext implements IPSTransitionsContext
          }
          catch(Exception e)
          {
-            e.printStackTrace(System.out);
+            log.error(PSExceptionUtils.getMessageForLog(e));
          }
-      }
-      catch(SQLException e)
-      {
-         throw e;
-      }
+      }finally{}
 
    }
 
@@ -372,7 +371,7 @@ public class PSTransitionsContext implements IPSTransitionsContext
           m_sTransitionComment.trim().equalsIgnoreCase("y");
    }
 
-   public List getTransitionActions()
+   public List<String> getTransitionActions()
    {
       return  m_TransitionActions_List;
    }
@@ -381,7 +380,7 @@ public class PSTransitionsContext implements IPSTransitionsContext
     * Returns a list of role names for this transition
     * @return may be <code>null</code>
     */
-   public List getTransitionRoles()
+   public List<String> getTransitionRoles()
    {
       return m_TransitionRoleNames_List;
    }
@@ -400,18 +399,18 @@ public class PSTransitionsContext implements IPSTransitionsContext
     * Returns a list of role id for this transition
     * @return may be <code>null</code>
     */
-   public List getTransitionRolesIds()
+   public List<Integer> getTransitionRolesIds()
    {
       return m_TransitionRoleIds_List;
    }
 
    /**
-    * Returns a map of the roles in this transiton, with the roleid as the
+    * Returns a map of the roles in this transition, with the roleid as the
     * key and the rolename as the value.
     *
     * @return the map, may be <code>null</code>.
     */
-   public Map getTransitionRoleNameIdMap()
+   public Map<Integer,String> getTransitionRoleNameIdMap()
    {
       return m_transitionRoleNamesIdMap;
    }
@@ -424,7 +423,7 @@ public class PSTransitionsContext implements IPSTransitionsContext
    public boolean moveNext() throws SQLException
    {
       boolean bSuccess = m_Rs.next();
-      if(false == bSuccess)
+      if(!bSuccess)
       {
          return bSuccess;
       }
@@ -489,14 +488,15 @@ public class PSTransitionsContext implements IPSTransitionsContext
 
    public void close()
    {
-      //release resouces
+      //release resources
       try
       {
-         if(null != connection && false == connection.getAutoCommit())
+         if(null != connection && !connection.getAutoCommit())
             connection.setAutoCommit(true);
       }
       catch(SQLException e)
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
       }
 
       try

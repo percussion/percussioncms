@@ -15,22 +15,16 @@ html, body {
     width: 100%;
     height: 100%;
     background-color: #ffffff;
-    color: #494949;
     color: var(--perc-text-dark);
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', sans-serif;
 }
 
 html.wait, html.wait * {
     cursor: wait !important;
 }
 
-::-webkit-scrollbar {
-    width: 0px;  /* remove scrollbar space */
-    background: transparent;  /* optional: just make scrollbar invisible */
-}
 
 .form-control:focus {
-    border-color: #007ea8;
     border-color: var(--perc-branded);
     box-shadow: 0 0 0 0.2rem rgb(0,126,168, .65);
 }
@@ -116,7 +110,7 @@ a.perc-btn-inverse:hover {
 #percFooterAlertTarget .alert {
     margin: 0;
     width: 100%;
-    border-radius: 0px;
+    border-radius: 0;
     font-size: 18px;
 }
 
@@ -291,7 +285,7 @@ button.perc-confirmation-button.perc-confirmation-button-dark:hover:not(.disable
     position: relative;
 }
 
-#percAbout {
+#percAbout, #percPasswordDialogTarget {
     border-radius: 4px;
     vertical-align: middle;
     background-color: var(--perc-branded-dark);
@@ -314,20 +308,6 @@ button.perc-confirmation-button.perc-confirmation-button-dark:hover:not(.disable
     margin-top: 35px;
 }
 
-#percPasswordDialogTarget {
-    border-radius: 4px;
-    vertical-align: middle;
-    background-color: var(--perc-branded-dark);
-    color: #ffffff;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    font-size: 16px;
-    font-weight: 400;
-    z-index: 1039;
-}
 
 #percPasswordDialogTarget *:focus {
     box-shadow: 0 0 0 0.2rem rgba(255,255,255,0.65);

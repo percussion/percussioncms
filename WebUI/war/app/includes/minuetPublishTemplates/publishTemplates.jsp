@@ -14,18 +14,18 @@
         <div class="row">
             <div class="col-md-4 order-sm-first order-md-2 mb-3">
                 <div class="btn-group btn-group-toggle d-flex" data-toggle="buttons">
-                    <label sr-only='<i18n:message key = "perc.ui.publish.title@Card"/>' class="btn btn-secondary perc-site-view-toggle-button active">
-                        <input value="card" type="radio" name="percSiteView" id="percSiteCardOption" autocomplete="off" checked><i aria-hidden class="fas fa-th fa-fw"></i>&nbsp;&nbsp;<i18n:message key = "perc.ui.publish.title@Card"/>
+                    <label tabindex="3" role="button" title='<i18n:message key = "perc.ui.publish.title@Card"/>' class="btn btn-secondary perc-site-view-toggle-button active">
+                        <input value="card" type="radio" name="percSiteView" id="percSiteCardOption" autocomplete="off" checked><i aria-hidden="true" class="fas fa-th fa-fw"></i>&nbsp;&nbsp;<i18n:message key = "perc.ui.publish.title@Card"/>
                     </label>
-                    <label sr-only='<i18n:message key = "perc.ui.publish.title@List"/>' class="btn btn-secondary perc-site-view-toggle-button">
-                        <input value="list" type="radio" name="percSiteView" id="percSiteListOption" autocomplete="off"><i aria-hidden class="fas fa-th-list"></i>&nbsp;&nbsp;<i18n:message key = "perc.ui.publish.title@List"/>
+                    <label tabindex="4" role="button" title='<i18n:message key = "perc.ui.publish.title@List"/>' class="btn btn-secondary perc-site-view-toggle-button">
+                        <input value="list" type="radio" name="percSiteView" id="percSiteListOption" autocomplete="off"><i aria-hidden="true" class="fas fa-th-list"></i>&nbsp;&nbsp;<i18n:message key = "perc.ui.publish.title@List"/>
                     </label>
                 </div>
             </div>
             <div class="col-md-8 float-left">
                 <!-- Filter Field -->
                 <div class="md-form mt-0">
-                    <input class="form-control perc-site-filter-field" type="text" placeholder='<i18n:message key="perc.ui.publish.title@Filter Sites"/>' aria-label='<i18n:message key="perc.ui.publish.title@Filter Sites"/>'>
+                    <input class="form-control perc-site-filter-field" tabindex="2" type="text" placeholder='<i18n:message key="perc.ui.publish.title@Filter Sites"/>' aria-label='<i18n:message key="perc.ui.publish.title@Filter Sites"/>'>
                 </div>
             </div>
         </div>
@@ -37,14 +37,14 @@
         <div id="sitesCardView" class="row justify-content-center" style="display:none;">
             {{#each SiteSummary}}
             <div class="col-lg-4 perc-site-card-container mb-4">
-                <div aria-label="{{name}}" tabindex="0" role="button" data-perc-site-id="{{siteId}}" class="card perc-site-card perc-site-select h-100">
+                <div aria-label="{{name}}" title="{{name}}" tabindex="0" role="button" data-perc-site-id="{{siteId}}" class="card perc-site-card perc-site-select h-100">
                     <div class="card-header perc-site-card-name text-center">
                         {{name}}
                     </div>
-                    <div class="card-body perc-site-card-icon-container">
-                        <h5 class="card-title perc-site-card-icon text-center align-middle">
-                            <i aria-hidden class="fas fa-globe-americas fa-10x"></i>
-                        </h5>
+                    <div class="card-body perc-site-card-icon-container perc-site-card-icon-container-changes">
+                        <button title="<i18n:message key = "perc.ui.publish.title@Site Configuration"/>" class="card-title perc-site-card-icon perc-site-card-icon-changes text-center align-middle">
+                            <i aria-hidden="true" class="fas fa-globe-americas fa-10x"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -56,8 +56,8 @@
                     <table class="table table-striped table-hover">
                         <tbody>
                         {{#each SiteSummary}}
-                        <tr aria-label="{{name}}" role="button" tabindex="0" scope="row" data-perc-site-id="{{siteId}}" class="perc-site-select">
-                            <td class="align-middle w-5"><i aria-hidden class="fas fa-globe-americas fa-2x fa-fw"></i></td>
+                        <tr aria-label="{{name}}" role="button" tabindex="0" data-perc-site-id="{{siteId}}" class="perc-site-select">
+                            <td class="align-middle w-5"><i aria-hidden="true" class="fas fa-globe-americas fa-2x fa-fw"></i></td>
                             <td class="align-middle">{{name}}</td>
                             <td class="align-middle d-none d-sm-table-cell">{{folderPath}}</td>
                         </tr>
@@ -83,9 +83,9 @@
         </div>
         <div class="row">
             <div class="col perc-publish-state-nav text-right">
-                <span class="float-left"><button id="percBackToSites" class="btn perc-btn-primary"><i18n:message key="perc.ui.publish.reports@Back"/></button></span>&nbsp;
-                <span><button title='<i18n:message key="perc.ui.publish.view@Add New Server"/>' id="percAddServer" class="btn perc-btn-primary"><i aria-hidden class="fas fa-plus"></i></button></span>
-                <span><button title='<i18n:message key="perc.ui.publish.view@Refresh Server Info"/>' id="percRefreshServerList" class="btn perc-btn-primary"><i aria-hidden class="fas fa-sync-alt"></i></button></span>
+                <span class="float-left"><button title='<i18n:message key="perc.ui.publish.reports@Back"/>' tabindex="0" id="percBackToSites" class="btn perc-btn-primary"><i18n:message key="perc.ui.publish.reports@Back"/></button></span>&nbsp;
+                <span><button title='<i18n:message key="perc.ui.publish.view@Add New Server"/>' tabindex="0" id="percAddServer" class="btn perc-btn-primary"><i aria-hidden="true" class="fas fa-plus"></i></button></span>
+                <span><button title='<i18n:message key="perc.ui.publish.view@Refresh Server Info"/>' tabindex="0" id="percRefreshServerList" class="btn perc-btn-primary"><i aria-hidden="true" class="fas fa-sync-alt"></i></button></span>
             </div>
         </div>
         <div class="row">
@@ -134,7 +134,7 @@
 
 <!-- Template for site title and logo (v2 layout) -->
 <script id="templateSiteTitleLogo" type="text/x-handlebars-template">
-    <span class="perc-site-logo-small"><i aria-hidden class="fas fa-globe-americas fa-3x"></i></span>&nbsp;<span class="perc-site-name-header">{{name}}</span>
+    <span class="perc-site-logo-small"><i aria-hidden="true" class="fas fa-globe-americas fa-3x"></i></span>&nbsp;<span class="perc-site-name-header">{{name}}</span>
 </script>
 
 <!-- Template for rows of publishing servers (v2 layout) -->
@@ -146,14 +146,14 @@
             <span class="perc-server-list-name">{{serverName}}{{#if (validatePropertyValue serverType 'PRODUCTION')}}&nbsp;&nbsp;<i aria-label='<i18n:message key="perc.ui.publish.view@Production"/>' class="fas fa-globe-americas"></i>{{/if}}{{#if isDefault}}&nbsp;&nbsp;<i aria-label='<i18n:message key="perc.ui.publish.view@Publish Now Server"/>' class="fas fa-star"></i>{{/if}}</span>
         </div>
         <div class="col-sm-12 col-md-5 perc-server-list-col text-md-right text-sm-left">
-            <button aria-label='<i18n:message key="perc.ui.publish.title@Server Configuration"/>' class="btn perc-btn-primary perc-edit-server-properties" data-perc-server-id="{{serverId}}"><i class="fas fa-cog"></i></button>&nbsp;
+            <button title='<i18n:message key="perc.ui.publish.title@Server Configuration"/>' tabindex="0" aria-label='<i18n:message key="perc.ui.publish.title@Server Configuration"/>' class="btn perc-btn-primary perc-edit-server-properties" data-perc-server-id="{{serverId}}"><i class="fas fa-cog"></i></button>&nbsp;
             <div data-perc-server-name="{{serverName}}" class="btn-group perc-publish-button-group">
                 {{#if (enableIncremental canIncrementalPublish isFullPublishRequired)}}
-                <button aria-label='<i18n:message key="perc.ui.publish.view@Incremental Publish"/>' data-perc-publish-type="incremental" data-perc-server-id="{{serverId}}" type="button" class="btn perc-btn-primary perc-publish-button"><i18n:message key="perc.ui.publish.view@Incremental"/></button>
-                <button type="button" class="btn perc-btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button title='<i18n:message key="perc.ui.publish.view@Incremental Publish"/>' tabindex="0" aria-label='<i18n:message key="perc.ui.publish.view@Incremental Publish"/>' data-perc-publish-type="incremental" data-perc-server-id="{{serverId}}" type="button" class="btn perc-btn-primary perc-publish-button"><i18n:message key="perc.ui.publish.view@Incremental"/></button>
+                <button title='<i18n:message key="perc.ui.publish.title@Toggle Dropdown"/>' tabindex="0" type="button" class="btn perc-btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="sr-only"><i18n:message key="perc.ui.publish.title@Toggle Dropdown"/></span>
                 </button>
-                <div class="dropdown-menu">
+                <div role="button" title='<i18n:message key="perc.ui.publish.view@Full Publish"/>' tabindex="0" class="dropdown-menu">
                     <a aria-label='<i18n:message key="perc.ui.publish.view@Full Publish"/>' data-perc-publish-type="full" href="#" class="dropdown-item perc-publish-button"><i18n:message key="perc.ui.publish.title@Full"/></a>
                 </div>
                 {{else}}
@@ -168,7 +168,7 @@
 <!-- This template contains the modal for server properties (v2 layout) -->
 <script id="templateServerPropertiesModal" type="text/x-handlebars-template">
     <div id="percServerPropertiesModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4><i18n:message key="perc.ui.publish.view@Server Properties Configuration"/></h4>
@@ -305,7 +305,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-server"></i>
+                            <i aria-hidden="true" class="fas fa-server"></i>
                         </div>
                     </div>
                     <input aria-required="true" class="form-control" percServerDatabaseProp="server" id="perc-database-server-name" name="server" value="{{#filterByValue serverInfo.properties 'key' 'server'}}{{/filterByValue}}">
@@ -316,7 +316,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-plug"></i>
+                            <i aria-hidden="true" class="fas fa-plug"></i>
                         </div>
                     </div>
                     <input aria-required="true" class="form-control" percServerDatabaseProp="port" id="perc-database-port" name="port" value="{{#if (validatePropertyValue serverInfo.type 'Database')}}{{#filterByValue serverInfo.properties 'key' 'port'}}{{/filterByValue}}{{/if}}">
@@ -331,7 +331,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-user"></i>
+                            <i aria-hidden="true" class="fas fa-user"></i>
                         </div>
                     </div>
                     <input aria-required="true" class="form-control" percServerDatabaseProp="userid" id="perc-database-user-id" name="userid" value="{{#if (validatePropertyValue serverInfo.type 'Database')}}{{#filterByValue serverInfo.properties 'key' 'userid'}}{{/filterByValue}}{{/if}}">
@@ -342,7 +342,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-lock"></i>
+                            <i aria-hidden="true" class="fas fa-lock"></i>
                         </div>
                     </div>
                     <input autocomplete="off" aria-required="true" type="password" class="form-control" percServerDatabaseProp="password" id="perc-database-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'Database')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}">
@@ -355,7 +355,7 @@
         <div class="input-group">
             <div class="input-group-prepend">
                 <div class="input-group-text">
-                    <i aria-hidden class="fas fa-database"></i>
+                    <i aria-hidden="true" class="fas fa-database"></i>
                 </div>
             </div>
             <input aria-required="true" class="form-control" percServerDatabaseProp="database" id="perc-database-name" name="database" value="{{#if (validatePropertyValue serverInfo.type 'Database')}}{{#filterByValue serverInfo.properties 'key' 'database'}}{{/filterByValue}}{{/if}}">
@@ -370,7 +370,7 @@
         <div class="input-group">
             <div class="input-group-prepend">
                 <div class="input-group-text">
-                    <i aria-hidden class="fas fa-id-card-alt"></i>
+                    <i aria-hidden="true" class="fas fa-id-card-alt"></i>
                 </div>
             </div>
             <input aria-required="true" class="form-control" percServerDatabaseProp="owner" id="perc-database-owner" name="owner" value="{{#if (validatePropertyValue serverInfo.type 'Database')}}{{#filterByValue serverInfo.properties 'key' 'owner'}}{{/filterByValue}}{{/if}}">
@@ -384,7 +384,7 @@
         <div class="input-group">
             <div class="input-group-prepend">
                 <div class="input-group-text">
-                    <i aria-hidden class="fas fa-database"></i>
+                    <i aria-hidden="true" class="fas fa-database"></i>
                 </div>
             </div>
             <input aria-required="true" class="form-control" percServerDatabaseProp="schema" id="perc-database-schema" name="schema" value="{{#if (validatePropertyValue serverInfo.type 'Database')}}{{#filterByValue serverInfo.properties 'key' 'schema'}}{{/filterByValue}}{{/if}}">
@@ -395,7 +395,7 @@
         <div class="input-group">
             <div class="input-group-prepend">
                 <div class="input-group-text">
-                    <i aria-hidden class="fas fa-id-card-alt"></i>
+                    <i aria-hidden="true" class="fas fa-id-card-alt"></i>
                 </div>
             </div>
             <input aria-required="true" class="form-control" percServerDatabaseProp="sid" id="perc-database-sid" name="sid" value="{{#if (validatePropertyValue serverInfo.type 'Database')}}{{#filterByValue serverInfo.properties 'key' 'sid'}}{{/filterByValue}}{{/if}}">
@@ -435,7 +435,7 @@
         <div class="input-group mb-4">
             <div class="input-group-prepend">
                 <div class="input-group-text">
-                    <i aria-hidden class="fas fa-folder-open"></i>
+                    <i aria-hidden="true" class="fas fa-folder-open"></i>
                 </div>
             </div>
             <input aria-required="true" aria-labelledby="percFolderLocation"
@@ -491,7 +491,7 @@
         <div class="input-group">
             <div class="input-group-prepend">
                 <div class="input-group-text">
-                    <i aria-hidden class="fab fa-aws"></i>
+                    <i aria-hidden="true" class="fab fa-aws"></i>
                 </div>
             </div>
             <input aria-required="true" class="form-control" percServerFileProp="bucketlocation" id="perc-amazon-s3-bucket-location" name="bucketlocation" value="{{#filterByValue serverInfo.properties 'key' 'bucketlocation'}}{{/filterByValue}}">
@@ -516,7 +516,7 @@
                     <label  style="margin-right: 10px;" for="ARNRole">* <i18n:message key="perc.ui.publish.servers.s3@Role ARN"/>:</label>
                     <div   class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-lock"></i>
+                            <i aria-hidden="true" class="fas fa-lock"></i>
                         </div>
                     </div>
                     <input autocomplete="off" aria-required="true" class="form-control" percServerFileProp="ARNRole" id="ARNRole" name="ARNRole" value="{{#filterByValue serverInfo.properties 'key' 'ARNRole'}}{{/filterByValue}}">
@@ -532,7 +532,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-key"></i>
+                            <i aria-hidden="true" class="fas fa-key"></i>
                         </div>
                     </div>
                     <input autocomplete="off" type="password" aria-required="true" class="form-control" percServerFileProp="accesskey" id="perc-access-key" name="accesskey" value="{{#filterByValue serverInfo.properties 'key' 'accesskey'}}{{/filterByValue}}">
@@ -543,7 +543,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-lock"></i>
+                            <i aria-hidden="true" class="fas fa-lock"></i>
                         </div>
                     </div>
                     <input autocomplete="off" aria-required="true" type="password" class="form-control" percServerFileProp="securitykey" id="perc-security-key" name="securitykey" value="{{#filterByValue serverInfo.properties 'key' 'securitykey'}}{{/filterByValue}}">
@@ -569,7 +569,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-server"></i>
+                            <i aria-hidden="true" class="fas fa-server"></i>
                         </div>
                     </div>
                     <input aria-required="true" class="form-control" percServerFileProp="serverip" id="perc-server-ip" name="serverip" value="{{#filterByValue serverInfo.properties 'key' 'serverip'}}{{/filterByValue}}">
@@ -580,7 +580,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-plug"></i>
+                            <i aria-hidden="true" class="fas fa-plug"></i>
                         </div>
                     </div>
                     <input aria-required="true" class="form-control" percServerFileProp="port" id="perc-server-ftp-port" name="port" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'port'}}{{/filterByValue}}{{/if}}">
@@ -626,7 +626,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-user"></i>
+                            <i aria-hidden="true" class="fas fa-user"></i>
                         </div>
                     </div>
                     <input aria-required="true" class="form-control" percServerFileProp="userid" id="perc-ftp-user" name="userid" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'userid'}}{{/filterByValue}}{{/if}}">
@@ -637,7 +637,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-lock"></i>
+                            <i aria-hidden="true" class="fas fa-lock"></i>
                         </div>
                     </div>
                     <input autocomplete="off" type="password" class="form-control" percServerFileProp="password" id="perc-ftp-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
@@ -650,7 +650,7 @@
         <div class="input-group">
             <div class="input-group-prepend">
                 <div class="input-group-text">
-                    <i aria-hidden class="fas fa-key"></i>
+                    <i aria-hidden="true" class="fas fa-key"></i>
                 </div>
             </div>
             <select class="form-control" id="FTPprivateKeyList" percServerFileProp="privateKey" name="privateKey"></select>
@@ -668,7 +668,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-server"></i>
+                            <i aria-hidden="true" class="fas fa-server"></i>
                         </div>
                     </div>
                     <input aria-required="true" class="form-control" percServerFileProp="serverip" id="perc-FTPSserver-ip" name="serverip" value="{{#filterByValue serverInfo.properties 'key' 'serverip'}}{{/filterByValue}}">
@@ -679,7 +679,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-plug"></i>
+                            <i aria-hidden="true" class="fas fa-plug"></i>
                         </div>
                     </div>
                     <input aria-required="true" class="form-control" percServerFileProp="port" id="perc-server-ftps-port" name="port" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'port'}}{{/filterByValue}}{{/if}}">
@@ -725,7 +725,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-user"></i>
+                            <i aria-hidden="true" class="fas fa-user"></i>
                         </div>
                     </div>
                     <input aria-required="true" class="form-control" percServerFileProp="userid" id="perc-ftps-user" name="userid" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'userid'}}{{/filterByValue}}{{/if}}">
@@ -736,7 +736,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-lock"></i>
+                            <i aria-hidden="true" class="fas fa-lock"></i>
                         </div>
                     </div>
                     <input autocomplete="off" type="password" class="form-control" percServerFileProp="password" id="perc-ftps-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
@@ -749,7 +749,7 @@
         <div class="input-group">
             <div class="input-group-prepend">
                 <div class="input-group-text">
-                    <i aria-hidden class="fas fa-key"></i>
+                    <i aria-hidden="true" class="fas fa-key"></i>
                 </div>
             </div>
             <select class="form-control" id="sftpPrivateKeyList" percServerFileProp="privateKey" name="privateKey"></select>
@@ -767,7 +767,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-server"></i>
+                            <i aria-hidden="true" class="fas fa-server"></i>
                         </div>
                     </div>
                     <input aria-required="true" class="form-control" percServerFileProp="serverip" id="perc-SFTPserver-ip" name="serverip" value="{{#filterByValue serverInfo.properties 'key' 'serverip'}}{{/filterByValue}}">
@@ -778,7 +778,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-plug"></i>
+                            <i aria-hidden="true" class="fas fa-plug"></i>
                         </div>
                     </div>
                     <input aria-required="true" class="form-control" percServerFileProp="port" id="perc-server-sftp-port" name="port" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'port'}}{{/filterByValue}}{{/if}}">
@@ -814,7 +814,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-user"></i>
+                            <i aria-hidden="true" class="fas fa-user"></i>
                         </div>
                     </div>
                     <input aria-required="true" class="form-control" percServerFileProp="userid" id="perc-sftp-user" name="userid" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'userid'}}{{/filterByValue}}{{/if}}">
@@ -825,7 +825,7 @@
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
-                            <i aria-hidden class="fas fa-lock"></i>
+                            <i aria-hidden="true" class="fas fa-lock"></i>
                         </div>
                     </div>
                     <input autocomplete="off" type="password" class="form-control" percServerFileProp="password" id="perc-sftp-password" name="password" value="{{#if (validatePropertyValue serverInfo.type 'File')}}{{#filterByValue serverInfo.properties 'key' 'password'}}{{/filterByValue}}{{/if}}" {{#if (filterByValue serverInfo.properties 'key' 'secure')}} disabled{{/if}}>
@@ -838,7 +838,7 @@
         <div class="input-group">
             <div class="input-group-prepend">
                 <div class="input-group-text">
-                    <i aria-hidden class="fas fa-key"></i>
+                    <i aria-hidden="true" class="fas fa-key"></i>
                 </div>
             </div>
             <select class="form-control" id="privateKeyList" percServerFileProp="privateKey" name="privateKey"></select>
@@ -854,3 +854,28 @@
     {{/each}}
 </script>
 
+<script>
+
+setTimeout(setTabIndexForSites, 1000);
+function setTabIndexForSites(){
+	var tabCounterForCard = 5;
+
+	$('#sitesCardView').find('*').each(function(){
+		var classNameVal = this.className;
+		if(classNameVal == "card perc-site-card perc-site-select h-100"){
+			this.setAttribute("tabindex", tabCounterForCard++);
+		}
+
+	});
+
+	var tabCounterForList = 100;
+	$('#sitesListView').find('*').each(function(){
+		var classNameVal = this.className;
+		if(classNameVal == "perc-site-select"){
+			this.setAttribute("tabindex", tabCounterForList++);
+		}
+
+	});
+};
+
+</script>

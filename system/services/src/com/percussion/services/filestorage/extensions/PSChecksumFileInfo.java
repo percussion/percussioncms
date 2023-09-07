@@ -230,7 +230,7 @@ public class PSChecksumFileInfo extends PSDefaultExtension
          if (paramName.endsWith(HASH_PARAM_SUFFIX))
          {
             prefixParamName = prefixParameter(paramName);
-            log.debug("Hash Field new param name=" + prefixParamName);
+            log.debug("Hash Field new param name={}" , prefixParamName);
             clearParameters(request, paramName);
          }
          // only set the parameters if an uploaded file is found
@@ -261,7 +261,7 @@ public class PSChecksumFileInfo extends PSDefaultExtension
     */
    protected void clearParameters(IPSRequestContext request, String paramName)
    {
-        log.debug("Clear field name " + paramName);
+        log.debug("Clear field name {}" , paramName);
         isTrue(isHashParameter(paramName));
         String paramPrefix = prefixParameter(paramName);
         

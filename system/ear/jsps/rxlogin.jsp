@@ -46,7 +46,7 @@
 <head>
 	<title>${rxcomp:i18ntext('jsp_login@Percussion Login',locale)}</title>
 	<style>
-		body {background-color: #6C717C;
+		body {
 			font-family: Verdana, serif; margin: 0; padding: 0; }
 		.perc-login-logo {color: #121212; margin-top: 50px; margin-bottom: 50px;}
 		#loginform .perc-form    { }
@@ -155,7 +155,7 @@
 	jQuery(function ($) {
 		var checked = localStorage.getItem('perc-login-select-ui-checked') === "true";
 		$('#perc-login-select-ui').prop('checked', checked);
-		$('#perc-login-select-ui').change(function () {
+		$('#perc-login-select-ui').on("change",function () {
 			var isChecked = $(this).is(':checked');
 			localStorage.setItem('perc-login-select-ui-checked', isChecked);
 		});

@@ -1652,6 +1652,7 @@ input[type =
 #perc-ui-permission-usernamefield
 {
     width:284px;
+    color:#000000 !important;
 }
 
 #perc-ui-permission-plusbutton
@@ -3601,7 +3602,7 @@ li.ui-tabs-active #perc-tab-style,#perc-tab-style:hover,#ui-state-active
 /* .ui-disabled state */
 .ui-disabled.perc-font-icon,
 .ui-disabled .perc-font-icon {
-    color: #CCC;
+    color: #808484;
     text-shadow: none;
     background: transparent;
 }

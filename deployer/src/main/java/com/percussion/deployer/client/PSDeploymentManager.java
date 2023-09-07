@@ -18,6 +18,7 @@
 
 package com.percussion.deployer.client;
 
+import com.percussion.conn.PSServerException;
 import com.percussion.deployer.catalog.PSCataloger;
 import com.percussion.deployer.objectstore.IPSDeployComponent;
 import com.percussion.deployer.objectstore.PSAppPolicySettings;
@@ -46,6 +47,8 @@ import com.percussion.error.IPSDeploymentErrors;
 import com.percussion.error.PSDeployException;
 import com.percussion.error.PSDeployNonUniqueException;
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.security.PSAuthenticationFailedException;
+import com.percussion.security.PSAuthorizationException;
 import com.percussion.server.PSServerLockException;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.utils.codec.PSXmlEncoder;
@@ -230,7 +233,7 @@ public class PSDeploymentManager
 
       try
       {
-         List results = new ArrayList();
+         List<PSDeployableElement> results = new ArrayList<>();
 
          Document reqDoc = PSXmlDocumentBuilder.createXmlDocument();
          Element root = PSXmlDocumentBuilder.createRoot(reqDoc,
@@ -243,24 +246,24 @@ public class PSDeploymentManager
 
          while (depEl != null)
          {
-            results.add(new PSDeployableElement(depEl));
-            depEl = tree.getNextElement(PSDeployableElement.XML_NODE_NAME,
-               PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS);
+            try {
+               results.add(new PSDeployableElement(depEl));
+               depEl = tree.getNextElement(PSDeployableElement.XML_NODE_NAME,
+                       PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS);
+            } catch (PSUnknownNodeTypeException e) {
+               Object[] args = {reqType, PSDeployableElement.XML_NODE_NAME,
+                       e.getMessage()};
+               log.error(PSExceptionUtils.getDebugMessageForLog(e));
+               //Let processing continue so that one bad deployable doesn't block them all.
+            }
          }
 
          return results.iterator();
       }
-      catch (PSUnknownNodeTypeException e)
+
+      catch (PSDeployException | PSServerLockException | PSServerException | PSAuthenticationFailedException | PSAuthorizationException e)
       {
-         Object args[] = {reqType, PSDeployableElement.XML_NODE_NAME,
-               e.getLocalizedMessage()};
-         throw new PSDeployException(
-            IPSDeploymentErrors.SERVER_RESPONSE_ELEMENT_INVALID, args);
-      }
-      catch (Exception e)
-      {
-         log.error(PSExceptionUtils.getMessageForLog(e));
-         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error(PSExceptionUtils.getDebugMessageForLog(e));
          throw new PSDeployException(
             IPSDeploymentErrors.UNEXPECTED_ERROR, e.toString());
       }

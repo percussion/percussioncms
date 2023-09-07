@@ -227,7 +227,17 @@
         $('body').on('click', '.perc-site-summary h2 a', onToggleSection);
         $('body').on('click', '.perc-action-print', onPrintDialog);
         $('body').on('click', '.perc-action-refresh', onRefreshDialog);
+        $('body').on('keydown', '.perc-action-refresh', function (event) {
+                if(event.code == "Enter" || event.code == "Space"){
+                        document.activeElement.click();
+                }
+        });
         $('body').on('click', '.perc-site-summary-action.perc-open-dialog', onOpenDialog);
+		$('body').on('keydown', '.perc-site-summary-action.perc-open-dialog', function (event) {
+			if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+        });
     });
 
 })(jQuery);

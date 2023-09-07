@@ -39,9 +39,6 @@
 
     <!-- Checks out a package from source control based on passed in ${PACKAGEPATH} -->
     <target name="checkOutPackage">
-        <PSP4Sync env="${basedir}/buildResources/perforce.properties"  path="${packages.dir}"/>
-        <PSP4Edit env="${basedir}/buildResources/perforce.properties"
-                       path="${packages.dir}" packagename="${PACKAGENAME}" description="${DESCRIPTION}" lock="false" />
 
         <property name="tempdir1" value="${outputdir}/temp/Packages/temp1" />
         <property name="tempdir2" value="${outputdir}/temp/Packages/temp2" />
@@ -119,8 +116,7 @@
 
     <!--Checks in a package -->
     <target name="updatePackage">
-        <PSP4PackageUpdate env="${basedir}/buildResources/perforce.properties"  packagepath="${PACKAGEPATH}"
-                         rootDirpath="${packages.dir}" change="${change.list.number}"/>
+
     </target>
 
     <!-- Helper target for listing all available packages -->

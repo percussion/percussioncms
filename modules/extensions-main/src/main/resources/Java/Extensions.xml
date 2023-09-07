@@ -2865,6 +2865,7 @@
       </PSXExtensionParamDef>
       <suppliedResources/>
    </Extension>
+   <!-- TODO: Still in use? -->
    <Extension name="sys_xdTextToDom" context="global/percussion/xmldom" handler="Java" categorystring="xmldom">
       <initParam name="com.percussion.user.description">Translate an incoming HTML/XML/?ML file or field into an XML private object. </initParam>
       <initParam name="com.percussion.extension.version">2</initParam>

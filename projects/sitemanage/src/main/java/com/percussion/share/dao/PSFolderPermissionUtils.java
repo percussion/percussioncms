@@ -34,8 +34,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.percussion.cms.IPSConstants.ADMINISTRATOR_ROLE;
-import static com.percussion.cms.IPSConstants.DESIGNER_ROLE;
+import static com.percussion.role.service.IPSRoleService.ADMINISTRATOR_ROLE;
+import static com.percussion.role.service.IPSRoleService.DESIGNER_ROLE;
 import static org.apache.commons.lang.Validate.isTrue;
 import static org.apache.commons.lang.Validate.notNull;
 

@@ -554,6 +554,15 @@
                   <seg>Publicar Artículos Intentados</seg>
               </tuv>
   		 </tu>
+  		 <tu tuid="perc.ui.publish.title@Site Configuration">
+                       <note xml:lang="en-us">Site Configuration</note>
+                       <tuv xml:lang="en-us">
+                           <seg>Site Configuration</seg>
+                       </tuv>
+                       <tuv xml:lang="es">
+                           <seg>Configuración del sitio</seg>
+                       </tuv>
+           		 </tu>
          <tu tuid="perc.ui.publish.title@Publish Item Details">
               <note xml:lang="en-us">Title for publish item details</note>
               <tuv xml:lang="en-us">
@@ -3202,6 +3211,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
     </tuv>
     <tuv xml:lang="es">
         <seg>Introducir un rol</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.rolePropsDialog.title@Add User">
+    <prop type="sectionname" xml:lang="en-us">Role Properties</prop>
+    <note xml:lang="en-us">Dialog to enter role</note>
+    <tuv xml:lang="en-us">
+        <seg>Add User</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Agregar usuario</seg>
     </tuv>
 </tu>
 <tu tuid="perc.ui.folderPropsDialog.inputField@Enter a username">
@@ -6633,16 +6652,36 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>porque ya existe un objeto con el mismo nombre.</seg>
 	    </tuv>
 	 </tu>
-	 <tu tuid="perc.ui.addTemplateDialog@Hint">
-	    <prop type="sectionname" xml:lang="en-us">Hint</prop>
-	    <note xml:lang="en-us"></note>
-	    <tuv xml:lang="en-us">
-	        <seg>Select an existing page to begin your template or choose a Percussion template.</seg>
-	    </tuv>
-	      <tuv xml:lang="es">
-	        <seg>Seleccione una página existente para comenzar su plantilla o elija una plantilla de Percussion</seg>
-	    </tuv>
-	 </tu>
+	  <tu tuid="perc.ui.addTemplateDialog@Hint">
+     	    <prop type="sectionname" xml:lang="en-us">Hint</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Select an existing page to begin your template or choose a Percussion template. Use the arrow keys to toggle between options.</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Seleccione una página existente para comenzar su plantilla o elija una plantilla de percusión. Utilice las teclas de flecha para alternar entre las opciones.</seg>
+     	    </tuv>
+      </tu>
+	 <tu tuid="perc.ui.addTemplateDialog@EnterpageURL">
+     	    <prop type="sectionname" xml:lang="en-us">Hint</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Enter page URL from existing site:</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Ingrese la URL de la página del sitio existente:</seg>
+     	    </tuv>
+     </tu>
+     <tu tuid="perc.ui.addTemplateDialog@PercussionTemplates">
+          	    <prop type="sectionname" xml:lang="en-us">Hint</prop>
+          	    <note xml:lang="en-us"></note>
+          	    <tuv xml:lang="en-us">
+          	        <seg>Percussion Templates</seg>
+          	    </tuv>
+          	      <tuv xml:lang="es">
+          	        <seg>Plantillas de percusión</seg>
+          	    </tuv>
+     </tu>
 	 <tu tuid="perc.ui.addTemplateDialog@URL Required">
 	    <prop type="sectionname" xml:lang="en-us">Error</prop>
 	    <note xml:lang="en-us"></note>
@@ -7648,20 +7687,20 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	    <prop type="sectionname" xml:lang="en-us">title</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>Edit Meta-data</seg>
+	        <seg>Edit Metadata</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
-	        <seg>Editar Meta-datos</seg>
+	        <seg>Editar Metadatos</seg>
 	    </tuv>
 	 </tu>
 	 <tu tuid="perc.ui.page.edit.dialog@Metadata">
 	    <prop type="sectionname" xml:lang="en-us">title</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>Meta-data</seg>
+	        <seg>Metadata</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
-	        <seg>Meta-datos</seg>
+	        <seg>Metadatos</seg>
 	    </tuv>
 	 </tu>
 	 <tu tuid="perc.ui.page.edit.dialog@Unable To See Content">
@@ -8148,10 +8187,10 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	    <prop type="sectionname" xml:lang="en-us">Warning</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>Confirm Deletion</seg>
+	        <seg>Remove Gadget From Your Dashboard</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
-	        <seg>Confirmar la eliminación</seg>
+	        <seg>Eliminar gadget del panel</seg>
 	    </tuv>
 	 </tu>
 	 <tu tuid="perc.ui.dashboard@Confirm Deletion Question">
@@ -8168,10 +8207,10 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	    <prop type="sectionname" xml:lang="en-us">Warning</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>\' gadget?</seg>
+	        <seg>\' gadget from your Dashboard?  You can add the gadget back to your Dashboard by dragging and dropping from the Gadget tray.</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
-	        <seg>\' artilugio?</seg>
+	        <seg>\' gadget desde tu Dashboard? Puedes volver a añadir el gadget al panel arrastrando y soltando desde la bandeja del gadget.</seg>
 	    </tuv>
 	 </tu>
 	 <tu tuid="perc.ui.dashboard@Reset Dashboard">
@@ -8963,6 +9002,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Estado actual</seg>
 	    </tuv>
 	 </tu>
+	  <tu tuid="perc.ui.publish.servers.mssql@Folder Location">
+     	    <prop type="sectionname" xml:lang="en-us">Error</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Folder Location. Use the arrow keys to toggle between options.</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Ubicación de la carpeta. Utilice las teclas de flecha para alternar entre las opciones.</seg>
+     	    </tuv>
+     	 </tu>
+     	  <tu tuid="perc.ui.publish.servers.local@Format">
+     	    <prop type="sectionname" xml:lang="en-us">Error</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Format. Use the arrow keys to toggle between options.</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Formato. Utilice las teclas de flecha para alternar entre las opciones.</seg>
+     	    </tuv>
+     	 </tu>
 	 <tu tuid="perc.ui.perc.pub.reports@Unable To Retrieve Logs">
 	    <prop type="sectionname" xml:lang="en-us">Error</prop>
 	    <note xml:lang="en-us"></note>
@@ -9293,11 +9352,11 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Catálogo</seg>
 	    </tuv>
 	 </tu>
-	 <tu tuid="perc.ui.template.design.view@Edit Meta Data">
+	 <tu tuid="perc.ui.template.design.view@Edit Metadata">
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>Edit Meta-Data</seg>
+	        <seg>Edit Metadata</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
 	        <seg>Editar Metadatos</seg>
@@ -9766,6 +9825,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Añadir un nuevo flujo de trabajo</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.workflow.view@Minimize">
+     	    <prop type="sectionname" xml:lang="en-us">Initialization</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Minimize</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Minimizar</seg>
+     	    </tuv>
+     	 </tu>
+     	 <tu tuid="perc.ui.workflow.view@Maximize">
+     	    <prop type="sectionname" xml:lang="en-us">Initialization</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Maximize</seg>
+     	    </tuv>
+     	      <tuv xml:lang="es">
+     	        <seg>Maximizar</seg>
+     	    </tuv>
+     	 </tu>
 	 <tu tuid="perc.ui.workflow.view@Delete Workflow">
 	    <prop type="sectionname" xml:lang="en-us">Initialization</prop>
 	    <note xml:lang="en-us"></note>
@@ -10688,6 +10767,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>El usuario debe tener al menos un rol.</seg>
 	    </tuv>
 	 </tu>
+	  <tu tuid="perc.ui.user.controller@Passwords is Mandatory">
+             <prop type="sectionname" xml:lang="en-us">User Controller</prop>
+             <note xml:lang="en-us"></note>
+             <tuv xml:lang="en-us">
+                 <seg>Password is required.</seg>
+             </tuv>
+               <tuv xml:lang="es">
+                 <seg>Las contraseñas son obligatorias.</seg>
+             </tuv>
+          </tu>
+          <tu tuid="perc.ui.user.controller@Confirm Passwords is Mandatory">
+             <prop type="sectionname" xml:lang="en-us">User Controller</prop>
+             <note xml:lang="en-us"></note>
+             <tuv xml:lang="en-us">
+                 <seg>Confirm Password is Required.</seg>
+             </tuv>
+               <tuv xml:lang="es">
+                 <seg>Confirmar contraseñas es obligatorio.</seg>
+             </tuv>
+          </tu>
 	 <tu tuid="perc.ui.user.controller@Error loading available roles">
 	    <prop type="sectionname" xml:lang="en-us">User Controller</prop>
 	    <note xml:lang="en-us"></note>
@@ -11134,7 +11233,7 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>Template Meta-data</seg>
+	        <seg>Template Metadata</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
 	        <seg>Metadatos de plantilla</seg>
@@ -11770,7 +11869,7 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	    <prop type="sectionname" xml:lang="en-us">Question</prop>
 	    <note xml:lang="en-us"></note>
 	    <tuv xml:lang="en-us">
-	        <seg>Show in Page Meta-data?:</seg>
+	        <seg>Show in Page Metadata?:</seg>
 	    </tuv>
 	      <tuv xml:lang="es">
 	        <seg>¿Mostrar en los metadatos de la página?:</seg>
@@ -11936,6 +12035,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Papeles disponibles:</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.users@ArrowKeys">
+    <prop type="sectionname" xml:lang="en-us">General</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Use the arrow keys to toggle between options.</seg>
+    </tuv>
+     <tuv xml:lang="es">
+        <seg>Utilice las teclas de flecha para alternar entre las opciones.</seg>
+    </tuv>
+    </tu>
 	 <tu tuid="perc.ui.users@Assigned Roles">
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
@@ -11957,6 +12066,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Resumen de Importación</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.template.create@Data List">
+        <prop type="sectionname" xml:lang="en-us">General</prop>
+        <note xml:lang="en-us"></note>
+        <tuv xml:lang="en-us">
+            <seg>Data List</seg>
+        </tuv>
+         <tuv xml:lang="es">
+            <seg>Lista de datos</seg>
+        </tuv>
+     </tu>
+     <tu tuid="perc.ui.template.create@Pages Jump">
+     <prop type="sectionname" xml:lang="en-us">General</prop>
+     <note xml:lang="en-us"></note>
+     <tuv xml:lang="en-us">
+         <seg>Pages Control Jump</seg>
+     </tuv>
+      <tuv xml:lang="es">
+         <seg>Salto de control de páginas</seg>
+     </tuv>
+     </tu>
 	 <tu tuid="perc.ui.template.create@Unassigned">
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
@@ -12287,6 +12416,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Clases separadas con un espacio</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.template.layout@Enter root class from site theme">
+     	    <prop type="sectionname" xml:lang="en-us">General</prop>
+     	    <note xml:lang="en-us"></note>
+     	    <tuv xml:lang="en-us">
+     	        <seg>Enter root class from site theme</seg>
+     	    </tuv>
+     	     <tuv xml:lang="es">
+     	        <seg>Geben Sie die Stammklasse aus dem Site-Thema ein</seg>
+     	    </tuv>
+     	 </tu>
 	 <tu tuid="perc.ui.template.layout@Do Not Use CSS Overrides">
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
@@ -12307,6 +12446,46 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Arrastrar y soltar para agregar regiones</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.template.layout@Maximize Regions">
+        <prop type="sectionname" xml:lang="en-us">General</prop>
+        <note xml:lang="en-us"></note>
+        <tuv xml:lang="en-us">
+            <seg>Maximize Regions</seg>
+        </tuv>
+         <tuv xml:lang="es">
+            <seg>Maximizar regiones</seg>
+        </tuv>
+     </tu>
+     <tu tuid="perc.ui.template.layout@Minimize Regions">
+             <prop type="sectionname" xml:lang="en-us">General</prop>
+             <note xml:lang="en-us"></note>
+             <tuv xml:lang="en-us">
+                 <seg>Minimize Regions</seg>
+             </tuv>
+              <tuv xml:lang="es">
+                 <seg>Minimizar regiones</seg>
+             </tuv>
+          </tu>
+     <tu tuid="perc.ui.template.layout@Maximize Widgets">
+         <prop type="sectionname" xml:lang="en-us">General</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Maximize Widgets</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Maximizar widgets</seg>
+         </tuv>
+      </tu>
+      <tu tuid="perc.ui.template.layout@Minimize Widgets">
+           <prop type="sectionname" xml:lang="en-us">General</prop>
+           <note xml:lang="en-us"></note>
+           <tuv xml:lang="en-us">
+               <seg>Minimize Widgets</seg>
+           </tuv>
+            <tuv xml:lang="es">
+               <seg>Minimizar widgets</seg>
+           </tuv>
+        </tu>
 	 <tu tuid="perc.ui.template.layout@Design Inspector">
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
@@ -14133,6 +14312,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
     </tuv>
     <tuv xml:lang="es">
         <seg>Operación</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.publishing.history@DisplayHTML">
+    <prop type="sectionname" xml:lang="en-us">Publishing History</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Display HTML</seg>
+    </tuv>
+    <tuv xml:lang="es">
+        <seg>Mostrar HTML</seg>
     </tuv>
 </tu>
 

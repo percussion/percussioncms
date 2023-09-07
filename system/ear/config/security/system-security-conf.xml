@@ -13,6 +13,9 @@
 
 
    <!-- anonymous requests -->
+   <path authType="anonymous">/sys_resources/images/percussion-logo.png</path>
+   <!-- For certbot ssl certificate provisioning - see https://github.com/percussion/percussioncms/issues/665 -->
+   <path authType="anonymous">/.well-known/acme-challenge</path>
    <path authType="anonymous">/robots.txt</path>
    <path authType="anonymous">/favicon.ico</path>
    <path authType="anonymous">/cm/app/pageNotFound.jsp</path>

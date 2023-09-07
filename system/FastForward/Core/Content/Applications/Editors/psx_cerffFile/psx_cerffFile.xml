@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
 <PSXApplication active="no" enabled="yes" hidden="no" id="1050" startPriority="0" version="2.0">
 	<name>psx_cerffFile</name>
 	<description>Creates File Image Items</description>
@@ -183,12 +181,8 @@
 								<PSXUISet accessKey="r"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
-								<FieldRef>item_file_attachment</FieldRef>
-								<PSXUISet accessKey="F"/>
-							</PSXDisplayMapping>
-							<PSXDisplayMapping>
 								<FieldRef>item_file_attachment_hash</FieldRef>
-								<PSXUISet accessKey="h"/>
+								<PSXUISet accessKey="F"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>item_file_attachment_filename</FieldRef>

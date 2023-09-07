@@ -304,6 +304,15 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
     color:#000;
 }
 
+#perc-users-arrow-keys
+{
+    margin-left:27px;
+    font-family: 'Open Sans', sans-serif;
+    font-size:11px;
+    font-weight:bold;
+    color:#000;
+}
+
 #perc-users-username-field,#perc-users-password-field,#perc-users-email-field,#perc-users-password-confirm-field
 {
     font-family: 'Open Sans', sans-serif;
@@ -977,7 +986,7 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 
 .perc-action-label
 {
-    color:#FFF;
+    color:#000;
     font-weight:bold;
     position:absolute;
     bottom:5px;
@@ -1403,7 +1412,7 @@ li.ui-tabs-active #perc-tab-workflow,#perc-tab-workflow:hover
 }
 
 #perc-category-save-cancel-block>.btn-primary {
-    height: 23px !important;
+    height: 33px !important;
     color: #ffffff !important;
     padding-top: 3px !important;
 }
@@ -1466,7 +1475,7 @@ select, input, textarea {
     background-image:url(../images/icons/editor/editFullOver.png);
 }
 
-#perc-users-username-label,#perc-roles-name-label
+#perc-users-username-label,#perc-roles-name-label,#perc-users-arrow-keys
 {
     margin-top:27px;
 }

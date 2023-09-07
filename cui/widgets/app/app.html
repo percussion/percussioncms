@@ -2,12 +2,12 @@
 
 <div class="widgel-app">
     <div id="top-menu" class="top-menu">
-        <div id="add-new-action-button" data-bind="click: addNew" class="button primary-button">Add New</div>
-        <div id="search-action-button" data-bind="click: search" class="button primary-button">Search</div>
-        <div id="library-toggle-action-button" data-bind="click:browseLibrary" class="button primary-button primary-button-ext">Browse Library</div>
+        <button id="add-new-action-button" data-bind="click: addNew" title="Add New" class="button primary-button">Add New</button>
+        <button id="search-action-button" data-bind="click: search" title="Search" class="button primary-button">Search</button>
+        <button id="library-toggle-action-button" data-bind="click:browseLibrary" title="Browse Library" class="button primary-button primary-button-ext">Browse Library</button>
     </div>
 	<div class="gray-tab-bar" data-bind="foreach:sections">
-        <div data-bind="click: $parent.selectedSection, visible:enabled(), css:{'gray-tab-active':isSelected,'gray-tab-item':true}, text:name, attr {id: $root.formatTabId('tab', name) }"></div>
+        <div tabindex="0" data-bind="click: $parent.selectedSection, event:{keyup: $parent.selectedSection}, visible:enabled(), css:{'gray-tab-active':isSelected,'gray-tab-item':true}, text:name, attr {id: $root.formatTabId('tab', name) }"></div>
     </div>
     <div class="tab-content">
     </div>

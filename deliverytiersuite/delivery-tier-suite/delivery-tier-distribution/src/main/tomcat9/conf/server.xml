@@ -121,6 +121,7 @@
                     keyAlias="${https.keyAlias}"
                     keystoreFile="${https.keystoreFile}"
                     keystorePass="${https.keystorePass}"
+                    keystoreType="${https.keystoreType}"
                     maxConnections="${https.maxConnections}"
                     maxCookieCount="${https.maxCookieCount}"
                     maxExtensionSize="${https.maxExtensionSize}"

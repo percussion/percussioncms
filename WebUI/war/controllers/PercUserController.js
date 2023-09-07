@@ -343,6 +343,15 @@
                 view.alertDialog(I18N.message( "perc.ui.user.controller@Error" ), I18N.message( "perc.ui.user.controller@User name invalid pattern" ));
                 return;
             }
+             if(password1=="") {
+                view.alertDialog(I18N.message( "perc.ui.user.controller@Error" ), I18N.message("perc.ui.user.controller@Passwords is Mandatory"));
+                return;
+            }
+
+            if(password2=="") {
+                view.alertDialog(I18N.message( "perc.ui.user.controller@Error" ), I18N.message( "perc.ui.user.controller@Confirm Passwords is Mandatory"));
+                return;
+            }
             if(password1!=="" && password1.length < 6) {
 	            view.alertDialog(I18N.message( "perc.ui.user.controller@Error" ), I18N.message( "perc.ui.user.controller@Password requirements" ));
 	            return;

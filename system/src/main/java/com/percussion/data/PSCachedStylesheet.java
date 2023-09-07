@@ -213,7 +213,7 @@ public class PSCachedStylesheet
       file.appendChild(doc.createTextNode(ssFile));
       
       Element stylesheet = doc.createElement("Stylesheet");
-      stylesheet.setAttribute("cachedTime", new Long(m_cachedTime).toString());
+      stylesheet.setAttribute("cachedTime", Long.toString(m_cachedTime));
       stylesheet.appendChild(url);
       stylesheet.appendChild(file);
       

@@ -477,7 +477,7 @@
          var widgetData = $.data(ediv, "widgetData");
          var folderPath = $.data(ediv, "folderPath");
          var producesResource = contentEditCriteria.producesResource;
-         //Create a relation ship if there is no asset id
+         //Create a relationship if there is no asset id
          if (!assetid || assetid == "") {
             assetid = "-1-101-" + $("#edit-widget-content-frame").contents().find("[name=sys_contentid]").val();
             $.PercAssetService.set_relationship(assetid, widgetData, parentId, "1", producesResource, folderPath, function () {

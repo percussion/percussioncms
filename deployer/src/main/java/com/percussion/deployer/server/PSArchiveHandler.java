@@ -18,31 +18,20 @@
 package com.percussion.deployer.server;
 
 import com.percussion.cms.IPSConstants;
-import com.percussion.deployer.objectstore.PSApplicationIDTypes;
-import com.percussion.deployer.objectstore.PSArchive;
-import com.percussion.deployer.objectstore.PSArchiveManifest;
-import com.percussion.deployer.objectstore.PSDependency;
-import com.percussion.deployer.objectstore.PSDependencyFile;
-import com.percussion.deployer.objectstore.PSDeployComponentUtils;
+import com.percussion.deployer.objectstore.*;
 import com.percussion.deployer.server.dependencies.PSAclDefDependencyHandler;
 import com.percussion.deployer.server.dependencies.PSContentTypeDependencyHandler;
 import com.percussion.deployer.server.dependencies.PSSupportFileDependencyHandler;
 import com.percussion.error.IPSDeploymentErrors;
 import com.percussion.error.PSDeployException;
-import com.percussion.util.IOTools;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -63,7 +52,7 @@ public class PSArchiveHandler
     * <code>null</code>.
     *
     * @throws IllegalArgumentException If any parameter is invalid.
-    * @throws PSDeployException If any other error occures.
+    * @throws PSDeployException If any other error occurs.
     */
    public PSArchiveHandler(PSArchive archive) throws PSDeployException
    {
@@ -85,7 +74,7 @@ public class PSArchiveHandler
     * throw exceptions, and so the reference to the instance of this class
     * should be discarded after calling this method.
     *
-    * @throws PSDeployException If any error occures.
+    * @throws PSDeployException If any error occurs.
     */
    public void close() throws PSDeployException
    {
@@ -214,7 +203,7 @@ public class PSArchiveHandler
       }
       catch (IOException e)
       {
-         Object args[] = {m_archive.getArchiveRef().getPath(), e.getLocalizedMessage()};
+         Object[] args = {m_archive.getArchiveRef().getPath(), e.getLocalizedMessage()};
          throw new PSDeployException(IPSDeploymentErrors.ARCHIVE_WRITE_ERROR,
             args);
       }
@@ -230,23 +219,23 @@ public class PSArchiveHandler
    /**
     * Set the archive location for a given <code>PSDependencyFile</code> object
     * according to a given <code>PSDependency</code> and a list of
-    * <code>PSDendencyFile</code> objects. The path of the archive location
+    * <code>PSDependencyFile</code> objects. The path of the archive location
     * should be unique among the given list of <code>PSDependencyFile</code>
     * objects.
     *
     * @param depFile The dependency file, which will be set, assume it is not
     * <code>null</code>.
     * @param dep The dependency object, assume it is not <code>null</code>.
-    * @param depFiles A list of <code>PSDendencyFile</code> objects. Assume
+    * @param depFiles A list of <code>PSDependencyFile</code> objects. Assume
     * it is not <code>null</code>, but may be empty.
     */
    private void setArchiveLocation(PSDependencyFile depFile, PSDependency dep,
-      List depFiles)
+      List<PSDependencyFile> depFiles)
    {
       File location = new File(dep.getKey(), depFile.getFile().getName());
       while ( ! hasUniquePath(location, depFiles.iterator()) )
       {
-         String uniqueName = Long.toString(System.currentTimeMillis()) +
+         String uniqueName = System.currentTimeMillis() +
             depFile.getFile().getName();
          location = new File(dep.getKey(), uniqueName);
       }
@@ -266,7 +255,7 @@ public class PSArchiveHandler
     * object is unique amount the list of <code>PSDependencyFile</code> objects;
     * <code>false</code> otherwise.
     */
-   private boolean hasUniquePath(File location, Iterator depFiles)
+   private boolean hasUniquePath(File location, Iterator<PSDependencyFile> depFiles)
    {
       while (depFiles.hasNext())
       {
@@ -310,10 +299,8 @@ public class PSArchiveHandler
     * @throws IllegalStateException If the archive used to construct this
     * handler is not opened for writing, or if the <code>close()</code> method
     * has been called
-    * @throws PSDeployException if there are any errors.
     */
    public void addIdTypes(PSDependency dep, PSApplicationIDTypes idTypes)
-      throws PSDeployException
    {
       if ( dep == null )
          throw new IllegalArgumentException("dep may not be null");
@@ -354,7 +341,7 @@ public class PSArchiveHandler
     * <code>null</code>.
     *
     * @return The related IDTypes if the dependency exists in the current
-    * archive and it contains the IDTypes, <code>null</code> otherwise.
+    * archive, and it contains the IDTypes, <code>null</code> otherwise.
     *
     * @throws IllegalArgumentException If <code>dep</code> is <code>null</code>
     */
@@ -379,7 +366,7 @@ public class PSArchiveHandler
     * handler is not opened for writing, or if the <code>close()</code> method
     * has been called
     */
-   public void addDbmsInfoList(PSDependency dep, List dbmsInfoList)
+   public void addDbmsInfoList(PSDependency dep, List<PSDatasourceMap> dbmsInfoList)
    {
       if (dep == null)
          throw new IllegalArgumentException("dep may not be null");
@@ -403,7 +390,7 @@ public class PSArchiveHandler
     * (the return from <code>getArchiveLocation()</code>) may not be
     * <code>null</code>.
     *
-    * @return the input stream, never <code>null</code>.  Caller is reponsible
+    * @return the input stream, never <code>null</code>.  Caller is responsible
     * for closing the stream.
     *
     * @throws IllegalArgumentException if any param is invalid.
@@ -431,7 +418,7 @@ public class PSArchiveHandler
     * (the return from <code>getArchiveLocation()</code>) may not be
     * <code>null</code>. 
     *
-    * @return size.  Caller is reponsible for closing the stream.
+    * @return size.  Caller is responsible for closing the stream.
     *
     * @throws IllegalArgumentException if any param is invalid.
     * @throws IllegalStateException if {@link #close()} has been called or if

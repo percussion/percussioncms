@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+
+<!--
+Here, we are checking if table name is "blog_post_visit" and VISIT_ID field should have autoincrement.
+Also, we are checking this only for mysql database.
+onFail="CONTINUE" makes sure that if precondition is true then only changeset will execute.
+runAlways="true" will run this changeset everytime server starts and if precondition is true.
+If we don't use runAlways="true", then this changeset runs only once if true. If we do changes
+again in database then this changeset will not run until we change the changeset id.
+-->
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet runAlways="true" id="20170503041524-3" author="user">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+            <sqlCheck expectedResult="0">SELECT count(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'blog_post_visit' AND COLUMN_NAME ='VISIT_ID' AND DATA_TYPE = 'bigint' AND COLUMN_DEFAULT IS NULL AND IS_NULLABLE = 'NO' AND EXTRA like '%auto_increment%'
+            </sqlCheck>
+        </preConditions>
+        <addAutoIncrement catalogName="dtsdb"
+                          columnDataType="bigint"
+                          columnName="VISIT_ID"
+                          tableName="blog_post_visit"/>
+    </changeSet>
+
+</databaseChangeLog>
+

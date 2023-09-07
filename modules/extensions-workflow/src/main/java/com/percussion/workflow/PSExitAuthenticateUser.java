@@ -24,6 +24,7 @@ import com.percussion.cms.objectstore.PSCmsObject;
 import com.percussion.cms.objectstore.PSObjectPermissions;
 import com.percussion.cms.objectstore.server.PSFolderSecurityManager;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.*;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.security.PSAuthorizationException;
@@ -35,22 +36,26 @@ import com.percussion.services.system.PSAssignmentTypeHelper;
 import com.percussion.util.IPSHtmlParameters;
 import com.percussion.util.PSCms;
 import org.apache.commons.lang.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
-@SuppressWarnings("unchecked")
+
 public class PSExitAuthenticateUser implements IPSRequestPreProcessor
 {
+   Logger log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
+
    /**
     * This is an inner class to encapsulate the parameters. We cannot keep
     * these as class variables due to threading issues. We instantiate this
     * object in the main processrequest method (called by server) and pass
     * around the methods. This is meant for convenience only.
     */
-   private class AuthParams
+   private static class AuthParams
    {
       public int m_workflowAppID = 0;
       public boolean m_workflowIdSupplied = false;
@@ -75,7 +80,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
    static private String m_fullExtensionName = "";
 
    /**
-    * This is used as a flag to indicate that the class hasn't been init'd
+    * This is used as a flag to indicate that the class hasn't been initialized
     * yet. There are certain cases where init can be called more than once
     * on the same loaded instance of a class.
     */
@@ -99,7 +104,6 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
       }
    }
 
-   @SuppressWarnings("deprecation")
    public void preProcessRequest(Object[] params, IPSRequestContext request)
       throws PSExtensionProcessingException
    {
@@ -116,12 +120,6 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
       PSConnectionMgr connectionMgr = null;
       try
       {
-         if (null == request)
-         {
-            throw new PSExtensionProcessingException(
-               m_fullExtensionName,
-               new IllegalArgumentException("The request must not be null"));
-         }
          Map<String,Object> htmlParams = request.getParameters();
          if (null == htmlParams)
          {
@@ -164,7 +162,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
                localParams.m_contentID = Integer.parseInt(params[0].toString());
             }
 
-            // Get user name
+            // Get username
             if (null == params[1] || 0 == params[1].toString().trim().length())
             {
                throw new PSInvalidParameterTypeException(
@@ -173,8 +171,6 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
             }
 
             localParams.m_userName = params[1].toString();
-            localParams.m_userName =
-               PSWorkFlowUtils.filterUserName(localParams.m_userName);
 
             if (0 == localParams.m_userName.length())
             {
@@ -253,17 +249,19 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
             {
                try
                {
-                  localParams.m_workflowAppID =
-                     new Integer(params[5].toString()).intValue();
+                  String wfid = request.getParameter("sys_workflowid");
+                  if(wfid == null || wfid.trim().equals("")){
+                     wfid = request.getParameter("sys_workflowappid");
+                  }
+
+                  localParams.m_workflowAppID = Integer.parseInt(wfid);
                   localParams.m_workflowIdSupplied = true;
+
                }
                catch (Exception e)
                {
-                  String language = null;
-                  if (e instanceof PSException)
-                     language = ((PSException) e).getLanguageString();
-                  if (language == null)
-                     language = PSI18nUtils.DEFAULT_LANG;
+                  String language = PSI18nUtils.DEFAULT_LANG;
+                  log.error(PSExceptionUtils.getMessageForLog(e));
                   throw new PSInvalidParameterTypeException(
                      language,
                      IPSExtensionErrors.INVALID_WORKFLOWID,
@@ -273,6 +271,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
          }
          catch (PSInvalidNumberOfParametersException | PSInvalidParameterTypeException ne)
          {
+            log.error(PSExceptionUtils.getMessageForLog(ne));
             String language = ne.getLanguageString();
             if (language == null)
                language = PSI18nUtils.DEFAULT_LANG;
@@ -291,7 +290,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
             return;
          }
 
-         Connection connection = null;
+         Connection connection;
          //Get the connection
          try
          {
@@ -300,6 +299,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
          }
          catch (Exception e)
          {
+            log.error(PSExceptionUtils.getMessageForLog(e));
             throw new PSExtensionProcessingException(m_fullExtensionName, e);
          }
 
@@ -328,6 +328,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
          }
          catch (Exception e)
          {
+            log.error(PSExceptionUtils.getMessageForLog(e));
             PSWorkFlowUtils.printWorkflowException(request, e);
 
             String language = null;
@@ -384,13 +385,11 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
     * @throws                        PSAuthorizationException if an
     *                                authorization error occurs
     *
-    * @throws                        PSEntryNotFoundException if a data base
+    * @throws                        PSEntryNotFoundException if a database
     *                                record is not found
-    * @throws                        PSRoleException if an role-related error
+    * @throws                        PSRoleException if any role-related error
     *                                occurs
-    * @throws                        Exception if an error occurs
     */
-   @SuppressWarnings("unchecked")
    private void authenticateUser(
       String lang,
       Connection connection,
@@ -400,18 +399,20 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
            PSAuthorizationException,
            PSEntryNotFoundException,
            PSRoleException, PSCmsException {
+
       PSWorkFlowUtils.printWorkflowMessage(
          localParams.m_request,
          "  Entering authenticateUser");
-      PSContentStatusContext csc = null;
+
+      PSContentStatusContext csc;
       int contentID = localParams.m_contentID;
       String userName = localParams.m_userName;
       String roleNameList = localParams.m_roleNameList;
       String checkInOutCondition = localParams.m_checkInOutCondition;
       int requiredAccessLevel = localParams.m_requiredAccessLevel;
       int assignmentType = localParams.m_assignmentType;
-      List actorRoles = null;
-      List actorRoleNames = new ArrayList();
+      List<Integer> actorRoles;
+      List<String> actorRoleNames = new ArrayList<>();
       IWorkflowRoleInfo wfRoleInfo = new PSWorkflowRoleInfo();
 
       if (localParams.m_isNewItem)
@@ -452,7 +453,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
          command = "";
       }
 
-      /**
+      /*
        * [Vitaly: Oct 27 2003]: DO NOT compare the user community and
        * the item community. Communities were never designed to work
        * as a server security feature. Filtering by community, if desired, 
@@ -527,7 +528,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
       boolean isAdmin = false;
       boolean isInternalUser = false;
       IPSWorkflowAppsContext wac;
-      String sAdminName = null;
+      String sAdminName;
       
 
       if (userName.equals(IPSConstants.INTERNAL_USER_NAME))
@@ -573,6 +574,8 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
             PSWorkFlowUtils.CHECKINOUT_CONDITION_IGNORE))
       {
          //
+         // it's not checked out or
+         // Someone else has it checked out
          if (checkInOutCondition
             .equalsIgnoreCase(PSWorkFlowUtils.CHECKINOUT_CONDITION_CHECKIN)
             && null != checkedOutUser)
@@ -585,12 +588,9 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
          else if (
             checkInOutCondition.equalsIgnoreCase(
                PSWorkFlowUtils.CHECKINOUT_CONDITION_CHECKOUT)
-               && (null == checkedOutUser
-            || // it's not checked out or
-         // Someone else has it checked out
-         !userName
-            .equalsIgnoreCase(
-               checkedOutUser)))
+               && (!userName
+                    .equalsIgnoreCase(
+                            checkedOutUser)))
          {
             // Checkout overridden by administrator
             if (localParams.m_actionTrigger != null
@@ -605,7 +605,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
             }
             else
             {
-               // Not checked out, may have been overriden by administrator
+               // Not checked out, may have been overridden by administrator
                throw new PSAuthorizationException(
                   lang,
                   IPSExtensionErrors.ILLEGAL_IFNOT_CHECKEDOUT,
@@ -614,7 +614,7 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
          }
       }
 
-      PSStateRolesContext src = null;
+      PSStateRolesContext src;
 
       try
       {
@@ -628,6 +628,8 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
 
       catch (PSRoleException e)
       {
+         log.error(PSExceptionUtils.getMessageForLog(e));
+
          String language = e.getLanguageString();
          if (language == null)
             language = PSI18nUtils.DEFAULT_LANG;
@@ -710,14 +712,12 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
     * @throws SQLException if there are any errors retrieving backend data.
     * @throws PSEntryNotFoundException if there is no state information found.
     */
-   @SuppressWarnings("unchecked")
    private boolean canUserCreate(Connection connection, AuthParams localParams)
       throws SQLException, PSEntryNotFoundException, PSRoleException, 
       PSAuthorizationException, PSCmsException
    {
-      PSWorkFlowUtils.printWorkflowMessage(
-         localParams.m_request,
-         "    Entering canUserCreate");
+      log.debug("Entering canUserCreate...");
+
       boolean canCreate = false;
       
       //See if the target folder for creating the item is present
@@ -725,6 +725,8 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
         IPSHtmlParameters.SYS_FOLDERID, null);
       if (StringUtils.isNotEmpty(folderid))
       {
+         log.debug("sys_folderid={}",folderid);
+         log.debug("Checking if user {} can write to Folders...",localParams.m_userName);
           if(!PSCms.canWriteToFolders(localParams.m_request))
           {
               //User must have write access
@@ -738,8 +740,8 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
          cms.loadWorkflowAppContext(localParams.m_workflowAppID);
 
       // build list of roles that can access the doc in the initial state
-      List stateRoleList = new ArrayList<>();
-      PSStateRolesContext src = null;
+      List<String> stateRoleList = new ArrayList<>();
+      PSStateRolesContext src;
 
       src =
          new PSStateRolesContext(
@@ -753,11 +755,17 @@ public class PSExitAuthenticateUser implements IPSRequestPreProcessor
       String strCommId = (String) localParams.m_request.getSessionPrivateObject(
          IPSHtmlParameters.SYS_COMMUNITY);
       int commId = Integer.parseInt(strCommId);
-      
-      // now filter roles by community
-      PSAssignmentTypeHelper.filterAssignedRolesByCommunity(commId, 
-         localParams.m_workflowAppID, stateRoleList);
-      
+
+      Boolean communitiesEnabled = Boolean.parseBoolean(
+              PSServer.getServerProps().getProperty(
+                      IPSConstants.SERVER_PROP_COMMUNITIES_ENABLED,"no"));
+
+      //Only filter by community if communities are enabled.
+      if(communitiesEnabled) {
+         // now filter roles by community
+         PSAssignmentTypeHelper.filterAssignedRolesByCommunity(commId,
+                 localParams.m_workflowAppID, stateRoleList);
+      }
       // now see if user has one of those roles
       canCreate =
          PSWorkFlowUtils.compareRoleList(

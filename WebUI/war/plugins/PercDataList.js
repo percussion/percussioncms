@@ -65,18 +65,24 @@
         container.append(head);
         //At the top we could show a add or delete button
         if (options.enableDelete)
-            container.find('.perc-item-list-label').append($('<div class="perc-item-delete-button" />').attr('title', options.deleteTitle));
+            container.find('.perc-item-list-label').append($('<div class="perc-item-delete-button" aria-disabled="false" role="button" tabindex="0" />').attr('title', options.deleteTitle));
         if (options.enableAdd)
-            container.find('.perc-item-list-label').append($('<div class="perc-item-add-button"/>').attr('title', options.addTitle));
+            container.find('.perc-item-list-label').append($('<div class="perc-item-add-button" aria-disabled="false" role="button" tabindex="0"/>').attr('title', options.addTitle));
         if(options.collapsible) {
-            container.find('.perc-item-list-label').append($('<span style="float: left;" id="perc-wf-min-max" class = "perc-items-minimizer" />'));
+            container.find('.perc-item-list-label').append($('<span style="float: left;" role="button"  id="perc-wf-min-max" class = "perc-items-minimizer" />').attr('title', I18N.message("perc.ui.workflow.view@Minimize")));
         }    
-        
+
         var list = $('<div class="perc-itemname-list" />').append($("<ul/>"));
         container.append(list);
         updateList(container, []);
         
         //bind create event
+		container.find(".perc-item-add-button").off("keydown").on("keydown",function(eventHandler){
+			if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+					document.activeElement.click();
+			}
+		});
+
         container.find(".perc-item-add-button").off("click").on("click",function(){
             var options = container.data('options');
             if (typeof(options.createItem) == 'function') {                
@@ -87,11 +93,30 @@
 
         container.find("#perc-wf-min-max").off("click").on("click",function() {
             $(this).toggleClass('perc-items-minimizer').toggleClass('perc-items-maximizer');
-           container.find('.perc-itemname-list').slideToggle("fast");
+			var myclass = $(this).attr('class');
+			if(myclass == "perc-items-minimizer"){
+				$(this).attr('title',I18N.message("perc.ui.workflow.view@Minimize"));
+			}else if(myclass == "perc-items-maximizer"){
+				$(this).attr('title',I18N.message("perc.ui.workflow.view@Maximize"));
+			}
+		   container.find('.perc-itemname-list').slideToggle("fast");
         
         });
-        
-        //bind the delete event for each element         
+
+		container.find("#perc-wf-min-max").off("keydown").on("keydown",function(eventHandler) {
+            if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+				document.activeElement.click();
+			}
+
+        });
+
+        //bind the delete event for each element
+		container.find(".perc-item-delete-button").off("keydown").on("keydown",function(eventHandler) {
+           if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+				document.activeElement.click();
+			}
+        });
+
         container.find(".perc-item-delete-button").off("click").on("click",function(event) {
             var options = container.data('options');
             event.stopPropagation(); // stop event because it is nested inside an element that is already bound
@@ -114,6 +139,7 @@
                 var htmlLi = $('<li class="perc-itemname" />')
 							.attr('data-id', id)
                             .attr('title', item)
+							.attr('tabIndex', '0')
                             .html(item)
                             .data('item', item)
                             .addClass('perc-ellipsis');
@@ -146,6 +172,11 @@
                 if (typeof(options.selectedItem) == 'function')
                     options.selectedItem(item);
             });
+        });
+		ulRoot.find(".perc-itemname").off("keydown").on("keydown",function(event){
+            if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+			}
         });
     }
     
@@ -192,8 +223,14 @@
                     if (typeof(options.createItem) == 'function')
                         options.createItem();
                 })
+				 .on("keydown",function(eventHandler){
+                    if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+					}
+                })
                 .removeClass("perc-item-disabled")
-                .addClass("perc-item-enabled");
+                .addClass("perc-item-enabled")
+				.attr("aria-disabled","false");;
         }
     }
     
@@ -207,8 +244,14 @@
                     if (typeof(options.deleteItem) == 'function')
                             options.deleteItem(currentItemSelected);
                 })
+				.on("keydown",function(eventHandler){
+                    if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+						document.activeElement.click();
+					}
+                })
                 .removeClass("perc-item-disabled")
-                .addClass("perc-item-enabled");
+                .addClass("perc-item-enabled")
+				.attr("aria-disabled","false");;
         }
     }
     
@@ -223,7 +266,8 @@
             container.find(".perc-item-add-button")
                 .off()
                 .addClass("perc-item-disabled")
-                .removeClass("perc-item-enabled");
+                .removeClass("perc-item-enabled")
+				.attr("aria-disabled","true");
         }
     }
     
@@ -233,7 +277,8 @@
             container.find(".perc-item-delete-button")
                 .off()
                 .removeClass("perc-item-enabled")
-                .addClass("perc-item-disabled");
+                .addClass("perc-item-disabled")
+				.attr("aria-disabled","true");;
         }
     }
     
