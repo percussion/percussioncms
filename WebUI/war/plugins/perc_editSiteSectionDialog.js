@@ -38,42 +38,42 @@
                 '<div class="fieldGroup">' +
                 "<div id='perc-site-general-container'>" +
                 "<label for='perc-site-hostname' class='perc-required-field'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Site hostname" ) + ":</label> <br/> " +
-                "<input type='text' class='required' aria-required='true' tabindex='" + taborder + "' id='perc-site-hostname' maxlength='80' name='site_hostname'/> <br/>" +
+                "<input type='text' class='required' aria-required='true' tabindex='82' id='perc-site-hostname' maxlength='80' name='site_hostname'/> <br/>" +
                 "<label for='perc-page-title-link' class='perc-required-field'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Home page link text" ) + ":</label> <br/> " +
-                "<input type='text' aria-required='true' tabindex='" + taborder + "' id='perc-page-title-link' class='required' name='page_title_link'/><br/> " +
+                "<input type='text' aria-required='true' tabindex='83' id='perc-page-title-link' class='required' name='page_title_link'/><br/> " +
                 "<label for='perc-site-desc'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Description" ) + ":</label> <br/> " +
-                "<textarea type='text' tabindex='" + taborder + "' id='perc-site-desc' name='site_desc'></textarea><br/> " +
+                "<textarea type='text' tabindex='84' id='perc-site-desc' name='site_desc'></textarea><br/> " +
                 "<label for='perc-site-navigation-cssclassnames'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Navigation class names") + ":</label> <br/> " +
-                "<input type='text' tabindex='" + taborder + "' id='perc-site-navigation-cssclassnames' maxlength='255' name='perc-site-navigation-cssclassnames'/> <br/>" +
+                "<input type='text' tabindex='85' id='perc-site-navigation-cssclassnames' maxlength='255' name='perc-site-navigation-cssclassnames'/> <br/>" +
                 "<label for='perc-site-pagefile-extention-default'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Default file extension") + ":</label> <br/> " +
-                "<input type='text' tabindex='" + taborder + "' id='perc-site-pagefile-extention-default' maxlength='30' name='perc-site-pagefile-extention-default' value='html'/> <br/>" +
+                "<input type='text' tabindex='86' id='perc-site-pagefile-extention-default' maxlength='30' name='perc-site-pagefile-extention-default' value='html'/> <br/>" +
 
-                '<input type="checkbox" id="perc-enable-mobile-preview" name="perc-enable-mobile-preview" style="width:20px" tabindex="' + taborder + '"/>' +
+                '<input type="checkbox" id="perc-enable-mobile-preview" name="perc-enable-mobile-preview" style="width:20px" tabindex="87"/>' +
                 '<label for="perc-enable-mobile-preview">' + I18N.message("perc.ui.editSiteSectionDialog.label@Enable Mobile Preview") + '</label> <br/>' +
 
-                '<input type="checkbox" id="perc-enable-canonical-url" name="perc-enable-canonical-url" style="width:20px" tabindex="' + taborder + '"/>' +
+                '<input type="checkbox" id="perc-enable-canonical-url" name="perc-enable-canonical-url" style="width:20px" tabindex="88"/>' +
                 '<label for="perc-enable-canonical-url">' + I18N.message("perc.ui.editSiteSectionDialog.label@Generate Canonical URLs") + '</label> <br/>' +
 
-                '<input type="radio" id="perc-canonical-url-dist-sections" name="perc-canonical-url-dist" value="sections" style="width:20px" disabled tabindex="' + taborder + '"/>&nbsp;&nbsp;' +
+                '<input type="radio" id="perc-canonical-url-dist-sections" name="perc-canonical-url-dist" value="sections" style="width:20px" disabled tabindex="89"/>&nbsp;&nbsp;' +
                 '<label for="perc-canonical-url-dist-sections" id="perc-canonical-url-dist-sections-label">' + I18N.message("perc.ui.editSiteSectionDialog.label@Sections") + '</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-                '<input type="radio" id="perc-canonical-url-dist-pages" name="perc-canonical-url-dist" value="pages" checked style="width:20px" disabled tabindex="' + taborder + '"/>&nbsp;&nbsp;' +
+                '<input type="radio" id="perc-canonical-url-dist-pages" name="perc-canonical-url-dist" value="pages" checked style="width:20px" disabled tabindex="90"/>&nbsp;&nbsp;' +
                 '<label for="perc-canonical-url-dist-pages" id="perc-canonical-url-dist-pages-label">' + I18N.message("perc.ui.editSiteSectionDialog.label@Landing Pages") + '</label> <br/>' +
                 "<label for='perc-arrow-key-message'(>" + I18N.message( "perc.ui.users@ArrowKeys") + ")</label> <br/> " +
 
-                '<input type="checkbox" id="perc-replace-canonical-tags" name="perc-replace-canonical-tags" style="width:20px" disabled tabindex="' + taborder + '"/>' +
+                '<input type="checkbox" id="perc-replace-canonical-tags" name="perc-replace-canonical-tags" style="width:20px" disabled tabindex="91"/>' +
                 '<label for="perc-replace-canonical-tags" id="perc-replace-canonical-tags-label">' + I18N.message("perc.ui.editSiteSectionDialog.label@Replace existing Canonical Tags if present") + '</label> <br/>' +
 
-                "<input type='checkbox' style=\"width:20px\" tabindex='" + taborder + "' id='perc-site-gen-sitemap' name='perc-site-gen-sitemap'/>" +
+                "<input type='checkbox' style=\"width:20px\" tabindex='92' id='perc-site-gen-sitemap' name='perc-site-gen-sitemap'/>" +
                 "<label for='perc-site-gen-sitemap' id='perc-site-gen-sitemap-label'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Generate sitemap") + "</label> <br/> " +
 
                 "<label id='perc-site-protocol-label' for='perc-site-protocol'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Protocol" ) + ":</label> <br/> " +
                 // refactored from radio buttons to drop downs
-                "<select tabindex='" + taborder + "' name='perc-site-protocol' id='perc-site-protocol'>" +
+                "<select tabindex='93' name='perc-site-protocol' id='perc-site-protocol'>" +
                 "     <option id='perc-site-protocol-http' value='http'>http</option>" +
                 "     <option id='perc-site-protocol-https' value='https' selected>https</option>" +
                 "</select> <br/> " +
                 "<label for='perc-site-default-document' id='perc-site-default-document-label'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Default document") + ":</label> <br/> " +
-                "<input type='text' tabindex='" + taborder + "' id='perc-site-default-document' maxlength='255' name='perc-site-default-document' value='index.html'/> <br/>" +
+                "<input type='text' tabindex='94' id='perc-site-default-document' maxlength='255' name='perc-site-default-document' value='index.html'/> <br/>" +
 
 
                 '</div>' +
@@ -83,7 +83,7 @@
                 "<div id='perc-site-users-container' style='display:inline-block;' >" +
                 "<label id='perc-site-folder-permission-label' for='perc-site-folder-permission'>" + I18N.message( "perc.ui.folderPropsDialog.label@Permission" ) + ":</label> <br/> " +
                 // refactored from radio buttons to drop downs
-                "<select name='perc-site-folder-permission' tabindex='" + taborder + "' id='perc-site-folder-permission'>" +
+                "<select name='perc-site-folder-permission' tabindex='101' id='perc-site-folder-permission'>" +
                 "     <option id='perc-folder-permission-option-read' value='" + $.PercFolderHelper().PERMISSION_READ  + "'>" + I18N.message( "perc.ui.folderPropsDialog.permissionValue@Read"  ) + "</option>" +
                 "     <option id='perc-folder-permission-option-write' value='" + $.PercFolderHelper().PERMISSION_WRITE + "'>" + I18N.message( "perc.ui.folderPropsDialog.permissionValue@Write" ) + "</option>" +
                 "</select>" +
@@ -187,6 +187,9 @@
                     { groupName : "perc-site-security-container", groupLabel : I18N.message("perc.ui.editSiteSectionDialog.label@Security")},
                     { groupName : "perc-site-membership-container", groupLabel : I18N.message("perc.ui.editSiteSectionDialog.label@Membership")}
                 ];
+				var tabindexArr = [81, 100, 110, 120];
+				var counter = 0;
+
                 $.each(fieldGroups, function(index) {
                     // Create HTML markup with the groupName minimizer/maximizer and
                     // insert it before the 1st field in each group
@@ -194,9 +197,10 @@
                     var groupHtml =
                         "<div class='perc-section-header'>" +
                         "<div class='perc-section-label' data-group='" + this.groupName + "'>" +
-                        "<span tabindex='"+ taborder +"' title='"+this.groupLabel+"' class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
+                        "<span tabindex='"+tabindexArr.at(counter)+"' title='"+this.groupLabel+"' class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
                         "</div>" +
                         "</div>";
+						counter++;
                     dialog.find('#' + this.groupName).before(groupHtml);
                     // The first group will be the only one expanded (hide all others)
                     if(index !== 0){
@@ -314,21 +318,21 @@
                 // render Login and Membership site configuration fields
                 fieldGroups = '<div class="fieldGroup">' +
                     '<div id="perc-site-security-container">' +
-                    '<input type="checkbox" id="perc-enable-site-security" name="perc-enable-site-security" style="width:20px" tabindex="' + taborder + '"/>' +
+                    '<input type="checkbox" id="perc-enable-site-security" name="perc-enable-site-security" style="width:20px" tabindex="111"/>' +
                     '<label for="perc-enable-site-security">' + I18N.message("perc.ui.editSiteSectionDialog.label@Use site security") + '</label> <br/>' +
                     '<label for="perc-site-login-page" id="perc-site-login-page-label">' + I18N.message("perc.ui.editSiteSectionDialog.label@Login page") + ':</label><br/>' +
-                    '<table class="perc-site-login-page-table"><tr><td><input id="perc-site-login-page" name="perc-site-login-page" readonly = "readonly" maxlength="2000" type="text" tabindex="' + taborder + '"/></td><td style="vertical-align: top;"> <span id="perc-site-login-page-browse" tabindex="' + taborder + '">Browse</span></td></tr></table>' +
+                    '<table class="perc-site-login-page-table"><tr><td><input id="perc-site-login-page" name="perc-site-login-page" readonly = "readonly" maxlength="2000" type="text" tabindex="112"/></td><td style="vertical-align: top;"> <span id="perc-site-login-page-browse" tabindex="113">Browse</span></td></tr></table>' +
                     '</div>' +
                     '</div>' +
 
                     '<div class="fieldGroup">' +
                     '<div id="perc-site-membership-container">' +
                     '<label for="perc-site-registration-confirmation-page">' + I18N.message("perc.ui.editSiteSectionDialog.label@Confirmation page") + ':</label><br/>' +
-                    '<input id="perc-site-registration-confirmation-page" name="perc-site-registration-confirmation-page" maxlength="2000" type="text" tabindex="' + taborder + '"/><span id="perc-site-registration-confirmation-page-browse" tabindex="' + taborder + '">Browse</span><br/>' +
+                    '<input id="perc-site-registration-confirmation-page" name="perc-site-registration-confirmation-page" maxlength="2000" type="text" tabindex="121"/><span id="perc-site-registration-confirmation-page-browse" tabindex="122">Browse</span><br/>' +
                     '<label for="perc-site-reset-pw-request-page">' + I18N.message("perc.ui.editSiteSectionDialog.label@Password reset request page") + ':</label><br/>' +
-                    '<input id="perc-site-reset-pw-request-page" name="perc-site-reset-pw-request-page" maxlength="2000" type="text" tabindex="' + taborder + '"/><span id="perc-site-reset-pw-request-page-browse" tabindex="' + taborder + '">Browse</span><br/>' +
+                    '<input id="perc-site-reset-pw-request-page" name="perc-site-reset-pw-request-page" maxlength="2000" type="text" tabindex="123"/><span id="perc-site-reset-pw-request-page-browse" tabindex="124">Browse</span><br/>' +
                     '<label for="perc-site-reset-password-page">' + I18N.message("perc.ui.editSiteSectionDialog.label@Password reset page") + ':</label><br/>' +
-                    '<input id="perc-site-reset-password-page" name="perc-site-reset-password-page" maxlength="2000" type="text" tabindex="' + taborder + '"/><span id="perc-site-reset-password-page-browse" tabindex="' + taborder + '">Browse</span><br/>' +
+                    '<input id="perc-site-reset-password-page" name="perc-site-reset-password-page" maxlength="2000" type="text" tabindex="125"/><span id="perc-site-reset-password-page-browse" tabindex="126">Browse</span><br/>' +
                     '</div>' +
                     '</div>';
                 return fieldGroups;
