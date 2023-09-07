@@ -3,13 +3,13 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.1.3-SNAPSHOT</version>
+        <version>8.1.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-rxapps</artifactId>
-  <version>8.1.3-SNAPSHOT</version>
+  <version>8.1.3</version>
 
     <properties>
         <assembly-directory>${basedir}/target/distribution</assembly-directory>
