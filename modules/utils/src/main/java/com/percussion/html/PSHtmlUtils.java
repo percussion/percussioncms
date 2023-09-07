@@ -385,7 +385,7 @@ public class PSHtmlUtils {
         Properties props = new Properties();
 
         //Load the properties file from the system root if the default is passed in.
-        if("html-cleaner.properties".equals(filename)){
+        if("html-cleaner.properties".equals(filename) || "rxW2Ktidy.properties".equals(filename)){
             String basePath = System.getProperty("rxdeploydir") + File.separatorChar;
             filename = basePath + filename;
         }
