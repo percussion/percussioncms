@@ -548,7 +548,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
      */
     private PSTemplate createTemplateFromUserTemplate(String srcId, String name) throws PSDataServiceException, CloneNotSupportedException {
         PSTemplate srcTpl = find(srcId);
-        PSTemplate copy = (PSTemplate) srcTpl.clone();
+        PSTemplate copy = new PSTemplate(srcTpl);
         copy.setId(null);
         copy.setName(name);
         return copy;
@@ -899,7 +899,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
                 }
             }
 
-            if (imgPath == null)
+            if (imgPath == null && summary.getSourceTemplateName()!=null)
             {
                 List<String> imgs = getThumbImgPath(Collections.singletonList(summary.getSourceTemplateName()));
                 imgPath = imgs.get(0);
@@ -980,7 +980,7 @@ public class PSTemplateDao implements IPSTemplateDao, ApplicationContextAware
             name = name.substring(0, indexFilter);
         }
         template.setName(name);
-        template.setServerVersion(serverVersion);
+        template.setServerVersion(serverVersion.trim());
         PSRegionTree tree = template.getRegionTree();
         if (tree != null)
         {

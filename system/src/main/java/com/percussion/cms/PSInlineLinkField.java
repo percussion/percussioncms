@@ -52,6 +52,7 @@ import com.percussion.xml.PSNodePrinter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jsoup.Jsoup;
 import org.jsoup.helper.W3CDom;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -166,6 +167,7 @@ public class PSInlineLinkField
       String fieldValue = request.getParameter(m_field.getSubmitName());
       if (fieldValue != null && fieldValue.trim().length() > 0)
       {
+         //TODO: This needs to load the new html-cleaner.properties
          Properties tidyProperties = null;
          PSProcessServerPageTags serverPageTags = null;
          if (m_field.shouldCleanupField())
@@ -184,7 +186,7 @@ public class PSInlineLinkField
          try {
             //Don't bother trying to parse if the string doesn't contain html / xml
             if(SecureStringUtils.isHTML(fieldValue) || SecureStringUtils.isXML(fieldValue)) {
-               document = PSHtmlUtils.createHTMLDocument(fieldValue, StandardCharsets.UTF_8,false,null);
+               document = PSHtmlUtils.createHTMLDocument(fieldValue, StandardCharsets.UTF_8,!PSServer.isHtmlCleaningDisabled(),"html-cleaner.properties");
             }
          }catch (PSHtmlParsingException e){
             log.error("Error parsing content for inline links in Content Type field. Error: {}. The offending source code was: {}",
@@ -200,8 +202,6 @@ public class PSInlineLinkField
 
          boolean isModified = expandEmptyElement(fieldDoc);
 
-         //Use the version to not to indent. Indenting may messup JavaScript
-         //if present.
          String outputString = "";
          try
          {
@@ -220,6 +220,8 @@ public class PSInlineLinkField
             outputString = replaceString(outputString, ELEM_FILLER, "");
          }
 
+         //Strip any wrapping html
+         outputString = Jsoup.parse(outputString).body().html();
 
          request.setParameter(m_field.getSubmitName(), outputString);
       }
@@ -314,7 +316,7 @@ public class PSInlineLinkField
 
       PSRelationshipProcessor processor = PSRelationshipProcessor.getInstance();
 
-      // process moidifies
+      // process modifies
       processor.save(modifies);
 
       // process deletes

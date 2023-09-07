@@ -111,6 +111,7 @@ public class PSTemplateSummary extends PSAbstractPersistantObject {
         this.label = template.getLabel();
         this.type = template.getType();
         this.name = template.getName();
+        this.sourceTemplateName = template.getSourceTemplateName();
     }
 
     /**

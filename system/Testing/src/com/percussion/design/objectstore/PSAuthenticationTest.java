@@ -281,7 +281,7 @@ public class PSAuthenticationTest
       
       Element auth1Elem = auth1.toXml(doc);   
       
-      PSAuthentication auth2 = new PSAuthentication(auth1Elem, null, null);
+      PSAuthentication auth2 = new PSAuthentication(auth1Elem, null, null,true);
       System.out.println("authentication 2:\n" +
          PSXmlDocumentBuilder.toString(auth2.toXml(doc)));
       assertTrue(auth1.equals(auth2));
@@ -295,7 +295,7 @@ public class PSAuthenticationTest
       newPassword.appendChild(doc.createTextNode("pw"));
       auth1Elem.getFirstChild().replaceChild(newPassword, oldPassword);
       PSAuthentication auth2unencrypted = new PSAuthentication(auth1Elem, 
-         null, null);
+         null, null,true);
       System.out.println("authentication 2 unencrypted:\n" +
          PSXmlDocumentBuilder.toString(auth2unencrypted.toXml(doc)));
       assertTrue(auth1.equals(auth2unencrypted));
@@ -305,7 +305,7 @@ public class PSAuthenticationTest
          PSAuthentication.SCHEME_SIMPLE, null, null, null, null);
       System.out.println("authentication 3:\n" +
          PSXmlDocumentBuilder.toString(auth3.toXml(doc)));
-      PSAuthentication auth4 = new PSAuthentication(auth3.toXml(doc), null, null);
+      PSAuthentication auth4 = new PSAuthentication(auth3.toXml(doc), null, null,true);
       System.out.println("authentication 4:\n" +
          PSXmlDocumentBuilder.toString(auth4.toXml(doc)));
       assertTrue(auth3.equals(auth4));

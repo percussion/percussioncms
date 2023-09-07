@@ -95,6 +95,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
 				buttons: [
 					{
 						text: self.secondaryButton(),
+						title: self.secondaryButton(),
 						click: function() {
 							PubSub.publish(self.secondaryButton(), self);
 						},
@@ -102,6 +103,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
 					},
 					{
 						text: self.primaryButton(),
+						title: self.primaryButton(),
 						click: function() {
 							PubSub.publish(self.primaryButton(), self);
 						},
@@ -159,6 +161,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
                 buttons: [
 					{
                         text: secButton.text,
+                        title: secButton.text,
                         click: function() {
 							$(".base-confirmation-dialog").dialog("close");
                             if($.isFunction(secButton.callback))
@@ -168,6 +171,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
                     },
                     {
                         text: data.primaryButton.text,
+                        title: data.primaryButton.text,
                         click: function() {
 							$(".base-confirmation-dialog").dialog("close");
                             if($.isFunction(data.primaryButton.callback))
@@ -198,6 +202,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
                 buttons: [
                     {
                         text: secButton.text,
+                        title: secButton.text,
                         click: function() {
                             $(".base-confirmation-dialog").dialog("close");
                             if($.isFunction(secButton.callback))
@@ -207,6 +212,7 @@ define(['knockout', 'pubsub'], function(ko,PubSub) {
                     },
                     {
                         text: data.primaryButton.text,
+                        title: data.primaryButton.text,
                         click: function() {
                             if($dialog.closest(".ui-dialog").find(".primary-button").hasClass("disabled")){
                                 return;

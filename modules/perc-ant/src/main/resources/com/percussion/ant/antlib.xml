@@ -57,10 +57,6 @@
     <taskdef name="PSExportDatabase" classname="com.percussion.ant.install.PSExportDatabase"/>
     <taskdef name="PSMakeLasagna" classname="com.percussion.ant.install.PSMakeLasagna"/>
     <taskdef name="PSCopyDirectory" classname="com.percussion.ant.packagetool.PSCopyDirectory"/>
-    <taskdef name="PSP4Edit" classname="com.percussion.ant.packagetool.PSP4Edit"/>
-    <taskdef name="PSP4PackageAdd" classname="com.percussion.ant.packagetool.PSP4PackageAdd"/>
-    <taskdef name="PSP4PackageUpdate" classname="com.percussion.ant.packagetool.PSP4PackageUpdate"/>
-
     <taskdef name="PSUnZipPackage" classname="com.percussion.ant.packagetool.PSUnZipPackage"/>
     <taskdef name="PSZipPackage" classname="com.percussion.ant.packagetool.PSZipPackage"/>
     <taskdef name="PSAddJavaDocErrorSupression" classname="com.percussion.ant.PSAddJavaDocErrorSupression"/>
@@ -77,10 +73,7 @@
 
 
     <taskdef name="PSMakeHelpHints" classname="com.percussion.ant.PSMakeHelpHints"/>
-    <taskdef name="PSP4OpenFileForEdit" classname="com.percussion.ant.PSP4OpenFileForEdit"/>
 
-    <taskdef name="PSP4SubmitChange" classname="com.percussion.ant.PSP4SubmitChange"/>
-    <taskdef name="PSP4Sync" classname="com.percussion.ant.PSP4Sync"/>
 
     <taskdef name="PSPropagateFile" classname="com.percussion.ant.PSPropagateFile"/>
     <taskdef name="PSSyncFiles" classname="com.percussion.ant.PSSyncFiles"/>

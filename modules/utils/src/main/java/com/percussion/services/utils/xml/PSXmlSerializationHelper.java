@@ -79,12 +79,12 @@ public class PSXmlSerializationHelper
    /**
     * Static used for method lookup
     */
-   static final Class NOARGS[] = new Class[0];
+   static final Class[] NOARGS = new Class[0];
 
    /**
     * This class dictates a strategy that suppresses the persistence of certain
-    * object properties. With the exception of "class", which is directly
-    * supressed, the suppression information is derived from annotation
+    * object properties. Except "class", which is directly
+    * suppressed, the suppression information is derived from annotation
     * information on the given getter method.
     */
    static class SuppressionStrategy extends PropertySuppressionStrategy
@@ -130,7 +130,7 @@ public class PSXmlSerializationHelper
 
    /**
     * The name mapper translates from our naming conventions to a simpler
-    * convension (by stripping PS or IPS from class names). In addition, it
+    * convention (by stripping PS or IPS from class names). In addition, it
     * takes awkward mixed case names, like AAType, that the default behavior of
     * the HyphenatedNameMapper turns into a-a-type and turns it into Aatype,
     * which the mapper handles more benignly.
@@ -400,7 +400,7 @@ public class PSXmlSerializationHelper
    }
 
    /**
-    * Setup the standard configuration for writing an object with betwixt
+    * Set up the standard configuration for writing an object with betwixt
     * 
     * @param writer the bean writer, assumed never <code>null</code>
     */
@@ -413,7 +413,7 @@ public class PSXmlSerializationHelper
    }
 
    /**
-    * Setup the standard configuration for reading an object with betwixt
+    * Set up the standard configuration for reading an object with betwixt
     * 
     * @param reader the bean reader, assumed never <code>null</code>
     * @param clazz the class to be read, may be <code>null</code>
@@ -477,7 +477,7 @@ public class PSXmlSerializationHelper
     * serializing an object to xml, sometimes an empty document would be created
     * even though the object was valid. This only happened when several objects
     * were being processed at the same time. The beanutils jars reported a
-    * threading issue fixed in v1.8, but I tried the latest jars and they didn't
+    * threading issue fixed in v1.8, but I tried the latest jars, and they didn't
     * resolve the issue.
     * 
     * @param object the object to write, never <code>null</code>
@@ -556,7 +556,7 @@ public class PSXmlSerializationHelper
 
       if (!StringUtils.isBlank(fia.getId()))
       {
-         PSGuid rval = new PSGuid(type, fia.getId());
+         PSGuid rval = new PSGuid(type, fia.getId(),false);
          return rval;
       }
       else
@@ -565,7 +565,7 @@ public class PSXmlSerializationHelper
 
    /**
     * Read the object's information from the given XML source using the betwixt
-    * library. If you object has one or more properties that are expressed as
+    * library. If your object has one or more properties that are expressed as
     * abstract classes or interfaces, you must register the needed classes by
     * calling {@link #addType(String, Class)}.
     * 
@@ -604,7 +604,7 @@ public class PSXmlSerializationHelper
 
    /**
     * Read the object's information from the given XML source using the betwixt
-    * library. If you object has one or more properties that are expressed as
+    * library. If your object has one or more properties that are expressed as
     * abstract classes or interfaces, you must register the needed classes by
     * calling {@link #addType(String, Class)}.
     * 

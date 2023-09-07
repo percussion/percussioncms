@@ -1536,6 +1536,9 @@ var layoutModel;
                         .addClass("perc-widget-label")
                         .css("overflow", "hidden") )
                     .attr('id',"widget-" + w.id + "-" + $('.perc-widget').length)
+					.attr('tabindex',"0")
+					.attr('role',"button")
+					.attr('id',"widget-" + w.id + "-" + $('.perc-widget').length)
                     .draggable({
                         appendTo: 'body',
                         refreshPositions: true,

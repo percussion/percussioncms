@@ -27,7 +27,7 @@
      * Opens the section tree dialog and shows all the sections in expanded state.
      * @param siteName(String), assumed to be a valid name of a site.
      * @param excludeId(String) the string format of the guid of the section that needs to be excluded from the tree,
-     * this section and all sub-sections below it are not rendered.
+     * this section and all subsections below it are not rendered.
      * @param treeLabel (String), the label for the tree section.
      * @param dlgTitle (String), the dialog title.
      * @param okButton, A string representing what button needs to be rendered for positive action. Currently supported
@@ -66,7 +66,7 @@
 
                     .perc_dialog({
                         title: dlgTitle,
-                        resizable: false,
+                        resizable: true,
                         modal: true,
                         percButtons:    {
                             "Move": {
@@ -103,12 +103,8 @@
                         id: "perc-move-section-dialog",
                         width: 600
                     });
-                $("#perc-movesection-tree").dynatree({
+                $("#perc-movesection-tree").fancytree({
                     imagePath: "/cm/images/images/"
-                });
-                // Expand all nodes
-                $("#perc-movesection-tree").dynatree("getRoot").visit(function(dtnode){
-                    dtnode.expand(true);
                 });
 
             }
@@ -124,14 +120,17 @@
          */
         function onOk()
         {
-            var sel =
-                $("#perc-movesection-tree").dynatree("getActiveNode");
+            var tree = $.ui.fancytree.getTree("#perc-movesection-tree");
+            var sel = tree.getActiveNode();
             var nodePath = "";
             nodePath = getSelectedNodePath(sel, nodePath);
+            if(nodePath.startsWith("/root/"))
+                nodePath = nodePath.replace("/root/","/");
+
             if(typeof(sel) != "undefined" && sel != null)
             {
                 $dialog.remove();
-                var temp = sel.data.key.split(/\|/);
+                var temp = sel.key.split(/\|/);
                 okCallback(temp[1],nodePath);
             }
 
@@ -154,9 +153,11 @@
             menuTitle = sectionNode.title + "";
             results = $("<li/>")
                 .attr("id", "perc_section_tree|" + sectionNode.id)
+                .attr("class","folder expanded")
                 .attr("data", "icon:'section.png',sectionName:'" + menuTitle.replace(/'/g, "\\'").replace(/"/g, "\\\"") + "'")
                 .append(
                     $("<a/>").attr("href", "#").text(menuTitle)
+                    .attr("data", "icon:'section.png',sectionName:'" + menuTitle.replace(/'/g, "\\'").replace(/"/g, "\\\"") + "'")
                 );
 
             if(sectionNode.childNodes !== "")
@@ -192,9 +193,9 @@
          */
         function getSelectedNodePath(selectedNode, nodePath)
         {
-            if(selectedNode.data.sectionName == null)
+            if(selectedNode == null || typeof selectedNode == 'undefined' || selectedNode.title == null)
                 return nodePath;
-            nodePath = "/" + selectedNode.data.sectionName + nodePath;
+            nodePath = "/" + selectedNode.title + nodePath;
             nodePath = getSelectedNodePath(selectedNode.parent, nodePath);
             return nodePath;
         }

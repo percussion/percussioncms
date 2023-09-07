@@ -77,13 +77,35 @@
     var wdgDefRow = Backgrid.Row.extend({
       events: {
         "click": "selectRow",
+		"keydown": "selectRow2",
+		"focusin": "rowFocused",
+		"focusout": "rowLostFocus"
       },
       selectRow:function(){
         this.$el.parent().find(".perc-wb-def-selected-row").removeClass("perc-wb-def-selected-row");
         this.$el.addClass("perc-wb-def-selected-row");
         WidgetBuilderApp.selectedModel = this.model.get("widgetId");
         WidgetBuilderApp.updateToolBarButtons();
+
+      },
+	  selectRow2:function(eventHandler){
+		if(eventHandler.code == "Enter"){
+			$('#perc-wb-button-edit').trigger('click');
+		}if(eventHandler.code == "Space"){
+			$('#perc-wb-button-deploy').trigger('click');
+		}if(eventHandler.code == "Delete"){
+			$('#perc-wb-button-delete').trigger('click');
+		}
+      },
+	  rowFocused:function(eventHandler){
+		  this.$el.css("background-color","#CAF589");
+		  document.activeElement.click();
+
+	  },
+	  rowLostFocus:function(eventHandler){
+		 this.$el.css("background-color","white");
       }
+
     });
     // Initialize a new Grid instance
     WidgetBuilderApp.WdgDefGrid = new Backgrid.Grid({
@@ -95,7 +117,17 @@
     //Load the widget defnitions, so that the table gets rendered.
     WidgetBuilderApp.loadDefinitions = function(){
         $.PercWidgetBuilderService.getWidgetDefSummaries(function(status, result){
-            if(!status){
+			var tbl= $("#perc-wb-defs-container  .backgrid");//.find('table');
+			var htmval = tbl.get(0).innerHTML;
+			var tabCounter = 14;
+				tbl.find('tr').each(function (i, el) {
+					var myRow = $(this);
+					myRow.find('th').each(function(j) {
+						$(this).attr('tabindex', tabCounter++);
+					});
+				});
+
+		    if(!status){
                 $.perc_utils.alert_dialog({"title":"Widget error", "content":result});
                 return;
             }

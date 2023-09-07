@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.1.2</version>
+        <version>8.1.3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>perc-web-ui</artifactId>
@@ -286,12 +286,10 @@
                         <artifactId>ant</artifactId>
                         <version>${ant.version}</version>
                     </dependency>
-                    <!-- https://mvnrepository.com/artifact/ant/ant-apache-oro old
-                        for perfoce tasks -->
                     <dependency>
-                        <groupId>ant</groupId>
+                        <groupId>org.apache.ant</groupId>
                         <artifactId>ant-apache-oro</artifactId>
-                        <version>1.6.5</version>
+                        <version>${ant.version}</version>
                     </dependency>
 
                     <dependency>
@@ -304,7 +302,11 @@
                         <artifactId>ant-launcher</artifactId>
                         <version>${ant.version}</version>
                     </dependency>
-                    <!-- https://mvnrepository.com/artifact/org.apache.ant/ant-commons-logging -->
+                    <dependency>
+                        <groupId>org.apache.ant</groupId>
+                        <artifactId>ant-commons-net</artifactId>
+                        <version>${ant.version}</version>
+                    </dependency>
                     <dependency>
                         <groupId>org.apache.ant</groupId>
                         <artifactId>ant-commons-logging</artifactId>
@@ -315,24 +317,36 @@
                         <artifactId>ant-apache-regexp</artifactId>
                         <version>${ant.version}</version>
                     </dependency>
-                    <!-- https://mvnrepository.com/artifact/ant-contrib/ant-contrib -->
                     <dependency>
                         <groupId>ant-contrib</groupId>
                         <artifactId>ant-contrib</artifactId>
-                        <version>1.0b3</version>
+                        <version>${ant.contrib.version}</version>
                         <exclusions>
-                            <exclusion>
-                                <!-- old naming -->
-                                <groupId>ant</groupId>
-                                <artifactId>ant</artifactId>
-
-                            </exclusion>
+                                <exclusion>
+                                    <groupId>ant</groupId>
+                                    <artifactId>ant</artifactId>
+                                </exclusion>
+                                <exclusion>
+                                    <groupId>commons-httpclient</groupId>
+                                    <artifactId>commons-httpclient</artifactId>
+                                </exclusion>
+                                <exclusion>
+                                    <groupId>org.apache.ivy</groupId>
+                                    <artifactId>ivy</artifactId>
+                                </exclusion>
+                                <exclusion>
+                                    <groupId>org.jvnet.hudson</groupId>
+                                    <artifactId>ivy</artifactId>
+                                </exclusion>
+                                <exclusion>
+                                    <groupId>junit</groupId>
+                                    <artifactId>junit</artifactId>
+                                </exclusion>
+                                <exclusion>
+                                    <groupId>org.apache.bcel</groupId>
+                                    <artifactId>bcel</artifactId>
+                                </exclusion>
                         </exclusions>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.ant</groupId>
-                        <artifactId>ant-nodeps</artifactId>
-                        <version>1.8.1</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -843,17 +857,32 @@
             <artifactId>xbean-spring</artifactId>
             <version>4.8</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-core</artifactId>
-            <version>5.7.0</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>activemq-protobuf</artifactId>
-                    <groupId>org.apache.activemq.protobuf</groupId>
-                </exclusion>
-            </exclusions>
+            <artifactId>activemq-broker</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-client</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-kahadb-store</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-spring</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-jms-pool</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
@@ -1230,7 +1259,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>perc-server-ui-cmp</artifactId>
-            <version>8.1.2</version>
+            <version>8.1.3</version>
         </dependency>
     </dependencies>
 </project>

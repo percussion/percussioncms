@@ -46,7 +46,7 @@ public class TestPSHtmlCleanerProperties {
 
         assertFalse(props.isEmpty());
 
-        Safelist sl = PSHtmlUtils.getSafeListFromProperties(props);
+        Safelist sl = PSHtmlUtils.getSafeListFromProperties(props,"");
 
         assertNotNull(sl);
 
@@ -95,5 +95,15 @@ public class TestPSHtmlCleanerProperties {
         Document doc = PSHtmlUtils.createHTMLDocument(text, StandardCharsets.UTF_8, true, null);
         String parsed = doc.body().toString();
         assertEquals(text,parsed);
+    }
+
+    @Test
+    public void testRemoveDataPathItem() throws PSHtmlParsingException {
+
+        String text = new Scanner(Objects.requireNonNull(TestPSHtmlCleanerProperties.class.getResourceAsStream("/com/percussion/html/datapathitem.html")), "UTF-8").useDelimiter("\\Z").next();
+        Document doc = PSHtmlUtils.createHTMLDocument(text, StandardCharsets.UTF_8, true, null);
+        String parsed = doc.body().toString();
+
+        assertFalse(parsed.contains("data-pathitem"));
     }
 }

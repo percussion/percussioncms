@@ -21,6 +21,7 @@ import com.percussion.design.objectstore.PSGlobalSubject;
 import com.percussion.design.objectstore.PSRoleProvider;
 import com.percussion.design.objectstore.PSServerConfiguration;
 import com.percussion.design.objectstore.PSSubject;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.server.PSConsole;
 import com.percussion.server.PSServer;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -154,34 +155,35 @@ public class PSRoleCataloger extends PSCataloger
             Iterator directories = getDirectories().values().iterator();
             while (directories.hasNext())
             {
-               PSDirectoryDefinition directory = 
-                  (PSDirectoryDefinition) directories.next();
-
-               context = createContext(directory);
-               results = getAttributes(context, directory, filterValues,
-                     returnAttributes);
-               while (results != null && results.hasMore())
-               {
-                  SearchResult result = (SearchResult) results.next();
-                  Attributes attributes = result.getAttributes();
-                  if (attributes != null)
-                  {
-                     attrs = attributes.getAll();
-                     while (attrs != null && attrs.hasMore())
-                     {
-                        Attribute attribute = (Attribute) attrs.next();
-                        if (attribute.getID().equals(roleAttrName))
-                        {
-                           if (!m_roleProvider.isDelimited())
-                              roleSet.addAll(getMultiValuedRoles(attribute));
-                           else
-                              roleSet.addAll(getDelimitedValuedRoles(attribute,
-                                    m_roleProvider.getDelimiter()));
+               String dirName = "";
+               try {
+                  PSDirectoryDefinition directory =
+                          (PSDirectoryDefinition) directories.next();
+                  dirName = directory.getDirectory().getName();
+                  context = createContext(directory);
+                  results = getAttributes(context, directory, filterValues,
+                          returnAttributes);
+                  while (results != null && results.hasMore()) {
+                     SearchResult result = (SearchResult) results.next();
+                     Attributes attributes = result.getAttributes();
+                     if (attributes != null) {
+                        attrs = attributes.getAll();
+                        while (attrs != null && attrs.hasMore()) {
+                           Attribute attribute = (Attribute) attrs.next();
+                           if (attribute.getID().equals(roleAttrName)) {
+                              if (!m_roleProvider.isDelimited())
+                                 roleSet.addAll(getMultiValuedRoles(attribute));
+                              else
+                                 roleSet.addAll(getDelimitedValuedRoles(attribute,
+                                         m_roleProvider.getDelimiter()));
+                           }
                         }
+                        attrs.close();
+                        attrs = null;
                      }
-                     attrs.close();
-                     attrs = null;
                   }
+               }catch (Exception e) {
+                  log.error("Error finding users for ldap Directory:{} : Error: {}", dirName, PSExceptionUtils.getMessageForLog(e));
                }
                results.close();
                results = null;
@@ -339,11 +341,17 @@ public class PSRoleCataloger extends PSCataloger
          Iterator directories = getDirectories().values().iterator();
          while (directories.hasNext())
          {
-            PSDirectoryDefinition directory = 
-               (PSDirectoryDefinition) directories.next();
+            String dirName = "";
+            try {
+               PSDirectoryDefinition directory =
+                       (PSDirectoryDefinition) directories.next();
+               dirName = directory.getDirectory().getName();
 
-            if (provider.isDirectoryRoleProvider() || provider.isBothProvider())
-               getSubjects(directory, filterValues, results, additionals);
+               if (provider.isDirectoryRoleProvider() || provider.isBothProvider())
+                  getSubjects(directory, filterValues, results, additionals);
+            }catch (Exception e){
+               log.error("Error finding users for ldap Directory:{} : Error: {}", dirName, PSExceptionUtils.getMessageForLog(e));
+            }
          }
       }
 

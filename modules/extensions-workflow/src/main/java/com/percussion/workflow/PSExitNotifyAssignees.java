@@ -142,7 +142,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
            throws PSParameterMismatchException,
            PSExtensionProcessingException
    {
-      Logger l = LogManager.getLogger(getClass());
+      Logger l = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
       PSWorkFlowUtils.printWorkflowMessage(request,
               "\nNotify Assignees: enter processResultDocument ");
 
@@ -579,7 +579,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
 
             fromStateAdhocActorNotificationList = PSWorkflowRoleInfoStatic.getStateAdhocActorNotificationList(fromStateAdhocContext,
                     fromStateRoleContext, contentid, request);
-            Set<IPSTypedPrincipal> fromAdhocStatePrinces = PSWorkflowRoleInfoStatic.getPricipalsFromNames(fromStateAdhocActorNotificationList);
+            Set<IPSTypedPrincipal> fromAdhocStatePrinces = PSWorkflowRoleInfoStatic.getPrincipalsFromNames(fromStateAdhocActorNotificationList);
 
             fromStateUserList.addAll(getUserEmails(contentid, revisionid,
                     communityId, workflowID, fromStateID, fromStatePrinces,
@@ -642,7 +642,7 @@ public class PSExitNotifyAssignees implements IPSResultDocumentProcessor
             toStateAdhocActorNotificationList = PSWorkflowRoleInfoStatic.getStateAdhocActorNotificationList(toStateAdhocContext,
                     toStateRoleContext,
                     contentid, request);
-            Set<IPSTypedPrincipal> toStateAdhocPrinces = PSWorkflowRoleInfoStatic.getPricipalsFromNames(toStateAdhocActorNotificationList);
+            Set<IPSTypedPrincipal> toStateAdhocPrinces = PSWorkflowRoleInfoStatic.getPrincipalsFromNames(toStateAdhocActorNotificationList);
 
             toStateUserList.addAll(getUserEmails(contentid, revisionid,
                     communityId, workflowID, toStateID, princes,

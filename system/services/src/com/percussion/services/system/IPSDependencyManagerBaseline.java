@@ -32,7 +32,7 @@ public interface IPSDependencyManagerBaseline {
 
     void setIsDependencyCacheEnabled(boolean b);
 
-    List<String> getDeploymentType(PSTypeEnum valueOf);
+    List<String> getDeploymentType(PSTypeEnum valueOf) throws PSDeployException;
 
     Iterator<IPSDependencyBaseline> getAncestors(PSSecurityToken tok, IPSDependencyBaseline dep)throws PSDeployException, PSNotFoundException;
 

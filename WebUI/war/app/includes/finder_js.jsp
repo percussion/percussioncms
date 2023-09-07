@@ -1,3 +1,5 @@
+<link href="../jslib/profiles/3x/jquery/plugins/jquery-fancytree/skin-win8/ui.fancytree.min.css" rel="stylesheet">
+<script src="../jslib/profiles/3x/jquery/plugins/jquery-fancytree/jquery.fancytree-all.min.js"></script>
 <script src="../jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js"></script>
 <script src="../widgets/perc_imageselect.js"></script>
 <script src="../widgets/perc_wizard.js"></script>
@@ -8,11 +10,11 @@
 <script src="../services/PercPageService.js"></script>
 <script src="../services/PercPathService.js"></script>
 <script src="../services/PercUserService.js"></script>
-<script src="../services/PercItemPublisherService.js"></script>
-<script src="../services/PercRevisionService.js"></script>
 <script src="../services/PercCookieConsentService.js"></script>
 <script src="../services/PercWebResourcesService.js"></script>
 <script src="../services/PercWorkflowService.js"></script>
+<script src="../services/PercRevisionService.js"></script>
+<script src="../services/PercItemPublisherService.js"></script>
 <script src="../plugins/PercImportProgressDialog.js"></script>
 <script src="../plugins/perc_newsitedialog.js"></script>
 <script src="../plugins/iframednd.js"></script>

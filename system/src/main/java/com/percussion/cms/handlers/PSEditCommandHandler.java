@@ -252,7 +252,7 @@ public class PSEditCommandHandler extends PSQueryCommandHandler
       int id,
       PSExecutionData data)
    {
-      if (data == null) // this constrain is defined by base class
+      if (data == null) // this constraint is defined by base class
          throw new IllegalArgumentException("data may not be null");
          
       PSPageInfo info =  m_pageInfo.get(id);

@@ -935,5 +935,10 @@ public interface IPSDeploymentErrors
     * </TABLE>
     */ 
    public static final int FAILED_TO_CREATE_COMPONENT_COMMUNITY_ASSNS = 82;
+
+   /**
+    * Failed to locate a type mapping for the specified GUID.
+    */
+   public static final int NO_TYPE_MAPPING_FOR_GUID = 83;
    
 }

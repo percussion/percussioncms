@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
 <PSXApplication active="no" enabled="yes" hidden="no" id="1054" startPriority="0" version="2.0">
 	<name>psx_cerffImage</name>
-	<description>Creates Image Image Items</description>
+	<description>Creates Image Items</description>
 	<requestRoot>psx_cerffImage</requestRoot>
 	<defaultRequestPage/>
 	<appExtensionContext>application/_stevegolinder_1069270167127/</appExtensionContext>
@@ -201,6 +199,12 @@
 						</SharedFieldExcludes>
 					</SharedFieldIncludes>
 					<PSXFieldSet name="RXS_CT_Image" repeatability="zeroOrMore" supportsSequencing="yes" type="parent" userSearchable="yes">
+						<PSXFieldSet name="shared" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
+							<PSXField forceBinary="no" modificationType="user" name="filename" showInPreview="no" showInSummary="no" type="shared">
+								<DataType/>
+								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
+							</PSXField>
+						</PSXFieldSet>
 						<PSXField forceBinary="no" mimetype="text/plain" modificationType="user" name="img_category" showInPreview="yes" showInSummary="no" type="local">
 							<DataLocator>
 								<PSXBackEndColumn id="0">
@@ -222,38 +226,16 @@
 							</PSXPropertySet>
 							<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
 						</PSXField>
-          <PSXFieldSet name="shared" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
-            <PSXField forceBinary="no" modificationType="user" name="filename" showInPreview="no" showInSummary="no" type="shared">
-              <DataType></DataType>
-              <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
-            </PSXField>
-          </PSXFieldSet>
 						<PSXFieldSet name="sharedimage" repeatability="oneOrMore" supportsSequencing="no" type="multiPropertySimpleChild" userSearchable="yes">
-            <PSXField forceBinary="no" modificationType="user" name="img1_filename" showInPreview="yes" showInSummary="no" type="shared">
-              <DataType></DataType>
+							<PSXField forceBinary="no" modificationType="user" name="img1_type" showInPreview="yes" showInSummary="no" type="shared">
+								<DataType/>
 								<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
 								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
 							</PSXField>
-            <PSXField forceBinary="no" modificationType="user" name="img1_hash" showInPreview="yes" showInSummary="yes" type="shared">
-              <DataType></DataType>
-              <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
-            </PSXField>
-			<PSXField forceBinary="no" modificationType="user" name="img1" showInPreview="yes" showInSummary="yes" type="shared">
-				<DataType></DataType>
-				<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
-			</PSXField>
-            <PSXField forceBinary="no" modificationType="user" name="img1_type" showInPreview="yes" showInSummary="no" type="shared">
-              <DataType></DataType>
+							<PSXField forceBinary="no" modificationType="user" name="img1_filename" showInPreview="yes" showInSummary="no" type="shared">
+								<DataType/>
 								<OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
 								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
-            </PSXField>
-            <PSXField forceBinary="no" modificationType="user" name="img2_hash" showInPreview="yes" showInSummary="yes" type="shared">
-              <DataType></DataType>
-              <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
-							</PSXField>
-							<PSXField forceBinary="no" modificationType="user" name="img2" showInPreview="yes" showInSummary="yes" type="shared">
-								<DataType></DataType>
-								<PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="no" visibleToGlobalQuery="yes"/>
 							</PSXField>
 						</PSXFieldSet>
 					</PSXFieldSet>
@@ -284,12 +266,8 @@
 								<PSXUISet accessKey="D"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
-								<FieldRef>img1</FieldRef>
-								<PSXUISet accessKey="m"/>
-							</PSXDisplayMapping>
-							<PSXDisplayMapping>
 								<FieldRef>img1_hash</FieldRef>
-								<PSXUISet accessKey="i"/>
+								<PSXUISet accessKey="m"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>img1_filename</FieldRef>
@@ -383,10 +361,6 @@
 							<PSXDisplayMapping>
 								<FieldRef>img2_hash</FieldRef>
 								<PSXUISet accessKey="M"/>
-							</PSXDisplayMapping>
-							<PSXDisplayMapping>
-								<FieldRef>img2</FieldRef>
-								<PSXUISet accessKey="O"/>
 							</PSXDisplayMapping>
 							<PSXDisplayMapping>
 								<FieldRef>img2_filename</FieldRef>

@@ -35,15 +35,15 @@
         <div id = "perc-dropdown-actions"></div>
         <div id = "perc-dropdown-view"></div>
         <div class="perc-menu-action perc-pull-left">
-        <a class = "perc-site-summary-action perc-open-dialog" role="heading" aria-level="1"><span><i18n:message key = "perc.ui.template.create@Import Summary"/></span></a>
+        <a role="button" tabindex="0" title='<i18n:message key = "perc.ui.template.create@Import Summary"/>' class = "perc-site-summary-action perc-open-dialog" role="heading" aria-level="1"><span><i18n:message key = "perc.ui.template.create@Import Summary"/></span></a>
         </div>
-        <a href="#" id="perc-template-preview"  style="float:right"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="#" id="perc-template-preview"  style="float:right"><i18n:message key = "perc.ui.control.imageSlider@Preview"/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div id="perc-pageEditor-toolbar-content" class="ui-helper-clearfix"> </div>
         </div>
         <div class="perc-templates-layout">
         <div class="perc-unassigned-panel-expander">
-        <a class="perc-panel-expander-icon perc-collapsed"></a>
+        <a role="button" tabindex="0" title='<i18n:message key = "perc.ui.workflow.view@Maximize"/>' class="perc-panel-expander-icon perc-collapsed"></a>
         </div>
         <div class="perc-unassigned-panel perc-closed">
         <div class="perc-panel-title"><i18n:message key = "perc.ui.template.create@Unassigned"/></div>
@@ -59,9 +59,9 @@
         <div class="perc-panel-pages-list">
         </div>
         <csrf:form class="perc-template-pages-controls" method="post" action="template_create.jsp">
-            <div class="previous-disabled" style="right:56px;"><i18n:message key = "perc.ui.template.create@Prev"/></div>
+            <div title='<i18n:message key = "perc.ui.template.create@Prev"/>' class="previous-disabled" role="button" tabindex="0" style="right:56px;"><i18n:message key = "perc.ui.template.create@Prev"/></div>
             <input type="text" autocomplete="off" name="perc-template-pages-controls-jump" class="perc-jump">
-            <div class="next" style="right:0;"><i18n:message key = "perc.ui.common.label@Next"/></div>
+            <div title='<i18n:message key = "perc.ui.common.label@Next"/>' class="next" role="button" tabindex="0"  style="right:0;"><i18n:message key = "perc.ui.common.label@Next"/></div>
         </csrf:form>
         <div class="perc-panel-page-range"><i18n:message key = "perc.ui.template.create@Items"/><span class="perc-panel-page-group-range"></span></div>
         <div class="perc-panel-total-item"><i18n:message key = "perc.ui.template.create@Total Items"/><span class="perc-panel-total"></span></div>
@@ -69,7 +69,7 @@
         <div id="perc-template-view-container" style="overflow: hidden; margin-left: 38px">
         <div id="perc-activated-templates" class="perc-templates-detailed">
         <label for="perc-item-filter">Quick Filter:</label>
-        <input list='perc-template-items-datalist' id='perc-template-item-filter' autofocus />
+        <input list='perc-template-items-datalist' title = "<i18n:message key = "perc.ui.template.create@Data List"/>" id='perc-template-item-filter' autofocus />
         <datalist id='perc-template-items-datalist'></datalist><br/>
         <div id="perc-activated-templates-scrollable">
         <div id="perc-assigned-templates-container">
@@ -85,7 +85,7 @@
         <h3 class="perc-site-summary-missing-page"><i18n:message key = "perc.ui.template.create@Missing Pages"/></h3>
         <h3 class="perc-site-summary-missing-asset"><i18n:message key = "perc.ui.template.create@Missing Assets"/></h3>
         <h3 class="perc-site-summary-missing-css"><i18n:message key = "perc.ui.template.create@Missing Style Sheets"/></h3>
-        <h3 class="perc-site-summary-missing-unknown"><!-- the stat name is used instead --></h3>
+        <h3 class="perc-site-summary-missing-unknown">-<!-- the stat name is used instead --></h3>
         <div class="perc-site-summary">
         <div class="perc-site-summary-dialog-actions perc-do-not-print">
         <a href="#" class="perc-action-refresh ui-icon ui-icon-refresh" title="Refresh"><span><i18n:message key = "perc.ui.template.create@Refresh"/></span></a>

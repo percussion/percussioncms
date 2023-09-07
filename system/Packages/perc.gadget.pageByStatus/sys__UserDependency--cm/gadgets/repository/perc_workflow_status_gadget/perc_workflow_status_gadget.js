@@ -162,7 +162,7 @@
             var checkBoxContent = "<input class='perc-table-row-checkbox' type = 'checkbox' perc-id='" + pageId + "'/>";
             var previewColContent = "<div class ='perc-preview-col perc-datatable-columnrow' style = 'display:none;'><img src='/cm/gadgets/repository/perc_workflow_status_gadget/images/previewIcon.png'/></div><span></span>";
             var previewTitle = I18N.message("perc.ui.gadgets.workflowStatus@Preview") + "'" + pageName + "'" + I18N.message("perc.ui.gadgets.workflowStatus@Page");
-            var statusContent = "<span class='perc-table-row-status' perc-id='" + pageId + "'>" + itemStatus + "</span><span class='perc-table-row-status-icon'></span>";
+            var statusContent = "<span role='status' class='perc-table-row-status' perc-id='" + pageId + "'>" + itemStatus + "</span><span class='perc-table-row-status-icon'></span>";
             var row = {rowData : {pageId : pageId, pagePath : pagePath}, rowContent : [[{content : checkBoxContent, callback:function(){}}],
                     [{content : pageName, title : pagePath, callback:$.PercOpenPage}],
                     [{content : previewColContent, title: previewTitle, callback: $.PercPreviewPage}],

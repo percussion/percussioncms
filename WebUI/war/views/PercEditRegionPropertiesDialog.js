@@ -269,10 +269,11 @@
                 // Create HTML markup with the groupName minimizer/maximizer and
                 // insert it before the 1st field in each group
                 var minmaxClass = (index === 0) ? "perc-items-minimizer" : "perc-items-maximizer";
+				var minmaxTitle = (index === 0) ? I18N.message("perc.ui.workflow.view@Minimize") : I18N.message("perc.ui.workflow.view@Maximize");
                 var groupHtml =
                     "<div class='perc-section-header'>" +
                     "<div class='perc-section-label' groupName='" + this.groupName + "'>" +
-                    "<span  class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
+                    "<span role='button' tabindex='0' title='"+minmaxTitle+"' class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
                     "</div>" +
                     "</div>";
 
@@ -289,12 +290,27 @@
                 self.find(".perc-min-max")
                     .toggleClass('perc-items-minimizer')
                     .toggleClass('perc-items-maximizer');
-                dialog.find('#' + self.attr('groupName')).toggle();
+				var className = self.find(".perc-min-max").attr("class");
+				if(className){
+					if(className == 'perc-min-max perc-items-maximizer'){
+						self.find(".perc-min-max").attr("title",I18N.message("perc.ui.workflow.view@maximizer"));
+					}else if(className == 'perc-min-max perc-items-minimizer'){
+						self.find(".perc-min-max").attr("title",I18N.message("perc.ui.workflow.view@Minimize"));
+					}
+				}
+				dialog.find('#' + self.attr('groupName')).toggle();
                 if (!(('placeholder' in $('<input>')[0] || 'placeHolder' in $('<input>')[0]))) {
                     dialog.find("#perc-region-cssClass").placeHolder({hideOnFocus: false});
                 }
             });
-        }
+
+			dialog.find(".perc-section-label").off("keydown").on("keydown",
+                function(evt){
+                    if(evt.code == "Enter" || evt.code == "Space"){
+						document.activeElement.click();
+					}
+            });
+		}
 
         /**
          * Closes the rename region css confirmation dialog

@@ -49,6 +49,12 @@ public enum PSTypeEnum {
     * Indicates a template is referenced.
     */
    TEMPLATE(4, "Template", "variantid"),
+
+   /**
+    * Indicates a page template is referenced.
+    */
+   PAGE_TEMPLATE(156, "Page Template", "contentid"),
+
    /**
     * Indicates a template slot is referenced.
     */

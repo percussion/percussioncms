@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
-    <version>8.1.2</version>
+    <version>8.1.3</version>
     <packaging>pom</packaging>
     <url>https://www.github.com/percussion/percussioncms</url>
 
@@ -92,6 +92,8 @@
        <maven.dependency.plugin.version>3.1.2</maven.dependency.plugin.version>
        <maven.surefire.plugin.version>3.0.0-M5</maven.surefire.plugin.version>
        <maven.deploy.plugin.version>3.0.0-M1</maven.deploy.plugin.version>
+       <maven.jdeps.plugin.version>3.1.2</maven.jdeps.plugin.version>
+       <jdeps.fail.build>false</jdeps.fail.build>
        <jasypt.version>1.9.3</jasypt.version>
        <commons.math.version>3.6.1</commons.math.version>
        <maven.bundle.plugin.version>4.2.1</maven.bundle.plugin.version>
@@ -108,7 +110,7 @@
        <spotbugs.plugin.version>4.2.0</spotbugs.plugin.version>
        <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
        <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
-       <commons.file.upload.version>1.4</commons.file.upload.version>
+       <commons.file.upload.version>1.5</commons.file.upload.version>
        <commons.validator.version>1.7</commons.validator.version>
        <maven.site.plugin.version>3.8.2</maven.site.plugin.version>
        <maven.release.plugin.version>3.0.0-M1</maven.release.plugin.version>
@@ -125,7 +127,7 @@
        <maven.jxr.plugin.version>3.0.0</maven.jxr.plugin.version>
        <maven.war.plugin.version>3.3.1</maven.war.plugin.version>
        <plexus.component.metadata.version>2.1.0</plexus.component.metadata.version>
-       <jetty.maven.plugin.version>9.4.40.v20210413</jetty.maven.plugin.version>
+       <jetty.maven.plugin.version>9.4.51.v20230217</jetty.maven.plugin.version>
        <lifecycle.mapping.plugin>1.0.0</lifecycle.mapping.plugin>
        <jacoco.maven.plugin.version>0.8.5</jacoco.maven.plugin.version>
        <java.version>1.8.0</java.version>
@@ -135,7 +137,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-       <spring.version>5.3.20</spring.version>
+        <activemq.version>5.16.6</activemq.version><!-- 5.17.x and up require Java 11 -->
+       <spring.version>5.3.27</spring.version>
        <hibernate.version>5.6.10.Final</hibernate.version>
        <hibernate.validator.version>6.2.3.Final</hibernate.validator.version>
        <ehcache.version>2.10.6</ehcache.version>
@@ -143,8 +146,12 @@
        <cxf.version>3.4.10</cxf.version>
        <servlet.spec>3.1.0</servlet.spec>
        <xmlgraphics.common.version>2.6</xmlgraphics.common.version>
+       <commons.lang.version>2.6</commons.lang.version>
+       <commons.lang3.version>3.13.0</commons.lang3.version>
        <commons-logging.version>1.2</commons-logging.version>
        <commons.io.version>2.8.0</commons.io.version>
+       <commons.collections3.version>3.2.2</commons.collections3.version>
+       <commons.collections4.version>4.4</commons.collections4.version>
        <lucene.version>8.7.0</lucene.version>
        <myfaces.version>1.1.8</myfaces.version>
        <simplexml.version>2.7.1</simplexml.version>
@@ -152,20 +159,21 @@
         <poi.version>5.2.2</poi.version>
         <esapi.version>2.3.0.0</esapi.version>
         <esapi.encoder.version>1.2.3</esapi.encoder.version>
-        <ant.version>1.10.11</ant.version>
+        <ant.version>1.10.14</ant.version>
+        <ant.contrib.version>1.0b3</ant.contrib.version>
         <shindig.version>1.1-BETA5-incubating</shindig.version>
         <any23.version>2.3</any23.version>
         <owl.version>5.1.10</owl.version>
        <awssdk.version>1.12.261</awssdk.version>
-        <bc.version>1.70</bc.version>
-        <jackson.version>2.13.3</jackson.version>
+        <bc.version>1.74</bc.version>
+        <jackson.version>2.14.2</jackson.version>
         <jsoup.version>1.15.3</jsoup.version>
-        <json.version>20201115</json.version>
+        <json.version>20230227</json.version>
         <junit.version>4.13.1</junit.version>
         <cactus.version>13-1.7.1</cactus.version>
         <cactus.sysproperties>cactus.contextURL</cactus.sysproperties>
         <cactus.contextURL>http://localhost:9992/Rhythmyx</cactus.contextURL>
-        <jetty.version>9.4.43.v20210629</jetty.version>
+        <jetty.version>9.4.51.v20230217</jetty.version>
         <trinidad.version>1.0.2</trinidad.version>
        <derby.version>10.14.2.0</derby.version>
        <mssql.version>9.2.1.jre8</mssql.version>
@@ -181,23 +189,23 @@
        <xmpbox.version>2.0.17</xmpbox.version>
        <jbig2.version>3.0.2</jbig2.version>
        <pdfbox.version>2.0.24</pdfbox.version>
-       <sqlite.version>3.28.0</sqlite.version>
+       <sqlite.version>3.41.2.2</sqlite.version>
        <swagger.version>2.1.10</swagger.version>
        <swagger.ui.version>3.51.2</swagger.ui.version>
        <commons.compress.version>1.21</commons.compress.version>
        <solr.version>8.11.2</solr.version>
         <nettyall.version>4.1.45.Final</nettyall.version>
        <hikari.version>4.0.3</hikari.version>
-       <snakeyaml.version>1.32</snakeyaml.version>
+       <snakeyaml.version>2.0</snakeyaml.version>
        <commons-email.version>1.5</commons-email.version>
-       <commons.codec.version>1.14</commons.codec.version>
+       <commons.codec.version>1.15</commons.codec.version>
        <tinymce.version>5.10.3</tinymce.version>
        <jfx.version>11.0.2</jfx.version>
        <twelvemonkeys.version>3.7.1</twelvemonkeys.version>
        <commons.beanutils.version>1.9.4</commons.beanutils.version>
-       <xstream.version>1.4.19</xstream.version>
+       <xstream.version>1.4.20</xstream.version>
        <log4j2.version>2.18.0</log4j2.version>
-       <guava.version>29.0-jre</guava.version>
+       <guava.version>32.0.1-jre</guava.version>
        <xerces.version>2.12.2</xerces.version>
        <xmlresolver.version>1.2</xmlresolver.version>
        <quartz.version>2.3.2</quartz.version>
@@ -240,6 +248,11 @@
     <build>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jarsigner-plugin</artifactId>
+                <version>${maven.jarsigner.plugin.version}</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-scm-plugin</artifactId>
@@ -484,6 +497,23 @@
         </plugins>
         <pluginManagement>
             <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jdeps-plugin</artifactId>
+                    <version>${maven.jdeps.plugin.version}</version>
+                </plugin>
+                <plugin>
+                <groupId>com.samaxes.maven</groupId>
+                <artifactId>minify-maven-plugin</artifactId>
+                <version>1.7.6</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.codehaus.plexus</groupId>
+                            <artifactId>plexus-utils</artifactId>
+                            <version>3.5.0</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jxr-plugin</artifactId>
@@ -627,13 +657,10 @@
                 <groupId>org.eclipse.jetty</groupId>
                   <artifactId>jetty-maven-plugin</artifactId>
                   <version>${jetty.maven.plugin.version}</version>
-
                 <configuration>
-
                   <scanIntervalSeconds>10</scanIntervalSeconds>
                   <stopPort>8005</stopPort>
                   <stopKey>STOP</stopKey>
-
                 </configuration>
               </plugin>
                 <plugin>
@@ -661,7 +688,7 @@
 						<dependency>
 							<groupId>com.percussion</groupId>
 							<artifactId>rxutils</artifactId>
-							<version>8.1.2</version>
+							<version>8.1.3</version>
 						</dependency>
 						<dependency>
 							<groupId>xerces</groupId>
@@ -755,7 +782,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>8.1.2</version>
+                            <version>8.1.3</version>
                         </dependency>
                     </dependencies>
                     <executions>
@@ -785,7 +812,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>8.1.2</version>
+                            <version>8.1.3</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -802,7 +829,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>perc-security-utils</artifactId>
-                            <version>8.1.2</version>
+                            <version>8.1.3</version>
                         </dependency>
                         <dependency>
                             <groupId>com.h3xstream.findsecbugs</groupId>
@@ -959,7 +986,7 @@
     <repositories>
         <repository>
             <id>perc-release-repo</id>
-            <url>https://mvn.percussion.com/repositories/releases/</url>
+            <url>https://mvn.intsof.com/repositories/releases/</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
@@ -971,7 +998,7 @@
         <repository>
             <id>thirdparty</id>
             <name>thirdparty</name>
-            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
+            <url>https://mvn.intsof.com/repositories/thirdparty/</url>
             <releases>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
@@ -984,8 +1011,8 @@
             <id>maven-central</id>
             <url>https://repo1.maven.org/maven2</url>
             <releases>
-                    <enabled>true</enabled>
-                    <updatePolicy>never</updatePolicy>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
             </releases>
             <snapshots>
                 <enabled>false</enabled>
@@ -994,7 +1021,7 @@
         <repository>
             <id>perc-snapshot-repo</id>
             <name>Snapshots</name>
-            <url>https://mvn.percussion.com/repositories/snapshots/</url>
+            <url>https://mvn.intsof.com/repositories/snapshots/</url>
             <snapshots>
                 <enabled>true</enabled>
                 <updatePolicy>never</updatePolicy>
@@ -1008,7 +1035,7 @@
         <pluginRepository>
             <id>perc-releases-repo</id>
             <name>Perc releases Repository</name>
-            <url>https://mvn.percussion.com/repositories/releases/</url>
+            <url>https://mvn.intsof.com/repositories/releases/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>false</enabled>
@@ -1019,7 +1046,7 @@
         <pluginRepository>
             <id>perc-snapshot-repo</id>
             <name>Perc Snapshots Repository</name>
-            <url>https://mvn.percussion.com/repositories/snapshots/</url>
+            <url>https://mvn.intsof.com/repositories/snapshots/</url>
             <layout>default</layout>
             <snapshots>
                 <enabled>true</enabled>
@@ -1031,7 +1058,7 @@
         <pluginRepository>
             <id>thirdparty</id>
             <name>thirdparty</name>
-            <url>https://mvn.percussion.com/repositories/thirdparty/</url>
+            <url>https://mvn.intsof.com/repositories/thirdparty/</url>
         </pluginRepository>
         <pluginRepository>
             <id>maven-central</id>
@@ -1258,6 +1285,13 @@
                 <version>${jetty.version}</version>
             </dependency>
 
+            <!-- needed for https://github.com/eclipse/jetty.project/issues/4746 -->
+            <dependency>
+                <groupId>org.apache.geronimo.components</groupId>
+                <artifactId>geronimo-jaspi</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.jboss</groupId>
                 <artifactId>jandex</artifactId>
@@ -1363,13 +1397,18 @@
             <!-- Commons -->
             <dependency>
                 <groupId>commons-collections</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${commons.collections4.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-collections</groupId>
                 <artifactId>commons-collections</artifactId>
-                <version>3.2.2</version>
+                <version>${commons.collections3.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
-                <version>1.9</version>
+                <version>1.10.0</version>
             </dependency>
             <dependency>
                 <groupId>commons-codec</groupId>
@@ -1394,12 +1433,12 @@
             <dependency>
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
-                <version>2.4</version>
+                <version>${commons.lang.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.9</version>
+                <version>${commons.lang3.version}</version>
             </dependency>
             <!-- logging -->
             <dependency>
@@ -1517,7 +1556,7 @@
             <dependency>
                 <groupId>org.codehaus.jettison</groupId>
                 <artifactId>jettison</artifactId>
-                <version>1.5.2</version>
+                <version>1.5.4</version>
             </dependency>
             <dependency>
                 <groupId>com.jcraft</groupId>
@@ -1693,7 +1732,7 @@
             <dependency>
                 <groupId>commons-net</groupId>
                 <artifactId>commons-net</artifactId>
-                <version>2.2</version>
+                <version>3.9.0</version>
             </dependency>
             <dependency>
                 <groupId>javax.ws.rs</groupId>
@@ -1823,7 +1862,37 @@
                 <version>${commons.compress.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/commons-digester/commons-digester -->
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>activemq-broker</artifactId>
+                <version>${activemq.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>activemq-client</artifactId>
+                <version>${activemq.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>activemq-kahadb-store</artifactId>
+                <version>${activemq.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>activemq-spring</artifactId>
+                <version>${activemq.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.activemq</groupId>
+                <artifactId>activemq-jms-pool</artifactId>
+                <version>${activemq.version}</version>
+            </dependency>
+
+
             <dependency>
                 <groupId>commons-digester</groupId>
                 <artifactId>commons-digester</artifactId>
@@ -1912,7 +1981,7 @@
             <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib</artifactId>
-                <version>3.3.1-SNAPSHOT</version>
+                <version>3.3.1-PATCHED</version>
             </dependency>
             <dependency>
                 <groupId>org.ow2.asm</groupId>
@@ -2294,6 +2363,26 @@
                         <groupId>ant</groupId>
                         <artifactId>ant</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>commons-httpclient</groupId>
+                        <artifactId>commons-httpclient</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.ivy</groupId>
+                        <artifactId>ivy</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.jvnet.hudson</groupId>
+                        <artifactId>ivy</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>junit</groupId>
+                        <artifactId>junit</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.bcel</groupId>
+                        <artifactId>bcel</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -2357,14 +2446,16 @@
                 <artifactId>ant</artifactId>
                 <version>${ant.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/ant/ant-apache-oro old 
-                for perfoce tasks -->
             <dependency>
-                <groupId>ant</groupId>
+                <groupId>org.apache.ant</groupId>
                 <artifactId>ant-apache-oro</artifactId>
-                <version>1.6.5</version>
+                <version>${ant.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.apache.ant</groupId>
+                <artifactId>ant-nodeps</artifactId>
+                <version>${ant.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.ant</groupId>
                 <artifactId>ant-jsch</artifactId>
@@ -2372,10 +2463,27 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.ant</groupId>
+                <artifactId>ant-commons-net</artifactId>
+                <version>${ant.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ant-contrib</groupId>
+                <artifactId>ant-contrib</artifactId>
+                <version>${ant.contrib.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>*</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.ant</groupId>
                 <artifactId>ant-launcher</artifactId>
                 <version>${ant.version}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/org.apache.ant/ant-commons-logging -->
             <dependency>
                 <groupId>org.apache.ant</groupId>
                 <artifactId>ant-commons-logging</artifactId>
@@ -2385,19 +2493,6 @@
                 <groupId>org.apache.ant</groupId>
                 <artifactId>ant-apache-regexp</artifactId>
                 <version>${ant.version}</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/ant-contrib/ant-contrib -->
-            <dependency>
-                <groupId>ant-contrib</groupId>
-                <artifactId>ant-contrib</artifactId>
-                <version>1.0b3</version>
-                <exclusions>
-                    <exclusion>
-                        <!-- old naming -->
-                        <groupId>ant</groupId>
-                        <artifactId>ant</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>perforce</groupId>
@@ -2442,13 +2537,19 @@
             <dependency>
                 <groupId>jmock</groupId>
                 <artifactId>jmock-cglib</artifactId>
-                <version>1.0.1</version>
+                <version>1.2.0</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>cglib</groupId>
+                        <artifactId>cglib</artifactId>
+                    </exclusion>
+                </exclusions>
                 <scope>compile</scope>
             </dependency>
           <dependency>
                 <groupId>jmock</groupId>
                 <artifactId>jmock</artifactId>
-                <version>1.0.1</version>
+                <version>1.2.0</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
@@ -2581,7 +2682,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>2.13.2.1</version>
+                <version>${jackson.version}</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
             <dependency>
@@ -2694,11 +2795,6 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-csv</artifactId>
                 <version>1.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.beust</groupId>
-                <artifactId>jcommander</artifactId>
-                <version>1.35</version>
             </dependency>
             <dependency>
                 <groupId>com.rometools</groupId>
@@ -2877,12 +2973,12 @@
         </snapshotRepository>
         -->
             <snapshotRepository>
-                <id>percussion.s3.repo</id>
-                <url>s3://percussion-maven-repo/repositories/snapshots</url>
+                <id>intersoft.s3.repo</id>
+                <url>s3://percussioncms-maven.intsof.com/repositories/snapshots</url>
             </snapshotRepository>
             <repository>
-                <id>percussion.s3.repo</id>
-                <url>s3://percussion-maven-repo/repositories/releases/</url>
+                <id>intersoft.s3.repo</id>
+                <url>s3://percussioncms-maven.intsof.com/repositories/releases/</url>
             </repository>
     </distributionManagement>
 </project>

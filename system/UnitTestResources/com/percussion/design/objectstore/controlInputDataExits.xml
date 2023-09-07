@@ -17,7 +17,7 @@
      <PSXExtensionParamValue id="0">
         <value>
            <PSXTextLiteral id="0">
-              <text>rxW2Ktidy.properties</text>
+              <text>html-cleaner.properties</text>
            </PSXTextLiteral>
         </value>
      </PSXExtensionParamValue>
@@ -62,7 +62,7 @@
      <PSXExtensionParamValue id="0">
         <value>
            <PSXTextLiteral id="0">
-              <text>rxW2Ktidy.properties</text>
+              <text>html-cleaner.properties</text>
            </PSXTextLiteral>
         </value>
      </PSXExtensionParamValue>

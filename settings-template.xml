@@ -14,15 +14,21 @@
                 cd ~/.m2
                 keytool -genkey -keyalg RSA -alias selfsigned -keystore percussioncms-dev.jks -storepass 12345678 -validity 90
                 -->
-                <keystorefile>~/.m2/percussioncms-dev.jks</keystorefile>
-                <keystorepass>12345678</keystorepass>
+                      <signing.keystoreFile>~/.m2/percussioncms-dev.jks</signing.keystoreFile>
+                      <signing.keystorePass>12345678</signing.keystorePass>
+                      <signing.keystoreType>JKS</signing.keystoreType>
+                      <signing.keyAlias>selfsigned</signing.keyAlias>
+		              <signing.keyPass>12345678</signing.keyPass>
             </properties>
         </profile>
         <profile>
             <id>percussioncms-test</id>
             <properties>
-                <keystorefile>~/.m2/percussioncms-dev.jks</keystorefile>
-                <keystorepass>12345678</keystorepass>
+                      <signing.keystoreFile>~/.m2/percussioncms-dev.jks</signing.keystoreFile>
+                      <signing.keystorePass>12345678</signing.keystorePass>
+                      <signing.keystoreType>JKS</signing.keystoreType>
+                      <signing.keyAlias>selfsigned</signing.keyAlias>
+                      <signing.keyPass>12345678</signing.keyPass>
             </properties>
         </profile>
 

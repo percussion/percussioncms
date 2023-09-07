@@ -138,14 +138,16 @@
                     $(".perc-site-map-action-item-disabled")
                         .not('#perc-site-map-copy,#perc-site-map-delete')
                         .removeClass("perc-site-map-action-item-disabled")
-                        .addClass("perc-site-map-action-item-enabled");
+                        .addClass("perc-site-map-action-item-enabled")
+                        .attr('aria-disabled',"false");
                 }
                 else
                 {
                     $(".perc-site-map-action-item")
                         .not('#perc-site-map-copy,#perc-site-map-delete')
                         .removeClass("perc-site-map-action-item-enabled")
-                        .addClass("perc-site-map-action-item-disabled");
+                        .addClass("perc-site-map-action-item-disabled")
+                        .attr('aria-disabled',"true");
                 }
 
             },
@@ -432,6 +434,8 @@
                             {"level": levelCount + 1, "parentSectionId": parentId, "context": this},
                             "level_" + levelCount + 1);
                     $imgButton.attr("id", "perc_level_" + (levelCount + 1) + "_add");
+                    $imgButton.attr("tabindex", "0");
+                    $imgButton.attr("role", "button");
                     var $addSectionButton = $level.append($("<div></div>")
                         .addClass("perc-site-map-addpage-button").append($imgButton));
                 }
@@ -484,6 +488,9 @@
                         .css("padding-right", "30px")
                         .attr("id", "perc-site-map-delete")
                         .attr("title", "Delete Site")
+                        .attr("tabindex", "0")
+                        .attr("role", "button")
+                        .attr('aria-disabled',"true")
                         .text(I18N.message("perc.ui.site.map@Delete Site"));
 
                     isSiteBeingImported(function(result){
@@ -493,9 +500,16 @@
                         {
                             $delete.removeClass("perc-site-map-action-item-disabled")
                                 .addClass("perc-site-map-action-item-enabled")
+                                .attr('aria-disabled',"false")
                                 .attr("for", self.options.site)
                                 .on("click", function(evt) {
                                     self.onDeleteSiteDialog();
+                                })
+                                .on("keydown",function(eventHandler){
+                                    if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+                                        document.activeElement.click();
+                                        return false;
+                                    }
                                 });
                         }
 
@@ -509,6 +523,10 @@
                         .css("display", "table-cell")
                         .css("padding-right", "30px")
                         .attr("id", "perc-site-map-copy")
+                        .attr("title", "Copy Site")
+                        .attr("tabindex", "0")
+                        .attr("role", "button")
+                        .attr('aria-disabled',"true")
                         .text(I18N.message("perc.ui.site.map@Copy Site"))
                         .on("click", function(evt){
                            // self.onCopySiteDialog();
@@ -522,9 +540,18 @@
                     .addClass("perc-site-map-action-item-disabled")
                     .css("display", "table-cell")
                     .attr("id", "perc-site-map-move")
+                    .attr("title", "Move Section")
+                    .attr("tabindex", "0")
+                    .attr("role", "button")
+                    .attr('aria-disabled',"true")
                     .text(I18N.message('perc.ui.sitemap.menuitem@Move Section'))
                     .on("click", function(evt){
                         self.onMoveWithDialog();
+                    })
+                    .on("keydown",function(eventHandler){
+                        if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+                            document.activeElement.click();
+                        }
                     });
                 $menu.append($move);
 
@@ -620,7 +647,7 @@
                     if(status === $.PercServiceUtils.STATUS_SUCCESS)
                     {
                         if (!jQuery.isEmptyObject(result.psmap.entries)){
-                            $('#perc-site-map-copy').addClass("perc-site-map-action-item-disabled").removeClass("perc-site-map-action-item-enabled");
+                            $('#perc-site-map-copy').addClass("perc-site-map-action-item-disabled").removeClass("perc-site-map-action-item-enabled").attr('aria-disabled',"true");
                         }
                         else{
                             //$('#perc-site-map-copy').removeClass("perc-site-map-action-item-disabled").addClass("perc-site-map-action-item-enabled").attr("for", self.options.site);
@@ -678,6 +705,11 @@
                         $(".perc-site-map-box-selected").removeClass("perc-site-map-box-selected");
                         $(this).addClass("perc-site-map-box-selected");
                         self.handleMoveActionItemState();
+                    });
+                    $box.on("keydown",function(eventHandler){
+                        if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+                            document.activeElement.click();
+                        }
                     });
                     // Add Drag & Drop
                     $box.draggable({opacity: 0.7,
@@ -762,6 +794,8 @@
                             "context": this, site: site},
                         "level_" + levelIdx);
                 $configButton.attr("id", sectionObj.id + "_config");
+                $configButton.attr("tabindex", "0");
+                $configButton.attr("role", "button");
                 $configButton.addClass("perc-site-map-config-button");
                 $nodeButtons.append($configButton);
                 if(levelIdx > 1)
@@ -772,6 +806,8 @@
                             this.onDelete, {"sectionId": sectionObj.id, "context": self},
                             "level_" + levelIdx);
                     $deleteButton.attr("id", sectionObj.id + "_delete");
+                    $deleteButton.attr("tabindex", "0");
+                    $deleteButton.attr("role", "button");
                     $deleteButton.addClass("perc-site-map-delete-button");
                     $nodeButtons.append($deleteButton);
                 }
@@ -793,7 +829,7 @@
                 }
                 else if(sectionObj.sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
                 {
-                    var $secLink = $("<div></div>").addClass("perc-site-map-sectionlink").append("Section Link");
+                    var $secLink = $("<div></div>").addClass("perc-site-map-sectionlink").append("Section Link").attr("tabindex","0");
                     $parent.append($secLink);
                 }
                 else
@@ -803,7 +839,8 @@
                     var $pageCount = $("<div></div>").addClass("perc-site-map-pagecount");
                     $nodeCount.append($pageCount);
                     var $arrowImg = $("<img/>").attr("src", this.getImageSrc(this.ARROW_OFF_IMAGE))
-                        .attr("alt", "perc.ui.images@ArrowIconAlt");
+                        .attr("alt", "perc.ui.images@ArrowIconAlt")
+                        .attr("tabindex","0");
                     $pageCount.append($arrowImg);
                     var count = this.convertCXFArray(sectionObj.childIds).length;
                     $pageCount.append($("<span value=\"" + count + "\"></span>").text(count));
@@ -811,6 +848,12 @@
                     $nodeCount.on("click." + "level_" + levelIdx,
                         {"sectionId" : sectionObj.id}, function(evt){
                             self.onNodeCountClick(evt);
+                        });
+                    $nodeCount.on("keydown." + "level_" + levelIdx,
+                        {"sectionId" : sectionObj.id}, function(eventHandler){
+                            if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+                                document.activeElement.click();
+                            }
                         });
                 }
             },
@@ -820,21 +863,27 @@
              * @param image (String) the name of the image without ext of the image that
              * will serve as the button.
              * @param tooltip (String) the tooltip text for the button.
-             * @param onclick (Function) the callback function to call when
+             * @param callback (Function) the callback function to call when
              * a click event occurs.
              * @param data (Object) extra data that can be passed to the event handler
              * callback when the event fires.
              * @param namespace (String) event namspace that will be added to the click event.
              */
-            createImageButton: function(image, tooltip, onclick, data, namespace)
+            createImageButton: function(image, tooltip, callback, data, namespace)
             {
                 var self = this;
+                data.callback = callback;
                 var $button = $("<img/>")
                     .attr("src", this.getImageSrc(image))
                     .attr("alt", tooltip)
                     .attr("title", tooltip)
                     .on("click." + namespace, data, function(evt){
-                        onclick(evt);
+                        evt.data.callback(evt);
+                    })
+                    .on("keydown." + namespace, data, function(eventHandler){
+                        if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
+                            document.activeElement.click();
+                        }
                     })
                     .on("mouseenter." + namespace, function(evt){
                         $(this).attr("src", self.getImageSrc(image, true));

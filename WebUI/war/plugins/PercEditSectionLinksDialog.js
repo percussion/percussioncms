@@ -55,7 +55,7 @@ $.PercEditSectionLinksDialog = function() {
                 "<div id='perc-section-link-container' style='display:none'>" +
                 "<fieldset>" +
                 "<label for='perc-section-link-target' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@Target section" ) + ":</label> <br/> " +
-                "<div><input type='text' class='required' readonly='true' name='perc-section-link-target' id='perc-section-link-target'/><img src='../images/images/buttonEllipse.png' class='perc-button-ellipse'/></div>" +
+                "<div><input type='text' aria-required='true' class='required' readonly='false' name='perc-section-link-target' id='perc-section-link-target'/><img src='../images/images/buttonEllipse.png' class='perc-button-ellipse'/></div>" +
                 "<input type='hidden' name='perc-section-link-targetid' id='perc-section-link-targetid'/>" +
                 "</fieldset>" +
                 "</div>" +

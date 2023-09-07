@@ -1195,7 +1195,7 @@ public class PSExitAddPossibleTransitionsEx
                                        IPSRequestContext requestContext)
       throws SQLException
    {
-      List actorRoles = null;
+      List<Integer> actorRoles = null;
       int assignmentType = PSWorkFlowUtils.ASSIGNMENT_TYPE_NOT_IN_WORKFLOW;
       PSStateRolesContext src = null;
 

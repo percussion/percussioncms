@@ -100,13 +100,6 @@
     <echo>install.dir= ${install.dir}</echo>
     <echo>upgrade=${do.upgrade}</echo>
     <echo>install=${do.install}</echo>
-    <echo>Copying JDBC Jars...</echo>
-    <mkdir dir="${install.dir}/jetty/base/lib/jdbc" />
-    <copy todir="${install.dir}/jetty/base/lib/jdbc" overwrite="true" force="true">
-        <fileset dir="${install.src}/jetty/base/lib/jdbc">
-            <include name="**/*.jar"/>
-        </fileset>
-    </copy>
 
     <path id="ant.deps" cache="true">
         <fileset dir="${install.dir}/jetty/base/lib/jdbc">
@@ -126,39 +119,46 @@
         </fileset>
     </path>
 
-    <classloader classpathref="ant.deps" parentfirst="false" name="ant.loader.ant.deps"/>
 
-    <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps" />
-
-    <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps" />
-
-    <echo>Checking jetty directory exists...</echo>
-
-    <!-- Flagging Pages & Assets for startup processing -->
-    <!-- This always needs run on upgrade to 8.0.3 -->
-    <echo>Flagging Assets and Pages for startup processing...</echo>
-    <delete file="${install.dir}/upgrade/processedlinks/Assets.json" failonerror="false"/>
-    <delete file="${install.dir}/upgrade/processedlinks/Pages.json" failonerror="false"/>
-
-
-    <!-- Delete json files here end-->
+    <echo>Checking if jetty directory exists...</echo>
 
     <property name="customer.jdbc.drivers" location="${install.dir}/jetty/base/lib/jdbc" />
-    <mkdir dir="${customer.jdbc.drivers}"/>
-    <echo>Checking for existing JDBC Drivers...</echo>
-    <copy verbose="true" todir="${install.dir}/jetty/base/lib/jdbc" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
-        <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib">
-            <include name="mysql*.jar"/>
-        </fileset>
-        <fileset dir="${install.dir}/AppServer/server/rx/lib">
-            <include name="mysql*.jar"/>
-        </fileset>
-    </copy>
 
-    <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
-        <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/user">
-        </fileset>
-    </copy>
+
+    <target name="copy_custom_config_from_jboss">
+        <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
+            <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/config/user">
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="install_jdbc_drivers">
+        <mkdir dir="${customer.jdbc.drivers}"/>
+        <echo>Checking for existing JDBC Drivers...</echo>
+        <copy verbose="true" todir="${install.dir}/jetty/base/lib/jdbc" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
+            <fileset dir="${install.dir}/AppServer/server/rx/deploy/rxapp.ear/rxapp.war/WEB-INF/lib">
+                <include name="mysql*.jar"/>
+            </fileset>
+            <fileset dir="${install.dir}/AppServer/server/rx/lib">
+                <include name="mysql*.jar"/>
+            </fileset>
+        </copy>
+
+        <echo>Copying JDBC Jars...</echo>
+        <copy todir="${install.dir}/jetty/base/lib/jdbc" overwrite="true" force="true">
+            <fileset dir="${install.src}/jetty/base/lib/jdbc">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="clear_assets_pages_upgrade_files">
+        <!-- Flagging Pages & Assets for startup processing -->
+        <!-- This always needs to be run on upgrade to 8.0.3 -->
+        <echo>Flagging Assets and Pages for startup processing...</echo>
+        <delete file="${install.dir}/upgrade/processedlinks/Assets.json" failonerror="false"/>
+        <delete file="${install.dir}/upgrade/processedlinks/Pages.json" failonerror="false"/>
+    </target>
 
     <target name="setup-logging">
         <mkdir dir="${install.dir}/rxconfig/Installer"/>
@@ -168,13 +168,19 @@
         <echo message="Build logged to ${install.dir}/rxconfig/Installer/install.log"/>
     </target>
 
-    <target name="init" depends="setup-logging">
+    <target name="init" depends="setup-logging,install_jdbc_drivers,clear_assets_pages_upgrade_files,copy_custom_config_from_jboss">
         <fail message="Property &quot;install.dir&quot; needs to be set">
             <condition>
                 <istrue value="${installSameSrcDest}"/>
             </condition>
         </fail>
     </target>
+
+    <classloader classpathref="ant.deps" parentfirst="false" name="ant.loader.ant.deps"/>
+
+    <taskdef resource="com/percussion/ant/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps" />
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml" classpathref="ant.deps" loaderref="ant.loader.ant.deps" />
 
     <target name="install_properties">
         <loadproperties srcFile="${installation.properties}"/>
@@ -487,7 +493,6 @@
         <include name="Synchronizer.bin"/>
         <include name="Synchronizer.exe"/>
         <include name="Synchronizer.lax"/>
-        <include name="sys_search/lucene/indexes/**"/>
     </patternset>
 
     <patternset id="upgrade.overwrite">
@@ -606,7 +611,6 @@
         <antcall target="updateExtensions" inheritall="true" inheritrefs="true"/>
         <ant antfile="removeOldPatches.xml" target="removeOldPatches" inheritAll="true" inheritRefs="true" />
         <antcall target="alwaysCopyIfMissing" inheritall="true" inheritrefs="true"/>
-        <ant antfile="updateConfiguration.xml" target="updateConfiguration" inheritAll="true" inheritRefs="true" />
         <antcall target="updateConfigXMLForPasswordFilter" inheritall="true" inheritrefs="true"/>
         <antcall target="upgradeSiteConfig" inheritall="true" inheritrefs="true" />
         <antcall target="replaceOldFontAwesome"  inheritall="true" inheritrefs="true"/>
@@ -617,6 +621,7 @@
         <antcall target="backupTinymceRxresources"  inheritall="true" inheritrefs="true"/>
         <echo>Upgrade Done...Update Version.properties</echo>
         <copy file="${install.src}/Version.properties" tofile="${install.dir}/Version.properties" overwrite="true" failonerror="false" force="true"/>
+        <ant antfile="updateConfiguration.xml" target="updateConfiguration" inheritAll="true" inheritRefs="true" />
     </target>
 
     <target name="deleteOldLog4jJars">
@@ -908,11 +913,11 @@
             </fileset>
         </copy>
 
-        <property name="fastforwardfile.list" value="psx_cerffAutoIndex.xml,psx_cerffBrief.xml,psx_cerffCalendar.xml,psx_cerffContacts.xml,psx_cerffEvent.xml,psx_cerffExternalLink.xml,psx_cerffFile.xml,psx_cerffGeneric.xml,psx_cerffGenericWord.xml,psx_cerffHome.xml,psx_cerffImage.xml,psx_cerffNavImage.xml,psx_cerffPressRelease.xml,psx_cerffNavImage.xml,psx_cerffNavon.xml,psx_cerffNavTree.xml"/>
+        <property name="fastforwardfile.list" value="psx_cerffAutoIndex.xml,psx_cerffBrief.xml,psx_cerffCalendar.xml,psx_cerffContacts.xml,psx_cerffEvent.xml,psx_cerffExternalLink.xml,psx_cerffFile.xml,psx_cerffGeneric.xml,psx_cerffGenericWord.xml,psx_cerffHome.xml,psx_cerffImage.xml,psx_cerffPressRelease.xml"/>
 
         <echo>Update ObjectStore with latest files </echo>
-        <copy todir="${install.dir}/ObjectStore" failonerror="false" overwrite="true">
-            <fileset dir="${install.src}/ObjectStore" followsymlinks="false" excludes="${fastforwardfile.list}" includes="**">
+        <copy todir="${install.dir}/ObjectStore" failonerror="false" overwrite="false">
+            <fileset dir="${install.src}/ObjectStore" followsymlinks="false" excludes="${fastforwardfile.list}" includes="**" >
                 <!-- <present present="srconly" targetdir="${install.dir}/ObjectStore"/> don't copy fastforward files -->
             </fileset>
         </copy>
@@ -1424,6 +1429,7 @@
             <patternset refid="text.files"/>
             <exclude name="**/Deployment/**"/>
             <exclude name="**/Staging/**"/>
+            <exclude name="JRE/**"/>
         </fixcrlf>
 
         <if>
@@ -1592,9 +1598,9 @@
         <echo>Updating Audit Log Property file ...</echo>
         <delete file="${install.dir}/rxconfig/Server/audit-log.properties" failonerror="false" verbose="true" />
         <copy verbose="true" overwrite="true" file="${install.src}/rxconfig/Installer/audit-log.properties" tofile="${install.dir}/rxconfig/Server/audit-log.properties" />
-
+        <mkdir dir="${install.dir}/jetty/base/logs/audit" />
         <propertyfile file="${install.dir}/rxconfig/Server/audit-log.properties">
-            <entry key="filePath" value="${install.dir}/jetty/base/logs"/>
+            <entry key="filePath" value="${install.dir}/jetty/base/logs/audit"/>
         </propertyfile>
         <delete file="${install.dir}/rxconfig/Installer/audit-log.properties" failonerror="false" verbose="true" />
 

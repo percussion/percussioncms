@@ -372,13 +372,13 @@ public class PSMockRequestContext implements IPSRequestContext
       return null;
    }
 
-   public List getSubjectGlobalAttributes(String subjectNameFilter, int subjectType, int providerType, String providerInstance, String roleName, String attributeNameFilter, boolean includeEmptySubjects)
+   public List<PSSubject> getSubjectGlobalAttributes(String subjectNameFilter, int subjectType, int providerType, String providerInstance, String roleName, String attributeNameFilter, boolean includeEmptySubjects)
    {
       // TODO Auto-generated method stub
       return null;
    }
 
-   public List getSubjectGlobalAttributes()
+   public List<PSSubject> getSubjectGlobalAttributes()
    {
       // TODO Auto-generated method stub
       return null;

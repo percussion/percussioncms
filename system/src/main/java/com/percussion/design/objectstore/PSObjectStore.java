@@ -105,6 +105,12 @@ public class PSObjectStore
       this(conn, null);      
    }
 
+   public PSObjectStore(PSDesignerConnection conn,boolean encryptPwd)
+   {
+      this(conn, null);
+      m_encryptPassword = encryptPwd;
+   }
+
    /**
     * No-parameter constructor. For testing only.
     */
@@ -2920,7 +2926,7 @@ public class PSObjectStore
                "design-objectstore-serverconfig-load", sendDoc);
 
          /* convert the response to a config object */
-         PSServerConfiguration config = new PSServerConfiguration();
+         PSServerConfiguration config = new PSServerConfiguration(m_encryptPassword);
 
          Element respRoot = respDoc.getDocumentElement();
          PSXmlTreeWalker tree = new PSXmlTreeWalker(respDoc);
@@ -3873,6 +3879,7 @@ public class PSObjectStore
       }
    }
 
+   private boolean m_encryptPassword = true;
    private String                  m_uid;
    private PSDesignerConnection   m_conn;
    

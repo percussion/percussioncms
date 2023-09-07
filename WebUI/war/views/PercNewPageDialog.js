@@ -54,7 +54,7 @@
             dialogHtml = dialogHtml + "<div style='float:left;'>" +
                 "<fieldset>" +
                 "<label for='perc-page-linktext' class='perc-required-field'>" + (!templateId ? I18N.message( "perc.ui.newpagedialog.label@Page link text" ) : I18N.message( "perc.ui.newblogpostdialog.label@Post title" )) + ":</label> <br/> " +
-                "<input type='text' required class='required' id='perc-page-linktext' name='page_linktext' maxlength='512' autofocus /> <br/> ";
+                "<input type='text' required class='required' id='perc-page-linktext' aria-required='true' name='page_linktext' maxlength='512' autofocus /> <br/> ";
 
             if(!templateId)
             {
@@ -75,7 +75,7 @@
             // render the rest of the dialog
             dialogHtml = dialogHtml +
                 "<label for='perc-page-name' class='perc-required-field'>" + (!templateId ? I18N.message( "perc.ui.newpagedialog.label@Page name" ) : I18N.message( "perc.ui.newblogpostdialog.label@Post name" )) + ":</label> <br/> " +
-                "<input type='text' required  class='required' id='perc-page-name' name='page_name' maxlength='255'/><br/> " +
+                "<input type='text' required  class='required' id='perc-page-name' aria-required='true' name='page_name' maxlength='255'/><br/> " +
                 "</fieldset>" +
                 "</div><br/>";
 
@@ -84,11 +84,11 @@
                 dialogHtml = dialogHtml + "<div style='float:left;'><label for='perc-select-template'>" +I18N.message("perc.ui.new.page.dialog@Select A Template") + "</label><br/>" +
                     "  <input list='perc-page-items-datalist' id='perc-page-item-filter' />" +
                     "  <datalist id='perc-page-items-datalist'></datalist><br/>" +
-                    "<a class='prevPage browse left'></a>" +
+                    "<a role='button' tabindex='0' title='"+I18N.message("perc.ui.template.create@Prev")+"' class='prevPage browse left'></a>" +
                     "<div class='perc-scrollable'><input type='hidden' id='perc-select-template' name='template'/>" +
                     "<div class='perc-items'>" +
                     "</div></div>" +
-                    "<a class='nextPage browse right' ></a></div>   ";
+                    "<a role='button' tabindex='0' title='"+I18N.message("perc.ui.common.label@Next")+"' class='nextPage browse right' ></a></div>   ";
             }
             else
             {

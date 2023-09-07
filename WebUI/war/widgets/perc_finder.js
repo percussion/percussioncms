@@ -163,12 +163,21 @@ var assetPagination = null;
         });
 
         // dim the ui when the user is not in the finder
+		/*
         $('.perc-finder-outer').on("mouseenter",function highligh_actions () {
             $(this).removeClass('ui-disabled');
+			$(this).find('a').each(function() {
+				$(this).attr('aria-disabled',"false");
+			});
+
         })
             .on("mouseleave",function dim_actions () {
                 $(this).addClass('ui-disabled');
+				$(this).find('a').each(function() {
+					$(this).attr('aria-disabled',"true");
+				});
             });
+			*/
 
         function absPath(strPath){
             var path = strPath.split("/");
@@ -867,6 +876,15 @@ var assetPagination = null;
                     add_item(dir, make_item(this, open_from_dir(dir)));
                 }
             });
+
+			 var tabIndex = 20;
+			$( "#perc-finder-table-top" ).find('a').each(function (i, el) {
+					this.setAttribute("tabindex", tabIndex++);
+			});
+
+
+
+
         }
 
         function open_next( next, dir, path, new_path, k ) {
@@ -884,7 +902,16 @@ var assetPagination = null;
                 //our open operation at the next directory.
                 new_path.push( path.shift() );
                 scroll_into_view(next);
-
+				//adding aria disabled
+				var viewMenuAnchor_child = next.children();
+				for(var i=0; i<viewMenuAnchor_child.length; i++){
+					var child = viewMenuAnchor_child[i];
+					if(child.nodeName=="IMG"){
+						child.tabIndex="0";
+						child.setAttribute("aria-disabled", "true");
+						break;
+					}
+				}
                 //Expose the data item for multiple purposes.
                 if (typeof(next.data('spec')) != "undefined"){
                     currentItem = next.data('spec');
@@ -981,6 +1008,14 @@ var assetPagination = null;
 				}
 
             });
+
+			listing.on("keydown", function(evt){
+				if(evt.code == "Enter" || evt.code == "Space"){
+					document.activeElement.click();
+				}
+
+            });
+
 
             if(isDraggableItem(spec))
             {

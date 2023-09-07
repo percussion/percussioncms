@@ -35,7 +35,7 @@ function displayAvailableReports() {
     var reportListHtml = '';
     $(percReportsList).each(function(index, report) {
         reportListHtml +=  `<div class="perc-report-row">
-                          <div class="perc-generate-report-container"><button class="perc-generate-report btn btn-primary" data-perc-report-type="${report.type}" data-perc-report-endpoint="${report.endpoint}">${report.type}</button></div>
+                          <div class="perc-generate-report-container"><button class="perc-generate-report btn btn-primary" title="${report.type}" data-perc-report-type="${report.type}" data-perc-report-endpoint="${report.endpoint}">${report.type}</button></div>
                         </div>`;
     });
     $('#percReportGadgetTarget').html(reportListHtml);

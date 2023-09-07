@@ -96,7 +96,9 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
     
     public String processLinksAndImages(String value, Map<String, String> attribs)
     {
+
         Document doc = Jsoup.parseBodyFragment(value);
+
         Elements elems = null;
         Elements imgElems = null;
     	elems = doc.select(IPSManagedLinkService.A_HREF);
@@ -116,7 +118,7 @@ public class PSManagedLinksConverter extends PSDefaultExtension implements IPSFi
                 convertToOldLinks(elem, RXIMAGE, attribs);
         }        
 
-        return doc.html();
+        return doc.body().html();
     }
     
     @SuppressWarnings("deprecation")

@@ -66,8 +66,32 @@ public class PSIdMapper implements IPSIdMapper
       
       return guidMgr.makeGuid(id);
    }
-      
-   public int getContentId(IPSGuid guid)
+
+    public IPSGuid getGuid(String id, PSTypeEnum type)
+    {
+        notNull(id);
+        notEmpty(id);
+
+        return guidMgr.makeGuid(id,type);
+    }
+
+    /**
+     * Converts a guid string into a valid guid for the specified type.
+     *
+     * @param id        String representation of a GUID
+     * @param type      The type of guid to create
+     * @param forceType When true, the specified type will be forced on the returned guid
+     * @return A valid GUID
+     */
+    @Override
+    public IPSGuid getGuid(String id, PSTypeEnum type, boolean forceType) {
+        notNull(id);
+        notEmpty(id);
+
+        return guidMgr.makeGuid(id,type,forceType);
+    }
+
+    public int getContentId(IPSGuid guid)
    {
        notNull(guid);
        return ((PSLegacyGuid)guid).getContentId();

@@ -19,9 +19,12 @@ package com.percussion.deployer.objectstore;
 
 import com.percussion.design.objectstore.IPSObjectStoreErrors;
 import com.percussion.design.objectstore.PSUnknownNodeTypeException;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.system.IPSDependencyBaseline;
 import com.percussion.xml.PSXmlDocumentBuilder;
 import com.percussion.xml.PSXmlTreeWalker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -35,10 +38,13 @@ import java.util.TreeSet;
 /**
  * Base class for dependency objects.  Provides all common dependency
  * functionality.  A dependency represents any deployable Rhythmyx server
- * element, e.g. a content type, variant definiton, application, exit, etc.
+ * element, e.g. a content type, variant definition, application, exit, etc.
  */
 public abstract class PSDependency implements IPSDependencyBaseline, IPSDeployComponent, Comparable
 {
+
+   private static final Logger log = LogManager.getLogger(PSDependency.class);
+
    /**
     * Construct a dependency with all required parameters.
     *
@@ -1569,7 +1575,28 @@ public abstract class PSDependency implements IPSDependencyBaseline, IPSDeployCo
          m_dependencies.addAll(dep.m_dependencies);
       }
    }
-   
+
+   public PSDependency (PSDependency dep) {
+      this.m_displayName = dep.m_displayName;
+      this.m_dependencyType = dep.m_dependencyType;
+      this.m_supportsIdTypes = dep.m_supportsIdTypes;
+      this.m_dependencyId = dep.m_dependencyId;
+      this.m_objectType = dep.m_objectType;
+      this.m_objectTypeName = dep.m_objectTypeName;
+      this.m_supportsIdMapping = dep.m_supportsIdMapping;
+      this.m_isIncluded = dep.m_isIncluded;
+      this.m_supportsUserDependencies = dep.m_supportsUserDependencies;
+      this.m_dependencies = dep.m_dependencies;
+      this.m_parentDependency = dep.m_parentDependency;
+      this.m_ancestors = dep.m_ancestors;
+      this.m_supportsParentId = dep.m_supportsParentId;
+      this.m_parentId = dep.m_parentId;
+      this.m_parentType = dep.m_parentType;
+      this.m_autoExpand = dep.m_autoExpand;
+      this.m_isAutoDependency = dep.m_isAutoDependency;
+      this.m_isAssociation = dep.m_isAssociation;
+   }
+
    /**
     * Creates a new instance of this object, deep copying all member variables.
     * If derived classes has mutable member variables, it must override this
@@ -1578,36 +1605,27 @@ public abstract class PSDependency implements IPSDependencyBaseline, IPSDeployCo
     * 
     * @return a deep-copy clone of this instance, never <code>null</code>.
     */
-   public Object clone()
-   {
+   public Object clone() {
       PSDependency copy = null;
-      // won't happen because it implements Cloneable interface
-      try
-      {
-         copy = (PSDependency) super.clone();
-      }
-      catch (CloneNotSupportedException e)
-      {
-      }
 
+      try {
+         copy = (PSDependency) super.clone();
+      } catch (CloneNotSupportedException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+      }
       if (m_ancestors == null)
          copy.m_ancestors = null;
       else
       {
          copy.m_ancestors = new TreeSet<>();
-         Iterator<PSDependency> ancestors = m_ancestors.iterator();
-         while (ancestors.hasNext())
-            copy.m_ancestors.add((PSDependency)ancestors.next().clone());
+         for (PSDependency m_ancestor : m_ancestors) copy.m_ancestors.add((PSDependency) m_ancestor.clone());
       }
       if (m_dependencies == null)
          copy.m_dependencies = null;
       else
       {
          copy.m_dependencies = new TreeSet<>();
-         Iterator<PSDependency> dependencies = m_dependencies.iterator();
-         while (dependencies.hasNext())
-         {
-            PSDependency sourceDep = dependencies.next();
+         for (PSDependency sourceDep : m_dependencies) {
             PSDependency clonedDep = (PSDependency) sourceDep.clone();
             copy.m_dependencies.add(clonedDep);
             clonedDep.setParentDependency(copy); // repoint parent

@@ -38,9 +38,9 @@
                 '<div class="fieldGroup">' +
                 "<div id='perc-site-general-container'>" +
                 "<label for='perc-site-hostname' class='perc-required-field'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Site hostname" ) + ":</label> <br/> " +
-                "<input type='text' class='required' tabindex='" + taborder + "' id='perc-site-hostname' maxlength='80' name='site_hostname'/> <br/>" +
+                "<input type='text' class='required' aria-required='true' tabindex='" + taborder + "' id='perc-site-hostname' maxlength='80' name='site_hostname'/> <br/>" +
                 "<label for='perc-page-title-link' class='perc-required-field'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Home page link text" ) + ":</label> <br/> " +
-                "<input type='text' tabindex='" + taborder + "' id='perc-page-title-link' class='required' name='page_title_link'/><br/> " +
+                "<input type='text' aria-required='true' tabindex='" + taborder + "' id='perc-page-title-link' class='required' name='page_title_link'/><br/> " +
                 "<label for='perc-site-desc'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Description" ) + ":</label> <br/> " +
                 "<textarea type='text' tabindex='" + taborder + "' id='perc-site-desc' name='site_desc'></textarea><br/> " +
                 "<label for='perc-site-navigation-cssclassnames'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Navigation class names") + ":</label> <br/> " +
@@ -58,6 +58,7 @@
                 '<label for="perc-canonical-url-dist-sections" id="perc-canonical-url-dist-sections-label">' + I18N.message("perc.ui.editSiteSectionDialog.label@Sections") + '</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
                 '<input type="radio" id="perc-canonical-url-dist-pages" name="perc-canonical-url-dist" value="pages" checked style="width:20px" disabled tabindex="' + taborder + '"/>&nbsp;&nbsp;' +
                 '<label for="perc-canonical-url-dist-pages" id="perc-canonical-url-dist-pages-label">' + I18N.message("perc.ui.editSiteSectionDialog.label@Landing Pages") + '</label> <br/>' +
+                "<label for='perc-arrow-key-message'(>" + I18N.message( "perc.ui.users@ArrowKeys") + ")</label> <br/> " +
 
                 '<input type="checkbox" id="perc-replace-canonical-tags" name="perc-replace-canonical-tags" style="width:20px" disabled tabindex="' + taborder + '"/>' +
                 '<label for="perc-replace-canonical-tags" id="perc-replace-canonical-tags-label">' + I18N.message("perc.ui.editSiteSectionDialog.label@Replace existing Canonical Tags if present") + '</label> <br/>' +
@@ -193,7 +194,7 @@
                     var groupHtml =
                         "<div class='perc-section-header'>" +
                         "<div class='perc-section-label' data-group='" + this.groupName + "'>" +
-                        "<span  class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
+                        "<span tabindex='30' title='"+this.groupLabel+"' class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
                         "</div>" +
                         "</div>";
                     dialog.find('#' + this.groupName).before(groupHtml);
@@ -210,6 +211,12 @@
                         .toggleClass('perc-items-minimizer')
                         .toggleClass('perc-items-maximizer');
                     dialog.find('#' + self.attr('data-group')).toggle();
+                });
+
+				dialog.find(".perc-section-label").off("keydown").on("keydown",function() {
+                    if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+					}
                 });
             }
 

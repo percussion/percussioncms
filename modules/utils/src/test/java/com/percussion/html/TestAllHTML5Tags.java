@@ -34,8 +34,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Test to validate the HTML cleaner / parser against
@@ -195,11 +194,7 @@ public class TestAllHTML5Tags {
 
         for (Map.Entry attr:attrList.entrySet()) {
             String attrValue = attributes.get((String)attr.getKey());
-            assertTrue(attrValue != null);
-           System.out.println("Attribute Value: " + attrValue);
-           System.out.println("Attribute Name: " + attr.getKey());
-           System.out.println("Attribute Stored Value: " + attr.getValue());
-            assertTrue(attrValue.equals(attr.getValue()));
+            assertEquals(attrValue, attr.getValue());
         }
 
     }
@@ -217,6 +212,26 @@ public class TestAllHTML5Tags {
         }
     }
 
+    @Test
+    public void testAriaAttributes(){
+        Elements tags = parsedDoc.select("i[id=aria-hidden-test]");
+        assertEquals(1, tags.size());
+        assertEquals("true",tags.get(0).attr("aria-hidden"));
+
+        tags = parsedDoc.select("input[id=aria-input-test]");
+        assertEquals(1, tags.size());
+        assertEquals("true",tags.get(0).attr("aria-required"));
+    }
+
+    @Test
+    public void testDataAttributes(){
+        Elements tags = parsedDoc.select("div[id=data-attr-test]");
+        assertEquals(1, tags.size());
+        assertEquals("blah",tags.get(0).attr("data-complete-text"));
+
+        assertEquals(1, tags.size());
+        assertEquals("blah",tags.get(0).attr("data-mydata-attr"));
+    }
 
 
     @Test

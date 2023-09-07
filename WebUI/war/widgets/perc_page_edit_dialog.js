@@ -127,7 +127,7 @@
             $("#edit-page-metadata-frame").contents().find("#perc-content-edit-metadata-panel .perc-content-edit-data").show();
             if ($("#edit-page-metadata-frame").contents().find("#perc-content-edit-errors").length > 0)
             {
-                $("#edit-page-metadata-frame").contents().find("#perc-content-edit-errors label").html("Error saving the page meta-data.");
+                $("#edit-page-metadata-frame").contents().find("#perc-content-edit-errors label").html("Error saving the page metadata.");
             }
             var cbAutoSummary = $("#edit-page-metadata-frame").contents().find("#perc-content-edit-auto_generate_summary");
             var trAutoSummary = cbAutoSummary.closest('tr');

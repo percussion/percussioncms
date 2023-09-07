@@ -24,6 +24,7 @@ import com.percussion.design.objectstore.PSGlobalSubject;
 import com.percussion.design.objectstore.PSSubject;
 import com.percussion.i18n.PSI18nUtils;
 import com.percussion.log.PSLogHandler;
+import com.percussion.security.PSNotificationEmailAddress;
 import com.percussion.security.PSRoleManager;
 import com.percussion.security.PSSecurityToken;
 import com.percussion.security.PSUserEntry;
@@ -489,7 +490,7 @@ public class PSRequestContext implements IPSRequestContext
    }
    
    // see IPSRequestContext
-   public List getSubjectGlobalAttributes(String subjectNameFilter,
+   public List<PSSubject> getSubjectGlobalAttributes(String subjectNameFilter,
       int subjectType, int providerType, String providerInstance,
       String roleName, String attributeNameFilter, boolean includeEmptySubjects)
    {
@@ -501,7 +502,7 @@ public class PSRequestContext implements IPSRequestContext
    }
 
    // see IPSRequestContext
-   public List getSubjectRoleAttributes(String subjectNameFilter,
+   public List<PSSubject> getSubjectRoleAttributes(String subjectNameFilter,
       int subjectType, int providerType, String providerInstance,
       String roleName, String attributeNameFilter)
    {
@@ -655,7 +656,7 @@ public class PSRequestContext implements IPSRequestContext
    }
    
    // see IPSRequestContext for a description
-   public Set getSubjectEmailAddresses(String subjectName, 
+   public Set<PSNotificationEmailAddress> getSubjectEmailAddresses(String subjectName,
       String emailAttributeName, String community)
    {
       if (subjectName == null)
@@ -664,20 +665,16 @@ public class PSRequestContext implements IPSRequestContext
       subjectName = subjectName.trim();
       if (subjectName.length() == 0)
          throw new IllegalArgumentException("roelName cannot be empty");
-         
-      Set emails = new HashSet();
 
-      emails.addAll(PSRoleManager.getInstance().getSubjectEmailAddresses(
-         subjectName, emailAttributeName, community));
-      
-      return emails;
+      return new HashSet<>(PSRoleManager.getInstance().getSubjectEmailAddresses(
+              subjectName, emailAttributeName, community));
    }
    
    /*
     *  (non-Javadoc)
     * @see com.percussion.server.IPSRequestContext#getRoleSubjects(java.lang.String)
     */
-   public List getRoleSubjects(String roleName)
+   public List<PSSubject> getRoleSubjects(String roleName)
    {
       return getRoleSubjects(roleName, 0, null);
    }
@@ -686,7 +683,7 @@ public class PSRequestContext implements IPSRequestContext
     *  (non-Javadoc)
     * @see com.percussion.server.IPSRequestContext#getRoleSubjects(java.lang.String, int, java.lang.String)
     */
-   public List getRoleSubjects(String roleName, int memberFlags,
+   public List<PSSubject> getRoleSubjects(String roleName, int memberFlags,
          String filter)
    {
       return PSRoleManager.getInstance().roleMembers(roleName, memberFlags, 
@@ -718,7 +715,7 @@ public class PSRequestContext implements IPSRequestContext
     *  (non-Javadoc)
     * @see com.percussion.server.IPSRequestContext#getSubjectGlobalAttributes()
     */
-   public List getSubjectGlobalAttributes()
+   public List<PSSubject> getSubjectGlobalAttributes()
    {
       return getSubjectGlobalAttributes(null);
    }
@@ -728,13 +725,13 @@ public class PSRequestContext implements IPSRequestContext
     *  (non-Javadoc)
     * @see com.percussion.server.IPSRequestContext#getSubjectGlobalAttributes(com.percussion.design.objectstore.PSSubject)
     */
-   public List getSubjectGlobalAttributes( PSSubject subject )
+   public List<PSSubject> getSubjectGlobalAttributes( PSSubject subject )
    {
       if ( null == subject )
       {
          subject = getSubjectFromSession();
          if ( null == subject )
-            return new ArrayList();
+            return new ArrayList<>();
       }
       return getSubjectGlobalAttributes( subject.getName(), subject.getType(),
          null, null, false );
@@ -745,7 +742,7 @@ public class PSRequestContext implements IPSRequestContext
     *  (non-Javadoc)
     * @see com.percussion.server.IPSRequestContext#getSubjectGlobalAttributes(java.lang.String, int, int, java.lang.String, java.lang.String, java.lang.String, boolean)
     */
-   public List getSubjectGlobalAttributes(String subjectNameFilter,
+   public List<PSSubject> getSubjectGlobalAttributes(String subjectNameFilter,
          int subjectType, String roleName, String attributeNameFilter,
          boolean includeEmptySubjects, String communityId)
    {
@@ -754,20 +751,26 @@ public class PSRequestContext implements IPSRequestContext
          includeEmptySubjects, communityId);
    }
 
-   // see IPSRequestContext for desc
-   public List getSubjectGlobalAttributes(String subjectNameFilter,
-         int subjectType, String roleName, String attributeNameFilter,
-         boolean includeEmptySubjects)
-   {
-      return getSubjectGlobalAttributes(subjectNameFilter, subjectType, 
-         roleName, attributeNameFilter, includeEmptySubjects, null);
+   /**
+    * Gets the global attributes for the specified subjects.
+    * Convenience method that gets the attributes of the subject that made the
+    * current request. See {@link
+    * #getSubjectGlobalAttributes(String, int, String, String, boolean, String)}
+    * for a full description.
+    *
+    * @param subjectNameFilter
+    * @param subjectType
+    * @param roleName
+    * @param attributeNameFilter
+    * @param includeEmptySubjects
+    */
+   @Override
+   public List<PSSubject> getSubjectGlobalAttributes(String subjectNameFilter, int subjectType, String roleName, String attributeNameFilter, boolean includeEmptySubjects) {
+      return null;
    }
 
-   /*
-    *  (non-Javadoc)
-    * @see com.percussion.server.IPSRequestContext#getSubjectRoleAttributes(java.lang.String)
-    */
-   public List getSubjectRoleAttributes( String roleName )
+   // see IPSRequestContext for desc
+   public List<PSSubject> getSubjectRoleAttributes( String roleName )
    {
       return getSubjectRoleAttributes( null, roleName );
    }
@@ -777,7 +780,7 @@ public class PSRequestContext implements IPSRequestContext
     *  (non-Javadoc)
     * @see com.percussion.server.IPSRequestContext#getSubjectRoleAttributes(com.percussion.design.objectstore.PSSubject, java.lang.String)
     */
-   public List getSubjectRoleAttributes( PSSubject subject, String roleName )
+   public List<PSSubject> getSubjectRoleAttributes( PSSubject subject, String roleName )
    {
       if ( null == roleName || roleName.trim().length() == 0 )
       {
@@ -789,14 +792,14 @@ public class PSRequestContext implements IPSRequestContext
       {
          subject = getSubjectFromSession();
          if ( null == subject )
-            return new ArrayList();
+            return new ArrayList<>();
       }
       return getSubjectRoleAttributes( subject.getName(), subject.getType(),
                                        roleName, null);
    }
 
    // see IPSRequestContext for desc
-   public List getSubjectRoleAttributes(String subjectNameFilter,
+   public List<PSSubject> getSubjectRoleAttributes(String subjectNameFilter,
                                         int subjectType, String roleName,
                                         String attributeNameFilter)
    {

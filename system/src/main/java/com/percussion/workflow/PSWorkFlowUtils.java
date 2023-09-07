@@ -20,20 +20,13 @@ package com.percussion.workflow;
 import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.data.PSInternalRequestCallException;
-import com.percussion.error.PSNotFoundException;
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.extension.PSExtensionException;
+import com.percussion.extension.PSExtensionRef;
 import com.percussion.legacy.security.deprecated.PSLegacyEncrypter;
-import com.percussion.security.PSAuthenticationFailedException;
-import com.percussion.security.PSAuthorizationException;
-import com.percussion.security.PSEncryptProperties;
-import com.percussion.security.PSEncryptor;
-import com.percussion.security.PSNotificationEmailAddress;
-import com.percussion.server.IPSInternalRequest;
-import com.percussion.server.IPSRequestContext;
-import com.percussion.server.IPSServerErrors;
-import com.percussion.server.PSConsole;
-import com.percussion.server.PSServer;
+import com.percussion.security.*;
+import com.percussion.server.*;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
@@ -62,44 +55,22 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
+import org.w3c.dom.*;
 
 import javax.naming.NamingException;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
- * This class is a place holder for several global constants or variables that
+ * This class is a placeholder for several global constants or variables that
  * need to be evaluated only once, and also contains static functions used
  * for workflow.
  */
@@ -130,7 +101,7 @@ public class PSWorkFlowUtils
    public static final String WORKFLOW_ACTION_DELIMITER = ",";
 
    /**
-    * Delimiter for data base <CODE>String</CODE>s containing email recipients
+    * Delimiter for database <CODE>String</CODE>s containing email recipients
     */
    public static final String EMAIL_STRING_DELIMITER = ",";
 
@@ -197,8 +168,8 @@ public class PSWorkFlowUtils
     * Flags for writing to disk
     * CREATE_NEW_OVERWRITE = Create new file. Overwrite the old file.
     * CREATE_NEW_OLD = Create new, rename old file with ".old" ext if exists
-    * APPEND_CREATE = Append to file. Create file if doesn't exist
-    * APPEND = Append to existing file. Fail if doen't exist.
+    * APPEND_CREATE = Append to file. Create file if it doesn't exist
+    * APPEND = Append to existing file. Fail if it doesn't exist.
     *
     */
    public static final int CREATE_NEW_OVERWRITE = 0 ;
@@ -254,7 +225,7 @@ public class PSWorkFlowUtils
    public static final String TEST_RUN_MODE_LOG_LOCATION = File.separator + "jetty" +
            File.separator + "base" + File.separator + "logs" + File.separator + "notifications_test_run.log";
    /**
-    * Default user name when workflow action is triggered by a server action.
+    * Default username when workflow action is triggered by a server action.
     */
    public static final String RXSERVER = "rxserver";
 
@@ -349,7 +320,7 @@ public class PSWorkFlowUtils
     * Document check out status values
     * 0 - Not checked-out by anybody
     * 1 - Checked out by current user
-    * 2 - Checked out by some body else
+    * 2 - Checked out by somebody else
     *
     */
    public static final int CHECKOUT_STATUS_NONE = 0;
@@ -445,14 +416,14 @@ public class PSWorkFlowUtils
    public static final String USER_EMAIL_ATTRIBUTE = "sys_email";
    
    /**
-    * An optional property that stores the atribute name for the attribute 
+    * An optional property that stores the attribute name for the attribute
     * that holds the user's email address.
     */
    public static final String USER_EMAIL_ATTRIBUTE_PROPERTY = 
       "MAIL_ATTRIBUTE_NAME";
 
    /**
-    * Constant for the name of the entry that reperesents workflow's
+    * Constant for the name of the entry that represents workflow's
     * name/value pair.
     */
    private static final String ENTRY_NAME = "workflow_config_base_dir";
@@ -506,7 +477,7 @@ public class PSWorkFlowUtils
     * Props that will be encrypted in the
     * rxworkflow.properties file.
     */
-   private static String[] encryptProps = null;
+   private static String[] encryptProps;
 
    static
    {
@@ -565,12 +536,12 @@ public class PSWorkFlowUtils
          File confFile = PSProperties.getConfig(ENTRY_NAME, FILE_PROPERTIES,
             PSServer.getRxFile(WORKFLOW_DIR));
 
-         properties.load(new FileInputStream(confFile));
+         properties.load(Files.newInputStream(confFile.toPath()));
       }
       catch(Exception e)
       {
-         ms_log.error(PSExceptionUtils.getMessageForLog(e));
-         ms_log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+         log.error(PSExceptionUtils.getMessageForLog(e));
+         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
    }
 
@@ -602,7 +573,6 @@ public class PSWorkFlowUtils
    public static void printWorkflowMessage(IPSRequestContext request,
                                            String message)
    {
-      // TODO: use get/set methods that don't require restarting the server
       boolean useSysOut = m_bSystemOutTraceMessages;
       boolean usePSConsole = m_bPSConsoleTraceMessages;
       printWorkflowMessage(request,
@@ -640,13 +610,9 @@ public class PSWorkFlowUtils
       {
          request.printTraceMessage(message);
       }
-      if (usePSConsole)
+      if (usePSConsole || useSysOut)
       {
-         PSConsole.printMsg("Workflow", message);
-      }
-      if (useSysOut)
-      {
-         System.out.println(message);
+         log.info(message);
       }
    }
 
@@ -742,14 +708,14 @@ public class PSWorkFlowUtils
     * @return                     the assignment type - one of the values
     *                             defined in this file (PSWorkFlowUtils.java)
     */
-   public static int compareRoleList(ArrayList assignmentTypeList,
-                                     ArrayList roleList,
+   public static int compareRoleList(List<Integer> assignmentTypeList,
+                                     List<String> roleList,
                                      String sRoleList)
    {
       StringTokenizer sTokenizer = new StringTokenizer(sRoleList,
                                                        ROLE_DELIMITER);
-      String sRole = "";
-      String sToken = "";
+      String sRole;
+      String sToken;
       boolean bPresent = false;
       int nAssignmentType = PSWorkFlowUtils.ASSIGNMENT_TYPE_NONE;
       Integer index;
@@ -758,14 +724,14 @@ public class PSWorkFlowUtils
          sToken = sTokenizer.nextToken().trim();
          for(int i=0; i<roleList.size(); i++)
          {
-            sRole = roleList.get(i).toString();
+            sRole = roleList.get(i);
             if (sRole.trim().equalsIgnoreCase(sToken))
             {
-               if (false == bPresent)
+               if (!bPresent)
                   bPresent = true;
-               index = (Integer)assignmentTypeList.get(i);
-               if (index.intValue() > nAssignmentType)
-                  nAssignmentType = index.intValue();
+               index = assignmentTypeList.get(i);
+               if (index > nAssignmentType)
+                  nAssignmentType = index;
             }
          }
       }
@@ -782,22 +748,20 @@ public class PSWorkFlowUtils
     * @return                     <CODE>true</CODE> if there is a common role,
     *                             else <CODE>false</CODE>
     */
-   public static boolean compareRoleList( List roleList,
+   public static boolean compareRoleList( List<String> roleList,
                                           String sRoleList)
    {
       StringTokenizer sTokenizer = new StringTokenizer(sRoleList,
                                                        ROLE_DELIMITER);
-      String sRole = "";
-      String sToken = "";
+      String sRole;
+      String sToken;
       boolean bFound = false;
       while(sTokenizer.hasMoreElements())
       {
          sToken = sTokenizer.nextToken().trim();
-         for(int i=0; i<roleList.size(); i++)
-         {
-            sRole = roleList.get(i).toString();
-            if (sRole.trim().equalsIgnoreCase(sToken))
-            {
+         for (String s : roleList) {
+            sRole = s;
+            if (sRole.trim().equalsIgnoreCase(sToken)) {
                bFound = true;
                break;
             }
@@ -835,7 +799,7 @@ public class PSWorkFlowUtils
       }
 
       /*
-       * If the user name is the same as the Workflow admin name,
+       * If the username is the same as the Workflow admin name,
        * the user is an administrator
        */
       if (sUserName.trim().equalsIgnoreCase(sAdminName))
@@ -856,7 +820,7 @@ public class PSWorkFlowUtils
 
       StringTokenizer sTokenizer = new StringTokenizer(sRoleList,
                                                        ROLE_DELIMITER);
-      String sToken = "";
+      String sToken;
       boolean bAdmin = false;
       while(sTokenizer.hasMoreElements())
       {
@@ -885,8 +849,7 @@ public class PSWorkFlowUtils
     * @param itemCommunity   items community
     * @param usersCommunity   users community
     * @return  assignmentType
-    * @throws            IllegalArgumentException if the user
-    *                    name is <CODE>null</CODE>or empty.
+    * @throws            IllegalArgumentException if the username is <CODE>null</CODE>or empty.
     */
    public static int modifyAssignmentType(int assignmentType,
                                  int itemCommunity,
@@ -901,16 +864,15 @@ public class PSWorkFlowUtils
 
 
    /**
-    * Helper function that returns user name after last comma.
-    * This is useful when we need to extract actual user name out of the user
-    * name that is obtainable by user contex/username. This has of the form:
+    * Helper function that returns username after last comma.
+    * This is useful when we need to extract actual username out of the
+    * name that is obtainable by user context/username. This has of the form:
     * host1,host2,host3,host4,username.
     *
     * @deprecated This method was written for the IP Security Provider,
     * which is no longer supported.
     *
     * @author Rammohan Vangapalli
-    * @version 1.0
     * @since 2.0
     *
     */
@@ -919,7 +881,7 @@ public class PSWorkFlowUtils
       /*
       Vitaly, Dec 9 2002: made this method a 'noop' for the following reasons:
       1. The IP based authentication method it was designed for is now obsolete
-      2. It screws up a user name, which has one or more commas in it,
+      2. It screws up a username, which has one or more commas in it,
          ie: "Lee, Christo" -> would be returned by this method as "Lee"
       3. This method is used by several workflow classes, so the 'noop' approach
          minimizes the number of changes needed to fix the above problem
@@ -1019,7 +981,7 @@ public class PSWorkFlowUtils
     *           <CODE>IPSWorkflowAction</CODE>
     * @throws   PSExtensionException if an error occurs
     */
-   public static Iterator getWorkflowActionExtensionRefs()
+   public static Iterator<PSExtensionRef> getWorkflowActionExtensionRefs()
       throws PSExtensionException
    {
       return  PSServer.getExtensionManager(null).
@@ -1086,9 +1048,10 @@ public class PSWorkFlowUtils
       }
 
 
-      String contentid = "";
-      String editURLString = null;
-      String host = null;
+      String contentid;
+      String revisionid;
+      String editURLString;
+      String host;
       String portString = null;
       Integer port = null;
       URL editURL = null;
@@ -1104,7 +1067,7 @@ public class PSWorkFlowUtils
 
       try
       {
-         Integer.toString(revisionID);
+         revisionid = Integer.toString(revisionID);
       }
       catch(Exception e)
       {
@@ -1161,7 +1124,7 @@ public class PSWorkFlowUtils
 
       try
       {
-         HashMap newHtmlParams;
+         HashMap<String,String> newHtmlParams;
          IPSInternalRequest iReq;
          Document doc;
 
@@ -1169,8 +1132,10 @@ public class PSWorkFlowUtils
          String communityId = null;
          if (overrideCommunity)
          {
-            newHtmlParams = new HashMap();
+            newHtmlParams = new HashMap<>();
             newHtmlParams.put(IPSHtmlParameters.SYS_CONTENTID, contentid);
+            newHtmlParams.put(IPSHtmlParameters.SYS_REVISION, revisionid);
+
             String resource = IPSConstants.EDITOR_SUPPORT_APPNAME +
                "/contentstatus";
             iReq = request.getInternalRequest(resource,
@@ -1190,8 +1155,9 @@ public class PSWorkFlowUtils
 
          //search component is currently using "statusid" for "sys_contentid"
          //parameter
-         newHtmlParams = new HashMap();
+         newHtmlParams = new HashMap<>();
          newHtmlParams.put("sys_contentid",contentid);
+         newHtmlParams.put("sys_revision",revisionid);
          newHtmlParams.put("sys_componentname",linkUrlComponent);
          newHtmlParams.put("sys_pagename","ca_search");
          newHtmlParams.put("sys_sortparam","title");
@@ -1339,8 +1305,8 @@ public class PSWorkFlowUtils
     *
     * @param inString   the string to be tokenized (divided into substrings
     *                   separated by a delimiter.)
-    * @param delimeter  The delimeter used to tokenize the string.
-    *                   if <CODE>null</CODE> whitespace is used as a delimeter
+    * @param delimiter  The delimiter used to tokenize the string.
+    *                   if <CODE>null</CODE> whitespace is used as a delimiter
     * @return           the list of substrings; will contain no elements if
     *                   the <CODE>inString</CODE> consists entirely of
     *                   delimiters.
@@ -1348,7 +1314,7 @@ public class PSWorkFlowUtils
     *                   <CODE>null</CODE> or empty
     */
    public static List<String> tokenizeString(String inString,
-                                     String delimeter )
+                                     String delimiter )
    {
       if ( null == inString || inString.length() == 0 )
       {
@@ -1357,14 +1323,14 @@ public class PSWorkFlowUtils
       String token = "";
       ArrayList<String> l = new ArrayList<String>();
       StringTokenizer toker;
-      if ( null == delimeter)
+      if ( null == delimiter)
       {
          // delimiter is white space
          toker = new StringTokenizer( inString);
       }
       else
       {
-         toker = new StringTokenizer( inString, delimeter );
+         toker = new StringTokenizer( inString, delimiter );
       }
       while ( toker.hasMoreTokens())
       {
@@ -1490,7 +1456,7 @@ public class PSWorkFlowUtils
    }
 
    /**
-    * Return a Calendar with time equal to to a <CODE>java.util.Date</CODE>,
+    * Return a Calendar with time equal to a <CODE>java.util.Date</CODE>,
     * passing through a <CODE>null</CODE> a value, possibly making use of
     * an existing Calendar
     *
@@ -1611,7 +1577,7 @@ public class PSWorkFlowUtils
    }
 
    /**
-    * Return a Calendar with time equal to to a <CODE>java.util.Date</CODE>,
+    * Return a Calendar with time equal to a <CODE>java.util.Date</CODE>,
     * incremented by a time interval (in minutes), possibly making use of
     * an existing Calendar
     *
@@ -1642,7 +1608,7 @@ public class PSWorkFlowUtils
 
 
    /**
-    * Return a date with time equal to to a <CODE>java.sql.Date</CODE>,
+    * Return a date with time equal to a <CODE>java.sql.Date</CODE>,
     * incremented by a time interval (in minutes)
     *
     * @param date      The <CODE>java.sql.Date</CODE> to which the Calendar
@@ -1669,7 +1635,7 @@ public class PSWorkFlowUtils
 
 
    /**
-    * Return a date with time equal to to a <CODE>java.util.Date</CODE>,
+    * Return a date with time equal to a <CODE>java.util.Date</CODE>,
     * incremented by a time interval (in minutes)
     *
     * @param date      The <CODE>java.util.Date</CODE> to which the Calendar
@@ -1738,8 +1704,8 @@ public class PSWorkFlowUtils
     * wrapper classes (e.g. int replaced by Integer)
     *
     * @param array  array of objects
-    * @return       correponding list, with primitives replaced by wrapper
-    *               clases, empty list if input array is <CODE>null</CODE>
+    * @return       corresponding list, with primitives replaced by wrapper
+    *               classes, empty list if input array is <CODE>null</CODE>
     */
    public static List arrayToList(Object array)
    {
@@ -1825,7 +1791,7 @@ public class PSWorkFlowUtils
          if (null != key)
          {
             val = (Boolean) map.get(key);
-            if (null != val && val.booleanValue())
+            if (null != val && val)
             {
                filteredList.add(key);
             }
@@ -1859,7 +1825,7 @@ public class PSWorkFlowUtils
       Iterator it = c.iterator();
 
       Set keySet = roleMap.keySet();
-      Object key[] = keySet.toArray();
+      Object[] key = keySet.toArray();
 
       int i = 0;
       while(it.hasNext())
@@ -1868,7 +1834,7 @@ public class PSWorkFlowUtils
          String theValue = (String)it.next();
          if(theValue.equals(value))
          {
-            theKey = ((Integer)key[i]).intValue();
+            theKey = (Integer) key[i];
             break;
          }
          i++;
@@ -1922,20 +1888,20 @@ public class PSWorkFlowUtils
 
    /**
     * Create a list that contains only strings from an existing list which are
-    * unique under case-insensitive comparision, retaining the first occurance
+    * unique under case-insensitive comparison, retaining the first occurrence
     * of any item, and discarding <CODE>null</CODE> strings. Leading and
     * trailing whitespace is trimmed from strings.
     * to <CODE>null</CODE>.
     *
     * @param inputList  list of <CODE>Strings</CODE>
     * @return           list that contains only strings from the input list
-    * which are unique under case-insensitive comparision, retaining the first
-    * occurance of any item, and discarding <CODE>null</CODE> strings.
+    * which are unique under case-insensitive comparison, retaining the first
+    * occurrence of any item, and discarding <CODE>null</CODE> strings.
     * Returns <CODE>null</CODE> if the original list is null.
     */
    public static List<String> caseInsensitiveUniqueList(List<String> inputList)
    {
-      HashMap localMap = new HashMap();
+      HashMap<String,String> localMap = new HashMap<>();
       if (null == inputList)
       {
           return null;
@@ -1943,9 +1909,9 @@ public class PSWorkFlowUtils
 
       if (inputList.isEmpty())
       {
-          return new ArrayList();
+          return new ArrayList<>();
       }
-      Iterator iter = inputList.iterator();
+      Iterator<String> iter = inputList.iterator();
       String key = null;
       String val = null;
 
@@ -1982,8 +1948,8 @@ public class PSWorkFlowUtils
     *
     * @param inputList  list of <CODE>PSNotificationEmailAddress</CODE>
     * @return           list that contains only strings from the input list
-    * which are unique under case-insensitive comparision, retaining the first
-    * occurance of any item, and discarding <CODE>null</CODE> strings.
+    * which are unique under case-insensitive comparison, retaining the first
+    * occurrence of any item, and discarding <CODE>null</CODE> strings.
     * Returns <CODE>null</CODE> if the original list is null.
     */
    public static List<PSNotificationEmailAddress> caseInsensitiveUniqueEmailList(List<PSNotificationEmailAddress> inputList)
@@ -2083,27 +2049,27 @@ public class PSWorkFlowUtils
    /**
     * Convenience method. Calls
     * {@link #listToDelimitedString(List,String,String)
-    * listToDelimitedString(list, delimeter, "")}
+    * listToDelimitedString(list, delimiter, "")}
     */
    public static String listToDelimitedString (List list,
-                                               String delimeter)
+                                               String delimiter)
    {
-      return listToDelimitedString(list, delimeter, "");
+      return listToDelimitedString(list, delimiter, "");
    }
 
 
    /**
     * Create a string by concatenating the string representations of the
-    * elements of an array list, separating the substrings by a delimeter.
+    * elements of an array list, separating the substrings by a delimiter.
     *
     * @param  list       the array list from which the string will be created
-    * @param  delimeter  the delimeter used to separate the substrings
+    * @param  delimiter  the delimiter used to separate the substrings
     *                    can be empty ("").
     * @throws IllegalArgumentException if list is <CODE>null</CODE> or
     * empty.
     */
    public static String listToDelimitedString (List<String> list,
-                                               String delimeter,
+                                               String delimiter,
                                                String stringForNull)
    {
 
@@ -2114,7 +2080,7 @@ public class PSWorkFlowUtils
             "List to be delimited may not be null or empty.");
       }
 
-      // If there is only one element, no delimeter is needed.
+      // If there is only one element, no delimiter is needed.
       if (list.size() == 1 )
       {
          return list.get(0).toString();
@@ -2124,13 +2090,13 @@ public class PSWorkFlowUtils
 
 
       // To get delimiters between the substrings, put in the first substring
-      // and thereafter append delimeter + substring.
+      // and thereafter append delimiter + substring.
       StringBuilder delimitedStringBuilder =
             new StringBuilder(toStringHandleNull(iter.next(), stringForNull));
 
       while (iter.hasNext())
       {
-         delimitedStringBuilder.append(delimeter).append(
+         delimitedStringBuilder.append(delimiter).append(
                                       toStringHandleNull(iter.next(),
                                                          stringForNull));
       }
@@ -2331,7 +2297,7 @@ public class PSWorkFlowUtils
    }
 
    /**
-    * Tests whether or not the workflow action of the supplied request is
+    * Tests whether the workflow action of the supplied request is
     * a transition to a public state.
     *
     * @param request the request to test, not <code>null</code>.
@@ -2357,7 +2323,7 @@ public class PSWorkFlowUtils
          Element elem = doc.getDocumentElement();
          if (elem != null)
          {
-            Map params = new HashMap();
+            Map<String,String> params = new HashMap<>();
             params.put(IPSHtmlParameters.SYS_WORKFLOWID,
             elem.getAttribute("wfId"));
             params.put(IPSConstants.DEFAULT_NEWSTATEID_NAME,
@@ -2461,7 +2427,7 @@ public class PSWorkFlowUtils
     */
    public static void setDefaultWorkflowName(String workflowName){
       if (StringUtils.isBlank(workflowName))
-         throw new IllegalArgumentException("worklfow name may not be null.");
+         throw new IllegalArgumentException("workflow name may not be null.");
 
       setProperty(DEFAULT_WORKFLOW_KEY, workflowName);
    }
@@ -2482,7 +2448,7 @@ public class PSWorkFlowUtils
       }
       
       String errorMsg = "Cannot find default workflow name: \"" + wfName + "\"";
-      ms_log.error(errorMsg);
+      log.error(errorMsg);
       throw new com.percussion.services.error.PSNotFoundException(errorMsg);
    }
 
@@ -2493,9 +2459,7 @@ public class PSWorkFlowUtils
     */
    private static void encryptWorkflowProps() {
       Collection<String> props = new ArrayList<String>();
-      for (String prop : encryptProps) {
-         props.add(prop);
-      }
+      Collections.addAll(props, encryptProps);
       File workflowProps = new File(PathUtils.getRxDir(null),
               WORKFLOW_PROPS_PATH + "/" + WORKFLOW_PROPS_FILE_NAME);
       PSEncryptProperties.encryptFile(workflowProps, props,PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR));
@@ -2531,11 +2495,8 @@ public class PSWorkFlowUtils
       if (roles == null)
          throw new IllegalArgumentException("roles may not be null");
 
-      Connection conn = null;
-      PSContentStatusContext csc = null;
-      try
-      {
-         conn = PSConnectionHelper.getDbConnection(null);
+      PSContentStatusContext csc;
+      try (Connection conn = PSConnectionHelper.getDbConnection(null)) {
          csc = new PSContentStatusContext(conn,
                  contentId);
          csc.close();
@@ -2546,19 +2507,6 @@ public class PSWorkFlowUtils
          String roleNames = PSStringUtils.listToString(roles, ",");
          return getAllowedTransitions(csc, conn, userName, isAdmin(csc,
                  userName, roleNames), roleNames);
-      }
-      finally
-      {
-         if (conn != null)
-         {
-            try
-            {
-               conn.close();
-            }
-            catch (SQLException e)
-            {
-            }
-         }
       }
    }
 
@@ -2571,8 +2519,8 @@ public class PSWorkFlowUtils
     * @param userName The name of the user, assumed not <code>null</code> or
     * empty.
     * @param isAdmin <code>true</code> if the user has workflow administrator
-    * priveleges, <code>false</code> otherwise.
-    * @param actorRoles A comma-delimieted list of the user's roles, assumed not
+    * privileges, <code>false</code> otherwise.
+    * @param actorRoles A comma-delimited list of the user's roles, assumed not
     * <code>null</code>, may be empty.
     *
     * @return A list of allowed transition objects, never <code>null</code>,
@@ -2594,7 +2542,7 @@ public class PSWorkFlowUtils
                  conn,
                  csc.getContentStateID());
 
-         // before going further.. should we?
+         // before going further... should we?
          // first check if the user has acted, if so just return
          PSContentApprovalsContext cac =
                  new PSContentApprovalsContext(
@@ -2634,7 +2582,7 @@ public class PSWorkFlowUtils
                         // if we have already acted in all the available roles
                         // for this user, don't add the transitions that are
                         // not available for this user, move to the next trans
-                        if (false == tc.moveNext())
+                        if (!tc.moveNext())
                            break;
 
                         continue;
@@ -2648,7 +2596,7 @@ public class PSWorkFlowUtils
                        isDisabled));
             }
 
-            if(false == tc.moveNext())
+            if(!tc.moveNext())
                break;
          }
       }
@@ -2669,8 +2617,8 @@ public class PSWorkFlowUtils
    /**
     * Checks to see if all the roles specified for the user that match with the
     * list of roles supplied on the transition context.
-    * @param cac The current approvals context, assumed not <code>null</code>.
-    * @param tc The current transtions context, assumed not <code>null</code>.
+    * @param cac The current approval context, assumed not <code>null</code>.
+    * @param tc The current transition context, assumed not <code>null</code>.
     * @param roleList The comma delimited list of user role names, assumed not
     * <code>null</code> or empty.
     *
@@ -2709,7 +2657,7 @@ public class PSWorkFlowUtils
     *
     * @param csc The content status context to use, assumed not
     * <code>null</code> and to have been closed already.
-    * @param userName The The user to check, assumed not <code>null</code> or
+    * @param userName The user to check, assumed not <code>null</code> or
     * empty.
     * @param roleNameList A comma delimited list of the user's roles, assumed
     * not <code>null</code>.
@@ -2727,10 +2675,9 @@ public class PSWorkFlowUtils
               csc.getWorkflowID());
       String sAdminName = wac.getWorkFlowAdministrator();
       // Check whether the user is Workflow admin
-      boolean isAdmin = PSWorkFlowUtils.isAdmin(sAdminName,
+      return PSWorkFlowUtils.isAdmin(sAdminName,
               userName,
               roleNameList);
-      return isAdmin;
    }
 
    public static boolean isPublic(int cid) {
@@ -2766,7 +2713,7 @@ public class PSWorkFlowUtils
    /**
     * The logger
     */
-   private static final Logger ms_log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
+   private static final Logger log = LogManager.getLogger(IPSConstants.WORKFLOW_LOG);
 
    /**
     * When test run mode is enabled for notifications, writes all notifications
@@ -2815,7 +2762,7 @@ public class PSWorkFlowUtils
          writer.append("==================================================================");
          writer.newLine();
       } catch (IOException e) {
-         ms_log.error(PSExceptionUtils.getMessageForLog(e));
+         log.error(PSExceptionUtils.getMessageForLog(e));
       }
    }
 }

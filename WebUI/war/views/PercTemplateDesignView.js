@@ -181,6 +181,7 @@
                     setPanelPreference(panelExpanderIcon.is(".perc-collapsed"));
                     if (panelExpanderIcon.is(".perc-collapsed")){
                         panel.removeClass("perc-closed").addClass("perc-opened");
+						panelExpanderIcon.attr('title','<i18n:message key = "perc.ui.workflow.view@Minimize"/>');
                         panel.show("slide",{},500,function(){
                             $("#perc-assigned-templates").template_selected('updateTemplatesPagingSize');
                         });
@@ -194,12 +195,18 @@
                             $("#perc-assigned-templates").template_selected('updateTemplatesPagingSize');
                         });
                         panelExpanderIcon.removeClass("perc-expanded").addClass("perc-collapsed");
+						panelExpanderIcon.attr('title','<i18n:message key = "perc.ui.workflow.view@Maximize"/>');
                         window.clearInterval(intervalId);
                         setPanelPreference(false);
                     }
                 }
             });
-            
+			panelExpanderIcon.on("keydown", function(event){
+                if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
+
             var siteName = $.PercNavigationManager.getSiteName();
             if (typeof(siteName) != "undefined"){
                 $.PercPageService.getUnassignedPagesBySite(siteName, 1, UNASSIGNED_MAX_RESULTS, function(status, result){
@@ -252,6 +259,29 @@
                 requestUnassignedPages(parseInt(percJump.val()));
                 return false;
             });
+			//setting attributes for first child, for Action dropdown
+			var actionMenuAnchor_child = $("#perc-dropdown-actions").children().children().children();
+			for(var i=0; i<actionMenuAnchor_child.length; i++){
+				var child = actionMenuAnchor_child[i];
+				if(child.nodeName=="A"){
+					child.tabIndex="0";
+					child.setAttribute("role", "button");
+					child.title='I18N.message("perc.ui.template.design.view@Actions")';
+					break;
+				}
+			}
+			//setting attributes for first child, for View dropdown
+			var viewMenuAnchor_child = $("#perc-dropdown-view").children().children().children();
+			for(var i=0; i<viewMenuAnchor_child.length; i++){
+				var child = viewMenuAnchor_child[i];
+				if(child.nodeName=="A"){
+					child.tabIndex="0";
+					child.setAttribute("role", "button");
+					child.title='I18N.message("perc.ui.template.design.view@View")';
+					break;
+				}
+			}
+
         }
         
         function unassignedPreviousClick(event){
@@ -646,6 +676,17 @@
                 percDropdownCallbackData: callbackData,
                 percDropdownDisabledFlag: disableView
             });
+			//setting attributes for first child, for View dropdown
+			var viewMenuAnchor_child = $("#perc-dropdown-view").children().children().children();
+			for(var i=0; i<viewMenuAnchor_child.length; i++){
+				var child = viewMenuAnchor_child[i];
+				if(child.nodeName=="A"){
+					child.tabIndex="0";
+					child.setAttribute("role", "button");
+					child.title='I18N.message("perc.ui.template.design.view@View")';
+					break;
+				}
+			}
         }
 
         /**

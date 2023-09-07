@@ -161,6 +161,11 @@
                 controller.getCategories(this.value);
             });
             
+			$("#perc-categories-add-category-button").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-add-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
@@ -181,6 +186,11 @@
 
             });
 
+			$("#perc-categories-add-child-category-button").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-add-child-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
@@ -200,7 +210,11 @@
                 showSelectedCategoryEditor(node);
 
             });
-            
+            $("#perc-categories-delete-category-button").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-delete-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
@@ -225,6 +239,11 @@
 
             });
             
+			$("#perc-categories-edit-category-button").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-edit-category-button").off("click").on("click", function(){
                 
                 if (!$.PercNavigationManager.isAdmin()) {
@@ -244,6 +263,11 @@
                     
             });
             
+			$("#perc-categories-moveup-button").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-moveup-button").off("click").on("click", function(){
                 
                 if (editing)
@@ -262,6 +286,11 @@
                 displayCategoryDetails(container.dynatree("getActiveNode"));
             });
             
+			$("#perc-categories-movedown-button").off("keydown").on("keydown",function(event) {
+				if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-movedown-button").off("click").on("click", function(){
                 
                 if (editing)
@@ -315,6 +344,11 @@
                 }catch(err) {}
             });
             
+			 $("#perc-categories-publish-staging").off("click").on("click", function(event){
+                if(event.code == "Enter"){
+						document.activeElement.click();
+				}
+            });
             $("#perc-categories-publish-staging").off("click").on("click", function(){
                 if (editing)
                 {
@@ -325,7 +359,13 @@
                 var node = container.dynatree("getActiveNode");
                 publishToDTS(node, "Staging");
             });
-            
+
+			 $("#perc-categories-publish-production").off("click").on("click", function(event){
+                if(event.code == "Enter"){
+						document.activeElement.click();
+				}
+            });
+
             $("#perc-categories-publish-production").off("click").on("click", function(){
                 if (editing)
                 {
@@ -337,6 +377,12 @@
                 publishToDTS(node, "Production");
             });
             
+			$("#perc-categories-publish-both").off("click").on("click", function(event){
+                if(event.code == "Enter"){
+						document.activeElement.click();
+				}
+            });
+
             $("#perc-categories-publish-both").off("click").on("click", function(){
                 if (editing)
                 {
@@ -375,11 +421,18 @@
             }
             container.dynatree({
                 selectMode: 3,
+				keyboard: true,
                 autoCollapse: true,
                 children: categorytree,
                 onPostInit: function(isReloading, isError) {
                     visitTreeForBaseProperties();
                     this.activateKey("_2");
+					$("a.dynatree-title").each(function(){
+						this.title=this.innerHTML;
+						this.tabIndex="0";
+						this.setAttribute("role", "button");
+
+					});
                 },
                 onQueryActivate: function(flag,node) {
     
@@ -440,11 +493,13 @@
             
             $("#perc-category-name-field").prop("disabled", true);
             $("#perc-category-name-field").addClass("perc-category-field-readonly");
-       
+			$("#perc-category-name-field").attr("aria-disabled","true");
+
             $("#perc-category-name-field").val(node.data.title);
             
             $("#perc-category-selectable-field").prop("disabled", true);
             $("#perc-category-selectable-field").addClass("perc-category-field-readonly");
+			$("#perc-category-selectable-field").attr("aria-disabled","true");
             var selectable = node.data.selectable;
             if(selectable === true || selectable === "true") {
                 $("#perc-category-selectable-field").prop("checked", true);
@@ -455,6 +510,7 @@
             
             $("#perc-category-show-in-page-field").prop("disabled", true);
             $("#perc-category-show-in-page-field").addClass("perc-category-field-readonly");
+			$("#perc-category-show-in-page-field").attr("aria-disabled","true");
             var sinpmd = node.data.showInPgMetaData;
             if(sinpmd === "true" || sinpmd === true) {
                 $("#perc-category-show-in-page-field").prop("checked", true);
@@ -465,7 +521,8 @@
      
             $("#perc-allowedsites-field").addClass("perc-category-field-readonly");
             $("#perc-allowedsites-field").prop("disabled", true);
-      
+			$("#perc-allowedsites-field").attr("aria-disabled","true");
+
             addSitesToDropdown("#perc-allowedsites-field",getAllowedSites(node),getSelectedSites(node));
             
 
@@ -480,6 +537,7 @@
             originalTitle = node.data.title;
 
             $("#perc-category-name-field").prop("disabled", false);
+			$("#perc-category-name-field").attr("aria-disabled","false");
 
             $("#perc-category-name-field").on('keyup', function() {
                  var node = container.dynatree("getActiveNode");
@@ -493,10 +551,12 @@
             
             $("#perc-allowedsites-field").removeClass("perc-category-field-readonly");
             $("#perc-allowedsites-field").prop("disabled", false);
+			$("#perc-allowedsites-field").attr("aria-disabled","false");
 
             $("#perc-category-selectable-field").prop("disabled", false);
             $("#perc-category-selectable-field").removeClass("perc-category-field-readonly");
-            
+			$("#perc-category-selectable-field").attr("aria-disabled","false");
+
             $('#perc-category-selectable-field option[value="'+sitename+'"]').prop('disabled', true);
     
             $("#perc-category-selectable-field option").on('click',function() {
@@ -505,7 +565,8 @@
 
             $("#perc-category-show-in-page-field").prop("disabled", false)
                 .removeClass("perc-category-field-readonly");
-        
+			$("#perc-category-show-in-page-field").attr("aria-disabled","false");
+
             $("#perc-category-save-cancel-block").show();
             $("#perc-category-name-field").trigger("focus");
         }

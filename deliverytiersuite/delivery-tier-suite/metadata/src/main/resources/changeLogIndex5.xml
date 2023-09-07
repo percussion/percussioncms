@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+
+<!--
+Here, we are checking if required index exist for a table.
+Also, we are checking this only for ms sql database.
+onFail="CONTINUE" makes sure that if precondition is true then only changeset will execute.
+runAlways="true" will run this changeset everytime server starts and if precondition is true.
+If we don't use runAlways="true", then this changeset runs only once if true. If we do changes
+again in database then this changeset will not run until we change the changeset id.
+-->
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet runAlways="true" id="20170503041529-1" author="user">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mssql"/>
+            <sqlCheck expectedResult="0">SELECT count(*) FROM sys.indexes WHERE name='IX_PRCPGMTDT_ENTID_DATE_INCNAME' AND object_id = OBJECT_ID('PERC_PAGE_METADATA_PROPERTIES')
+            </sqlCheck>
+        </preConditions>
+        <sql>CREATE NONCLUSTERED INDEX [IX_PRCPGMTDT_ENTID_DATE_INCNAME] ON [dbo].[PERC_PAGE_METADATA_PROPERTIES]
+            ([ENTRY_ID] ASC,[datevalue] ASC) INCLUDE([name])
+            WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
+

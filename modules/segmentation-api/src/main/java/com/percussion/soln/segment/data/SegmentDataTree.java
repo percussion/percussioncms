@@ -27,10 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.percussion.soln.segment.Segment;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class SegmentDataTree {
@@ -74,7 +73,7 @@ public class SegmentDataTree {
     /**
      * The log instance to use for this class, never <code>null</code>.
      */
-    private static final Log log = LogFactory.getLog(SegmentDataTree.class);
+    private static final Logger log = LogManager.getLogger(SegmentDataTree.class);
     
     
     public SegmentDataTree() {

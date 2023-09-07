@@ -3,7 +3,7 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.1.2</version>
+        <version>8.1.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -24,7 +24,6 @@
         <db.backend>DERBY</db.backend>
         <db.server>CMDB;create=true</db.server>
         <ds.name>PercussionData</ds.name>
-        <ant.contrib.resource>${basedir}/../perc-ant/lib/ant-contrib-0.6.jar</ant.contrib.resource>
         <exts.store>${basedir}/target/distribution/Extensions</exts.store>
         <pkg.tmp.dir>${basedir}/target/distribution/Packages</pkg.tmp.dir>
         <REFRESH_PROP_NAME>REFRESH</REFRESH_PROP_NAME>
