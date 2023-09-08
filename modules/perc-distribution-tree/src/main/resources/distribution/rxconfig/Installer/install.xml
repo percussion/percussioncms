@@ -123,7 +123,7 @@
     <echo>Checking if jetty directory exists...</echo>
 
     <property name="customer.jdbc.drivers" location="${install.dir}/jetty/base/lib/jdbc" />
-
+    <mkdir dir="${customer.jdbc.drivers}"/>
 
     <target name="copy_custom_config_from_jboss">
         <copy verbose="true" todir="${install.dir}/jetty/base/webapps/Rhythmyx/WEB-INF/config/user" preservelastmodified="true" filtering="false" overwrite="false" force="false" failonerror="false">
@@ -1570,6 +1570,16 @@
         <if>
             <istrue value="${do.upgrade}"/>
             <then>
+                <delete verbose="true">
+                    <fileset dir="${install.dir}/rxconfig/Installer/">
+                        <include name="perc-ant-*.jar" />
+                    </fileset>
+                </delete>
+                <copy verbose="true" overwrite="true" todir="${install.dir}/rxconfig/Installer/" >
+                    <fileset dir="${install.src}/rxconfig/Installer/">
+                        <include name="perc-ant-*.jar"/>
+                    </fileset>
+                </copy>
                 <copy verbose="true" overwrite="true" file="${install.src}/rxconfig/Installer/InstallPackages.upgrade.xml" tofile="${install.dir}/rxconfig/Installer/InstallPackages.xml" />
                 <if>
                     <istrue value="${upgradeFrom732}"/>
@@ -1588,6 +1598,11 @@
 
             </then>
             <else>
+                <copy verbose="true" overwrite="true" todir="${install.dir}/rxconfig/Installer/" >
+                    <fileset dir="${install.src}/rxconfig/Installer/">
+                        <include name="perc-ant-*.jar"/>
+                    </fileset>
+                </copy>
                 <copy verbose="true" overwrite="true" file="${install.src}/rxconfig/Installer/InstallPackages.xml" tofile="${install.dir}/rxconfig/Installer/InstallPackages.xml" />
             </else>
         </if>
