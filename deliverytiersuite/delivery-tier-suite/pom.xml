@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.1.3</version>
+        <version>8.1.4-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.percussion.deliverytier</groupId>
@@ -281,7 +281,7 @@
             <configuration>
                 <toolchains>
                <!--     <jdk>
-                        <version>8.1.3</version>
+                        <version>8.1.4-SNAPSHOT</version>
                         <vendor>amazon</vendor>
                     </jdk>
                     -->
@@ -633,7 +633,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>8.1.3</version>
+                        <version>8.1.4-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -653,7 +653,7 @@
                     <dependency>
                         <groupId>com.percussion</groupId>
                         <artifactId>build-tools</artifactId>
-                        <version>8.1.3</version>
+                        <version>8.1.4-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
             </plugin>
