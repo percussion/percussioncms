@@ -417,7 +417,7 @@
                                 </property>
                             </systemProperties>
                             <skipTests>${skip.unit.tests}</skipTests>
-                            <testFailureIgnore>true</testFailureIgnore>
+                            <testFailureIgnore>false</testFailureIgnore>
                             <groups>com.percussion.utils.testing.UnitTest</groups>
                             <includes>
                                 <include>**/*.java</include>

@@ -78,7 +78,7 @@ public class PSNavigationTree
 
    /**
     * Constructs the tree with supplied node and sets the listeners and renderer
-    * on this tree. By default it tries to expand as defined by the supplied
+    * on this tree. By default, it tries to expand as defined by the supplied
     * node tree.
     *
     * @param root the root node of tree, may not be <code>null</code>
@@ -265,6 +265,7 @@ public class PSNavigationTree
     * to be set.
     * @see javax.swing.JComponent#setFont(java.awt.Font)
     */
+   @Override
    public void setFont(Font font)
    {
       LineMetrics lm =
@@ -484,6 +485,7 @@ public class PSNavigationTree
             //pop-up menu is disappeared.
             Thread testThread = new Thread()
             {
+               @Override
                public void run()
                {
                   try
@@ -623,7 +625,7 @@ public class PSNavigationTree
    {
       if (node == null)
          throw new IllegalArgumentException("node may not be null");
-      if (types == null || types.size() == 0)
+      if (types == null || types.isEmpty())
          throw new IllegalArgumentException("types may not be null or empty");
 
       DefaultTreeModel model = getTreeModel();
@@ -1206,6 +1208,7 @@ public class PSNavigationTree
        * yet. Each child node of this node gets expanded by default if the child
        * defined as to expand by default.
        */
+      @Override
       protected void loadChildren()
       {
          if (loadedChildren)
@@ -1347,6 +1350,7 @@ public class PSNavigationTree
        * node already has a user object, the same method is called on it with
        * <code>null</code>.
        */
+      @Override
       public void setUserObject(Object userObject)
       {
          if (null != userObject &&
@@ -1434,6 +1438,7 @@ public class PSNavigationTree
        * @param event event the mouse click event, assumed not <code>null</code>
        * this is called by Swing model.
        */
+      @Override
       public void mouseWasClicked(MouseEvent event)
       {
          JTree tree = (JTree) event.getSource();
