@@ -64,7 +64,7 @@
 #set($menuItemId="perc-navigation-menuitem-$!{_navLevel}-$!{_navEntry}-$!{_listPos}-$!{menuNavWidgetId}")##
 <a id="$!{menuItemId}" href="$!{landing_page}" $!{targetAttr}$!{titleAttr}>$tools.esc.html($node.getProperty('rx:displaytitle').String)</a>###
 ## Don't traverse the node submenu when the node is a section link to itself
-#if($node.getParent().getGuid() != $node.getGuid())##
+#if(! $node.getParent().getGuid().equals($node.getGuid()))##
 #foreach($submenuitem in $node.getNodes("nav:submenu"))##
 #set($dummy=$submenu.add($submenuitem))##
 #end##
