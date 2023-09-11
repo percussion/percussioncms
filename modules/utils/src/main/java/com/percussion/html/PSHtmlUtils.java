@@ -36,10 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * Utility class for handling HTML documents and
@@ -85,7 +82,6 @@ public class PSHtmlUtils {
                                               Charset encoding,
                                               boolean cleanse,
                                               String configFile) throws PSHtmlParsingException{
-        Document ret = null;
         W3CDom w3dom = new W3CDom();
 
 
@@ -124,7 +120,7 @@ public class PSHtmlUtils {
         if(file==null)
             throw new IllegalArgumentException("File must not be null");
 
-        Properties props = new Properties();
+        Properties props;
 
         if(configFile != null){
             props = getCleanerProperties(configFile);
@@ -228,7 +224,7 @@ public class PSHtmlUtils {
         ret = processAllowedTags(propVal, ret);
 
         propVal = props.getProperty(PROP_ALLOWED_ATTRS);
-        ret = processAllowedAttributes(fragment, propVal,ret);
+        ret = processAllowedAttributes(fragment, propVal,ret,props.getProperty(PROP_REMOVE_ATTRS));
 
         propVal = props.getProperty(PROP_ENFORCED_ATTRS);
         ret = processEnforcedAttrs( propVal,ret);
@@ -261,12 +257,26 @@ public class PSHtmlUtils {
         return ret;
     }
 
+    private static Map<String, List<String>> getAttributesToRemove(String propVal){
+        Map<String,List<String>> ret = new HashMap<>();
+
+        if(propVal == null || StringUtils.isEmpty(propVal.trim()))
+            return ret;
+
+        String[] attrs = propVal.split(",");
+        for(String a : attrs) {
+            String[] args = a.split(";");
+            ret.put(args[0], Arrays.asList(Arrays.copyOfRange(args,1,args.length)));
+        }
+
+        return ret;
+    }
+
     private static Safelist processRemovedAttrs(String propVal, Safelist ret) {
        if(propVal == null || StringUtils.isEmpty(propVal.trim()))
            return ret;
 
        String[] attrs = propVal.split(",");
-       String[] attrsTrimmed = Arrays.stream(attrs).map(String::trim).toArray(String[]::new);
        for(String a : attrs){
            String[] args = a.split(";");
            ret.removeAttributes(args[0].trim(),Arrays.copyOfRange(args,1,args.length));
@@ -305,10 +315,13 @@ public class PSHtmlUtils {
         return ret;
     }
 
-    protected static Safelist processAllowedAttributes(String fragment, String propVal, Safelist ret) {
+    protected static Safelist processAllowedAttributes(String fragment, String propVal, Safelist ret, String removeAttrConfigProp) {
 
         if(propVal == null || StringUtils.isEmpty(propVal.trim()))
             return ret;
+
+        //Get the list of attributes to remove so that we don't whitelist an attr that shopuld be removed.
+        Map<String, List<String>> removeAttributes = getAttributesToRemove(removeAttrConfigProp);
 
         String[] attrs = propVal.split(",");
         String[] attrsTrimmed = Arrays.stream(attrs).map(String::trim).toArray(String[]::new);
@@ -324,10 +337,15 @@ public class PSHtmlUtils {
                     //We need to handle wildcard tags
                     Elements elems = doc.getElementsByAttributeStarting(subKey);
                     for(Element e : elems){
+                        List<String> removeAttrs = removeAttributes.get(e.tagName());
                         for(Attribute ea : e.attributes()){
                             if(ea.getKey().startsWith(subKey)){
                                 if(!extraAttrs.contains(ea.getKey())){
-                                    extraAttrs.add(ea.getKey());
+                                    if(removeAttrs !=null && removeAttrs.contains(ea.getKey())){
+                                        log.debug("Skipping excluded attr {}", ea.getKey());
+                                    }else{
+                                        extraAttrs.add(ea.getKey());
+                                    }
                                 }
                             }
                         }
