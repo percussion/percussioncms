@@ -123,9 +123,9 @@ tinymce.PluginManager.add('rxinline', function(editor) {
         },
         onSetup: function (buttonApi) {
             if(isRXEditor() === false ){
-                buttonApi.hide();
+                buttonApi.setDisabled(true);
             }else{
-                buttonApi.show();
+                buttonApi.setDisabled(false);
             }
         },
         context: 'insert',
