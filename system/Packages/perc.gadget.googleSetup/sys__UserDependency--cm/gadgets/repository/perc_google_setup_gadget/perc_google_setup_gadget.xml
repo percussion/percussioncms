@@ -526,7 +526,7 @@
                         '    <div class="perc-ga-site" title="' + _sites[i] + '" style="font-size: 11px; margin-bottom: 10px;">' + _sites[i] + '</div>' +
                         '    <div style="width:100%; vertical-align: middle;">' +
                         '        <select id="perc-ga-site-profile-' + _sites[i] + '" class="perc-ga-profile-list"><option value="none">Select Google Analytics Profile</option></select>' +
-                        '        <input type="text" disabled="disabled" style="color: #CCCCCC" id="perc_ga_apikey_' + _sites[i] + '" class="perc-ga-apikey-field" value="Enter API Key for this Google Analytics Profile">' +
+                        '        <input type="text" disabled="disabled" style="color: #808484" id="perc_ga_apikey_' + _sites[i] + '" class="perc-ga-apikey-field" value="Enter API Key for this Google Analytics Profile">' +
                         '    </div>' +
                         '</div>');
 
@@ -549,7 +549,7 @@
                           {
                              self.addClass("perc-selected");
                              if(self.val() == "none")
-                                $("input[id='perc_ga_apikey_" + site + "']").css("color", "#CCCCCC").val("Enter API Key for this Google Analytics Profile").attr("disabled", "disabled");
+                                $("input[id='perc_ga_apikey_" + site + "']").css("color", "#808484").val("Enter API Key for this Google Analytics Profile").attr("disabled", "disabled");
                              else
                                  $("input[id='perc_ga_apikey_" + site + "']").prop("disabled",false);
                           }
