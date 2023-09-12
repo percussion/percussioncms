@@ -178,7 +178,13 @@
                 </div>
                 <div class="modal-body" id="percServerPropertiesFormTarget"></div>
                 <div class="modal-footer">
-                    {{#if (validatePropertyValue action 'update')}}<button aria-label='<i18n:message key="perc.ui.publish.title@Delete Server"/>' type="button" id="percDeleteServer" class="btn perc-btn-inverse mr-auto"><i class="fas fa-trash-alt"></i></button>{{/if}}
+                    {{#if (validatePropertyValue action 'update')}}
+                        {{#if serverInfo.isDefault}}
+                            <button aria-label='<i18n:message key="perc.ui.publish.title@Delete Server"/>' type="button" id="percDeleteServer" class="btn perc-btn-inverse mr-auto" disabled><i class="fas fa-trash-alt"></i></button>
+                        {{else}}
+                            <button aria-label='<i18n:message key="perc.ui.publish.title@Delete Server"/>' type="button" id="percDeleteServer" class="btn perc-btn-inverse mr-auto"><i class="fas fa-trash-alt"></i></button>
+                        {{/if}}
+                    {{/if}}
                     <button type="button" class="btn perc-btn-primary perc-clear-server" data-dismiss="modal"><i18n:message key="perc.ui.common.label@Cancel"/></button>
                     <button id="percUpdateServerProperties" data-perc-server-name="{{serverInfo.serverName}}" type="button" class="btn perc-btn-primary"><i18n:message key="perc.ui.common.label@Save"/></button>
                 </div>
