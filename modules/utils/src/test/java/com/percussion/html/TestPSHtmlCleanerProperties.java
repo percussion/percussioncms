@@ -105,5 +105,7 @@ public class TestPSHtmlCleanerProperties {
         String parsed = doc.body().toString();
 
         assertFalse(parsed.contains("data-pathitem"));
+        assertTrue(parsed.contains("data-jcrpath"));
+
     }
 }

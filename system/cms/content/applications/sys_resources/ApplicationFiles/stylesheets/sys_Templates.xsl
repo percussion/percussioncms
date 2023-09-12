@@ -2903,7 +2903,7 @@ onchange    %Script;       #IMPLIED
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("width", <xsl:value-of select="$name"/><![CDATA[_width]]>);
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("height", <xsl:value-of select="$name"/><![CDATA[_height]]>);
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("codebase", "/../dce");
-         <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("archive", "/../dce/ContentExplorer-@BUILDVERSION@.jar");
+         <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("archive", "/../dce/perc-content-explorer-@BUILDVERSION@.jar");
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("code", "com.percussion.controls.contenteditor.checkboxtree.PSCheckboxTreeApplet");
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("classid", "clsid:8AD9C840-044E-11D1-B3E9-00805F499D93");
          <xsl:value-of select="$name"/><![CDATA[_appletCaller]]>.addParam("codebaseattr", "http://java.sun.com/products/plugin/autodl/jinstall-1_4-windows-i586.cab#Version=1,4,0,0");
