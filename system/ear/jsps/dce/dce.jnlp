@@ -20,7 +20,7 @@
         <j2se version="1.8+" href=
                 "http://java.sun.com/products/autodl/j2se" />
         <!-- will look for file ContentExplorer-{version}.jar -->
-          <jar href="ContentExplorer-${project.version}.jar" download="eager" main="true" />
+          <jar href="perc-content-explorer-${project.version}.jar" download="eager" main="true" />
 
     </resources>
 

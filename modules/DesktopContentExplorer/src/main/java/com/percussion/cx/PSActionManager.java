@@ -3673,8 +3673,8 @@ public class PSActionManager implements IPSConstants, IPSSelectionListener
          else if (action.getName().equals(ACTION_ABOUT))
          {
             PSI18NTranslationKeyValues resources = PSI18NTranslationKeyValues.getInstance();
-            String appPackage = getClass().getPackage().getName();
-            String title = resources.getTranslationValue(appPackage + "@title");
+            String appPackage = "com.percussion.util";
+            String title = resources.getTranslationValue(getClass().getPackage().getName() + "@title");
             PSFormatVersion version = new PSFormatVersion(appPackage);
 
             PSAboutDialog dlg = new PSAboutDialog(m_applet.getDialogParentFrame(), title, version.getVersionString());
