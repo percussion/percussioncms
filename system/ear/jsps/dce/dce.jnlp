@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jnlp spec="6.0+" xmlns:jfx="http://javafx.com" codebase="$$codebase" href="$$name">
     <information>
-        <title>Percussion DCE : $$hostname</title>
-        <vendor>Percussion Software</vendor>
-        <homepage href="https://www.percussion.com"/>
+        <title>Percussion CMS DCE : $$hostname</title>
+        <vendor>Intersoft Data Labs</vendor>
+        <homepage href="https://percussioncmshelp.intsof.com"/>
         <icon href="/sys_resources/images/dce_icon.jpg"/>
         <icon kind="splash" href="/sys_resources/images/dce_splash.jpg"/>
         <shortcut online="true">
             <desktop/>
-            <menu submenu="Percussion DCE"/>
+            <menu submenu="Percussion CMS DCE"/>
         </shortcut>
     </information>
     <security>
@@ -19,13 +19,13 @@
         <!-- Application Resources -->
         <j2se version="1.8+" href=
                 "http://java.sun.com/products/autodl/j2se" />
-        <!-- will look for file ContentExplorer-{version}.jar -->
-          <jar href="ContentExplorer-${project.version}.jar" download="eager" main="true" />
+        <!-- will look for file perc-content-explorer-{version}.jar -->
+          <jar href="perc-content-explorer-${project.version}.jar" download="eager" main="true" />
 
     </resources>
 
     <application-desc
-            name="Percussion Context Explorer - $$hostname"
+            name="Percussion CMS Context Explorer - $$hostname"
             main-class="com.percussion.cx.PSContentExplorerApplication"
             width="300"
             height="300">

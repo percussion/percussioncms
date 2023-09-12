@@ -70,9 +70,9 @@
 			<Param name="MENU_URL"
 				   value="{concat($rxroot,'/sys_cx/ContentExplorerMenu.html')}" />
 			<Param name="NAV_URL" value="{concat($rxroot,'/sys_cx/ContentExplorer.html')}" />
-			<Param name="CACHE_ARCHIVE" value="ContentExplorer-@BUILDVERSION@.jar" />
+			<Param name="CACHE_ARCHIVE" value="perc-content-explorer-@BUILDVERSION@.jar" />
 			<Param name="CACHE_OPTION" value="Plugin" />
-			<Param name="ARCHIVE" value="ContentExplorer-@BUILDVERSION@.jar" />
+			<Param name="ARCHIVE" value="perc-content-explorer-@BUILDVERSION@.jar" />
 			<Param name="helpset_file"
 				   value="{concat($rxroot,'/Docs/Business_Users/Content_Explorer_Help.hs')}" />
 			<Param name="sys_cxinternalpath" value="{//@cxinternalpath}" />

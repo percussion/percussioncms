@@ -56,12 +56,12 @@
                             <Caller-Allowable-Codebase>*</Caller-Allowable-Codebase>
                             <Codebase>*</Codebase>
                             <Permissions>all-permissions</Permissions>
-                            <Application-Name>Percussion Content Explorer Applet</Application-Name>
+                            <Application-Name>Percussion CMS Content Explorer App</Application-Name>
                         </manifestEntries>
                         <mainClass>com.percussion.cx.PSContentExplorerApplication</mainClass>
                     </transformer>
                 </transformers>
-<!--                <minimizeJar>true</minimizeJar>-->
+                <minimizeJar>true</minimizeJar>
                 <filters>
                     <filter>
                         <artifact>*:*</artifact>
@@ -72,7 +72,6 @@
                         </excludes>
                     </filter>
                 </filters>
-                <finalName>ContentExplorer-${project.parent.version}</finalName>
             </configuration>
         </plugin>
         <plugin>

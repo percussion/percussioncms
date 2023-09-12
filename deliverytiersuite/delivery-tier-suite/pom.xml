@@ -373,7 +373,7 @@
                     </property>
                 </systemProperties>
                 <excludedGroups>com.percussion.utils.testing.IntegrationTest</excludedGroups>
-                <testFailureIgnore>true</testFailureIgnore>
+                <testFailureIgnore>false</testFailureIgnore>
             </configuration>
         </plugin>
         <!-- Used for integration tests -->
@@ -405,7 +405,7 @@
                             is true
                         -->
                         <skipTests>${skip.integration.tests}</skipTests>
-                        <testFailureIgnore>true</testFailureIgnore>
+                        <testFailureIgnore>false</testFailureIgnore>
                     </configuration>
                 </execution>
             </executions>

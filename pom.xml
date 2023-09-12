@@ -437,7 +437,7 @@
                      </systemPropertyVariables>
 
                      <excludedGroups>com.percussion.utils.testing.IntegrationTest,com.percussion.utils.testing.BackloggedTest</excludedGroups>
-                    <testFailureIgnore>true</testFailureIgnore>
+                    <testFailureIgnore>false</testFailureIgnore>
                 </configuration>
               </plugin>
             <!-- Used for integration tests -->
@@ -484,7 +484,7 @@
                                 is true
                             -->
                             <skipTests>${skip.integration.tests}</skipTests>
-                            <testFailureIgnore>true</testFailureIgnore>
+                            <testFailureIgnore>false</testFailureIgnore>
                             <groups>com.percussion.utils.testing.IntegrationTest</groups>
                             <includes>
                                 <include>**/*.java</include>

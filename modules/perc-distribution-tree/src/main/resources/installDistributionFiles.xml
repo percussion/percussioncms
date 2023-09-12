@@ -205,7 +205,7 @@
                 <exclude name="**/*.class"/>
             </fileset>
             <fileset dir="${basedir}/../DesktopContentExplorer/target">
-                <include name="ContentExplorer-${project.version}.jar"/>
+                <include name="perc-content-explorer-${project.version}.jar"/>
             </fileset>
         </copy>
 
