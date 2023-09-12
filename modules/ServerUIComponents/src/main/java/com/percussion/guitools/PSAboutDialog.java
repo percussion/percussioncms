@@ -26,6 +26,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.YearMonth;
 
 /**
  * About dialog displays the Percussion Logo, Rhythmyx version info and has a
@@ -350,6 +351,6 @@ public class PSAboutDialog extends JDialog
    public final static String RX_COPY_RIGHT  =
       "Copyright \u00a9 "
       + "1999-"
-      + ResourceHelper.getResources().getString("copyrightyear")
+      +  YearMonth.now().getYear()
       + " by Percussion Software, Inc.";
 }
