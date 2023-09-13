@@ -46,15 +46,15 @@
             '    </div>' +
             '' +
             '    <div id="perc-ui-listedit-listitemfield">' +
-            '        <input id="perc-ui-permission-usernamefield" tabindex="102" title="'+I18N.message("perc.ui.rolePropsDialog.title@Enter a role")+'" name="perc-ui-permission-usernamefield"/>' +
-            '        <div id="perc-ui-permission-plusbutton" tabindex="103" role="button" title="'+I18N.message("perc.ui.rolePropsDialog.title@Add User")+'"></div>' +
+            '        <input id="perc-ui-permission-usernamefield" tabindex="0" title="'+I18N.message("perc.ui.rolePropsDialog.title@Enter a role")+'" name="perc-ui-permission-usernamefield"/>' +
+            '        <div id="perc-ui-permission-plusbutton" tabindex="0" role="button" title="'+I18N.message("perc.ui.rolePropsDialog.title@Add User")+'"></div>' +
             '    </div>' +
             '' +
             '    <div id="perc-ui-permission-user-list-scroll-pane">' +
             '        <ul id="perc-ui-permission-user-list">' +
             '            <li>' +
             '                <span>Username</span>' +
-            '                <div tabindex="104" class="perc-ui-permission-deletebutton" id="Username"></div>' +
+            '                <div tabindex="0" class="perc-ui-permission-deletebutton" id="Username"></div>' +
             '            </li>' +
             '        </ul>' +
             '    </div>';
@@ -63,7 +63,7 @@
         var listItem = '' +
             '            <li>' +
             '                <span>_username_</span>' +
-            '                <div tabindex="105"  class="perc-ui-permission-deletebutton" id="_username_" title="Remove user"></div>' +
+            '                <div tabindex="0"  class="perc-ui-permission-deletebutton" id="_username_" title="Remove user"></div>' +
             '            </li>';
 
         // ID of the DIV element where this widget will render
