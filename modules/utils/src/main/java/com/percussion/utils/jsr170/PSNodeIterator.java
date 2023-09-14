@@ -17,10 +17,11 @@
 package com.percussion.utils.jsr170;
 
 
-import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections4.MultiValuedMap;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import java.util.Map;
 
 /**
  * Implementation of node iterator
@@ -35,8 +36,8 @@ public class PSNodeIterator  extends PSItemIterator<Node>
     * @param children child map, may not be <code>null</code>
     * @param filter filter, may be <code>null</code> if no filter is needed
     */
-   public PSNodeIterator(MultiMap children, String filter) {
-      super(children, filter);
+   public PSNodeIterator(MultiValuedMap children, String filter) {
+      super(children.asMap(), filter);
    }
 
    public Node nextNode()

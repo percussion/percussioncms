@@ -18,9 +18,9 @@ package com.percussion.utils.jsr170;
 
 import com.percussion.utils.collections.PSMultiMapIterator;
 //TODO: Replace with commons collections 4
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.Predicate;
-import org.apache.commons.collections.iterators.FilterIterator;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.Predicate;
+import org.apache.commons.collections4.iterators.FilterIterator;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -87,9 +87,9 @@ public abstract class PSItemIterator<M> implements Iterator
    @SuppressWarnings("unchecked")
    private Iterator<M> calculateIter()
    {
-      if (m_map instanceof MultiMap)
+      if (m_map instanceof MultiValuedMap)
       {
-         return new PSMultiMapIterator((MultiMap) m_map, m_filter);
+         return new PSMultiMapIterator((MultiValuedMap) m_map, m_filter);
       }
       else if (m_filter != null)
       {

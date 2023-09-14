@@ -18,9 +18,9 @@ package com.percussion.utils.collections;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.apache.commons.collections.MultiHashMap;
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.Predicate;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.Predicate;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +38,7 @@ public class PSMultiMapIterTest extends TestCase
 
    public void test1() throws Exception
    {
-      MultiMap map = new MultiHashMap();
+      MultiValuedMap map = new ArrayListValuedHashMap<>();
 
       map.put("a", 1);
       map.put("b", 2);
@@ -69,7 +69,7 @@ public class PSMultiMapIterTest extends TestCase
 
    public void test2() throws Exception
    {
-      MultiMap map = new MultiHashMap();
+      MultiValuedMap map = new ArrayListValuedHashMap<>();
 
       map.put("a", 1);
       map.put("b", 2);
