@@ -16,6 +16,7 @@
  */
 package com.percussion.sitemanage.task.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.itemmanagement.service.impl.PSAbstractWorkflowExtension;
 import com.percussion.rx.publisher.IPSEditionTask;
 import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
@@ -74,7 +75,7 @@ public class PSWorkflowEditionTask extends PSAbstractWorkflowExtension implement
             Map<String, String> params, 
             IPSEditionTaskStatusCallback statusService) throws Exception
     {    
-        log.debug("Started workflowing items for jobId: " + jobId);   
+        log.debug("Started workflowing items for jobId: {}" , jobId);
 
         setSecurity(); 
         List<IPSPubItemStatus> items = statusService.getJobStatus();
@@ -94,9 +95,7 @@ public class PSWorkflowEditionTask extends PSAbstractWorkflowExtension implement
         	{
         		boolean skipped = worker.processItem(item, site, isDefaultPubServer);
         		int contentId = item.getContentId();
-        		if (item.getStatus() == Status.SUCCESS)
-        		{
-        			if (!skipped)
+        		if (item.getStatus() == Status.SUCCESS && (!skipped))
         			{
         				if (item.getOperation() == Operation.PUBLISH)
         				{
@@ -106,32 +105,34 @@ public class PSWorkflowEditionTask extends PSAbstractWorkflowExtension implement
         				{
         					unpubIds.add(contentId);
         				}
-        			}
+
         		}
         	}
         	catch(Exception e)
         	{
-        		log.error("Error workflowing this content: " + item.getContentId(), e);
+        		log.error("Error workflowing this content: {} Error: {}",
+                        item.getContentId(),
+                        PSExceptionUtils.getMessageForLog(e));
         	}
         }
-        log.debug("Finished workflowing items for jobId: " + jobId);
+        log.debug("Finished workflowing items for jobId: {}" , jobId);
         
         if (!pubIds.isEmpty())
         {
-            log.debug("Started updating post date for items for jobId: " + jobId);
+            log.debug("Started updating post date for items for jobId: {}" , jobId);
             getCmsObjectManager().setPostDate(pubIds);
-            log.debug("Finished updating post date for items for jobId: " + jobId);
+            log.debug("Finished updating post date for items for jobId: {}" , jobId);
 
-            log.debug("Started clearing start date for items for jobId: " + jobId);
+            log.debug("Started clearing start date for items for jobId: {}" , jobId);
             getCmsObjectManager().clearStartDate(pubIds);
-            log.debug("Finished clearing start date for items for jobId: " + jobId);
+            log.debug("Finished clearing start date for items for jobId: {}" , jobId);
         }
 
         if (!unpubIds.isEmpty())
         {
-            log.debug("Started clearing expiry date for items for jobId: " + jobId);
+            log.debug("Started clearing expiry date for items for jobId: {}" , jobId);
             getCmsObjectManager().clearExpiryDate(unpubIds);
-            log.debug("Finished clearing expiry date for items for jobId: " + jobId);
+            log.debug("Finished clearing expiry date for items for jobId: {}" , jobId);
         }
     }  
     

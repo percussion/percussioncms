@@ -368,7 +368,7 @@ public class PSItemService implements IPSItemService
                 //Adjust the relationships
                 sum = workflowHelper.getComponentSummary(id);
                 String cid = idMapper.getGuid(sum.getHeadLocator()).toString();
-                if(lids.size()>0)
+                if(!lids.isEmpty())
                 {
                     waRelService.adjustLocalContentRelationships(cid);
                 }

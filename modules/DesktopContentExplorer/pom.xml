@@ -71,7 +71,89 @@
                             <exclude>META-INF/*.RSA</exclude>
                         </excludes>
                     </filter>
+                    <filter>
+                        <artifact>org.apache.logging.log4j:log4j-api</artifact>
+                        <includes>
+                            <include>**</include>
+                        </includes>
+                    </filter>
+                    <filter>
+                        <artifact>org.apache.logging.log4j:log4j-core</artifact>
+                        <includes>
+                            <include>**</include>
+                        </includes>
+                    </filter>
+                    <filter>
+                        <artifact>org.apache.logging.log4j:log4j-1.2-api</artifact>
+                        <includes>
+                            <include>**</include>
+                        </includes>
+                    </filter>
+                    <filter>
+                        <artifact>axis:axis</artifact>
+                        <includes>
+                            <include>**</include>
+                        </includes>
+                    </filter>
+                    <filter>
+                        <artifact>xerces:xercesImpl</artifact>
+                        <includes>
+                            <include>**</include>
+                        </includes>
+                    </filter>
+                    <filter>
+                        <artifact>xml-resolver:xml-resolver</artifact>
+                        <includes>
+                            <include>**</include>
+                        </includes>
+                    </filter>
+                    <filter>
+                        <artifact>javax.help:javahelp</artifact>
+                        <includes>
+                            <include>**</include>
+                        </includes>
+                    </filter>
+                    <filter>
+                        <artifact>com.percussion:perc-system</artifact>
+                        <includes>
+                            <include>com/percussion/cms/**</include>
+                            <include>com/percussion/cx/**</include>
+                            <include>com/percussion/design/objectstore/**</include>
+                            <include>com/percussion/error/**</include>
+                            <include>com/percussion/search/**</include>
+                            <include>com/percussion/services/catalog/**</include>
+                            <include>com/percussion/services/data/**</include>
+                            <include>com/percussion/services/error/**</include>
+                            <include>com/percussion/extension/**</include>
+                            <include>com/percussion/util/**</include>
+                            <include>com/percussion/validation/**</include>
+                            <include>com/percussion/layout/**</include>
+                        </includes>
+                    </filter>
+                    <filter>
+                        <artifact>com.percussion:rxutils</artifact>
+                        <includes>
+                            <include>**</include>
+                        </includes>
+                    </filter>
+                    <filter>
+                        <artifact>com.percussion:perc-help</artifact>
+                        <includes>
+                            <include>**</include>
+                        </includes>
+                    </filter>
                 </filters>
+                <artifactSet>
+                    <excludes>
+                        <exclude>org.sqlite:*</exclude>
+                        <exclude>com.amazonaws:*</exclude>
+                        <exclude>com.percussion:servlet-utils</exclude>
+                        <exclude>com.percussion:perc-rxapps</exclude>
+                        <exclude>org.openjfx:*</exclude>
+                        <exclude>org.springframework:*</exclude>
+                        <exclude>org.hibernate:*</exclude>
+                    </excludes>
+                </artifactSet>
             </configuration>
         </plugin>
         <plugin>
@@ -117,6 +199,37 @@
             <groupId>com.percussion</groupId>
             <artifactId>perc-system</artifactId>
             <version>${project.parent.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.myfaces.core</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.amazonaws</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.twelvemonkeys.imageio</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.owasp.antisamy</groupId>
+                    <artifactId>antisamy</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>csrfguard</artifactId>
+                </exclusion>
+
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.percussion</groupId>
@@ -163,6 +276,12 @@
             <artifactId>perc-server-ui-cmp</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.percussion</groupId>
+            <artifactId>perc-help</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
@@ -200,7 +319,7 @@
         <dependency>
             <groupId>com.vladsch.javafx-webview-debugger</groupId>
             <artifactId>javafx-webview-debugger</artifactId>
-            <version>0.7.6</version>
+            <version>0.8.6</version>
         </dependency>
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>

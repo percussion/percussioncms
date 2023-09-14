@@ -535,7 +535,7 @@ public abstract class PSAbstractWorkflowExtension implements IPSExtension
 
             //If this is a folder or an item with an invalid workflow, it is not publishable.
             if(!(summary.getWorkflowAppId() > 0)){
-                log.warn("Item " + summary.getContentId() + " is not Workflowable - it will be skipped.");
+                log.warn("Item {}  is not Workflowable - it will be skipped." , summary.getContentId() );
                 return null;
             }
 
