@@ -146,6 +146,7 @@ import static org.apache.commons.lang.StringUtils.substringAfterLast;
 import static org.apache.commons.lang.Validate.isTrue;
 import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 /**
  *
@@ -977,7 +978,8 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         rejectIfNull("getContentEditCriteria", "request", request);
         PSContentEditCriteria ceCrit = new PSContentEditCriteria();
         boolean isPage = validateEditUrlRequest(request);
-        PSWidgetItem w = getWidget(request, isPage);
+        boolean isLocalContent = false;
+		PSWidgetItem w = getWidget(request, isPage);
         PSWidgetDefinition wdef = widgetService.load(w.getDefinitionId());
         String ctName = wdef.getWidgetPrefs().getContenttypeName();
         String editView = getEditView(w, Collections.singletonList(IPSHtmlParameters.SYS_TITLE));
@@ -1001,6 +1003,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         //does not produce a resource
         if (isBlank(request.getAssetId()) && !producesResource)
         {
+			isLocalContent = true;
            ceCrit.setContentName(nameGenerator.generateLocalContentName());
         }
 
@@ -1051,7 +1054,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
 				parentFolderForAsset = assetUploadFolderPathMap.getFolderPathForType(ctName);
 			}
 
-            int workflowId = getWorkflowId(ctName, producesResource, parentFolderForAsset);
+            int workflowId = getWorkflowId(ctName, producesResource, parentFolderForAsset, isLocalContent);
             if(workflowId == -1)
             {
                throw new PSAssetServiceException("Failed to obtain the workflow for content.");
@@ -1131,6 +1134,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      */
     private PSAssetEditor getAssetEditor(String parentFolderPath, PSWidgetSummary widget) throws PSDataServiceException, PSItemWorkflowServiceException {
         boolean createSharedAsset = true;
+		boolean isLocalContent = false;
         PSAssetEditor assetEditor = new PSAssetEditor();
         PSWidgetDefinition widgetDef = widgetService.load(widget.getId());
         String ctName = widgetDef.getWidgetPrefs().getContenttypeName();
@@ -1139,7 +1143,9 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         {
             assetEditor.setTitle(widgetDef.getWidgetPrefs().getTitle());
             assetEditor.setIcon(widget.getIcon());
-            assetEditor.setWorkflowId(getWorkflowId(ctName, true, parentFolderPath));
+			if(isEmpty(parentFolderPath))
+				isLocalContent = true;
+            assetEditor.setWorkflowId(getWorkflowId(ctName, true, parentFolderPath,isLocalContent));
             assetEditor.setUrl(getUrl(null, ctName, getEditView(ctName), false));
             assetEditor.setLegacyFolderId(getUploadLegacyFolderIdForType(ctName));
         }
@@ -1252,10 +1258,10 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
      * @return workflow id, may return -1 if not found.
      * @throws Exception
      */
-    private int getWorkflowId(String ctypeName, boolean producesResource, String parentFolderPath) throws PSAssetServiceException, PSValidationException, PSItemWorkflowServiceException {
+    private int getWorkflowId(String ctypeName, boolean producesResource, String parentFolderPath, boolean isLocalContent) throws PSAssetServiceException, PSValidationException, PSItemWorkflowServiceException {
         int wfid = -1;
 
-        if (isNotEmpty(parentFolderPath))
+        if (!isLocalContent & isNotEmpty(parentFolderPath))
         {
             wfid = getWorkflowIdFromFolder(parentFolderPath);
         }
@@ -1656,7 +1662,7 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
     public Collection<PSAsset> findLocalByType(String type) throws PSAssetServiceException, PSValidationException, PSItemWorkflowServiceException, IPSGenericDao.LoadException {
         notEmpty(type);
 
-        return assetDao.findByTypeAndWf(type, getWorkflowId(type, false, null), -1);
+        return assetDao.findByTypeAndWf(type, getWorkflowId(type, false, null,true), -1);
     }
 
     /**
