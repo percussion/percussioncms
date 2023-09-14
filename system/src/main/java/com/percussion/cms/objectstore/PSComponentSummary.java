@@ -1281,8 +1281,7 @@ public String toString()
             + ", m_contentPathName=" + m_contentPathName + ", m_contentSuffix=" + m_contentSuffix + ", m_revisionLock="
             + m_revisionLock + ", m_reminderDate=" + m_reminderDate + ", m_stateEnteredDate=" + m_stateEnteredDate
             + ", m_nextAgingTransition=" + m_nextAgingTransition + ", m_repeatedAgingTransStartDate="
-            + m_repeatedAgingTransStartDate + ", m_contentTypeId=" + m_contentTypeId + ", parentFolders="
-            + parentFolders + ", m_permissions=" + m_permissions + "]";
+            + m_repeatedAgingTransStartDate + ", m_contentTypeId=" + m_contentTypeId + ", m_permissions=" + m_permissions + "]";
 }
 
 /**
@@ -1660,7 +1659,7 @@ public String toString()
 
    /**
     * Specifies the permissions set on the item encapsulated by this object for
-    * the user accessing the item. Currently this has relevance only if the
+    * the user accessing the item. Currently, this has relevance only if the
     * encapsulated object is of type "folder". Initialized in the constructor or
     * <code>fromXml()</code> method if the object type is "folder". Never
     * <code>null</code> if this summary is for a folder object, otherwise
