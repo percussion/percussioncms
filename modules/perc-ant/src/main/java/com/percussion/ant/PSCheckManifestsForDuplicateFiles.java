@@ -75,7 +75,7 @@ public class PSCheckManifestsForDuplicateFiles extends Task
    {
       final Set<String> excludedLibs = getExcludedLibs();
       
-      final Map<String, File> libFiles = new HashMap<String, File>();
+      final Map<String, File> libFiles = new HashMap<>();
       for (final File file : getManifestFiles())
       {
          final Set<String> libs = extractLibs(file);
@@ -99,7 +99,7 @@ public class PSCheckManifestsForDuplicateFiles extends Task
     */
    private Set<String> getExcludedLibs()
    {
-      final Set<String> excludedLibs = new HashSet<String>();
+      final Set<String> excludedLibs = new HashSet<>();
       for (final Exclude exclude : m_excludes)
       {
          excludedLibs.add(exclude.getName());
