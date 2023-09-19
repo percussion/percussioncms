@@ -22,6 +22,7 @@ import org.apache.commons.collections4.Predicate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Iterator for multi maps that supports result filtering. Remove is not
@@ -47,7 +48,7 @@ public class PSMultiMapIterator<M> implements Iterator
    /**
     * The source map, initialized in the ctor and never modified.
     */
-   private MultiValuedMap m_sourceMap = null;
+   private Map m_sourceMap = null;
    
    /**
     * The current next value, <code>null</code> initially, updated
@@ -68,7 +69,7 @@ public class PSMultiMapIterator<M> implements Iterator
     * @param filter filter predicate, may be <code>null</code> if no filtering
     * is desired
     */
-   public PSMultiMapIterator(MultiValuedMap map, Predicate filter)
+   public PSMultiMapIterator(Map map, Predicate filter)
    {
       m_sourceMap = map;
       m_keyIter = map.keySet().iterator();

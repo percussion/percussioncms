@@ -47,7 +47,7 @@ public class PSMultiMapIterTest extends TestCase
       map.put("c", 5);
       map.put("d", 6);
 
-      PSMultiMapIterator<Integer> simple = new PSMultiMapIterator<Integer>(map,
+      PSMultiMapIterator<Integer> simple = new PSMultiMapIterator<Integer>(map.asMap(),
             null);
       Set<Integer> results = new HashSet<Integer>();
       int count = 0;
@@ -78,7 +78,7 @@ public class PSMultiMapIterTest extends TestCase
       map.put("c", 5);
       map.put("d", 6);
 
-      PSMultiMapIterator<Integer> simple = new PSMultiMapIterator<Integer>(map,
+      PSMultiMapIterator<Integer> simple = new PSMultiMapIterator<Integer>(map.asMap(),
             new Predicate()
             {
 
