@@ -25,8 +25,8 @@ import com.percussion.services.contentmgr.impl.legacy.PSTypeConfiguration;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jsr170.*;
-import org.apache.commons.collections.MultiHashMap;
-import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
+import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -81,7 +81,7 @@ public class PSContentNode implements IPSNode, IPSJcrCacheItem, Serializable
     * Holds children. Children are held in named collections, implemented by the
     * multimap
     */
-   private MultiMap m_children = new MultiHashMap();
+   private MultiValuedMap m_children = new ArrayListValuedHashMap<>();
 
    /**
     * Remembers if children have been loaded
