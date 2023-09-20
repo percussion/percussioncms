@@ -472,15 +472,13 @@ public class PSRelationshipCommandHandler extends PSCommandHandler
     * @return a list of <code>PSRelationshipConfig</code> objects, never
     *    <code>null</code>, might be empty.
     */
-   public static Iterator getRelationshipConfigs()
+   public static Iterator<PSRelationshipConfig> getRelationshipConfigs()
    {
       if (ms_configs == null) {
           try{
               reloadConfigs();
-          } catch (PSServerConfigException e) {
-              throw new IllegalStateException("ms_configs must be initialized",e);
-          } catch (PSUnknownNodeTypeException e) {
-              throw new IllegalStateException("ms_configs must be initialized",e);
+          } catch (PSServerConfigException | PSUnknownNodeTypeException e) {
+              throw new IllegalStateException(e);
           }
       }
 

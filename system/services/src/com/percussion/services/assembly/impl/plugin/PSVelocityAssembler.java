@@ -433,12 +433,14 @@ public class PSVelocityAssembler extends PSAssemblerBase
             continue;
 
          if (!noCacheTemplates.contains(name)) {
+            logger.info("Caching of templates is turned off for the following template: {}"
+                    , name);
+
             noCacheTemplates.add(name);
          }
       }
 
-      logger.info("Caching of templates is turned off for the following templates: {}"
-              , noCacheTemplates);
+
    }
 
    @Override

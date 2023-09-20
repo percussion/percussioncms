@@ -189,7 +189,7 @@ public class PSRelationshipConfigSet extends PSCollectionComponent
     * @throws IllegalArgumentException if the supplied category is <code>null</code>
     *    or empty.
     */
-   public Iterator getConfigsByCategory(String category)
+   public Iterator<PSRelationshipConfig> getConfigsByCategory(String category)
    {
       return getConfigListByCategory(category).iterator();
    }

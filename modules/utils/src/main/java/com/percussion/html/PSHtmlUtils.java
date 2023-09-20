@@ -464,6 +464,40 @@ public class PSHtmlUtils {
 
         return doc.body().html();
     }
+
+    public static String replaceAmpInURL(String url){
+        return url.replace("&amp;","&");
+    }
+    /**
+     * Given a url will return a Map with the key as the param and the value as the value.
+     * @param url A url.
+     * @return A map of query params, never null, may be empty
+     */
+    public static Map<String,String> getQueryParams(String url){
+
+        Map<String,String> ret = new HashMap<>();
+
+
+        String[] paramList = url.split("&");
+
+        int i = 0;
+        String[] temp;
+        for(String p : paramList){
+            String p1 = p;
+            if(i==0){
+                p1 = p.substring(p.indexOf("?")+1);
+            }
+             temp = p1.split("=");
+            if(temp.length==2){
+                ret.put(temp[0],temp[1]);
+            }
+            i++;
+        }
+
+        return ret;
+    }
+
+
     public static final String PROP_OUTPUT_MODE = "output-mode";
     public static final String PROP_BASE_SAFELIST = "base-safelist";
     public static final String PROP_REL_LINKS = "preserveRelativeLinks";
