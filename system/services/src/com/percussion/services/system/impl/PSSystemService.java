@@ -62,17 +62,17 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.query.Query;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -138,13 +138,13 @@ public class PSSystemService
          // get all shared properties if no name is supplied
          if (StringUtils.isBlank(name))
             name = "%";
+         CriteriaBuilder builder = session.getCriteriaBuilder();
+         CriteriaQuery<PSSharedProperty> criteria = builder.createQuery(PSSharedProperty.class);
+         Root<PSSharedProperty> critRoot = criteria.from(PSSharedProperty.class);
+         criteria.where(builder.equal(critRoot.get("name"), name));
+         criteria.orderBy(builder.asc(critRoot.get("name")));
 
-         Criteria criteria = session.createCriteria(PSSharedProperty.class);
-         criteria.add(Restrictions.like("name", name));
-         criteria.addOrder(Order.asc("name"));
-
-         Set<PSSharedProperty> properties = new HashSet<>(
-            criteria.list());
+         Set<PSSharedProperty> properties = new HashSet<>(entityManager.createQuery(criteria).getResultList());
 
          return new ArrayList<>(properties);
 
@@ -160,18 +160,16 @@ public class PSSystemService
       if (id == null)
          throw new IllegalArgumentException("id cannot be null");
 
-      Session session = getSession();
-
-         Criteria criteria = session.createCriteria(PSSharedProperty.class);
-         criteria.add(Restrictions.eq("id", id.longValue()));
-
-         List<PSSharedProperty> properties = criteria.list();
+         Session session = getSession();
+         CriteriaBuilder builder = session.getCriteriaBuilder();
+         CriteriaQuery<PSSharedProperty> criteria = builder.createQuery(PSSharedProperty.class);
+         Root<PSSharedProperty> critRoot = criteria.from(PSSharedProperty.class);
+         criteria.where(builder.equal(critRoot.get("id"), id.longValue()));
+         List<PSSharedProperty> properties = entityManager.createQuery(criteria).getResultList();
          if (properties.isEmpty())
             throw new PSSystemException(
                IPSSystemErrors.MISSING_SHARED_PROPERTY, id);
-
          return properties.get(0);
-
    }
 
    /* (non-Javadoc)
@@ -409,12 +407,13 @@ public class PSSystemService
       PSLegacyGuid lguid = (PSLegacyGuid) id;
 
       Session session = getSession();
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<PSContentStatusHistory> criteria = builder.createQuery(PSContentStatusHistory.class);
+      Root<PSContentStatusHistory> critRoot = criteria.from(PSContentStatusHistory.class);
+      criteria.where(builder.equal(critRoot.get("contentId"), lguid.getContentId()));
+      criteria.orderBy(builder.asc(critRoot.get("id")));
 
-         Criteria c = session.createCriteria(PSContentStatusHistory.class)
-         .add(Restrictions.eq("contentId", lguid.getContentId()))
-         .addOrder(Order.asc("id"));
-
-         return c.list();
+         return entityManager.createQuery(criteria).getResultList();
 
    }
 
@@ -766,13 +765,14 @@ public class PSSystemService
          // Note, transitionLabel column is always "CheckOut" for both
          //       check in & out actions. However, the checkout user is blank
          //       if checkin; otherwise it is checkout action.
-         
-         Criteria c = session.createCriteria(PSContentStatusHistory.class).add(
-               Restrictions.eq("contentId", lguid.getContentId()))
-               .add(Restrictions.eq("transitionLabel", "CheckOut")).addOrder(
-                     Order.desc("id"));
-         c.setMaxResults(1);
-         List<PSContentStatusHistory> results = c.list();
+         CriteriaBuilder builder = session.getCriteriaBuilder();
+         CriteriaQuery<PSContentStatusHistory> criteria = builder.createQuery(PSContentStatusHistory.class);
+         Root<PSContentStatusHistory> critRoot = criteria.from(PSContentStatusHistory.class);
+         criteria.where(builder.equal(critRoot.get("contentId"), lguid.getContentId()));
+         criteria.where(builder.equal(critRoot.get("transitionLabel"), "CheckOut"));
+         criteria.orderBy(builder.desc(critRoot.get("id")));
+         entityManager.createQuery(criteria).setMaxResults(1);
+         List<PSContentStatusHistory> results = entityManager.createQuery(criteria).getResultList();
 
          return results.isEmpty() ? null : results.get(0);
 
@@ -877,9 +877,11 @@ public class PSSystemService
    {
       Session s = getSession();
 
-         Criteria c = s.createCriteria(PSUIComponent.class);
-         c.add(Restrictions.eq("name", name));
-         List<PSUIComponent> results = c.list();
+         CriteriaBuilder builder = s.getCriteriaBuilder();
+         CriteriaQuery<PSUIComponent> criteria = builder.createQuery(PSUIComponent.class);
+         Root<PSUIComponent> critRoot = criteria.from(PSUIComponent.class);
+         criteria.where(builder.equal(critRoot.get("name"), name));
+         List<PSUIComponent> results = entityManager.createQuery(criteria).getResultList();
          if (results.size() == 0)
             return null;
          return results.get(0);

@@ -131,11 +131,13 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
       List<PSConfigStatus> cfgStatusList = null;
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSConfigStatus.class);
-         criteria.add(Restrictions.like("configName", nameFilter).ignoreCase());
-         criteria.addOrder(Order.asc("configName"));
-         criteria.addOrder(Order.desc("dateApplied"));
-         cfgStatusList = criteria.list();
+         CriteriaBuilder builder = session.getCriteriaBuilder();
+         CriteriaQuery<PSConfigStatus> criteria = builder.createQuery(PSConfigStatus.class);
+         Root<PSConfigStatus> critRoot = criteria.from(PSConfigStatus.class);
+         criteria.where(builder.like(builder.lower(critRoot.get("configName")), nameFilter.toLowerCase()));
+         criteria.orderBy(builder.asc(critRoot.get("configName")));
+         criteria.orderBy(builder.desc(critRoot.get("dateApplied")));
+         cfgStatusList = entityManager.createQuery(criteria).getResultList();
 
       return cfgStatusList;
    }
@@ -189,12 +191,13 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
 
       Session sess = getSession();
 
-      sess.createCriteria(PSConfigStatus.class)
-              .add(Restrictions.like("configName", nameFilter).ignoreCase())
-              .addOrder(Order.asc("configName"))
-              .addOrder(Order.asc("dateApplied"))
-              .list().forEach(sess::delete);
-
+      CriteriaBuilder builder = sess.getCriteriaBuilder();
+      CriteriaQuery<PSConfigStatus> criteria = builder.createQuery(PSConfigStatus.class);
+      Root<PSConfigStatus> critRoot = criteria.from(PSConfigStatus.class);
+      criteria.where(builder.like(builder.lower(critRoot.get("configName")), nameFilter.toLowerCase()));
+      criteria.orderBy(builder.asc(critRoot.get("configName")));
+      criteria.orderBy(builder.asc(critRoot.get("dateApplied")));
+      entityManager.createQuery(criteria).getResultList().forEach(sess::delete);
    }
 
    /*
@@ -208,13 +211,14 @@ public class PSConfigStatusMgr  implements IPSConfigStatusMgr
          throw new IllegalArgumentException("configName may not be null or empty string");
       List<PSConfigStatus> cfgList;
       Session session = getSession();
-
-         Criteria criteria = session.createCriteria(PSConfigStatus.class);
-         criteria.add(Restrictions.eq("configName", configName));
-         criteria.add(Restrictions.eq("status", PSConfigStatus.ConfigStatus.SUCCESS));
-         criteria.addOrder(Order.desc("dateApplied"));
-         criteria.setMaxResults(1);
-         cfgList = criteria.list();
+         CriteriaBuilder builder = session.getCriteriaBuilder();
+         CriteriaQuery<PSConfigStatus> criteria = builder.createQuery(PSConfigStatus.class);
+         Root<PSConfigStatus> critRoot = criteria.from(PSConfigStatus.class);
+         criteria.where(builder.equal(critRoot.get("configName"), configName));
+         criteria.where(builder.equal(critRoot.get("status"), PSConfigStatus.ConfigStatus.SUCCESS));
+         criteria.orderBy(builder.desc(critRoot.get("dateApplied")));
+         entityManager.createQuery(criteria).setMaxResults(1);
+         cfgList = entityManager.createQuery(criteria).getResultList();
 
       return cfgList.size()==0 ? null : cfgList.get(0);
    }
