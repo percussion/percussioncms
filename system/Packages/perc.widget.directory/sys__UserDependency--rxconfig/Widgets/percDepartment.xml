@@ -9,7 +9,7 @@
                  preferred_editor_height="800"
                  is_responsive="true"/>
     <UserPref name="dptNameFormat"
-              display_name="Format of Depatment Name"
+              display_name="Format of Department Name"
               required="false"
               datatype="enum" default_value="div">
         <EnumValue value="div" display_value="Div" />
