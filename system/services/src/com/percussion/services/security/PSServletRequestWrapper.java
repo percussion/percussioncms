@@ -76,10 +76,7 @@ public class PSServletRequestWrapper extends HttpServletRequestWrapper
    public PSServletRequestWrapper(HttpServletRequest req, Subject subject)
    {
       super(req);
-      if (req == null)
-      {
-         throw new IllegalArgumentException("req may not be null");
-      }
+
       m_subject = subject;
       m_isSecure = req.isSecure();
       m_scheme = req.getScheme();
@@ -101,6 +98,7 @@ public class PSServletRequestWrapper extends HttpServletRequestWrapper
    /* (non-Javadoc)
     * @see javax.servlet.http.HttpServletRequest#getRemoteUser()
     */
+   @Override
    public String getRemoteUser()
    {
       String remoteUser = null;
@@ -132,6 +130,7 @@ public class PSServletRequestWrapper extends HttpServletRequestWrapper
    /* (non-Javadoc)
     * @see javax.servlet.http.HttpServletRequest#isUserInRole(java.lang.String)
     */
+   @Override
    public boolean isUserInRole(String role)
    {
       if (m_subject == null)
@@ -178,6 +177,7 @@ public class PSServletRequestWrapper extends HttpServletRequestWrapper
    /**
     * @return Returns the isSecure.
     */
+   @Override
    public boolean isSecure()
    {
       return m_isSecure;
@@ -186,8 +186,11 @@ public class PSServletRequestWrapper extends HttpServletRequestWrapper
    /**
     * @return Returns the scheme.
     */
+   @Override
    public String getScheme()
    {
       return m_scheme;
    }
+
+
 }

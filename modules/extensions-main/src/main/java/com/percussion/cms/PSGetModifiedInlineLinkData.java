@@ -76,11 +76,7 @@ public class PSGetModifiedInlineLinkData
     * is the active promotable version of the old item. This will be the same 
     * as the old one if the item is not replaced by its promotable version. The 
     * newRevision always represents the current revision of the item with 
-    * newContentId. 
-    * <p>
-    * The way the new contentid is computed is described in {@link com.
-    * percussion.cms.PSSingleValueBuilder#getCorrectedContentId(IPSRequestContext, 
-    * String, String, PSRelationshipData)}.
+    * newContentId.
     * 
     * @see com.percussion.extension.IPSResultDocumentProcessor#
     * processResultDocument(java.lang.Object[], com.percussion.server.
@@ -98,7 +94,7 @@ public class PSGetModifiedInlineLinkData
             PSSingleValueBuilder.buildRelationshipData(request, null);
          String dependentIds = request.getParameter("inlinecontentids", "");
          StringTokenizer tokenizer = new StringTokenizer(dependentIds, ";");
-         Map cidMap = new HashMap();
+         Map cidMap = new HashMap<>();
          while (tokenizer.hasMoreTokens())
          {
             String cid = tokenizer.nextToken();
@@ -106,7 +102,7 @@ public class PSGetModifiedInlineLinkData
             if (cid == null || cid.length() < 1)
                continue;
 
-            //aoid processiing duplicates
+            //avoid processing duplicates
             if (cidMap.containsKey(cid))
                continue;
 
@@ -115,7 +111,8 @@ public class PSGetModifiedInlineLinkData
                   request,
                   cid,
                   null,
-                  inlineLinkRelData);
+                  inlineLinkRelData,
+                       null);
             if (newCid == null)
                newCid = cid;
             cidMap.put(cid, newCid);
@@ -128,13 +125,13 @@ public class PSGetModifiedInlineLinkData
                   "inlinecontentids parameter must not be null or empty"));
          }
          Iterator iter = cidMap.keySet().iterator();
-         List paramList = new ArrayList();
+         List paramList = new ArrayList<>();
          while (iter.hasNext())
          {
             String element = (String)cidMap.get(iter.next());
             paramList.add(element);
          }
-         Map reqParams = new HashMap();
+         Map reqParams = new HashMap<>();
          reqParams.put(IPSHtmlParameters.SYS_CONTENTID, paramList);
          IPSInternalRequest iReq =
             request.getInternalRequest(
@@ -144,7 +141,7 @@ public class PSGetModifiedInlineLinkData
 
          Document doc = iReq.getResultDoc();
          NodeList nl = doc.getElementsByTagName("Item");
-         Map cidRevisionMap = new HashMap();
+         Map cidRevisionMap = new HashMap<>();
          for (int i = 0; nl != null && i < nl.getLength(); i++)
          {
             Element elem = (Element) nl.item(i);

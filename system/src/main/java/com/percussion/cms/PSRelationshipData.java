@@ -17,6 +17,7 @@
 package com.percussion.cms;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,19 +35,19 @@ public class PSRelationshipData
 {
    /**
     * Map of all dependent items' contentids and the promotable version list for 
-    * each contentid. The promotable version list is initilized to 
+    * each contentid. The promotable version list is initialized to
     * <code>null</code> and is built on ad hoc basis. The key is the Integer 
     * representing the contentid and the value is a list of Integer versions of 
     * contentids of the previous promotable versions of the item with contentid 
     * which is the key part of this object. Never <code>null</code>.  
     */
-   public Map m_contentIdPathMap = new HashMap();
+   public Map<Integer, List<Integer>> m_contentIdPathMap = new HashMap<>();
 
    /**
     * Map of all relationshipids (Integer) and the contentids of all outgoing 
     * relationships of active assembly category for the parent item. The key is 
-    * the Integer verison of the relationshipid and the value is the Integer 
-    * version o fthe dependent's contentid. Never <code>null</code>. 
+    * the Integer version of the relationshipid and the value is the Integer
+    * version of the dependent's contentid. Never <code>null</code>.
     */
-   public Map m_relIdContentIdMap = new HashMap();
+   public Map<Integer,Integer> m_relIdContentIdMap = new HashMap<>();
 }
