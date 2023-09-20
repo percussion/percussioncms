@@ -16,29 +16,22 @@
  */
 package com.percussion.services.assembly.impl;
 
-import com.percussion.cms.IPSConstants;
-import com.percussion.cms.PSCmsException;
-import com.percussion.cms.PSInlineLinkField;
-import com.percussion.cms.PSRelationshipData;
-import com.percussion.cms.PSSingleValueBuilder;
+import com.percussion.cms.*;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.data.PSConversionException;
-import com.percussion.error.PSNotFoundException;
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.extension.IPSExtensionManager;
 import com.percussion.extension.IPSUdfProcessor;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.extension.PSExtensionRef;
 import com.percussion.html.PSHtmlParsingException;
+import com.percussion.html.PSHtmlUtils;
 import com.percussion.server.IPSRequestContext;
 import com.percussion.server.PSRequest;
 import com.percussion.server.PSRequestContext;
 import com.percussion.server.PSServer;
-import com.percussion.services.assembly.IPSAssemblyItem;
-import com.percussion.services.assembly.IPSAssemblyResult;
-import com.percussion.services.assembly.IPSAssemblyService;
-import com.percussion.services.assembly.PSAssemblyException;
-import com.percussion.services.assembly.PSAssemblyServiceLocator;
+import com.percussion.services.assembly.*;
 import com.percussion.services.assembly.jexl.PSLocationUtils;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.contentmgr.IPSContentMgr;
@@ -71,12 +64,10 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static com.percussion.cms.PSSingleValueBuilder.DATA_PATHITEM;
+import static com.percussion.util.IPSHtmlParameters.SYS_RELATIONSHIPID;
 
 /**
  * Do the actual processing of inline content. Each element is examined for the
@@ -148,6 +139,7 @@ public class PSInlineLinkContentHandler
    private PSRelationshipData m_relationshipData = null;
 
    public PSInlineLinkContentHandler() {
+      //NOOP
    }
 
    /**
@@ -186,6 +178,18 @@ public class PSInlineLinkContentHandler
    }
 
    /**
+    * Iterates through the query params on a url and adds them as attributes to the inline link tag instead.
+    * @param tag A valid Element to add the attributes to.
+    * @param url A url with query params.
+    */
+   private void migrateQueryParamsToAttrs(Element tag, String url){
+      Map<String, String> queryParams = PSHtmlUtils.getQueryParams(url);
+      for(Map.Entry<String, String> e : queryParams.entrySet()) {
+         tag.attr(e.getKey(), e.getValue());
+      }
+   }
+
+   /**
     * Processes all "a" tags in the document
     * @param aTags
     * @throws PSHtmlParsingException
@@ -197,9 +201,20 @@ public class PSInlineLinkContentHandler
       String inlineType;
       String path;
       for(Element aTag: aTags){
+         if(aTag.hasAttr(DATA_PATHITEM))
+            aTag.removeAttr(DATA_PATHITEM);
+
          inlineType = aTag.attr(PSSingleValueBuilder.INLINE_TYPE);
+         path = PSHtmlUtils.replaceAmpInURL(aTag.attr(HREF_ATTR));
+
+         if(inlineType.equals("") && (isInlineButAttrMissing(aTag.attr(HREF_ATTR)))){
+               //Old links might be missing the attributes, if they are missing, extract from query params and add as attributes before processing.
+               inlineType = PSInlineLinkContentHandler.RXLINK;
+         }
+
+
          if(inlineType.equalsIgnoreCase(PSInlineLinkContentHandler.RXLINK)) {
-            path = aTag.attr(HREF_ATTR);
+           aTag.attr(HREF_ATTR,path);
 
             processTag(aTag, path, RXLINK, false);
             if(m_processor.getWorkItem().getContext()>0){
@@ -223,11 +238,20 @@ public class PSInlineLinkContentHandler
       String path;
 
       for(Element imgTag: imgTags){
+         if(imgTag.hasAttr(DATA_PATHITEM))
+            imgTag.removeAttr(DATA_PATHITEM);
 
          inlineType = imgTag.attr(PSSingleValueBuilder.INLINE_TYPE);
+         path = PSHtmlUtils.replaceAmpInURL(imgTag.attr(SRC_ATTR));
+
+         if(inlineType.equals("") && (isInlineButAttrMissing(imgTag.attr(SRC_ATTR)))){
+            //Old links might be missing the attributes, if they are missing, extract from query params and add as attributes before processing.
+            inlineType = PSInlineLinkContentHandler.RXIMAGE;
+         }
 
          if(inlineType.equalsIgnoreCase(PSInlineLinkContentHandler.RXIMAGE)) {
-            path = imgTag.attr(SRC_ATTR);
+               imgTag.attr(SRC_ATTR,path);
+
             processTag(imgTag, path, RXIMAGE, true);
 
             if(m_processor.getWorkItem().getContext()>0){
@@ -246,6 +270,19 @@ public class PSInlineLinkContentHandler
       for(String attr : PSSingleValueBuilder.IGNORED_ATTRIBUTES) {
          tag.attributes().removeIgnoreCase(attr);
       }
+   }
+
+   /**
+    * Check to see if this is really not an inline link in the event the attributes are missing.
+    *
+    * @param url A href or src url that could be an inline link.
+    * @return true if it looks like an inline link.
+    */
+   private boolean isInlineButAttrMissing(String url){
+      //TODO:  Make this more sophisticated so that Rhythmyx in a folder path (like on the help site) doesn't return true
+
+      return url.contains("/Rhythmyx/");
+
    }
 
    private void processTag(Element tag, String path,String type,boolean imgTag) throws PSHtmlParsingException {
@@ -349,31 +386,13 @@ public class PSInlineLinkContentHandler
 
                if(imgTag) {
                   // fix to not break upgrade of images alt/title text
-                  if((link.isUpgradeScenario && name.equals(PSSingleValueBuilder.ALT))
+                  if ((link.isUpgradeScenario && name.equals(PSSingleValueBuilder.ALT))
                           || (link.isUpgradeScenario && name.equals(PSSingleValueBuilder.TITLE))) {
                      // if the values are not the same we assume a previous
                      // override value and use that
-                     if(name.equals(PSSingleValueBuilder.ALT))
+                     if (name.equals(PSSingleValueBuilder.ALT))
                         foundAlt = true;
-                     else if(name.equals(PSSingleValueBuilder.TITLE))
-                        foundTitle = true;
-                     if("src".equals(name)){
-                        if(override != null ){
-                           attr.setKey (name);
-                           attr.setValue(override);
-                        }else {
-                           String v = (String)attrs.get(PSSingleValueBuilder.DATA_JCRPATH);
-                           if (v == null || v.trim().isEmpty()) {
-                              attr.setValue(attr.getValue());
-                           } else {
-                              attr.setValue(v);
-                           }
-                        }
-
-                     }else {
-                        attr.setValue(attr.getValue());
-                     }
-                     continue;
+                     else foundTitle = true;
                   }
 
                   if(name.equals(PSSingleValueBuilder.ALT)) {
@@ -412,8 +431,8 @@ public class PSInlineLinkContentHandler
                      if(override != null ){
                         attr.setValue(override);
                      }else {
-                        String v = (String) attrs.get(PSSingleValueBuilder.DATA_JCRPATH);
-                        if (v == null || v.trim().isEmpty()) {
+                        String v =  attrs.get(PSSingleValueBuilder.DATA_JCRPATH);
+                        if (v.trim().isEmpty()) {
                            attr.setValue( attr.getValue());
                         } else {
                            attr.setValue( v);
@@ -485,7 +504,7 @@ public class PSInlineLinkContentHandler
 
    }
 
-   private String getValidFlag(IPSAssemblyItem target) throws PSFilterException
+   private String getValidFlag(IPSAssemblyItem target)
    {
       int context = target.getContext();
       if (context == 0)
@@ -495,17 +514,14 @@ public class PSInlineLinkContentHandler
       return "y";
    }
 
-   private void doRxImage(InlineLink link, IPSAssemblyItem target) throws Exception {
+   private void doRxImage(InlineLink link, IPSAssemblyItem target) {
 
 
       if (target == null )
       {
-         if (m_processor.getWorkItem().getContext() > 0)
-         {
+            link.overrides.put(PSSingleValueBuilder.SRC, "#");
+            link.isBroken = true;
             return;
-         }
-         link.isBroken = true;
-         return;
       }
 
 
@@ -521,7 +537,6 @@ public class PSInlineLinkContentHandler
          link.overrides.put(PSSingleValueBuilder.TITLE, altAndTitle.get(PSSingleValueBuilder.TITLE));
       }
 
-      return;
    }
 
    protected void doRxHyperLink(InlineLink link, IPSAssemblyItem target, String jrcPath) {
@@ -545,7 +560,8 @@ public class PSInlineLinkContentHandler
       log.debug("Broken Inline link from item {}", link.href);
       String overrideValue = AssemblerInfoUtils.getBrokenLinkOverrideValue(jrcPath);
       link.overrides.put(PSSingleValueBuilder.HREF, overrideValue);
-      return ;
+      link.isBroken = true;
+
    }
 
 
@@ -577,12 +593,6 @@ public class PSInlineLinkContentHandler
                     StandardCharsets.UTF_8);
          }
       }
-      else
-      {
-         return ;
-      }
-
-      return;
    }
 
 
@@ -606,6 +616,151 @@ public class PSInlineLinkContentHandler
       private boolean isBroken = false;
       private String replacementBody = null;
 
+      /**
+       * Create the target item for the inline reference that will be used to
+       * determine the target url or the target template content.
+       *
+       * @param depid the dependent item id
+       * @param depvariant the dependent item template id
+       * @param siteid the site id
+       * @param folderid the folder id
+       * @param rid the relationship id
+       * @param selectedText the selected text passed to the target item as a
+       *           parameter.
+       * @return the target item, <code>null</code> if the item should be
+       *         filtered or does not exist
+       * @throws PSORMException
+       * @throws CloneNotSupportedException
+       * @throws PSCmsException
+       * @throws PSAssemblyException
+       */
+      private IPSAssemblyItem getTargetItem(String depid, String depvariant,
+                                            String siteid, String folderid, String rid, String selectedText)
+              throws PSORMException, CloneNotSupportedException,
+              PSAssemblyException, PSCmsException
+      {
+         IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
+         IPSAssemblyItem sourceitem = m_processor.getWorkItem();
+         PSLegacyGuid parentguid = (PSLegacyGuid) sourceitem.getId();
+         // Check that we have the right content id. We may need to replace it
+         // with one from a promotable version
+         if (m_relationshipData == null || (m_relationshipData.m_contentIdPathMap.isEmpty() && m_relationshipData.m_relIdContentIdMap.isEmpty()))
+         {
+            PSRequest req = PSRequest.getContextForRequest();
+            m_context = new PSRequestContext(req);
+            m_relationshipData = PSSingleValueBuilder.buildRelationshipData(
+                    m_context, parentguid.getLocator());
+         }
+         depid =
+                 PSSingleValueBuilder
+                         .getCorrectedContentId(m_context, depid, rid, m_relationshipData,parentguid.getLocator());
+
+         if (StringUtils.isBlank(depid))
+            return null; // Item is purged
+
+         int contentid = Integer.parseInt(depid);
+
+         PSComponentSummary sum = cms.loadComponentSummary(contentid);
+         if (sum == null)
+         {
+            return null;
+         }
+
+         // Create a guid and filter it to decide whether this item is active
+         IPSGuid thisguid = new PSLegacyGuid(contentid, sum
+                 .getPublicOrCurrentRevision());
+         IPSGuid folderguid = null, siteguid = null;
+         if (NumberUtils.toInt(folderid) > 0)
+            folderguid = new PSLegacyGuid(Integer.parseInt(folderid), 0);
+         if (NumberUtils.toInt(siteid)>0)
+            siteguid = new PSGuid(PSTypeEnum.SITE, Long.parseLong(siteid));
+
+
+         IPSFilterItem item = new PSFilterItem(thisguid, folderguid, siteguid);
+         List<IPSFilterItem> input = Collections.singletonList(item);
+         try
+         {
+            Map<String, String> params = new HashMap<>();
+            params.put(IPSHtmlParameters.SYS_SITEID, siteid);
+            IPSItemFilter filter = m_processor.getItemFilter();
+            if(filter != null) {
+
+               List<IPSFilterItem> output = filter.filter(input,
+                       params);
+               if (output.isEmpty()) {
+                  return null;
+               }
+            }
+         }
+         catch (PSFilterException e)
+         {
+            log.error("Problem filtering item for inline link", e);
+            return null;
+         }
+
+         IPSAssemblyItem targetitem = (IPSAssemblyItem) sourceitem.clone();
+         targetitem.setPath(null);
+         targetitem.setTemplate(null);
+         targetitem.setNode(null);
+         targetitem.setParameterValue(IPSHtmlParameters.SYS_VARIANTID, depvariant);
+         targetitem.setParameterValue(IPSHtmlParameters.SYS_CONTENTID, depid);
+         if(StringUtils.isNotBlank(selectedText))
+         {
+            targetitem.setParameterValue(PSSingleValueBuilder.INLINE_TEXT,
+                    selectedText);
+         }
+         targetitem.setParameterValue(IPSHtmlParameters.SYS_REVISION, Integer
+                 .toString(sum.getPublicOrCurrentRevision()));
+         targetitem.removeParameterValue(IPSHtmlParameters.SYS_TEMPLATE);
+         targetitem.removeParameterValue(IPSHtmlParameters.SYS_PART);
+         if (NumberUtils.toInt(folderid)>0)
+         {
+            targetitem.setParameterValue(IPSHtmlParameters.SYS_FOLDERID, folderid);
+            targetitem.setFolderId(Integer.parseInt(folderid));
+         }
+         else
+         {
+            targetitem.removeParameterValue(IPSHtmlParameters.SYS_FOLDERID);
+            targetitem.setFolderId(-1);
+         }
+         IPSGuid origSiteId = m_processor.getWorkItem().getSiteId();
+
+         if (NumberUtils.toInt(siteid)>0)
+         {
+            targetitem.setParameterValue(IPSHtmlParameters.SYS_SITEID, siteid);
+            if (NumberUtils.toInt(siteid)>0)
+               targetitem.setSiteId(siteguid);
+         }
+         else
+         {
+            if(origSiteId != null) {
+               // We are setting to owner site id if we do not have one be careful when merging rhythmyx
+               targetitem.setParameterValue(IPSHtmlParameters.SYS_SITEID, Integer.toString(origSiteId.getUUID()));
+               targetitem.setSiteId(origSiteId);
+            }
+         }
+
+         if(origSiteId != null && (siteguid==null || !siteguid.equals(origSiteId)))
+         {
+            targetitem.setParameterValue(IPSHtmlParameters.SYS_ORIGINALSITEID, Long
+                    .toString(origSiteId.longValue()));
+         }
+
+         // Propagate sys_command for active assembly for link generation, but
+         // not for rendering
+         String command = sourceitem.getParameterValue(
+                 IPSHtmlParameters.SYS_COMMAND, "");
+         if (StringUtils.isNotBlank(command))
+         {
+            targetitem.removeParameterValue(IPSHtmlParameters.SYS_COMMAND);
+            targetitem.setParameterValue(IPSHtmlParameters.SYS_MODE,
+                    PSLocationUtils.AA_LINK);
+         }
+         targetitem.normalize();
+
+         return targetitem;
+      }
+
       public InlineLink(Attributes attrs)
       {
          super();
@@ -620,7 +775,7 @@ public class PSInlineLinkContentHandler
          dependentVariantId =
                  attrs.get(IPSHtmlParameters.SYS_DEPENDENTVARIANTID);
          dependentId = attrs.get(IPSHtmlParameters.SYS_DEPENDENTID);
-         relationshipId = attrs.get(IPSHtmlParameters.SYS_RELATIONSHIPID);
+         relationshipId = attrs.get(SYS_RELATIONSHIPID);
 
          siteId = attrs.get(IPSHtmlParameters.SYS_SITEID);
          folderId = attrs.get(IPSHtmlParameters.SYS_FOLDERID);
@@ -631,6 +786,10 @@ public class PSInlineLinkContentHandler
          PSRequest req = PSRequest.getContextForRequest();
          m_context = new PSRequestContext(req);
 
+         if(PSSingleValueBuilder.isValidRelationship(m_context, relationshipId)){
+            attrs.removeIgnoreCase(SYS_RELATIONSHIPID);
+            relationshipId = "";
+         }
          // Get the siteid and folder id from relationship
          Map<String, String> relMap = PSSingleValueBuilder
                  .getSiteAndFolderFromRelationship(relationshipId, dependentId, m_context);
@@ -655,7 +814,7 @@ public class PSInlineLinkContentHandler
             dataTitleOverride = Boolean.parseBoolean(attrs.get(PSSingleValueBuilder.DATA_TITLE_OVERRIDE));
             isUpgradeScenario = false;
          }
-         else if(inlineType.equals("rximage"))
+         else if(inlineType.equals(RXIMAGE))
             isUpgradeScenario = true;
 
          if(!StringUtils.isBlank(attrs.get(PSSingleValueBuilder.DATA_DECORATIVE_OVERRIDE)))
@@ -678,7 +837,7 @@ public class PSInlineLinkContentHandler
          }
          Object[] params = new Object[2];
 
-         params[0] = type.equalsIgnoreCase("rxhyperlink") ? "<a perc-managed=\"true\" href=\"" + path + "\">LinkText</a>" : "<img  perc-managed=\"true\" src=\""
+         params[0] = type.equalsIgnoreCase(RXLINK) ? "<a perc-managed=\"true\" href=\"" + path + "\">LinkText</a>" : "<img  perc-managed=\"true\" src=\""
                  + path + "\"/>";
          params[1] = "true";
          Map<String,String> props = (Map<String,String>) processor.processUdf(params, m_context);
@@ -705,9 +864,8 @@ public class PSInlineLinkContentHandler
                     this.resourceDefinitionId);
          }
          try {
-            String link = (String) ms_lutils.generate(
+            return ms_lutils.generate(
                     assemblyItem, Long.valueOf(this.dependentVariantId));
-            return link;
          }
 
          finally {
@@ -753,9 +911,8 @@ public class PSInlineLinkContentHandler
 
       public IPSAssemblyItem getTargetItem() throws PSAssemblyException, PSCmsException, PSORMException, CloneNotSupportedException {
 
-         IPSAssemblyItem asmItem = PSInlineLinkContentHandler.this.getTargetItem(dependentId, dependentVariantId,
+         return getTargetItem(dependentId, dependentVariantId,
                  siteId, folderId, relationshipId, selectedText);
-         return asmItem;
       }
    }
    private void handleError(Attributes attrs, String replacementbody,
@@ -772,172 +929,28 @@ public class PSInlineLinkContentHandler
       message.append(" See the replacement body in the console log. ");
       message.append("The attributes on the affected link were: ");
       int len = attrs != null ? attrs.size() : 0;
-      Iterator<Attribute> attributesItr = attrs.iterator();
-      int i = 0;
-      while (attributesItr.hasNext())
-      {
-         Attribute attr = attributesItr.next();
-         String name = attr.getKey();
-         String value = attr.getValue();
-         if (i > 0)
-         {
-            message.append(",");
+      if(len>0) {
+         Iterator<Attribute> attributesItr = attrs.iterator();
+         int i = 0;
+         while (attributesItr.hasNext()) {
+            Attribute attr = attributesItr.next();
+            String name = attr.getKey();
+            String value = attr.getValue();
+            if (i > 0) {
+               message.append(",");
+            }
+            message.append(name);
+            message.append("=\"");
+            message.append(value);
+            message.append("\"");
+            i++;
          }
-         message.append(name);
-         message.append("=\"");
-         message.append(value);
-         message.append("\"");
-         i++;
       }
 
       log.error("Actual replacement body for error was: {}", replacementbody);
       throw new PSHtmlParsingException(message.toString(), e);
    }
 
-   /**
-    * Create the target item for the inline reference that will be used to
-    * determine the target url or the target template content.
-    *
-    * @param depid the dependent item id
-    * @param depvariant the dependent item template id
-    * @param siteid the site id
-    * @param folderid the folder id
-    * @param rid the relationship id
-    * @param selectedText the selected text passed to the target item as a
-    *           parameter.
-    * @return the target item, <code>null</code> if the item should be
-    *         filtered or does not exist
-    * @throws PSORMException
-    * @throws CloneNotSupportedException
-    * @throws PSCmsException
-    * @throws PSAssemblyException
-    */
-   private IPSAssemblyItem getTargetItem(String depid, String depvariant,
-                                         String siteid, String folderid, String rid, String selectedText)
-           throws PSORMException, CloneNotSupportedException,
-           PSAssemblyException, PSCmsException
-   {
-      IPSCmsObjectMgr cms = PSCmsObjectMgrLocator.getObjectManager();
-      IPSAssemblyItem sourceitem = m_processor.getWorkItem();
-      // Check that we have the right content id. We may need to replace it
-      // with one from a promotable version
-      if (m_relationshipData == null)
-      {
-         PSRequest req = PSRequest.getContextForRequest();
-         m_context = new PSRequestContext(req);
-         PSLegacyGuid parentguid = (PSLegacyGuid) sourceitem.getId();
-         m_relationshipData = PSSingleValueBuilder.buildRelationshipData(
-                 m_context, parentguid.getLocator());
-      }
-      depid =
-              PSSingleValueBuilder
-                      .getCorrectedContentId(m_context, depid, rid, m_relationshipData);
-
-      if (StringUtils.isBlank(depid))
-         return null; // Item is purged
-
-      int contentid = Integer.parseInt(depid);
-
-      PSComponentSummary sum = cms.loadComponentSummary(contentid);
-      if (sum == null)
-      {
-         return null;
-      }
-
-      // Create a guid and filter it to decide whether this item is active
-      IPSGuid thisguid = new PSLegacyGuid(contentid, sum
-              .getPublicOrCurrentRevision());
-      IPSGuid folderguid = null, siteguid = null;
-      if (NumberUtils.toInt(folderid) > 0)
-         folderguid = new PSLegacyGuid(Integer.parseInt(folderid), 0);
-      if (NumberUtils.toInt(siteid)>0)
-         siteguid = new PSGuid(PSTypeEnum.SITE, Long.parseLong(siteid));
-
-
-      IPSFilterItem item = new PSFilterItem(thisguid, folderguid, siteguid);
-      List<IPSFilterItem> input = Collections.singletonList(item);
-      try
-      {
-         Map<String, String> params = new HashMap<>();
-         params.put(IPSHtmlParameters.SYS_SITEID, siteid);
-         IPSItemFilter filter = m_processor.getItemFilter();
-         if(filter != null) {
-
-            List<IPSFilterItem> output = filter.filter(input,
-                    params);
-            if (output.size() == 0) {
-               return null;
-            }
-         }
-      }
-      catch (PSFilterException e)
-      {
-         log.error("Problem filtering item for inline link", e);
-         return null;
-      }
-
-      IPSAssemblyItem targetitem = (IPSAssemblyItem) sourceitem.clone();
-      targetitem.setPath(null);
-      targetitem.setTemplate(null);
-      targetitem.setNode(null);
-      targetitem.setParameterValue(IPSHtmlParameters.SYS_VARIANTID, depvariant);
-      targetitem.setParameterValue(IPSHtmlParameters.SYS_CONTENTID, depid);
-      if(StringUtils.isNotBlank(selectedText))
-      {
-         targetitem.setParameterValue(PSSingleValueBuilder.INLINE_TEXT,
-                 selectedText);
-      }
-      targetitem.setParameterValue(IPSHtmlParameters.SYS_REVISION, Integer
-              .toString(sum.getPublicOrCurrentRevision()));
-      targetitem.removeParameterValue(IPSHtmlParameters.SYS_TEMPLATE);
-      targetitem.removeParameterValue(IPSHtmlParameters.SYS_PART);
-      if (NumberUtils.toInt(folderid)>0)
-      {
-         targetitem.setParameterValue(IPSHtmlParameters.SYS_FOLDERID, folderid);
-         targetitem.setFolderId(Integer.parseInt(folderid));
-      }
-      else
-      {
-         targetitem.removeParameterValue(IPSHtmlParameters.SYS_FOLDERID);
-         targetitem.setFolderId(-1);
-      }
-      IPSGuid origSiteId = m_processor.getWorkItem().getSiteId();
-
-      if (NumberUtils.toInt(siteid)>0)
-      {
-         targetitem.setParameterValue(IPSHtmlParameters.SYS_SITEID, siteid);
-         if (NumberUtils.toInt(siteid)>0)
-            targetitem.setSiteId(siteguid);
-      }
-      else
-      {
-         if(origSiteId != null) {
-            // We are setting to owner site id if we do not have one be careful when merging rhythmyx
-            targetitem.setParameterValue(IPSHtmlParameters.SYS_SITEID, Integer.toString(origSiteId.getUUID()));
-            targetitem.setSiteId(origSiteId);
-         }
-      }
-
-      if(origSiteId != null && (siteguid==null || !siteguid.equals(origSiteId)))
-      {
-         targetitem.setParameterValue(IPSHtmlParameters.SYS_ORIGINALSITEID, Long
-                 .toString(origSiteId.longValue()));
-      }
-
-      // Propagate sys_command for active assembly for link generation, but
-      // not for rendering
-      String command = sourceitem.getParameterValue(
-              IPSHtmlParameters.SYS_COMMAND, "");
-      if (StringUtils.isNotBlank(command))
-      {
-         targetitem.removeParameterValue(IPSHtmlParameters.SYS_COMMAND);
-         targetitem.setParameterValue(IPSHtmlParameters.SYS_MODE,
-                 PSLocationUtils.AA_LINK);
-      }
-      targetitem.normalize();
-
-      return targetitem;
-   }
 
    /**
     * If the path is not blank and if the do manage all is true and path starts with either /Sites/ or //Sites/ or /Assets/ or //Assets/ then returns true
@@ -960,7 +973,7 @@ public class PSInlineLinkContentHandler
       {
          autoProp = StringUtils.defaultString(PSServer.getServerProps().getProperty(IPSConstants.SERVER_PROP_MANAGELINKS));
       }
-      return "true".equalsIgnoreCase(autoProp)?true:false;
+      return "true".equalsIgnoreCase(autoProp);
    }
    /**
     * Initializes the sys_manageLinksConverter UDF and caches it in a member
