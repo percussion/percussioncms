@@ -17,29 +17,16 @@
 
 package com.percussion.cms;
 
-import com.percussion.HTTPClient.Codecs;
-import com.percussion.HTTPClient.ParseException;
 import com.percussion.cms.handlers.PSRelationshipCommandHandler;
 import com.percussion.cms.objectstore.PSComponentSummary;
 import com.percussion.cms.objectstore.PSRelationshipFilter;
 import com.percussion.cms.objectstore.server.PSRelationshipDbProcessor;
-import com.percussion.data.IPSDataExtractor;
-import com.percussion.data.PSDataExtractionException;
-import com.percussion.data.PSDataExtractorFactory;
-import com.percussion.data.PSExecutionData;
-import com.percussion.data.PSInternalRequestCallException;
+import com.percussion.data.*;
 import com.percussion.data.macro.PSMacroUtils;
-import com.percussion.design.objectstore.IPSBackEndMapping;
-import com.percussion.design.objectstore.IPSReplacementValue;
-import com.percussion.design.objectstore.PSBackEndColumn;
-import com.percussion.design.objectstore.PSField;
-import com.percussion.design.objectstore.PSLocator;
-import com.percussion.error.PSNotFoundException;
-import com.percussion.design.objectstore.PSRelationship;
-import com.percussion.design.objectstore.PSRelationshipConfig;
-import com.percussion.design.objectstore.PSSystemValidationException;
-import com.percussion.design.objectstore.PSUISet;
+import com.percussion.design.objectstore.*;
 import com.percussion.error.PSException;
+import com.percussion.error.PSExceptionUtils;
+import com.percussion.error.PSNotFoundException;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.html.PSHtmlUtils;
 import com.percussion.log.PSLogManager;
@@ -68,29 +55,19 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.helper.W3CDom;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.percussion.webservices.PSWebserviceUtils.getItemSummary;
-import static com.percussion.webservices.PSWebserviceUtils.isItemCheckedOutToUser;
 
 
 /**
- * Creates the DisplayField element according to the ContentEditor.dtd when
+ * Creates the DisplayField element according to the 'ContentEditor.dtd', when
  * the data source is a single value (as opposed to an array or table).
  */
 public class PSSingleValueBuilder extends PSDisplayFieldBuilder
@@ -117,53 +94,51 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
    public static final String SRC = "src";
    public static final String DATA_JCRPATH = "data-jcrpath";
    public static final String HREF = "href";
+   public static final String DATA_PATHITEM = "data-pathitem";
 
    /**
     * A set of attributes that should be ignored, statically initialized.
     */
-   public static Set<String> IGNORED_ATTRIBUTES = new HashSet<>();
-
-   static
-   {
-      IGNORED_ATTRIBUTES.add(ATTR_INLINESLOT);
-      IGNORED_ATTRIBUTES.add(DATA_IMG_TYPE);
-      IGNORED_ATTRIBUTES.add(DATA_CONSTRAIN);
-      IGNORED_ATTRIBUTES.add(DATA_PREVIOUS_ALT_OVERRIDE);
-      IGNORED_ATTRIBUTES.add(DATA_DESCRIPTION_OVERRIDE);
-      IGNORED_ATTRIBUTES.add(DATA_JCRPATH);
-      IGNORED_ATTRIBUTES.add(DATA_PREVIOUS_TITLE_OVERRIDE);
-      IGNORED_ATTRIBUTES.add(DATA_TITLE_OVERRIDE);
-      IGNORED_ATTRIBUTES.add(DATA_DECORATIVE_OVERRIDE);
-      IGNORED_ATTRIBUTES.add(IPSHtmlParameters.SYS_DEPENDENTID);
-      IGNORED_ATTRIBUTES.add(IPSHtmlParameters.SYS_DEPENDENTVARIANTID);
-      IGNORED_ATTRIBUTES.add(IPSHtmlParameters.SYS_SITEID);
-      IGNORED_ATTRIBUTES.add(IPSHtmlParameters.SYS_FOLDERID);
-      IGNORED_ATTRIBUTES.add(IPSHtmlParameters.SYS_VARIANTID);
-      IGNORED_ATTRIBUTES.add(IPSHtmlParameters.SYS_CONTENTID);
-      IGNORED_ATTRIBUTES.add(IPSHtmlParameters.SYS_RELATIONSHIPID);
-      IGNORED_ATTRIBUTES.add(INLINE_TYPE);
-      IGNORED_ATTRIBUTES.add(RESOURCE_DEFINITION_ID);
-   }
+   public static final List<String> IGNORED_ATTRIBUTES = Arrays.asList(
+                   ATTR_INLINESLOT,
+                   DATA_IMG_TYPE,
+                   DATA_CONSTRAIN,
+                   DATA_PREVIOUS_ALT_OVERRIDE,
+                   DATA_DESCRIPTION_OVERRIDE,
+                   DATA_JCRPATH,
+                   DATA_PREVIOUS_TITLE_OVERRIDE,
+                   DATA_TITLE_OVERRIDE,
+                   DATA_DECORATIVE_OVERRIDE,
+                   IPSHtmlParameters.SYS_DEPENDENTID,
+                   IPSHtmlParameters.SYS_DEPENDENTVARIANTID,
+                   IPSHtmlParameters.SYS_SITEID,
+                   IPSHtmlParameters.SYS_FOLDERID,
+                   IPSHtmlParameters.SYS_VARIANTID,
+                   IPSHtmlParameters.SYS_CONTENTID,
+                   IPSHtmlParameters.SYS_RELATIONSHIPID,
+                   INLINE_TYPE,
+                   RESOURCE_DEFINITION_ID,
+                   DATA_PATHITEM);
    
-   public static Set<String> REMOVE_EMPTY_ATTRIBUTES = new HashSet<>();
-   {
-      REMOVE_EMPTY_ATTRIBUTES.add(ATTR_INLINESLOT);
-      REMOVE_EMPTY_ATTRIBUTES.add(INLINE_TYPE);
-      REMOVE_EMPTY_ATTRIBUTES.add(IPSHtmlParameters.SYS_DEPENDENTID);
-      REMOVE_EMPTY_ATTRIBUTES.add(IPSHtmlParameters.SYS_DEPENDENTVARIANTID);
-      REMOVE_EMPTY_ATTRIBUTES.add(IPSHtmlParameters.SYS_SITEID);
-      REMOVE_EMPTY_ATTRIBUTES.add(IPSHtmlParameters.SYS_FOLDERID);
-      REMOVE_EMPTY_ATTRIBUTES.add(IPSHtmlParameters.SYS_VARIANTID);
-      REMOVE_EMPTY_ATTRIBUTES.add(IPSHtmlParameters.SYS_CONTENTID);
-      REMOVE_EMPTY_ATTRIBUTES.add(IPSHtmlParameters.SYS_RELATIONSHIPID);
-   }
+   
+   public static final List<String> REMOVE_EMPTY_ATTRIBUTES = Arrays.asList(
+      ATTR_INLINESLOT,
+      INLINE_TYPE,
+      IPSHtmlParameters.SYS_DEPENDENTID,
+      IPSHtmlParameters.SYS_DEPENDENTVARIANTID,
+      IPSHtmlParameters.SYS_SITEID,
+      IPSHtmlParameters.SYS_FOLDERID,
+      IPSHtmlParameters.SYS_VARIANTID,
+      IPSHtmlParameters.SYS_CONTENTID,
+      IPSHtmlParameters.SYS_RELATIONSHIPID);
    
    public static final String PERC_BROKENLINK = "perc-brokenlink";
    public static final String PERC_NOTPUBLICLINK = "perc-notpubliclink";
-   
+   private static final String NULL_REQUEST = "request must not be null";
+
    /**
-    * Creates a DisplayField builder that contains a single data value for non
-    * binary fields. Use the {@link PSDisplayFieldBuilder base class} directly
+    * Creates a DisplayField builder that contains a single data value for non-binary fields.
+    * Use the {@link PSDisplayFieldBuilder base class} directly
     * for binary fields.
     * <p>See the {@link
     * PSDisplayFieldBuilder#PSDisplayFieldBuilder(PSField,PSUISet,
@@ -251,6 +226,16 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
          doc, controlName, submitName, value, isReadOnly);
    }
 
+   public static boolean isValidRelationship(IPSRequestContext req, String relationshipId) {
+      boolean ret  = true;
+      try {
+         loadRelationship(req, relationshipId);
+      } catch (PSCmsException e) {
+         ret = false;
+      }
+      return ret;
+   }
+
    /**
     * Builds a data extractor from the supplied replacement value. The
     * extractor is used to get data from the execution data object at run
@@ -294,7 +279,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       boolean addedElem = false;
 
       String content = null;
-      boolean isBECol = null == m_extractor ? false :
+      boolean isBECol = null != m_extractor &&
             m_extractor.getSource()[0] instanceof PSBackEndColumn;
       if ( isNewDoc && isBECol )
       {
@@ -313,7 +298,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       if ( null != content && content.length() > 0 )
       {
          //if content has rxinlineslot then fix the variants
-         if (content.contains("rxinlineslot"))
+         if (content.contains(ATTR_INLINESLOT))
          {
             IPSRequestContext request =
                new PSRequestContext(data.getRequest());
@@ -362,7 +347,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
    }
    
    /**
-    * Convienience method to call 
+    * Convenience method to call
     * {@link #processVariant(Element, IPSRequestContext, PSRelationshipData, String)} as
     * processVariant(Element, IPSRequestContext, PSRelationshipData, null)
     */
@@ -412,7 +397,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
          return;
 
       if (request == null)
-         throw new IllegalArgumentException("request must not be null");
+         throw new IllegalArgumentException(NULL_REQUEST);
 
       if (inlineLinkRelData == null)
          throw new IllegalArgumentException("inlineLinkRelData must not be null");
@@ -420,34 +405,27 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       boolean processed = false;
       String inlineType = elem.getAttribute(
          PSInlineLinkField.RX_INLINETYPE);
-      if(inlineType != null &&
-         (inlineType.equals(RX_INLINETYPE_RXVARIANT) ||
-          inlineType.equals(RX_INLINETYPE_HYPERLINK) ||
-          inlineType.equals(RX_INLINETYPE_IMAGE)))
+      if(inlineType.equals(RX_INLINETYPE_RXVARIANT) || inlineType.equals(RX_INLINETYPE_HYPERLINK) || inlineType.equals(RX_INLINETYPE_IMAGE))
       {
         
          Element newVar = 
             replaceVariant(elem, request, inlineLinkRelData);
-         if(controlName!=null && controlName.equalsIgnoreCase("sys_editlive"))
-         {           
-            if(newVar != null)
-               updateLegacyVariant(newVar);
+         if(controlName!=null && controlName.equalsIgnoreCase("sys_editlive") && (newVar != null)) {
+            updateLegacyVariant(newVar);
          }
+         
          processed = true;
       }
-      else if (inlineType.equals(RX_INLINETYPE_RXHYPERLINK))
+      else if (RX_INLINETYPE_RXHYPERLINK.equals(inlineType))
       {
          modifyLink(elem, request, false, inlineLinkRelData);
       }
-      else if (inlineType.equals(RX_INLINETYPE_RXIMAGE))
+      else if (RX_INLINETYPE_RXIMAGE.equals(inlineType))
       {
          modifyLink(elem, request, true, inlineLinkRelData);
          processed = true;
       }
-      if (!processed)
-      {
-         // recurse through all child elements
-         if (elem.hasChildNodes())
+      if (!processed && (elem.hasChildNodes()))
          {
             NodeList children = elem.getChildNodes();
             for (int i=0; i<children.getLength(); i++)
@@ -457,7 +435,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
                  processVariant((Element) test, request,
                           inlineLinkRelData, controlName);
             }
-         }
+         
       }
    }
    
@@ -476,28 +454,28 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       {
          parentEl = (Element) parent;
          String parentName = parentEl.getNodeName();
-         String parentClassAttr = parentEl.getAttribute("class");
-         parentIsEditLiveDivWrapper = parentName.equalsIgnoreCase("div")
-                  && parentClassAttr != null
-                  && parentClassAttr.equals("rx_ephox_inlinevariant");
+         String parentClassAttr = parentEl.getAttribute(CLASS);
+         parentIsEditLiveDivWrapper = parentName.equalsIgnoreCase("div") && parentClassAttr.equals("rx_ephox_inlinevariant");
       }
 
       // All special attribs can just go in this div
       if (parentIsEditLiveDivWrapper)
       {
          moveSpecialAttribs(elem, parentEl);
-         parentEl.setAttribute("contenteditable", "false");
+         parentEl.setAttribute(CONTENT_EDITABLE, "false");
       }
       else
       {
          // add wrapper
          Document doc = elem.getOwnerDocument();
          Element wrapper = doc.createElement("div");
-         wrapper.setAttribute("class", "rx_ephox_inlinevariant");
-         wrapper.setAttribute("contenteditable", "false");
+         wrapper.setAttribute(CLASS, "rx_ephox_inlinevariant");
+         wrapper.setAttribute(CONTENT_EDITABLE, CONTENT_EDITABLE_FALSE);
          moveSpecialAttribs(elem, wrapper);
-         parentEl.replaceChild(wrapper, elem);
-         wrapper.appendChild(elem);
+         if(parentEl != null) {
+            parentEl.replaceChild(wrapper, elem);
+            wrapper.appendChild(elem);
+         }
          
       }
       if(elem.getNodeName().equalsIgnoreCase("div") && 
@@ -546,14 +524,11 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       for(String name : attribNames)
       {
          value = source.getAttribute(name);
-         if(value != null)
-         {
-            target.setAttribute(name, value);
-            source.removeAttribute(name);
-         }
+         target.setAttribute(name, value);
+         source.removeAttribute(name);
       }
-      source.removeAttribute("contenteditable");
-      source.removeAttribute("unselectable");
+      source.removeAttribute(CONTENT_EDITABLE);
+      source.removeAttribute(UN_SELECTABLE);
    }
 
    /**
@@ -569,14 +544,13 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
     *           {@link IPSHtmlParameters#SYS_CONTENTID} and
     *           {@link IPSHtmlParameters#SYS_REVISION} in the request context.
     */
-   @SuppressWarnings("unchecked")
    public static PSRelationshipData buildRelationshipData(
       IPSRequestContext request,
       PSLocator parent)
       throws PSCmsException
    {
       if (request == null)
-         throw new IllegalArgumentException("request must not be null");
+         throw new IllegalArgumentException(NULL_REQUEST);
 
       PSRelationshipData inlineLinkRelData = new PSRelationshipData();
 
@@ -597,18 +571,16 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       filter.limitToOwnerRevision(true);
 
       List<PSRelationship> rels = processor.getRelationshipList(filter);
-      if(rels.size()==0){
+      if(rels.isEmpty()){
          PSComponentSummary summary = getItemSummary(parent.getId());
          PSWebserviceUtils.setUserName(request.getOriginalSubject().getName());
-         //if Item is checked out by user, then LocalContent version is not updated in relationship, thus use
-         // current revision of the LocalConent not the editRevision for finding the relationship
-         if (isItemCheckedOutToUser(summary))
+         if(summary.getName().startsWith("LocalContent") && summary.getContentPathName() == null || "".equals(summary.getContentPathName()))
          {
-            parent = new PSLocator(summary.getContentId(),summary.getCurrRevision());
+            parent = new PSLocator(summary.getContentId(),-1);
             filter.setOwner(parent);
             filter.setCategory(PSRelationshipConfig.CATEGORY_ACTIVE_ASSEMBLY);
             filter.setCommunityFiltering(false);
-            filter.limitToOwnerRevision(true);
+            filter.limitToOwnerRevision(false);
             rels = processor.getRelationshipList(filter);
          }
       }
@@ -657,11 +629,11 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
    }
    
    /**
-    * Modify normal links and images to point to corerct versions and revisions.
+    * Modify normal links and images to point to correct versions and revisions.
     * @param elem anchor or image element to replace the contentid with the
     * correct one. Assumed not <code>null</code>
     * @param request request context, assumed not <code>null</code>.
-    * @param isImage <code>true</code> if the tag (forst parameter) is for
+    * @param isImage <code>true</code> if the tag (first parameter) is for
     * an image, <code>false</code> for a link.
     * @param inlineLinkRelData inline link relationship data for the parent
     * item. This can be built using the static method
@@ -670,7 +642,6 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
     * @throws PSCmsException if it is not able to fix last public revision
     *    in the url that the <code>elem</code> holds.
     */
-   @SuppressWarnings("unchecked")
    private static void modifyLink(
       Element elem,
       IPSRequestContext request,
@@ -717,7 +688,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       String originalSiteId = request
             .getParameter(IPSHtmlParameters.SYS_ORIGINALSITEID);
       String newContentId =
-         getCorrectedContentId(request, contentid, relid, inlineLinkRelData);
+         getCorrectedContentId(request, contentid, relid, inlineLinkRelData,null);
       /*
        * If new contentid cannot be found, we replace the link with selected
        * text from the link.
@@ -761,7 +732,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       
       
       
-      Map params = new HashMap<>();
+      Map<String,Object> params = new HashMap<>();
       params.put(IPSHtmlParameters.SYS_CONTENTID, newContentId);
       params.put(IPSHtmlParameters.SYS_VARIANTID, variantid);
       params.put(IPSHtmlParameters.SYS_CONTEXT, context);
@@ -845,7 +816,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
        filter.setCategory(PSRelationshipConfig.CATEGORY_RECYCLED);
        filter.setName(PSRelationshipConfig.TYPE_RECYCLED_CONTENT);
       PSLocator loc = new PSLocator(contentid);
-      if(PSFolderRelationshipCache.getInstance().getParentPaths(loc,
+      if(PSFolderRelationshipCache.getInstance() != null && PSFolderRelationshipCache.getInstance().getParentPaths(loc,
               PSRelationshipConfig.TYPE_RECYCLED_CONTENT).length>0){
                return  "u";
        }
@@ -859,24 +830,24 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
    public static void addClass(Element elem, String className)
    {
    
-      String classAttrib = elem.getAttribute("class");
+      String classAttrib = elem.getAttribute(CLASS);
       if(StringUtils.isBlank(classAttrib))
-         elem.setAttribute("class", className);
+         elem.setAttribute(CLASS, className);
       else if (!StringUtils.contains(classAttrib, className)){
           classAttrib = classAttrib + " "+ className;
-          elem.setAttribute("class", classAttrib.trim());
+          elem.setAttribute(CLASS, classAttrib.trim());
       }
    }
    public static void removeClass(Element elem, String className)
    {
-      String classAttrib = elem.getAttribute("class");
+      String classAttrib = elem.getAttribute(CLASS);
       if(StringUtils.contains(classAttrib, className)) {
          classAttrib = StringUtils.replace(classAttrib,className, "");
          classAttrib = StringUtils.replace(classAttrib, "  "," ");
          if (classAttrib.length()>0)
-            elem.setAttribute("class", classAttrib.trim());
+            elem.setAttribute(CLASS, classAttrib.trim());
          else
-            elem.removeAttribute("class");
+            elem.removeAttribute(CLASS);
       }
    }
    /**
@@ -939,6 +910,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
     *    to replace the variants, but the logic has been moved to
     *    sys_AddAssemblerInfo exit.
     */
+   @Deprecated
    public static String replaceVariant(
          String pssessionid,
          String sys_dependentid,
@@ -1001,7 +973,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
             null,
             reqContext);
 
-      String retVal = null;
+      String retVal;
 
       if (varBody == null)
       {
@@ -1045,7 +1017,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
          throw new IllegalArgumentException("elem must not be null");
 
       if (request == null)
-         throw new IllegalArgumentException("request must not be null");
+         throw new IllegalArgumentException(NULL_REQUEST);
 
       if (inlineLinkRelData == null)
          throw new IllegalArgumentException("in must not be null");
@@ -1098,7 +1070,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
             request,
             contentid,
             relationshipid,
-            inlineLinkRelData);
+            inlineLinkRelData,null);
 
       return replaceVariant(
          request.getUserSessionId(),
@@ -1133,9 +1105,9 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
          IPSRequestContext request)
    {
       if (request == null)
-         throw new IllegalArgumentException("request must not be null");
-      Map<String, String> relProps = new HashMap<String, String>();
-      if (StringUtils.isBlank(rid) || request == null)
+         throw new IllegalArgumentException(NULL_REQUEST);
+      Map<String, String> relProps = new HashMap<>();
+      if (StringUtils.isBlank(rid))
       {
          return relProps;
       }
@@ -1226,7 +1198,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
     * <li>If present, the dependent item is NOT replaced by its promotable
     * version and hence contentid does not change. This is the most probable
     * case.</li>
-    * <li>If not present, continure with follwing steps.</li>
+    * <li>If not present, continue with following steps.</li>
     * <li>Check to see if the inline link's relationshipid is present in AA
     * relationships</li>
     * <li>If present, replace the contentid of the inline item with the dependent item
@@ -1237,9 +1209,9 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
     * <li>If the inline item's contentid is present anywhere in the tree, the
     * dependent item of the relationship is assumed to be the correct one.
     * @param request request context, must not be <code>null</code>.
-    * @param contentid contentid (as string) of the the inline link item, must
+    * @param contentid contentid (as string) of the inline link item, must
     * not be <code>null</code> or empty.
-    * @param relationshipid relationshipid (as string) of the the inline link
+    * @param relationshipid relationshipid (as string) of the inline link
     * item, may be <code>null</code> or empty, in which case it is assumed that
     * it is not available and the method looks up the promotable versions
     * without using relationship id.
@@ -1252,16 +1224,16 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
     * @throws PSCmsException if error occurs during finding the correct version
     * of the inline item.
     */
-   @SuppressWarnings("unchecked")
    public static String getCorrectedContentId(
       IPSRequestContext request,
       String contentid,
       String relationshipid,
-      PSRelationshipData inlineLinkRelData)
+      PSRelationshipData inlineLinkRelData,
+      PSLocator parentLoc)
       throws PSCmsException
    {
       if (request == null)
-         throw new IllegalArgumentException("request must not be null");
+         throw new IllegalArgumentException(NULL_REQUEST);
 
       if (contentid == null || contentid.length()<1)
          throw new IllegalArgumentException("contentid must not be null");
@@ -1272,12 +1244,22 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       if (relationshipid == null || relationshipid.length() < 1)
          relationshipid = "-1";
 
+      if(parentLoc==null)
+      {
+         String parentContentId =
+                 request.getParameter(IPSHtmlParameters.SYS_CONTENTID);
+         String parentRevision =
+                 request.getParameter(IPSHtmlParameters.SYS_REVISION);
+         parentLoc = new PSLocator(parentContentId, parentRevision);
+
+      }
+      String ocid = contentid;
       Integer cid = new Integer(contentid);
-      if(!inlineLinkRelData.m_contentIdPathMap.keySet().contains(cid))
+      if(!inlineLinkRelData.m_contentIdPathMap.containsKey(cid))
       {
          Integer rid = new Integer(relationshipid);
          Integer newCid =
-            (Integer) inlineLinkRelData.m_relIdContentIdMap.get(rid);
+             inlineLinkRelData.m_relIdContentIdMap.get(rid);
          if(newCid!=null)
          {
             contentid = newCid.toString();
@@ -1285,91 +1267,83 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
          else
          {
             boolean found = false;
-            Iterator cids =
-               inlineLinkRelData.m_contentIdPathMap.keySet().iterator();
-            while (cids.hasNext())
-            {
-               Integer entry = (Integer) cids.next();
-               List locatorList =
-                  (List) inlineLinkRelData.m_contentIdPathMap.get(entry);
-               if (locatorList == null)
-               {
-                  locatorList = getPromotedIdList(entry, request);
+            for (Integer entry : inlineLinkRelData.m_contentIdPathMap.keySet()) {
+               List<Integer> locatorList =
+                        inlineLinkRelData.m_contentIdPathMap.get(entry);
+               if (locatorList == null || locatorList.isEmpty()) {
+                  locatorList = new ArrayList<>();
+                  List<PSLocator> locators = getPromotedIdList(entry, request);
+                  for(PSLocator loc : locators){
+                     locatorList.add(loc.getId());
+                  }
+
                   inlineLinkRelData.m_contentIdPathMap.put(entry, locatorList);
                }
-               if (locatorListContains(locatorList, contentid))
-               {
-                  contentid = entry.toString();
-                  found = true;
-                  break;
+
+               if(locatorList.contains(new Integer(contentid))){
+                     contentid = entry.toString();
+                     found = true;
+                     break;
                }
             }
             contentid = (found) ? contentid : null;
+         }
+      }
+      if(contentid==null){
+         try{
+            loadRelationship(request,relationshipid);
+         }catch(PSCmsException e){
+            //Looks like the relationship id is no good.
+            PSRelationshipFilter filter = new PSRelationshipFilter();
+            filter.setDependentId(Integer.parseInt(ocid));
+            parentLoc.setRevision(-1); //Make the search version less
+            filter.setOwner(parentLoc);
+            filter.setCategory(PSRelationshipFilter.FILTER_CATEGORY_ACTIVE_ASSEMBLY);
+            List<PSRelationship> rels = PSRelationshipDbProcessor.getInstance().getRelationshipList(filter);
+            if(!rels.isEmpty()){
+               inlineLinkRelData.m_contentIdPathMap.put(Integer.parseInt(ocid),null);
+               return ocid;
+            }
          }
       }
       return contentid;
    }
 
    /**
-    * Helper method to test if the supplied lit of item locators containts the
-    * contentid supplied.
-    * @param locatorList list of locators to check existence from. Assumed not
-    * <code>null</code>.
-    * @param contentid contentid to check for, must not be <code>null</code>
-    * or empty.
-    * @return <code>tue</code> if the locator list contains he contentid,
-    * <code>false</code> otherwise.
-    */
-   private static boolean locatorListContains(List locatorList, String contentid)
-   {
-      if(contentid==null)
-         return false;
-
-      int cid = Integer.parseInt(contentid);
-      for (Object o : locatorList) {
-         PSLocator locator = (PSLocator) o;
-         if (locator.getId() == cid)
-            return true;
-      }
-      return false;
-   }
-
-   /**
-    * Helper method to build a list of locator of promotabe versions for an
+    * Helper method to build a list of locator of promotable versions for an
     * item with specified contentid. Walks throw all promotable version
-    * category relationships to generated the list.
-    * @param contentid contentid of the item to get the verions' locator list.
+    * category relationships to generate the list. Only relationships with the NewCopy
+    * relationship type will be included.
+    * @param contentid contentid of the item to get the versions' locator list.
     * @param request request context to making internal request to get
     * promotable versions of an item.
     * @return List of locators all promotable versions of the item with
     * contentid supplied.
     */
-   @SuppressWarnings("unchecked")
-   private static List getPromotedIdList(
+   private static List<PSLocator> getPromotedIdList(
       Integer contentid,
       IPSRequestContext request) throws PSCmsException
    {
       if (contentid == null)
          throw new IllegalArgumentException("contentid must not be null");
       if (request == null)
-         throw new IllegalArgumentException("request must not be null");
+         throw new IllegalArgumentException(NULL_REQUEST);
 
       PSRelationshipDbProcessor processor = PSRelationshipDbProcessor.getInstance();
-      Iterator configs = PSRelationshipCommandHandler.getRelationshipConfigs();
-      List result = new ArrayList();
+      Iterator<PSRelationshipConfig> configs = PSRelationshipCommandHandler.getRelationshipConfigs();
+      List<PSLocator> result = new ArrayList<>();
       while (configs.hasNext())
       {
-         PSRelationshipConfig cfg = (PSRelationshipConfig) configs.next();
+         PSRelationshipConfig cfg =  configs.next();
          if(!cfg.getCategory().equals(PSRelationshipConfig.CATEGORY_PROMOTABLE))
             continue;
-         result.addAll(processor.getOwnerLocators(new PSLocator(contentid
-               .intValue()), cfg.getName()));
+         result.addAll(processor.getOwnerLocators(new PSLocator(contentid), cfg.getName()));
       }
       return result;
    }
 
    /**
-    * Utility method to replace the variant by requesting latest output from
+    * Utility method to replace the variant by requesting the latest output from
     * the given parameters.
     *
     * @param pssessionid The session id, assume not <code>null</code> or
@@ -1486,7 +1460,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
            Document relatedDoc = variantUrlReq.getResultDoc();
            if(relatedDoc == null)
            {
-               /*This should not happen as there is an sys_emptyDoc exit on the resource.
+               /*This should not happen as there is a sys_emptyDoc exit on the resource.
                 *Just print the trace message in case if it happens*/
                 request.printTraceMessage(
                 "Internal request to " + VARIANTURL + " resulted in null document." +
@@ -1509,7 +1483,7 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
        }
        if(variantUrl == null || variantUrl.trim().length() < 1)
        {
-           /*Oh we could not find the variant url for the item represented
+           /* We could not find the variant url for the item represented
             * by contentid and variantid, either somebody might have deleted
             * the item or variant itself.
             *Remove the variant from this document.
@@ -1657,9 +1631,9 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
     * (browser).
     * <br/>
     * However, Codecs.URLDecode() only works with single byte characters it
-    * doesn't work with multi-byte characters. This is fine in this specific
+    * doesn't work with multibyte characters. This is fine in this specific
     * situation, because we are expecting the (client) Java-Script will convert
-    * multi-byte characters to numeric character reference (in the format of
+    * multibyte characters to numeric character reference (in the format of
     * "&#D;", "&#XH" or "&#xH"), where "D" is decimal numeric, "H" is hex numeric
     * value.
     * 
@@ -1674,18 +1648,16 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
       String result = "";
       try
       {
-         result = Codecs.URLDecode(selectedText);
+         result = URLDecoder.decode(selectedText,StandardCharsets.UTF_8.name());
       }
-      catch (ParseException e1) // ignore exception
-      {
-         log.error(e1.getMessage());
-         log.debug(e1.getMessage(), e1);
+     catch (UnsupportedEncodingException e) {
+         log.error(PSExceptionUtils.getMessageForLog(e));
       }
       return result;
    }
    
    /**
-    * Utility method to add the non selectable and non editable attributes all
+    * Utility method to add the non-selectable and non-editable attributes all
     * the element nodes in a document recursively.
     * 
     * @param elem root Element of the document. If <code>null</code> no
@@ -1749,12 +1721,12 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
    /**
     * Attribute name to represent the selected text.
     */
-   public static String INLINE_TEXT = "inlinetext";
+   public static final String INLINE_TEXT = "inlinetext";
 
    /**
     * Html element name body.
     */
-   private static String ELEM_BODY = "body";
+   private static final String ELEM_BODY = "body";
 
     /**
      * Attribute name to represent the anchor text.
@@ -1775,23 +1747,23 @@ public class PSSingleValueBuilder extends PSDisplayFieldBuilder
    /**
     * Value of content editable attribute to make it non editable
     */
-   private static String CONTENT_EDITABLE_FALSE = "false";
+   private static final String CONTENT_EDITABLE_FALSE = "false";
 
    /**
-    * Attribute name to make html elements non selectable
+    * Attribute name to make html elements non-selectable
     */
-   private static String UN_SELECTABLE = "unselectable";
+   private static final String UN_SELECTABLE = "unselectable";
 
    /**
-    * Value of unselectable attribute to make it non selectable
+    * Value of unselectable attribute to make it non-selectable
     */
-   private static String UN_SELECTABLE_ON = "on";
+   private static final String UN_SELECTABLE_ON = "on";
 
    /**
     * List of tags that cannot contain "contenteditable" or "unselectable"
     * attributes, i.e. the read only attributes.
     */
-  private static List ms_noReadOnlyAttribs = new ArrayList();
+  private static List<String> ms_noReadOnlyAttribs = new ArrayList<>();
 
   static
   {
