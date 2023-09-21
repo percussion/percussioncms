@@ -1,188 +1,110 @@
-/*
- * Copyright 1999-2023 Percussion Software, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-//
-// $.perc_sessionTimeout.js
-//
-// After a set amount of time, a dialog is shown to the user with the option
-// to either log out now, or stay connected. If log out now is selected,
-// the page is redirected to a logout URL. If stay connected is selected,
-// a keep-alive URL is requested through AJAX. If no options is selected
-// after another set amount of time, the page is automatically redirected
-// to a timeout URL.
-//
-//
-// USAGE
-//
-//   1. Include jQuery
-//   2. Include jQuery UI (for dialog)
-//   3. Include jquery.sessionTimeout.js
-//   4. Call $.perc_sessionTimeout(); after document ready
-//
-//
-// OPTIONS
-//
-//   serverCheck
-//  	Number of seconds between ping to server when dialog is open
-//
-//   sessionStateUrl
-//     	url to get ajax session state information
-//	 	Default: '/Rhythmyx/sessionstatus.jsp'
-//
-//
-//   logoutUrl
-//     URL to take browser to if user clicks "Log Out Now"
-//     Default: '/Rhythmyx/logout'
-//
-
-(function ($) {
-    $.perc_sessionTimeout = function (options) {
-
-        var defaults = {
-            serverCheck: 10, // Number of seconds between server checks
-            sessionStateUrl: '/Rhythmyx/sessioncheck',
-            logoutUrl: '/Rhythmyx/logout',
-            dialogTitle: I18N.message("perc.ui.session.timeout@Still There"),
-            dialogMessageTimeout: I18N.message("perc.ui.session.timeout@Auto Log Out"),
-            dialogConnectionWarning: I18N.message("perc.ui.session.timeout@Lost Connection")
-        };
-
-        // Extend user-set options over defaults
-        var o = defaults;
-
-        if (options) {
-            o = $.extend(defaults, options);
-        }
-
-
-        var status = {
-            "expiry": 3600000,
-            "warning": 60000,
-            "counter": 0
-        };
-
-        var dialog = null;
-
-        var cancelError = false;
-
-        // Setup when created check if we were opened as a popup
-        // If we are we should close on logout
-        var popup = (window.opener && window.opener !== window);
-
+/**
+This function takes care of the session timeout logic.
+*/
+(function($) {
+    $.perc_sessionTimeout = function(options) {
+		var dialogTitle =  I18N.message("perc.ui.session.timeout@Still There");
+		var dialogMessageTimeout =  I18N.message("perc.ui.session.timeout@Auto Log Out");
 
         var isDialogOn = false;
+        var countDownTime = null;
 
-        var myStorageTime = Date.now();
+        var sessionTimeoutLimit = null;
+        var sessionTimeoutWarning = null;
 
-        var connectionFailure = false;
+        var popup = (window.opener && window.opener !== window);
 
-        var lastActivity = Date.now();
+        if (sessionTimeoutWarning == null && sessionTimeoutLimit == null) {
+            getSessionTimeoutVariables();
+        }
 
+		/**
+		Getting the session variables from config.xml file through servlet.
+		For example in config.xml:
+		<userSessionTimeout>1800</userSessionTimeout>
+		<userSessionWarning>60</userSessionWarning>
+		*/
+        function getSessionTimeoutVariables() {
+			console.log("Calling getSessionVariables***************");
+            $.ajax({
+                url: '/sessionCheckServlet',
+                type: 'get',
+                cache: false,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function(json) {
+                    sessionTimeoutLimit = json['expiry'];
+                    sessionTimeoutWarning = json['warning'];
 
-
-        // Set action based upon current state of status object
-        function checkWarning() {
-            if (status.expiry <= 0) {
-                logout();
-            } else if (status.expiry < status.warning || connectionFailure) {
-                if (dialog === null) {
-                    dialogOn();
+					console.log("sessionTimeoutLimit: " + sessionTimeoutLimit);
+					console.log("sessionTimeoutWarning: " + sessionTimeoutWarning);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.log("error :" + XMLHttpRequest.responseText);
                 }
-                setCounter();
-            } else {
-                if (dialog !== null) {
-                    dialogOff();
+            });
+        }
+
+		/**
+		Extending the session so that session is alive. It is hitting the server through servlet.
+		After hitting servlet closing the session timeout dialog and resetting the variables.
+		*/
+		function extendSession() {
+            console.log("Calling extendSession***************");
+            $.ajax({
+                url: '/sessionExtendServlet',
+                type: 'get',
+                cache: false,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function(json) {
+					console.log("success: " + json['success']);
+				},
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.log("error :" + XMLHttpRequest.responseText);
                 }
-            }
+            });
+        }
+
+		/**
+		This function is the main function which take cares of session timeout functionality.
+		*/
+		function trackSession() {
+			if (sessionTimeoutWarning != null && sessionTimeoutLimit != null) {
+				if (isDialogOn) {
+					var timeLeft = countDownTime / 1000;
+					if (timeLeft < 1) {
+						logout();
+					} else {
+						$('#logouttime').html(convertMilliSecondsToStr(getRemainingTime()));
+					}
+					return;
+				}
+
+				var diffInSec = getTimeSinceLastRequestMade();
+				if (diffInSec >= (sessionTimeoutLimit - sessionTimeoutWarning)) {
+					countDownTime = sessionTimeoutWarning*1000;
+					openSessionDialog();
+				}
+			}
+        }
+
+		/**
+		Returns how many second ago last request was made, by client/browser.
+		*/
+        function getTimeSinceLastRequestMade() {
+            var lastRequestTime = localStorage.getItem("lastRequestTime");
+            var currentTime = new Date();
+            var diffInSeconds = currentTime.getTime() - lastRequestTime;
+
+            diffInSeconds /= 1000;
+            diffInSeconds = Math.abs(Math.round(diffInSeconds));
+            return diffInSeconds;
         }
 
 
-        // Update the dialog counter. We only ping the server ever serverCheck
-        // seconds. A longer time will mean other windows may not see an update
-        // as quickly but will not load the server as much
-        function setCounter() {
-            var now = new Date().getTime();
-            var elapsed = (now - myStorageTime);
-            var remain = status.expiry - elapsed;
-            if (remain < 0) remain = 0;
 
-            if (remain > 0) {
-                $('#logouttime').html(_millisecondsToStr(remain));
-            } else {
-                if (!connectionFailure) {
-                    dialogOff();
-                }
-                $('#logouttime').html("");
-            }
-
-
-        }
-
-        // Turn on the warning dialog.
-        function dialogOn() {
-
-            if (typeof uiVersion != 'undefined' && uiVersion === 'Minuet' && dialog !== 'active') {
-                openMinuetWarningDialog();
-            }
-            else {
-                dialog = openWarningDialog();
-            }
-            isDialogOn = true;
-            setCounter();
-
-
-        }
-
-        function openMinuetWarningDialog() {
-            dialog = 'active';
-            var dialogObject = {};
-            dialogObject.type = 'warning';
-            dialogObject.title = o.dialogTitle;
-            if (connectionFailure) {
-                dialogObject.message = o.dialogConnectionWarning;
-            } else {
-                dialogObject.message = o.dialogMessageTimeout;
-            }
-            processTemplate(dialogObject, 'templatePercSessionExpiringDialog', 'percDialogTarget');
-            // Temporarily using jQuery UI on this because of a scoping issue with two versions of jQuery
-            $('#percDialogTarget').fadeIn('slow');
-
-        }
-
-        // Turn off the warning dialog
-        function dialogOff() {
-
-            if (dialog !== null) {
-                if (typeof uiVersion !== 'undefined' && uiVersion === 'Minuet') {
-                    hideSection('percDialogTarget', 'fadeOut', true);
-                }
-                else {
-                    dialog.remove();
-                }
-                dialog = null;
-            }
-            isDialogOn = false;
-
-        }
-
-
-        // Convert milliseconds to a hh:mm:ss
-        function _millisecondsToStr(t) {
-
+        function convertMilliSecondsToStr(t) {
             var seconds = Math.floor((t / 1000) % 60);
             var minutes = Math.floor((t / 1000 / 60) % 60);
             var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
@@ -193,73 +115,54 @@
                     ret += "s";
                 ret += " ";
             }
-            return ret + minutes + ' min ' + seconds + "s";
-
+            return ret + minutes + ' min ' + seconds + "s";;
         }
 
-        // Logout from the server and close if popup window
-        function logout() {
-            if (!connectionFailure) {
-                dialogOff();
-            }
-            if (popup) {
-                $.get("/Rhythmyx/logout", function () {
-                    window.close();
-                });
-            } else {
-                top.document.location.href = '/Rhythmyx/logout';
-            }
+		/**
+		Returns remaining second after decreasing one second from it.
+		*/
+        function getRemainingTime() {
+            return countDownTime -= 1000;
         }
 
 
-        /**
-         * Constructs the dialog
-         * @param finder The finder object.
-         */
-        function openWarningDialog() {
 
-
+        function openSessionDialog() {
             dialog = createDialog();
+			$('#logouttime').html(convertMilliSecondsToStr(countDownTime));
 
-            /**
-             * Builds the dialog (and its form) invoking perc_dialog()
-             * @returns jQuery element wrapping the dialog and form created with perc_dialog()
-             */
             function createDialog() {
                 let dialogMessage;
                 let button1;
 
-                if (connectionFailure) {
-                    button1 = "Close";
-                    dialogMessage = o.dialogConnectionWarning;
+                isDialogOn = true;
+                dialogMessage = dialogMessageTimeout;
+                button1 = "Close";
 
-
-                } else {
-                    dialogMessage = o.dialogMessageTimeout;
-                    button1 = "Close";
-                }
 
                 // Basic dialog content HTML markup
-                var dialogContent = "<div id='perc-session-timeout-content'><p>" +
+                var dialogContent = "<div ' id='perc-session-timeout-content'><p>" +
                     dialogMessage + '</p><p><span id="logouttime"/>' +
                     "</p></div>";
                 var buttons = {};
-                buttons[button1] = function () {
-                    // Should close by mouse activity or keyboard
-                };
-
 
                 // Create the upload dialog
                 var d = $(dialogContent).perc_dialog({
-                    title: o.dialogTitle,
+                    title: dialogTitle,
                     id: "perc-session-timeout-dialog",
                     width: 400,
                     resizable: false,
                     modal: true,
-                    //closeOnEscape : true,
-                    buttons: buttons
+                    buttons: buttons,
+                    percButtons: {
+                        "Close": {
+                            click: function() {
+                                closeSessionDialog();
+                            },
+                            id: "perc-wfstep-close_session"
+                        }
+                    }
                 });
-
                 return $(d);
             }
 
@@ -267,141 +170,26 @@
 
         } // End of function: openUploadDialog
 
+		function closeSessionDialog() {
+			extendSession();
+			dialog.remove();
+			isDialogOn = false;
+			localStorage.setItem("lastRequestTime", new Date().getTime());
+			countDownTime = null;
+		}
 
-        // Get the session status from the server and set the right
-        // Timers and dialog based on the result
-        function updateServerStatus(refresh) {
-            var now = new Date().getTime();
-
-            var offset = now - lastActivity;
-
-            var parms = {
-                lastActivity: offset
-            };
-
-
-            var storageTime =  Number(localStorage.getItem("serverCheckTime"));
-            if (storageTime) {
-                if (now - storageTime < 1000) {
-                    return;
-                }
-                else if (storageTime > myStorageTime) {
-                    // Other window updated the status so lets get it
-                    status = JSON.parse(localStorage.getItem("serverStatus"));
-                    myStorageTime = storageTime;
-                    console.log("other setStatus" + JSON.stringify(status));
-                    checkWarning();
-                    return;
-                }
-            }
-            else {
-                myStorageTime = now;
-                localStorage.setItem("serverCheckTime", now.toString());
-            }
-
-            // adjustedExpiry gives us what we expect if no activity since last status
-            var adjustedExpiry = status.expiry - (now - myStorageTime);
-            if (adjustedExpiry > status.warning && !refresh)
-                return;
-
-            checkWarning();
-
-            if (isDialogOn && adjustedExpiry > 2000 && lastActivity < myStorageTime && !refresh)
-                return;
-
-            console.log("Checking server status offset " + offset + "dialogOn=" + isDialogOn);
-            $.ajax({
-                url: o.sessionStateUrl,
-                type: 'get',
-                cache: false,
-                data: parms,
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                success: function (json) {
-                    if (connectionFailure) {
-                        connectionFailure = false;
-                    }
-                    cancelError = false;
-                    status = json;
-                    myStorageTime = now;
-                    localStorage.setItem("serverCheckTime", now.toString());
-                    localStorage.setItem("serverStatus", JSON.stringify(status));
-
-                    console.log("setStatus" + JSON.stringify(status));
-
-                    checkWarning();
-
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    console.log("error :" + XMLHttpRequest.responseText);
-                    if (!cancelError) {
-                        connectionFailure = true;
-                    }
-                    // If cannot connect assume countdown continues
-                    status.expiry = status.expiry - (now - myStorageTime);
-
-                    myStorageTime = now;
-                    checkWarning();
-                }
-
-            });
-        }
-
-
-        function syncLast() {
-            var storageActivity = Number(localStorage.getItem("lastActivity"));
-            if (storageActivity) {
-                var timeDiff = lastActivity - storageActivity;
-                if (timeDiff > 1000) {
-                    localStorage.setItem("lastActivity", lastActivity.toString());
-
-                }
-                if (timeDiff < 0) {
-                    //console.log("Other window updated last activity")
-                    lastActivity = storageActivity;
-                }
+        // Logout from the server and close if popup window
+        function logout() {
+            if (popup) {
+                $.get("/Rhythmyx/logout", function() {
+                    window.close();
+                });
             } else {
-                localStorage.setItem("lastActivity", lastActivity.toString());
+                top.document.location.href = '/Rhythmyx/logout';
             }
         }
 
-        //  Only monitor activity to the second
-        function userActivity() {
-            var now = Date.now();
-            var timeDiff = now - lastActivity;
-            if (timeDiff > 1000) {
-                lastActivity = Date.now();
-                syncLast();
-            }
-        }
-
-
-        function timerIncrement() {
-            syncLast();
-            updateServerStatus(false);
-
-        }
-
-
-        //  Track user activity events
-        document.addEventListener('visibilitychange', function () {
-            console.log("Visibility change");
-            userActivity();
-        }, false);
-
-        $(document).on("mousemove",function () {
-            userActivity();
-        });
-
-        $(document).on("keypress",function () {
-            userActivity();
-        });
-
-        // Initial sync of status
-        syncLast();
-        updateServerStatus(true);
-
-        var serverInterval = setInterval(timerIncrement, 1000); // 1 second
+        var serverInterval = setInterval(trackSession, 1000); // 1 second
 
     };
 })(jQuery);

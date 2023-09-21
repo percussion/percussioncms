@@ -184,6 +184,23 @@
     </filter-mapping>
 
     <servlet>
+        <servlet-name>SessionCheckServlet</servlet-name>
+        <servlet-class>com.percussion.servlets.PSSessionCheckServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SessionCheckServlet</servlet-name>
+        <url-pattern>/sessionCheckServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>SessionExtendServlet</servlet-name>
+        <servlet-class>com.percussion.servlets.PSSessionExtendServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SessionExtendServlet</servlet-name>
+        <url-pattern>/sessionExtendServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>JavaScriptServlet</servlet-name>
         <servlet-class>org.owasp.csrfguard.servlet.JavaScriptServlet</servlet-class>
         <init-param>
