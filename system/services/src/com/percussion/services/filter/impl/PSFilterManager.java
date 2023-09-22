@@ -37,15 +37,15 @@ import com.percussion.utils.xml.PSInvalidXmlException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -145,10 +145,8 @@ public class PSFilterManager
    {
       Session s = getSession();
 
-         CriteriaBuilder builder = s.getCriteriaBuilder();
-         CriteriaQuery<IPSItemFilter> criteria = builder.createQuery(IPSItemFilter.class);
-         Root<PSItemFilter> critRoot = criteria.from(PSItemFilter.class);
-         return s.createQuery(criteria).getResultList();
+         Criteria c = s.createCriteria(PSItemFilter.class);
+         return c.list();
 
    }
 
@@ -163,11 +161,9 @@ public class PSFilterManager
    {
       Session s = getSession();
 
-         CriteriaBuilder builder = s.getCriteriaBuilder();
-         CriteriaQuery<PSItemFilter> criteria = builder.createQuery(PSItemFilter.class);
-         Root<PSItemFilter> critRoot = criteria.from(PSItemFilter.class);
-         criteria.where(builder.equal(critRoot.get("legacy_authtype"), authtype));
-         List<PSItemFilter> results = s.createQuery(criteria).getResultList();
+         Criteria c = s.createCriteria(PSItemFilter.class);
+         c.add(Restrictions.eq("legacy_authtype", authtype));
+         List<PSItemFilter> results = c.list();
          if (results.isEmpty())
          {
             throw new PSFilterException(
@@ -298,10 +294,8 @@ public class PSFilterManager
 
          if (type.getOrdinal() == PSTypeEnum.ITEM_FILTER.getOrdinal())
          {
-            CriteriaBuilder builder = s.getCriteriaBuilder();
-            CriteriaQuery<IPSItemFilter> criteria = builder.createQuery(IPSItemFilter.class);
-            Root<PSItemFilter> critRoot = criteria.from(PSItemFilter.class);
-            List<IPSItemFilter> results = s.createQuery(criteria).getResultList();
+            Criteria c = s.createCriteria(PSItemFilter.class);
+            List<IPSItemFilter> results = c.list();
             for (IPSItemFilter f : results)
             {
                rval.add(new PSObjectSummary(f.getGUID(), f.getName(), f
@@ -404,11 +398,9 @@ public class PSFilterManager
             log.error("Cannot find filter",e);
          }
       }
-      CriteriaBuilder builder = s.getCriteriaBuilder();
-      CriteriaQuery<IPSItemFilter> criteria = builder.createQuery(IPSItemFilter.class);
-      Root<PSItemFilter> critRoot = criteria.from(PSItemFilter.class);
-      criteria.orderBy(builder.asc(critRoot.get("name")));
-      return entityManager.createQuery(criteria).setHint("org.hibernate.cacheable", true).getResultList();
+
+      return s.createCriteria(PSItemFilter.class).addOrder(Order.asc("name"))
+           .setCacheable(true).list();
 
    }
 
