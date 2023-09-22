@@ -15,15 +15,9 @@ public class PSSessionCheckServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //super.doGet(req, resp);
-
-
-            //PSRequest psrequest = PSSecurityFilter.initRequest(request, response);
             response.setContentType("application/json;charset=UTF-8");
             response.setHeader("Cache-Control", "no-cache,must-revalidate");
 
-            // Careful not to touch session during request which would extend
-            //PSUserSession userSession = psrequest.getUserSession();
             long timeout = PSServer.getServerConfiguration().getUserSessionTimeout();
             int warning_s = PSServer.getServerConfiguration().getUserSessionWarning();
             long warning = warning_s > 0 ?  PSServer.getServerConfiguration().getUserSessionWarning()
