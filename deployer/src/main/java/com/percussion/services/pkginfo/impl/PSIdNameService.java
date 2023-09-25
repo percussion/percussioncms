@@ -110,9 +110,13 @@ public class PSIdNameService
    private Collection<PSIdName> loadAll()
    {
       Session session = getSession();
-      CriteriaBuilder builder = session.getCriteriaBuilder();
-      CriteriaQuery<PSIdName> criteria = builder.createQuery(PSIdName.class);
-      return entityManager.createQuery(criteria).getResultList();
+      return session.createCriteria(PSIdName.class).list();
+
+//      Reverting the changes as Package Install is failing
+//      Session session = getSession();
+//      CriteriaBuilder builder = session.getCriteriaBuilder();
+//      CriteriaQuery<PSIdName> criteria = builder.createQuery(PSIdName.class);
+//      return entityManager.createQuery(criteria).getResultList();
 
    }
    
