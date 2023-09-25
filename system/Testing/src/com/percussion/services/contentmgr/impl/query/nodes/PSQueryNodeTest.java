@@ -51,6 +51,6 @@ public class PSQueryNodeTest extends TestCase
       String sval = n3.toString();
       String zone = TimeZone.getDefault().getDisplayName(false,0);
       String test = "qn-conjunction(qn-compare(id(rx:sys_contentstartdate),GT,Sun Feb 01 00:00:00 "+zone+" 2004),AND,qn-compare(id(rx:description),LIKE,%guidelines%))";
-      assertEquals(test,sval);
+      assertEquals(test, sval);
    }
 }

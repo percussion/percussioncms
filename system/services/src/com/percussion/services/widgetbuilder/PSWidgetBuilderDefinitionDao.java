@@ -23,7 +23,6 @@ import com.percussion.util.PSBaseBean;
 import org.apache.commons.lang.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.query.Query;
 import org.hibernate.Session;
@@ -32,6 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 /**
@@ -141,8 +143,10 @@ public class PSWidgetBuilderDefinitionDao
    {
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSWidgetBuilderDefinition.class);
-         return criteria.list();
+         CriteriaBuilder builder = session.getCriteriaBuilder();
+         CriteriaQuery<PSWidgetBuilderDefinition> criteria = builder.createQuery(PSWidgetBuilderDefinition.class);
+         Root<PSWidgetBuilderDefinition> critRoot = criteria.from(PSWidgetBuilderDefinition.class);
+         return entityManager.createQuery(criteria).getResultList();
 
 
    }

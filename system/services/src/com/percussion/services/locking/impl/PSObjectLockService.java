@@ -41,6 +41,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -349,11 +352,12 @@ public class PSObjectLockService
    {
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSObjectLock.class);
-         criteria.add(Restrictions.lt("expirationTime", 
-            System.currentTimeMillis()));
+         CriteriaBuilder builder = session.getCriteriaBuilder();
+         CriteriaQuery<PSObjectLock> criteria = builder.createQuery(PSObjectLock.class);
+         Root<PSObjectLock> critRoot = criteria.from(PSObjectLock.class);
+         criteria.where(builder.lessThan(critRoot.get("expirationTime"), System.currentTimeMillis()));
          
-         return criteria.list();
+         return entityManager.createQuery(criteria).getResultList();
 
    }
 
@@ -448,10 +452,12 @@ public class PSObjectLockService
       
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSObjectLock.class);
-         criteria.add(Restrictions.in("id", PSGuidUtils.toFullLongList(ids)));
+         CriteriaBuilder builder = session.getCriteriaBuilder();
+         CriteriaQuery<PSObjectLock> criteria = builder.createQuery(PSObjectLock.class);
+         Root<PSObjectLock> critRoot = criteria.from(PSObjectLock.class);
+         criteria.select(critRoot).where(critRoot.get("id").in(PSGuidUtils.toFullLongList(ids)));
          
-         List<PSObjectLock> locks = criteria.list();
+         List<PSObjectLock> locks = entityManager.createQuery(criteria).getResultList();
          
          if (skipRelease)
             return locks;
@@ -630,12 +636,13 @@ public class PSObjectLockService
       
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSObjectLock.class);
-         criteria.add(Restrictions.eq("lockSession", 
-            getLockSession(lockSession)));
-         criteria.add(Restrictions.eq("locker", locker));
+         CriteriaBuilder builder = session.getCriteriaBuilder();
+         CriteriaQuery<PSObjectLock> criteria = builder.createQuery(PSObjectLock.class);
+         Root<PSObjectLock> critRoot = criteria.from(PSObjectLock.class);
+         criteria.where(builder.equal(critRoot.get("lockSession"), getLockSession(lockSession)));
+         criteria.where(builder.equal(critRoot.get("locker"), locker));
 
-         List<PSObjectLock> locks = criteria.list();
+         List<PSObjectLock> locks = entityManager.createQuery(criteria).getResultList();
          
          return releaseExpiredLocks(locks);
 
