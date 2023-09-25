@@ -40,12 +40,26 @@
             .on("click", function (event) {
                 openNewPostDialog(event);
             });
+		$("#perc-add-post-button")
+            .on("keydown", function (event) {
+                if(event.code == "Enter" || event.code == "Space"){
+					document.activeElement.click();
+				}
+            });
 
         $("#perc-add-blog-button")
             .on("click", function (event) {
                 $.PercBlogsGadget.showNewBlogDialog(event);
             });
+		$("#perc-add-blog-button")
+            .on("keydown", function (event) {
+                 if(event.code == "Enter" || event.code == "Space"){
+                    document.activeElement.click();
+                 }
+            });
+
         $('#perc-add-blog-button').attr('title', I18N.message("perc.ui.blogs.Gadget.title@text"));
+		$('#perc-add-blog-button').attr('tabindex', '0');
         $.PercBlogsGadget.load(siteName, selectedBlogId);
     };
 

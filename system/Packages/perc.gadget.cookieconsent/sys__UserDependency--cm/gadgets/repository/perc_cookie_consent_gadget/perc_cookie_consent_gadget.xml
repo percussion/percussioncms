@@ -102,10 +102,10 @@
 
             <!-- advanced button all sites -->
             <div id="delete-btn-all">
-                <button id="advanced-all-sites-btn" title="Advanced Settings" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced" style = 'float:left'>Advanced</button>
+                <button tabindex="0" id="advanced-all-sites-btn" title="Advanced Settings" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced" style = 'float:left'>Advanced</button>
                 <div id="advanced" class="collapse cookie-consent-advanced">
                     <p>Delete all cookie consent entries.</p>
-                    <button id="cookie-consent-delete-btn" title="Delete all cookie consent entries" aria-label="Delete all cookie consent entries" class="cookie-consent-delete-btn">Delete entries</button>
+                    <button tabindex="0" id="cookie-consent-delete-btn" title="Delete all cookie consent entries" aria-label="Delete all cookie consent entries" class="cookie-consent-delete-btn">Delete entries</button>
                 </div>
             </div>
 
