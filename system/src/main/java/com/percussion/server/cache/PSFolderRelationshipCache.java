@@ -294,7 +294,6 @@ public class PSFolderRelationshipCache  implements IPSFolderRelationshipCache {
          }
 
          cleanupFolders();
-         m_graph.trimSize();
       }
       catch (Exception e)
       {
@@ -375,7 +374,6 @@ public class PSFolderRelationshipCache  implements IPSFolderRelationshipCache {
             addAARelationship(rdata);
          }
          cleanupFolders();
-         m_aa_graph.trimSize();
       }
       catch (Exception e)
       {
