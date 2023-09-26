@@ -20,6 +20,7 @@ import com.percussion.services.contentmgr.impl.query.nodes.IPSQueryNode.Op;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 
@@ -48,7 +49,8 @@ public class PSQueryNodeTest extends TestCase
             new PSQueryNodeValue("%guidelines%"), Op.LIKE);
       IPSQueryNode n3 = new PSQueryNodeConjunction(n1, n2, Op.AND);
       String sval = n3.toString();
-      String test = "qn-conjunction(qn-compare(id(rx:sys_contentstartdate),GT,Sun Feb 01 00:00:00 EST 2004),AND,qn-compare(id(rx:description),LIKE,%guidelines%))";
-      assertEquals(test,sval);
+      String zone = TimeZone.getDefault().getDisplayName(false,0);
+      String test = "qn-conjunction(qn-compare(id(rx:sys_contentstartdate),GT,Sun Feb 01 00:00:00 "+zone+" 2004),AND,qn-compare(id(rx:description),LIKE,%guidelines%))";
+      assertEquals(test, sval);
    }
 }
