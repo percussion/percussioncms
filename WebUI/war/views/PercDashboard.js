@@ -420,7 +420,7 @@
                         {
                             restore();
                         });
-						$("#perc-dashboard-restore-menu").on('keydown',function()
+						$("#perc-dashboard-restore-menu").on('keydown',function(event)
                         {
 							if(event.code == "Enter" || event.code == "Space"){
 								restore();

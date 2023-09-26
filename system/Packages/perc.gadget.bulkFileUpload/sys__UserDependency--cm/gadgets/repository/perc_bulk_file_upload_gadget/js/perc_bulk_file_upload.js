@@ -31,7 +31,7 @@ $(function () {
         on("click",function() {
 			triggerSubmit();
         })
-		.on("keydown",function() {
+		.on("keydown",function(event) {
 			if(event.code == "Enter" || event.code == "Space"){
 				document.activeElement.click();
 			}
@@ -136,7 +136,7 @@ $(function () {
     $('#perc-upload-cancel').on("click", function() {
         cancelAllRequests();
     });
-	$('#perc-upload-cancel').on("keydown", function() {
+	$('#perc-upload-cancel').on("keydown", function(event) {
         if(event.code == "Enter" || event.code == "Space"){
 			document.activeElement.click();
 		}

@@ -69,7 +69,7 @@
                         items.find(".item").removeClass("perc-selected-item");
                         $(this).addClass("perc-selected-item");
                     });
-					items.find(".item").on('keydown', function(){
+					items.find(".item").on('keydown', function(event){
                         if(event.code == "Enter" || event.code == "Space"){
 							document.activeElement.click();
 						}

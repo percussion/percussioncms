@@ -24,7 +24,7 @@
         $("head").append(" <link href=\"/cm/jslib/profiles/3x/libraries/fontawesome/css/all.css\" rel=\"stylesheet\" type=\"text/css\" />").append("<link href=\"/cm/gadgets/repository/PercProcessorMonitorGadget/PercProcessorMonitorGadget.css\" rel=\"stylesheet\" type=\"text/css\" />");
         $("body").empty();
         var initialHtml = "<div id=\"perc-process-monitor-gadget\">" +
-            "<div id=\"perc-process-monitor-actions\"><span id=\"perc-process-monitor-status-refresh\" role=\"button\" title=\"" + I18N.message("perc.ui.gadgets.processmonitor@Refresh Background Process") + "\">&nbsp;</span><span id=\"perc-process-monitor-popout\"><i " + "class=\"icon-external-link\"></i></span></div>" +
+            "<div id=\"perc-process-monitor-actions\"><span id=\"perc-process-monitor-status-refresh\" tabindex=\"0\" role=\"button\" title=\"" + I18N.message("perc.ui.gadgets.processmonitor@Refresh Background Process") + "\">&nbsp;</span><span id=\"perc-process-monitor-popout\"><i " + "class=\"icon-external-link\"></i></span></div>" +
             "<div id=\"perc-process-monitor-table-container\">" +
             "<table id=\"perc-process-monitor-table\" width=\"100%\">" +
             "<tr for=\"header\">" +
@@ -54,6 +54,11 @@
         //Disable refresh button as we will be loading the data
         $("#perc-process-monitor-status-refresh").addClass("perc-disabled").on("click",function(){
             renderStatusRows();
+        })
+        .on("keydown",function(event) {
+            if(event.code == "Enter" || event.code == "Space"){
+                document.activeElement.click();
+            }
         });
 
         //Initial call to render the status rows
