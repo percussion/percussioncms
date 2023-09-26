@@ -659,6 +659,28 @@
                 });
 
 
+			$connect.off('keydown').on('keydown', function(e){
+               if(e.code == "Enter" || e.code == "Space"){
+					document.activeElement.click();
+				}
+              });
+              $cancel.off('keydown').on('keydown', function(e){
+                if(e.code == "Enter" || e.code == "Space"){
+					document.activeElement.click();
+				}
+                });
+              $save.off('keydown').on('keydown', function(e){
+                if(e.code == "Enter" || e.code == "Space"){
+					document.activeElement.click();
+				}
+                });
+              $delete.off('keydown').on('keydown', function(e){
+				if(e.code == "Enter" || e.code == "Space"){
+					document.activeElement.click();
+				}
+                });
+
+
            }
 
            /**
@@ -870,8 +892,8 @@
 		<br/>
 		<input name="file" class="perc-ga-textfield" id="perc-ga-pwd" type="file" accept=".json"/>
            </form>
-              <a href="javascript:void(0);" id="perc-ga-connect" class="perc-inactive" title="Test the credentials by attempting to connect to Google Analytics. If successful the profile lists will be updated."></a>
-              <a href="javascript:void(0);" id="perc-ga-delete" class="perc-inactive" title="Clear the credentials.">Clear credentials</a>
+              <a role="button" tabindex="0" href="javascript:void(0);" id="perc-ga-connect" class="perc-inactive" title="Test the credentials by attempting to connect to Google Analytics. If successful the profile lists will be updated."></a>
+              <a role="button" tabindex="0" href="javascript:void(0);" id="perc-ga-delete" class="perc-inactive" title="Clear the credentials.">Clear credentials</a>
               <div style="clear: both;"></div>
            </div>
            <div id="perc-ga-site-profile-mappings">
@@ -880,8 +902,8 @@
             </div>
            </div>
            <div id="perc-ga-command-panel">
-             <a href="javascript:void(0);" id="perc-ga-save" aria-disabled="true" class="perc-inactive" title="Save analytics settings to the server."></a>
-             <a href="javascript:void(0);" id="perc-ga-cancel" title="Revert any unsaved changes."></a>
+             <a role="button" tabindex="0" href="javascript:void(0);" id="perc-ga-save" aria-disabled="true" class="perc-inactive" title="Save analytics settings to the server."></a>
+             <a role="button" tabindex="0" href="javascript:void(0);" id="perc-ga-cancel" title="Revert any unsaved changes."></a>
            </div>
            <div style="clear: both;"></div>
         </div>
