@@ -11,7 +11,7 @@ again in database then this changeset will not run until we change the changeset
 
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <changeSet runAlways="true" id="20170503041524-3" author="user">
+    <changeSet runAlways="true" id="20170503041524-3" author="user" dbms="mysql,mariadb">
         <preConditions onFail="CONTINUE">
             <dbms type="mysql"/>
             <sqlCheck expectedResult="0">SELECT count(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'blog_post_visit' AND COLUMN_NAME ='VISIT_ID' AND DATA_TYPE = 'bigint' AND COLUMN_DEFAULT IS NULL AND IS_NULLABLE = 'NO' AND EXTRA like '%auto_increment%'
