@@ -67,6 +67,20 @@ public class Main {
     public static final String VERSION_PROPERTIES = "Version.properties";
     private static final String INSTALLATION_PROPS_PATH = "/jetty/base/etc/installation.properties";
     private static final String SERVER_PROPS_PATH = "/rxconfig/Server/server.properties";
+
+    private static final String JETTY_JDBC_PATH = File.pathSeparator + "jetty" +
+                                                  File.pathSeparator + "base" +
+                                                  File.pathSeparator + "lib" +
+                                                  File.pathSeparator + "jdbc" +
+                                                  File.pathSeparator;
+
+    private static final String[] OLD_JDBC_JARS = new String[]{"mssql-jdbc-7.1.3.jre8-preview.jar",
+                                                                "mssql-jdbc-9.2.1.jre8.jar",
+                                                                "mssql-jdbc-8.2.1.jre8.jar",
+                                                                "jtds.jar",
+                                                                "db2jcc_license_cu.jar",
+                                                                "db2jcc4.jar"};
+
     public static File tmpFolder;
 
     public static String developmentFlag = "false";
@@ -174,11 +188,26 @@ public class Main {
             Path execPath = installSrc.resolve(Paths.get("rxconfig", "Installer"));
             Path installAntJarPath = execPath.resolve(PathUtils.getVersionLessJarFilePath(execPath,PERC_ANT_JAR + "-*.jar"));
             execJar(installAntJarPath, execPath, installPath);
+            deleteOldJDBCJars(installPath);
 
         } catch (Exception e) {
             System.out.println("An error occurred while executing the installation, installation has likely failed. " + e.getMessage());
         }
         System.out.println("Done extracting");
+    }
+
+    private static void deleteOldJDBCJars(Path installPath){
+
+        for(int i=0;i<OLD_JDBC_JARS.length;i++){
+            String fileName = installPath + JETTY_JDBC_PATH + OLD_JDBC_JARS[i];
+            log.info("Deleting Old JDBC File..... " + fileName );
+            File oldFile = new File(fileName );
+            if (oldFile.exists()){
+                log.info("JDBC File Exists : " + fileName );
+                oldFile.delete();
+                log.info("Delete Old JDBC File Succeded" );
+            }
+        }
     }
 
 
