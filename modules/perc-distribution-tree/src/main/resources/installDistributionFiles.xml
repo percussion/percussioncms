@@ -492,6 +492,7 @@
 
         <PSCopy tofile="${install.config}/Installer/data/RxffTableData.xml" file="${basedir}/src/main/resources/distribution/rxconfig/Installer/data/RxffTableData.xml" replaceType="always" />
         <PSCopy tofile="${install.config}/Installer/data/RxffTableDef.xml" file="${basedir}/src/main/resources/distribution/rxconfig/Installer/data/RxffTableDef.xml" replaceType="always" />
+        <PSCopy tofile="${install.config}/Installer/oldJdbcJarsList.txt" file="${basedir}/src/main/resources/distribution/rxconfig/Installer/oldJdbcJarsList.txt" replaceType="always" />
 
         <!-- I18n Config Files -->
         <mkdir dir="${install.config}/I18n" />

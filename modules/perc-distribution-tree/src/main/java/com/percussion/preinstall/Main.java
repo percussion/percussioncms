@@ -33,14 +33,17 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
@@ -67,22 +70,9 @@ public class Main {
     public static final String VERSION_PROPERTIES = "Version.properties";
     private static final String INSTALLATION_PROPS_PATH = "/jetty/base/etc/installation.properties";
     private static final String SERVER_PROPS_PATH = "/rxconfig/Server/server.properties";
-
-    private static final String JETTY_JDBC_PATH = File.pathSeparator + "jetty" +
-                                                  File.pathSeparator + "base" +
-                                                  File.pathSeparator + "lib" +
-                                                  File.pathSeparator + "jdbc" +
-                                                  File.pathSeparator;
-
-    private static final String[] OLD_JDBC_JARS = new String[]{"mssql-jdbc-7.1.3.jre8-preview.jar",
-                                                                "mssql-jdbc-9.2.1.jre8.jar",
-                                                                "mssql-jdbc-8.2.1.jre8.jar",
-                                                                "jtds.jar",
-                                                                "db2jcc_license_cu.jar",
-                                                                "db2jcc4.jar"};
-
+    private static final String JETTY_JDBC_PATH = "/jetty/base/lib/jdbc/";
+    private static final String OLD_JDBC_LIST_PATH = "/rxconfig/Installer/oldJdbcJarsList.txt";
     public static File tmpFolder;
-
     public static String developmentFlag = "false";
     public static String percVersion;
     public static AtomicInteger currentLineNo = new AtomicInteger(0);
@@ -197,9 +187,31 @@ public class Main {
     }
 
     private static void deleteOldJDBCJars(Path installPath){
+        String oldJarsFileName = installPath + OLD_JDBC_LIST_PATH;
+        log.info("Old JDBC File List File..... " + oldJarsFileName );
+        File oldJarNamesFile = new File(oldJarsFileName );
+        List<String> listOfStrings = new ArrayList<String>();
+        if(oldJarNamesFile.exists()){
+            log.info("Old JDBC File List File Found..... ");
+            BufferedReader bf = null;
+            try {
+                bf = new BufferedReader(
+                        new FileReader(oldJarsFileName));
+                String line = bf.readLine();
+                while (line != null) {
+                  listOfStrings.add(line);
+                    line = bf.readLine();
+                }
+                bf.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
-        for(int i=0;i<OLD_JDBC_JARS.length;i++){
-            String fileName = installPath + JETTY_JDBC_PATH + OLD_JDBC_JARS[i];
+        }
+        log.info("Old JDBC Files Found..... " + listOfStrings.toString());
+
+        for(int i=0;i<listOfStrings.size();i++){
+            String fileName = installPath + JETTY_JDBC_PATH + listOfStrings.get(i);
             log.info("Deleting Old JDBC File..... " + fileName );
             File oldFile = new File(fileName );
             if (oldFile.exists()){

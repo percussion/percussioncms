@@ -617,6 +617,7 @@
         <antcall target="deleteOldJqueryUIJsFile"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldJqueryJsFile"  inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldEXEFiles"  inheritall="true" inheritrefs="true"/>
+        <antcall target="updateOldJDBCFile" inheritall="true" inheritrefs="true"/>
         <antcall target="deleteOldBouncyCastleJars"  inheritall="true" inheritrefs="true"/>
         <antcall target="backupTinymceRxresources"  inheritall="true" inheritrefs="true"/>
         <echo>Upgrade Done...Update Version.properties</echo>
@@ -1562,6 +1563,10 @@
             </sequential>
         </for>
     </target>
+
+    <target name="updateOldJDBCFile">
+        <copy verbose="true" overwrite="true" file="${install.src}/rxconfig/Installer/oldJdbcJarsList.txt" tofile="${install.dir}/rxconfig/Installer/oldJdbcJarsList.txt" />
+     </target>
 
     <target name="updatePackages">
         <echo>Updating system packages...</echo>
