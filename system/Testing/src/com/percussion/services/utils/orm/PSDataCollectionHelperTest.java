@@ -33,6 +33,10 @@ import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -83,9 +87,11 @@ public class PSDataCollectionHelperTest
       System.out.println("Fourth set created in " + sw);
       
       // Check contents
-      Criteria c = s.createCriteria(PSTempId.class);
-      c.add(Restrictions.eq("pk.id", idset1));
-      List results = c.list();
+      CriteriaBuilder builder = s.getCriteriaBuilder();
+      CriteriaQuery<PSTempId> criteria = builder.createQuery(PSTempId.class);
+      Root<PSTempId> critRoot = criteria.from(PSTempId.class);
+      criteria.where(builder.equal(critRoot.get("pk.id"), idset1));
+      List results = s.createQuery(criteria).getResultList();
       assertEquals(ids.size(), results.size());
       
       ids.clear();
@@ -99,9 +105,10 @@ public class PSDataCollectionHelperTest
       System.out.println("Fifth (10000) set created in " + sw);
 
       // Check contents
-      c = s.createCriteria(PSTempId.class);
-      c.add(Restrictions.eq("pk.id", idset5));
-      results = c.list();
+      criteria = builder.createQuery(PSTempId.class);
+      Root<PSTempId> crit = criteria.from(PSTempId.class);
+      criteria.where(builder.equal(crit.get("pk.id"), idset5));
+      results = s.createQuery(criteria).getResultList();
       assertEquals(ids.size(), results.size());
       
       
