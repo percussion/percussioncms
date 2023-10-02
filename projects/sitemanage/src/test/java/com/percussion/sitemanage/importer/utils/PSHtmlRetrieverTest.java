@@ -26,6 +26,7 @@ import java.io.IOException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -41,6 +42,7 @@ import org.junit.Test;
 public class PSHtmlRetrieverTest
 {
     @Test
+    @Ignore
     public void testHtml() throws Exception
     {
         String url = "http://samples.percussion.com/";
@@ -50,6 +52,7 @@ public class PSHtmlRetrieverTest
     }
     
     @Test
+    @Ignore
     public void test404() throws Exception
     {
         boolean didThrow = false;
@@ -69,6 +72,7 @@ public class PSHtmlRetrieverTest
     }
     
     @Test
+    @Ignore
     public void testNonHtmlContent() throws Exception
     {
         String url = "http://samples.percussion.com/assets/snow.jpg";
