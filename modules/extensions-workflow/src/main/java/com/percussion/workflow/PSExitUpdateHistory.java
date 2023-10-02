@@ -489,11 +489,15 @@ public class PSExitUpdateHistory implements IPSResultDocumentProcessor
 
       try
       {
-         PSContentStatusHistoryContext csh = new PSContentStatusHistoryContext(
-               contentstatushistoryid, workflowID, connection, contentID, csc,
-               sc, tc, transitionComment, userName, sessionID,
-               stateAssignedRole, baseRevisionNum);
-         updateLastPublicRevision(csh, sc, request, csc);
+         //If restoring revision, a new history is created for old revision
+         //thus making this check to avoid that. Only create history for current revision
+         if(baseRevisionNum == csc.getCurrentRevision()) {
+            PSContentStatusHistoryContext csh = new PSContentStatusHistoryContext(
+                    contentstatushistoryid, workflowID, connection, contentID, csc,
+                    sc, tc, transitionComment, userName, sessionID,
+                    stateAssignedRole, baseRevisionNum);
+            updateLastPublicRevision(csh, sc, request, csc);
+         }
       }
       catch (Exception e)
       {
