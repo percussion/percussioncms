@@ -189,20 +189,7 @@ public class PSTableAction extends PSAction
                   PSJdbcTableFactory.processTable(conn, dbmsDef, schema,
                           ps, true);
                } catch (Exception ex) {
-                  if ((tblName.equalsIgnoreCase("RXSYSCOMPONENTPROPERTY")) ||
-                          (tblName.equalsIgnoreCase("RXLOCATIONSCHEMEPARAMS")) ||
-                          (tblName.equalsIgnoreCase("RXEXTERNAL"))) {
-                     // RXSYSCOMPONENTPROPERTY and RXLOCATIONSCHEMEPARAMS have
-                     // schema changes where non-nullable
-                     // columns have been added. Tablefactory will throw exception
-                     // in such cases. Need to ignore the exception for these
-                     // two tables. This code should be removed once the
-                     // tablefactory has been modified to handle such cases.
-                     // RXEXTERNAL will throw exception on Oracle since this table's
-                     // ITEMURL column has been changed from LONG to VARCHAR2 (2100)
-                  } else {
-                     throw new BuildException(ex.toString());
-                  }
+                  PSLogger.logWarn(ex.getMessage());
                }
                index++;
             }
