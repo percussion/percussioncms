@@ -25,7 +25,7 @@ tinymce.PluginManager.add('codemirror', function(editor, url) {
             codemirrorWidth = editor.settings.codemirror.width;
         }
 
-        var codemirrorHeight = 550;
+        var codemirrorHeight = 250;
         if (editor.settings.codemirror.height) {
             codemirrorHeight = editor.settings.codemirror.height;
         }
