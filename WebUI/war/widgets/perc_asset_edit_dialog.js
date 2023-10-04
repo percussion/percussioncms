@@ -116,7 +116,7 @@
             height:contentEditCriteria.preferredEditorHeight, 
             width:contentEditCriteria.preferredEditorWidth, 
              open: function() { 
-           $('#edit-widget-content').height($(this).parent().height()-120); 
+           $('#edit-widget-content').height($(this).parent().height()-250);
                            $('#edit-widget-content').width($(this).parent().width()); 
                            $('#edit-widget-content-frame').height($(this).parent().height()-120); 
                            $('#edit-widget-content-frame').width($(this).parent().width()-3); 
@@ -138,7 +138,7 @@
       
           $('#edit-widget-content-frame').show(); 
 
-           $('#edit-widget-content').height($(this).parent().height()-120); 
+           $('#edit-widget-content').height($(this).parent().height()-250);
                            $('#edit-widget-content').width($(this).parent().width()); 
                            $('#edit-widget-content-frame').height($(this).parent().height()-120); 
                            $('#edit-widget-content-frame').width($(this).parent().width()-5); 
@@ -191,7 +191,7 @@
              dialog.dialog("option","resizable", false );
              
              $('#edit-widget-content').parent().height($( window ).height());  
-             $('#edit-widget-content').height($( window ).height()-120);  
+             $('#edit-widget-content').height($( window ).height()-250);
                  $('#edit-widget-content').parent().width($( window ).width()-5); 
                  $('#edit-widget-content-frame').height($( window ).height()-120); 
                  $('#edit-widget-content-frame').width($( window ).width()-10); 
