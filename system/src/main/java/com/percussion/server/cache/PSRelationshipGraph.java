@@ -23,12 +23,7 @@ import com.percussion.services.error.PSNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -196,10 +191,17 @@ class PSRelationshipGraph
     */
    public List<PSGraphEntry> getChildrenList(PSLocator parent)
    {
+
       if (parent == null)
          throw new IllegalArgumentException("parent may not be null");
       Map<Integer,PSGraphEntry> children = m_parentMapToChildren.get(parent);
-      return children==null ? new CopyOnWriteArrayList<>() : new CopyOnWriteArrayList(children.values());
+      if(children == null){
+         return new CopyOnWriteArrayList<>();
+      }else{
+         List<PSGraphEntry> psGraphEntry = new CopyOnWriteArrayList( children.values());
+         psGraphEntry.sort(null);
+         return psGraphEntry;
+      }
    }
 
    /**
