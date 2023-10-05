@@ -203,11 +203,11 @@ From the project directory, a local development install can be performed using t
 
 ### Percussion CMS
 ```
- java -jar modules/perc-distribution-tree/target/perc-distribution-tree-${project.parent.version}.jar <Install Directory>
+ java -jar modules/perc-distribution-tree/target/perc-distribution-tree.jar <Install Directory>
 ```
 ### Percussion DTS
 ```
-java -jar deliverytiersuite/delivery-tier-suite/delivery-tier-distribution/target/delivery-tier-distribution-${project.parent.version}.jar <Install Directory>
+java -jar deliverytiersuite/delivery-tier-suite/delivery-tier-distribution/target/delivery-tier-distribution.jar <Install Directory>
 ```
 ### Starting Percussion CMS
 

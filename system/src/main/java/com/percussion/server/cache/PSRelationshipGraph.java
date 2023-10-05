@@ -23,12 +23,7 @@ import com.percussion.services.error.PSNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -68,33 +63,31 @@ class PSRelationshipGraph
          throw new IllegalArgumentException("child may not be null");
 
       // store the relationship into m_childMap first
-      ArrayList<PSGraphEntry> children = m_parentMapToChildren.get(parent);
+      Map<Integer, PSGraphEntry> children = m_parentMapToChildren.get(parent);
       PSGraphEntry childObj = new PSGraphEntry(child, relationshipId, sortRank);
       if (children == null)
       {
-         children = new ArrayList<>();
-         children.add(childObj);
+         children = new ConcurrentHashMap<>();
+         children.put(childObj.getrelationshipId(),childObj);
          m_parentMapToChildren.put(parent, children);
       }
       else
       {
-         children.add(childObj);
-         Collections.sort(children);
+         children.put(childObj.getrelationshipId(),childObj);
       }
 
       // store the relationship into m_parentMap first
-      ArrayList<PSGraphEntry> parents = m_childMapToParent.get(child);
+      Map<Integer,PSGraphEntry> parents = m_childMapToParent.get(child);
       PSGraphEntry parentObj = new PSGraphEntry(parent, relationshipId, sortRank);
       if (parents == null)
       {
-         parents = new ArrayList<>();
-         parents.add(parentObj);
+         parents = new ConcurrentHashMap<>();
+         parents.put(parentObj.getrelationshipId(),parentObj);
          m_childMapToParent.put(child, parents);
       }
       else
       {
-         parents.add(parentObj);
-         
+         parents.put(parentObj.getrelationshipId(),parentObj);
       }
    }
 
@@ -121,19 +114,19 @@ class PSRelationshipGraph
       PSGraphEntry parentEntry = new PSGraphEntry(parent, relatedObj);
 
       // update the m_childMap
-      ArrayList<PSGraphEntry> children = m_parentMapToChildren.get(parent);
+      Map<Integer,PSGraphEntry> children = m_parentMapToChildren.get(parent);
       if (children != null)
       {
-         if (children.remove(childEntry) && children.isEmpty())
+         if (children.remove(childEntry.getrelationshipId(),childEntry) && children.isEmpty())
             m_parentMapToChildren.remove(parent);
       }
 
       // update the m_parentMap
-      ArrayList<PSGraphEntry> parents = m_childMapToParent.get(child);
+      Map<Integer,PSGraphEntry> parents = m_childMapToParent.get(child);
       if (parents != null)
       {
-         if (parents.remove(parentEntry) && parents.isEmpty())
-         m_childMapToParent.remove(child);
+         if (parents.remove(parentEntry.getrelationshipId(),parentEntry) && parents.isEmpty())
+         m_childMapToParent.remove(childEntry.getrelationshipId(),childEntry);
       }
    }
 
@@ -161,9 +154,11 @@ class PSRelationshipGraph
       // For folder need to check revisionless
       PSLocator childLoc = child.getRevision() == -1 ? child : new PSLocator(child.getId());
 
-      ArrayList<PSGraphEntry> parents = m_childMapToParent.get(childLoc);
+      Map<Integer,PSGraphEntry> parents = m_childMapToParent.get(childLoc);
       if (parents != null && !parents.isEmpty()) {
-         for (PSGraphEntry parent : parents) {
+
+         for (PSGraphEntry parent : parents.values()) {
+
             PSRelationship rel = null;
             try {
                rel = PSFolderRelationshipCache.getInstance().getRelationship(parent.getrelationshipId());
@@ -186,7 +181,7 @@ class PSRelationshipGraph
    }
 
    /**
-    * This is the same as {@link #getChildren(Object)}, but it returns a list
+    * This is the same as , but it returns a list
     * instead of array.
     * 
     * @param parent the parent, never <code>null</code>.
@@ -196,10 +191,17 @@ class PSRelationshipGraph
     */
    public List<PSGraphEntry> getChildrenList(PSLocator parent)
    {
+
       if (parent == null)
          throw new IllegalArgumentException("parent may not be null");
-      ArrayList<PSGraphEntry> children = m_parentMapToChildren.get(parent);
-      return children==null ? new CopyOnWriteArrayList<>() : new CopyOnWriteArrayList(children);
+      Map<Integer,PSGraphEntry> children = m_parentMapToChildren.get(parent);
+      if(children == null){
+         return new CopyOnWriteArrayList<>();
+      }else{
+         List<PSGraphEntry> psGraphEntry = new CopyOnWriteArrayList( children.values());
+         psGraphEntry.sort(null);
+         return psGraphEntry;
+      }
    }
 
    /**
@@ -214,13 +216,13 @@ class PSRelationshipGraph
       if (child == null)
          throw new IllegalArgumentException("child may not be null");
 
-      ArrayList<PSGraphEntry> parentList = m_childMapToParent.get(child);
+      Map<Integer,PSGraphEntry> parentList = m_childMapToParent.get(child);
       if (parentList == null)
       {
-         parentList = new ArrayList<>();
+         parentList = new ConcurrentHashMap<>();
       }
 
-      return parentList;
+      return new ArrayList<PSGraphEntry>(parentList.values());
    }
 
    /**
@@ -251,13 +253,13 @@ class PSRelationshipGraph
          // we are going down the path of a relationship that doesn't match the relationshipType
          return;
       }
-      ArrayList<PSGraphEntry> parents = m_childMapToParent.get(childFolder
+      Map<Integer,PSGraphEntry> parents = m_childMapToParent.get(childFolder
             .getValue());
 
       if (parents != null && !parents.isEmpty())
       {
           List<PSGraphEntry> filteredParents = new ArrayList<>();
-          for (PSGraphEntry entry : parents) {
+          for (PSGraphEntry entry : parents.values()) {
               if (cache != null) {
                  PSRelationship rel = null;
                  try {
@@ -283,33 +285,11 @@ class PSRelationshipGraph
    }
 
    /**
-    * Trim the graph to save memory.
-    */
-   public void trimSize()
-   {
-      ArrayList<PSGraphEntry> value;
-      Iterator<ArrayList<PSGraphEntry>> values;
-      for (int i=0; i<2; i++)
-      {
-         if (i == 0)
-            values = m_childMapToParent.values().iterator();
-         else
-            values = m_parentMapToChildren.values().iterator();
-
-         while (values.hasNext())
-         {
-            value = values.next();
-            value.trimToSize();
-         }
-      }
-   }
-
-   /**
     * Returns all parents from the current graph.
     * 
     * @return a set of <code>Object</code>, which is the <code>parent</code>
     *    object that was passed in 
-    *    {@link #addRelationship(Object, Object, Object)}, never 
+    *    , never
     *    <code>null</code>, may be empty. It cannot be modified by the caller.
     */
    Set<PSLocator> getAllParents()
@@ -345,7 +325,7 @@ class PSRelationshipGraph
     * <p>
     * It may be empty, but never <code>null</code>.
     */
-   private  Map<PSLocator,ArrayList<PSGraphEntry>> m_childMapToParent = new ConcurrentHashMap<>();
+   private  Map<PSLocator,Map<Integer,PSGraphEntry>> m_childMapToParent = new ConcurrentHashMap<>();
 
    /**
     * It maps the parent object to its children. The map keys are parents in
@@ -356,6 +336,6 @@ class PSRelationshipGraph
     * It may be empty, but never
     * <code>null</code>.
     */
-   private Map<PSLocator,ArrayList<PSGraphEntry>> m_parentMapToChildren = new ConcurrentHashMap<>();
+   private Map<PSLocator,Map<Integer,PSGraphEntry>> m_parentMapToChildren = new ConcurrentHashMap<>();
 
 }
