@@ -181,7 +181,9 @@
                 var topspacing = this.TOPSPACING * (idx === 1 ? 2 : 1);
 
                 var $level = $(".perc-site-map-level").slice(idx - 1, idx);
-                var levelParentId = $level.metadata({type: 'attr', name: 'data'}).parentId;
+
+				var levelParentId = getJsonObj($level, 'data').parentId;
+
                 var $nodes = $level.children(".perc-site-map-nodes").children(".perc-site-map-node");
                 var len = $nodes.length;
                 var requiredWidth = (len * this.NODEWIDTH) + ((len - 1) * this.NODESPACING);
@@ -190,7 +192,7 @@
                 var centerOffset = ($(window).width() - requiredWidth) / 2;
                 var offscreenParentOffset = -1;
 
-                if(levelParentId.length > 0)
+                if(levelParentId && levelParentId.length > 0)
                 {
                     // center under parent node
                     var parentOffset = $("#" + levelParentId).offset().left;
@@ -314,7 +316,7 @@
              */
             addDropArea: function($node, top, left, i)
             {
-                var data = $node.metadata({type: 'attr', name: 'data'});
+                var data = getJsonObj($node, 'data');
                 var info = {targetId: data.parentId, index: 0};
                 //Before Drop area
                 if(i === 0)
@@ -836,7 +838,7 @@
                 {
                     var $nodeCount = $("<div></div>").addClass("perc-site-map-nodecount");
                     $parent.append($nodeCount);
-                    var $pageCount = $("<div></div>").addClass("perc-site-map-pagecount");
+                    var $pageCount = $("<div></div>").addClass("perc-site-map-pagecount").attr("tabindex","0");
                     $nodeCount.append($pageCount);
                     var $arrowImg = $("<img/>").attr("src", this.getImageSrc(this.ARROW_OFF_IMAGE))
                         .attr("alt", "perc.ui.images@ArrowIconAlt")
@@ -852,7 +854,7 @@
                     $nodeCount.on("keydown." + "level_" + levelIdx,
                         {"sectionId" : sectionObj.id}, function(eventHandler){
                             if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
-                                document.activeElement.click();
+                                self.onNodeCountClick(evt);
                             }
                         });
                 }
@@ -924,7 +926,7 @@
                 //incase parent node is deleted then chilc node refresh fails.
                 if ($section[0] === undefined)
                     return;
-                var data = $section.metadata({type: 'attr', name: 'data'});
+                var data = getJsonObj($section, 'data');
                 var levelIdx =  parseInt(data.level);
                 var isExpanded = $section.hasClass("perc-site-map-expanded");
                 if(!isExpanded)
@@ -1000,7 +1002,7 @@
              * @param $section (jQuery) the section, assumed not <code>null</code>.
              */
             getSectionObject: function($section){
-                var data = $section.metadata({type: 'attr', name: 'data'});
+                var data = getJsonObj($section, 'data');
                 return {SiteSection: {
                         id: data.id,
                         title: data.title,
@@ -1035,7 +1037,8 @@
                     $section.children(".perc-site-map-node-bottomline").remove();
                     var $img = $section.find(".perc-site-map-pagecount img");
                     $img.attr("src", this.getImageSrc(this.ARROW_OFF_IMAGE));
-                    var levelIdx =  parseInt($section.metadata({type: 'attr', name: 'data'}).level);
+                    var levelIdx =  parseInt(getJsonObj($section, 'data').level);
+
                     self.removeLevel(levelIdx + 1);
                     self.handleMoveActionItemState();
 
@@ -1197,7 +1200,8 @@
             onConfig: function(evt){
                 var self = evt.data.context;
                 var $section = $("#" + evt.data.sectionId);
-                var sectionType = $section.metadata({type: 'attr', name: 'data'}).sectionType;
+                var sectionType = getJsonObj($section, 'data').sectionType;
+
                 if(sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
                 {
                     self.editSectionLink(evt);
@@ -1274,15 +1278,19 @@
             {
                 var self = evt.data.context;
                 var $section = $("#" + evt.data.sectionId);
-                var sectionObj = $section.metadata({type: 'attr', name: 'data'});
-                var levelIdx =   parseInt($section.metadata({type: 'attr', name: 'data'}).level);
-                var parentSectionId = $("#perc_level_" + levelIdx).metadata({type: 'attr', name: 'data'}).parentId;
+                var sectionObj = getJsonObj($section, 'data');
+
+                var levelIdx =   parseInt(getJsonObj($section, 'data').level);
+
+                var parentSectionId = getJsonObj($("#perc_level_" + levelIdx), 'data').parentId;
+
                 var siteName = $(".perc-site-map-sitetitle").text();
                 //Get original sections path.
                 var origSecId = evt.data.sectionId.split("_")[0];
 
                 //FIX ISSUE CM-1364, retrieve the displayPath from the server instead of calculate it.
-                var sectionPath = $section.metadata({type: 'attr', name: 'data'}).displayTitlePath;
+                var sectionPath = getJsonObj($section, 'data').displayTitlePath;
+
                 var dlgTitle = I18N.message('perc.ui.sitemap.editsectionlink.dlgtitle@Edit Section Link');
                 $.PercEditSectionLinksDialog().open(sectionObj, sectionPath, siteName, dlgTitle, function(dStatus, fieldData) {
                     if (dStatus === "ok")
@@ -1332,7 +1340,7 @@
                 var self = evt.data.context;
                 var sectionID = evt.data.sectionId;
                 var $section = $("#" + evt.data.sectionId);
-                var sectionObj = $section.metadata({type: 'attr', name: 'data'});
+                var sectionObj = getJsonObj($section, 'data');
                 var siteName = $(".perc-site-map-sitetitle").text();
                 var parentPath = self.getParentPath(evt.data.sectionId);
                 var dlgTitle = I18N.message('perc.ui.sitemap.editexternallink.dlgtitle@Edit External Link');
@@ -1426,13 +1434,13 @@
                     if(oldSectionName !== data.SiteSection.title){ // just if the display title change
                         $(".perc-site-map-sectionlink").parents(".perc-site-map-node").each(function(){
                             //Get all sections nodes
-                            var displayTitlePath = $(this).metadata({type: 'attr', name: 'data'}).displayTitlePath;
+                            var displayTitlePath = getJsonObj($(this), 'data').displayTitlePath;
                             if(typeof(displayTitlePath) != "undefined"){
                                 //Replace the entire path to the node.
                                 var oldPath = parentNodePath + "/" + oldSectionName;
                                 var newPath = parentNodePath + "/" + data.SiteSection.title;
                                 $(this).metadata({type: 'attr', name: 'data'}).displayTitlePath = displayTitlePath.replace(oldPath, newPath);
-                            }
+							}
                         });
                     }
 
@@ -1473,14 +1481,16 @@
                 $sectionBox.attr("data", JSON.stringify(oldBoxData));
 
                 // update the metadata plugin cache
-                var oldMetaData = $section.metadata({type: 'attr', name: 'data'});
+                var oldMetaData = getJsonObj($section, 'data');
+
                 $.extend(oldMetaData, data.SiteSection);
 
                 // fixme update child data recursively
                 var isExpanded = $section.hasClass("perc-site-map-expanded");
                 if(isExpanded)
                 {
-                    var levelIdx =  parseInt($section.metadata({type: 'attr', name: 'data'}).level);
+                    var levelIdx =  parseInt(getJsonObj($section, 'data').level);
+
                     var $childLevel =  $("#perc_level_" + (levelIdx + 1));
                     var $nodes = $childLevel.children(".perc-site-map-nodes").children(".perc-site-map-node");
                     $nodes.each(function(){
@@ -1540,7 +1550,7 @@
                 var childIds = [];
                 //strip the complex ids from children and create another array
                 var $parentSection = $("#" + parentSectionId);
-                var pdata = $parentSection.metadata({type: 'attr', name: 'data'});
+                var pdata = getJsonObj($parentSection, 'data');
                 if(pdata.childIds)
                 {
                     if(Array.isArray(pdata.childIds)){
@@ -1669,20 +1679,16 @@
                             $.Perc_SectionServiceClient.clearCache("getChildren");
                             if (isSortOnly) {
                                 // Just modify the dom locally as only a sort occurred and not a move
-                                var targetData = $target.metadata({
-                                    type: 'attr',
-                                    name: 'data'
-                                });
-                                var lev = $source.metadata({
-                                    type: 'attr',
-                                    name: 'data'
-                                }).level;
+                                var targetData = getJsonObj($target, 'data');
+
+                                var lev = getJsonObj($source, 'data').level;
+
                                 var $level = $("#perc_level_" + lev);
                                 var $nodes = $level.children(".perc-site-map-nodes");
                                 if (sourceIdx > targetIdx) {
                                     var $node = $nodes.children(".perc-site-map-node:eq(" + targetIdx + ")");
                                     $node.before($source);
-                                    $.extend(targetData, result.SiteSelection);
+                                    Object.assign( targetData, { childIds: result.SiteSection.childIds });
                                     $target.attr("data", JSON.stringify(targetData));
                                     $nodes.find(".perc-site-map-node .perc-site-map-box").each(function(i){
                                         var mData = JSON.parse($(this).attr("data"));
@@ -1696,12 +1702,11 @@
                                 }
                                 else
                                 if ((sourceIdx < targetIdx) && (sourceIdx !== (targetIdx - 1))) {
-
                                     var $node = $nodes.children(".perc-site-map-node:eq(" + (targetIdx - 1) + ")");
                                     $node.after($source);
-                                    $.extend(targetData, result.SiteSelection);
-                                    $target.attr("data", JSON.stringify(targetData));
-                                    $nodes.find(".perc-site-map-node .perc-site-map-box").each(function(i){
+                                    Object.assign( targetData, { childIds: result.SiteSection.childIds });
+									$target.attr("data", JSON.stringify(targetData));
+									$nodes.find(".perc-site-map-node .perc-site-map-box").each(function(i){
                                         var mData = JSON.parse($(this).attr("data"));
                                         $.extend(mData, {
                                             index: i
@@ -1754,13 +1759,15 @@
             onDelete: function(evt){
                 var self = evt.data.context;
                 var $section = $("#" + evt.data.sectionId);
-                var levelIdx =   parseInt($section.metadata({type: 'attr', name: 'data'}).level);
-                var parentSectionId = $("#perc_level_" + levelIdx).metadata({type: 'attr', name: 'data'}).parentId;
+                var levelIdx =   parseInt(getJsonObj($section, 'data').level);
+                var parentSectionId = getJsonObj($("#perc_level_" + levelIdx), 'data').parentId;
                 var $parentSection = $("#" + parentSectionId);
                 var folderPath = JSON.parse($section.attr("data")).folderPath;
                 var path = folderPath.replace('//Sites', $.perc_paths.SITES_ROOT);
                 var sectionName = JSON.parse($section.attr("data")).title;
-                var sectionType = $section.metadata({type: 'attr', name: 'data'}).sectionType;
+
+                var sectionType = getJsonObj($section, 'data').sectionType;
+
                 if(sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION_LINK)
                 {
                     self.deleteSectionLink(evt);
@@ -1825,7 +1832,7 @@
             {
                 var self = evt.data.context;
                 var $section = $("#" + evt.data.sectionId);
-                var metadata = $section.metadata({type: 'attr', name: 'data'});
+                var metadata = getJsonObj($section, 'data');
                 var sectionType = metadata.sectionType;
                 //If the section has any section links then hard refresh as we have to remove the section links
                 if((sectionType === $.Perc_SectionServiceClient.PERC_SECTION_TYPE.SECTION && $("[id*='" + evt.data.sectionId + "_']").length>0)||
@@ -1845,8 +1852,10 @@
 
                     return;
                 }
-                var levelIdx =   parseInt($section.metadata({type: 'attr', name: 'data'}).level);
-                var parentSectionId = $("#perc_level_" + levelIdx).metadata({type: 'attr', name: 'data'}).parentId;
+                var levelIdx =   parseInt(getJsonObj($section, 'data').level);
+
+                var parentSectionId = getJsonObj($("#perc_level_" + levelIdx), 'data').parentId;
+
                 var $parentSection = $("#" + parentSectionId);
                 self.collapseSection(evt.data.sectionId);
                 $section.remove();
@@ -1858,7 +1867,7 @@
                     $parentSection.children(".perc-site-map-node-bottomline").remove();
 
                 // Update child list in parent
-                var temp = $parentSection.metadata({type: 'attr', name: 'data'});
+                var temp = getJsonObj($parentSection, 'data');
                 temp.childIds = self.convertCXFArray(temp.childIds);
                 var idx = $.inArray(evt.data.sectionId, temp.childIds);
                 if(idx > -1)
@@ -1873,6 +1882,7 @@
                 self.fireOnChange();  // refresh finder
             },
 
+
             /**
              * Helper method to handle the section link deletions, shows an alert message before deleting. Calls the
              * $.Perc_SectionServiceClient.deleteSectionLink with section id and parent id. Calls afterDeleteCallback for
@@ -1884,9 +1894,13 @@
             {
                 var self = evt.data.context;
                 var $section = $("#" + evt.data.sectionId);
-                var levelIdx =   parseInt($section.metadata({type: 'attr', name: 'data'}).level);
-                var parentSectionId = $("#perc_level_" + levelIdx).metadata({type: 'attr', name: 'data'}).parentId;
-                var sectionName = $section.metadata({type: 'attr', name: 'data'}).title;
+
+
+				var levelIdx = getJsonObj($section, 'data').level;
+
+				var parentSectionId = getJsonObj($("#perc_level_" + levelIdx), 'data').parentId;;
+
+                var sectionName = getJsonObj($section, 'data').title;
                 $.perc_utils.confirm_dialog({
                     id: 'perc-delete-section-link',
                     title: 'Delete Section Link',
@@ -1918,8 +1932,8 @@
             {
                 var self = evt.data.context;
                 var $section = $("#" + evt.data.sectionId);
-                var sectionName = $section.metadata({type: 'attr', name: 'data'}).title;
-                $.perc_utils.confirm_dialog({
+                var sectionName = getJsonObj($section, 'data').title;
+				$.perc_utils.confirm_dialog({
                     id: 'perc-delete-external-link',
                     title: 'Delete External Link',
                     question: 'Delete external link ' + sectionName +'?',
@@ -1948,7 +1962,8 @@
             onAddSection: function(evt){
                 var self = evt.data.context;
                 var $parentSection = $("#" + evt.data.parentSectionId);
-                var folderPath = $parentSection.metadata({type: 'attr', name: 'data'}).folderPath;
+                var folderPath = getJsonObj($parentSection, 'data').folderPath;
+
                 var allTitle = [];
                 $(evt.currentTarget).parent().next().children().each( function( ){
                     var data  = $(this).attr("data");
@@ -2045,10 +2060,10 @@
             {
                 var self = evt.data.context;
                 var $parentSection = $("#" + evt.data.parentSectionId);
-                var folderPath = $parentSection.metadata({type: 'attr', name: 'data'}).folderPath;
-                if(status === $.PercServiceUtils.STATUS_SUCCESS)
+                var folderPath = getJsonObj($parentSection, 'data').folderPath;
+				if(status === $.PercServiceUtils.STATUS_SUCCESS)
                 {
-                    var temp = $parentSection.metadata({type: 'attr', name: 'data'});
+                    var temp = getJsonObj($parentSection, 'data');
                     temp.childIds = self.convertCXFArray(temp.childIds);
                     self.addSectionToLevel(self.createSection(data.SiteSection,
                         evt.data.level, evt.data.parentSectionId, temp.childIds.length), evt.data.level);
@@ -2100,8 +2115,9 @@
                 if(typeof(results) == 'undefined' || results == null)
                     results = new Array();
                 var $current  = $("#" + sectionid);
-                var temp = $current.metadata({type: 'attr', name: 'data'});
-                if(typeof(temp.parentId) != 'undefined'
+                var temp = getJsonObj($current, 'data');
+
+				if(typeof(temp.parentId) != 'undefined'
                     && temp.parentId != null && temp.parentId.length > 0)
                 {
                     this.getSectionParentChain(temp.parentId, results);
@@ -2145,6 +2161,45 @@
 
 
         }); // End widget
+
+
+	/**
+
+	* #1097 - Created new function to access the JSON data/object given in DIV (as 'data' attribute), using attr() function.
+	* This is to avoid the use of metadata property.
+	* @return JSON object
+
+	* Removed for example, the below all, similar lines of code in this file
+	* var data = $section.metadata({type: 'attr', name: 'data'})
+
+	* And replaced with  the following one
+	* var data = getJsonObj($section, 'data');
+
+	*/
+	function getJsonObj(dataObj, attributeName){
+		var attrubuteValue = null;
+		var attributeValue = dataObj.attr(attributeName);
+
+		//If JSON data (key/value) is not given within double quotes then formatting it to avoid parsing errors
+		if(attributeValue.indexOf("\"") == -1){
+			attributeValue = attributeValue.replace(/'/g, '"');
+			var attributeValue_array = attributeValue.split(',');
+			var Ids_arr = [];
+			for(var i = 0; i < attributeValue_array.length; i++) {
+				var tempArrayData = attributeValue_array[i];
+				var tempArrayData_arr = tempArrayData.split(':');
+				tempArrayData_arr = tempArrayData_arr[0].replace("{","");
+				Ids_arr.push(tempArrayData_arr.trim());
+
+			}
+			for(var j = 0; j < Ids_arr.length; j++) {
+				var tempElement = Ids_arr[j];
+				attributeValue = attributeValue.replace(tempElement, "\""+tempElement+"\"");
+			}
+		}
+		var data_jsonFormat = JSON.parse(attributeValue);
+		return data_jsonFormat;
+	}
 
 
     function deleteSiteWithDirtyCheck() {
