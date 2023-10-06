@@ -21,6 +21,7 @@ var isEC2Instance;
 $(document).ready(function() {
 
     siteView = 'card';
+	PAGE_SIZE=5;
     availableRegions = {};
     availablePublishingServer={};
     siteListObject = {};
@@ -636,26 +637,109 @@ function processIncrementalPreview(serverId) {
         publishRelatedItems = getArrayProperty(serverProperties.serverInfo.properties, 'key', 'publishRelatedItems').value;
         serverType = serverProperties.serverInfo.serverType;
         console.log(serverProperties);
-        $.PercPublisherService(false).getIncrementalItems(siteName, serverName, 1, 1000000, function(status, result) {
-            status == 'error' || result.PagedItemList.childrenInPage.length == 0 ? incrementalPreviewObject = {} : incrementalPreviewObject = result;
-            console.log(incrementalPreviewObject);
-            processTemplate(incrementalPreviewObject, 'templateIncrementalPublishPreviewOverlay', 'percIncrementalPublishPreviewOverlayTarget');
-            bindIncrementalPublishEvents();
-            $('#percIncrementalPublishPreviewOverlayTarget').animateCss('fadeIn faster');
-            $('#percIncrementalPublishPreviewOverlay').modal('_enforceFocus');
-
-            if(publishRelatedItems === true && serverType.toLowerCase() == 'production' && result.PagedItemList.childrenInPage.length > 0) {
-                processIncrementalRelatedItemsPreview();
-                $('#percIncrementalRelatedItemsTarget').animateCss('fadeIn faster');
-            }
-        });
+		loadIncrementalPage(siteName,serverName,1);
     });
 
 }
 
+function loadIncrementalPage(siteName,serverName,startIndex){
+		$.PercPublisherService(false).getIncrementalItems(siteName, serverName, startIndex, PAGE_SIZE, function(status, result) {
+		status == 'error' || result.PagedItemList.childrenInPage.length == 0 ? incrementalPreviewObject = {} : incrementalPreviewObject = result;
+		console.log(incrementalPreviewObject);
+
+		processTemplate(incrementalPreviewObject, 'templateIncrementalPublishPreviewOverlay', 'percIncrementalPublishPreviewOverlayTarget');
+		createPaginatedTable(incrementalPreviewObject,1);
+		bindIncrementalPublishEvents();
+		$('#percIncrementalPublishPreviewOverlayTarget').animateCss('fadeIn faster');
+		$('#percIncrementalPublishPreviewOverlay').modal('_enforceFocus');
+
+		if(publishRelatedItems === true && serverType.toLowerCase() == 'production' && result.PagedItemList.childrenInPage.length > 0) {
+			processIncrementalRelatedItemsPreview();
+			$('#percIncrementalRelatedItemsTarget').animateCss('fadeIn faster');
+		}
+	});
+
+}
+
+function refreshIncrementalPage(siteName,serverName,startIndex){
+		$.PercPublisherService(false).getIncrementalItems(siteName, serverName, startIndex, PAGE_SIZE, function(status, result) {
+		status == 'error' || result.PagedItemList.childrenInPage.length == 0 ? incrementalPreviewObject = {} : incrementalPreviewObject = result;
+		console.log(incrementalPreviewObject);
+
+		processTemplate(incrementalPreviewObject, 'templateIncrementalPublishPreviewOverlay', 'percIncrementalPublishPreviewOverlayTarget');
+		createPaginatedTable(incrementalPreviewObject,startIndex);
+		bindIncrementalPublishEvents();
+
+
+		if(publishRelatedItems === true && serverType.toLowerCase() == 'production' && result.PagedItemList.childrenInPage.length > 0) {
+			processIncrementalRelatedItemsPreview();
+		}
+	});
+
+}
+
+function createPaginatedTable(data,startIndex){
+
+    if(data.PagedItemList && data.PagedItemList.childrenCount > 0){
+
+        var totalItems = data.PagedItemList.childrenCount;
+        var totalPages = Math.ceil(totalItems/PAGE_SIZE);
+        var activePage = Math.ceil(startIndex/PAGE_SIZE);
+
+		var pageSpan = $("<a class='paginate_button'></a>");
+        var first = pageSpan.clone().text("First").addClass('paginate_button first');
+		first[0].setAttribute("startIndex",1);
+        var sind = ((activePage-2)*PAGE_SIZE + 1)<1?1:(activePage-2)*PAGE_SIZE + 1;
+        var prev = pageSpan.clone().text("Prev").addClass('paginate_button previous');
+		prev[0].setAttribute("startIndex",sind);
+        sind = ((activePage*PAGE_SIZE) + 1)>totalPages*PAGE_SIZE?((activePage-1)*PAGE_SIZE) + 1:activePage*PAGE_SIZE + 1;
+        var next = pageSpan.clone().text("Next").addClass('paginate_button next');
+		next[0].setAttribute("startIndex",sind);
+        var last = pageSpan.clone().text("Last").addClass('paginate_button last');
+		last[0].setAttribute("startIndex",(totalPages-1)*PAGE_SIZE+1);
+
+        var pages = [];
+        pages.push(activePage);
+        for(i=1;i<=4 && pages.length<5;i++){
+            if(activePage-i > 0)
+                pages.unshift(activePage-i);
+            if(activePage+i <= totalPages)
+                pages.push(activePage+i);
+        }
+
+        var pagedItems = $("<span/>");
+        for(i=0; i<pages.length; i++){
+            var clName = activePage === pages[i]?"paginate_button current":"paginate_button";
+            var pageNum = pageSpan.clone().text(pages[i]).addClass(clName);
+			pageNum[0].setAttribute("startIndex",((pages[i]-1)*PAGE_SIZE)+1);
+            pagedItems.append(pageNum);
+            if(i<pages.length-1){
+                pagedItems.append(",");
+            }
+            pagedItems.append("&nbsp;");
+        }
+
+        var pagingBar = $("<div class='perc-wrapper'/>");
+        pagingBar.append(first).append(prev).append(pagedItems).append(next).append(last);
+        pagingBar.find(".paginate_button").on("click",function(){
+			let startIndex = this.getAttribute("startIndex");
+			refreshIncrementalPage(siteName,serverName,startIndex);
+        });
+        pagingBar.find(".paginate_button").each(function(){
+           if($(this).data("startIndex") === (activePage-1)*PAGE_SIZE + 1){
+               $(this).addClass("perc-disabled").off();
+           }
+        });
+
+        $('#perc-paging-buttons').append(pagingBar);
+
+    }
+
+}
+
 function processIncrementalRelatedItemsPreview() {
-    $.PercPublisherService(false).getIncrementalRelatedItems(siteName, serverName, 1, 1000000, function(status, result) {
-        status == 'error' || result.PagedItemList.childrenInPage.length == 0 ? incrementalRelatedPreviewObject = {} : incrementalRelatedPreviewObject = result;
+    $.PercPublisherService(false).getIncrementalRelatedItems(siteName, serverName, 1, 3, function(status, result) {
+        status == 'error' || result.PagedItemList.childrenInPage.length == 0 ? incrementalRelatedPreviewObject = {} : incrementalRelatedPreviewObject = result.PagedItemList;
         console.log(incrementalRelatedPreviewObject);
         processTemplate(incrementalRelatedPreviewObject, 'templateIncrementalPublishRelatedItems', 'percIncrementalRelatedItemsTarget');
         bindIncrementalRelatedItemsEvents();

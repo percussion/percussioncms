@@ -294,3 +294,36 @@ button#percIncrementalPublish {
 #percToggleSelectAllLogs {
     margin-top: 3px;
 }
+
+a.paginate_button.current{
+	 border: 1px solid #111;
+  background-color: #585858;
+   color: white;
+}
+
+a.paginate_button{
+	float: left;
+  padding-top: 0.25em;
+  	 box-sizing: border-box;
+  display: inline-block;
+  min-width: 1.5em;
+  padding: 0.5em 1em;
+  margin-left: 2px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  color: #333 ;
+  border: 1px solid transparent;
+  border-radius: 2px;
+}
+a.paginate_button:hover {
+  color: white;
+  border: 1px solid #111;
+  background-color: #585858;
+}
+
+a.paginate_button:active {
+   border: 1px solid #111;
+  background-color: #585858;
+   color: white;
+ }
