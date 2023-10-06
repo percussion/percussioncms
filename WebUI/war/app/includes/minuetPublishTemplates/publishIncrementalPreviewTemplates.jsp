@@ -1,5 +1,3 @@
-
-
 <script id="templateIncrementalPublishPreviewOverlay" type="text/x-handlebars-template">
   <div id="percIncrementalPublishPreviewOverlay" role="dialog" aria-modal="true" tabindex="-1">
       <div class="container" role="document">
@@ -16,12 +14,21 @@
                 {{/if}}
             </div>
         </div>
+		<div class="row">
+			<div class="col">
+				<hr>
+			</div>
+		</div>
         <div class="row">
-            <div class="col mt-3 mb-3">
-                {{#if PagedItemList.childrenInPage}}
-                <i18n:message key="perc.ui.publish.incrementalPreview@Items queued for incremental"/>: {{PagedItemList.childrenCount}}
-                {{/if}}
-            </div>
+			<div class="col">
+				<div class="float-left">
+					{{#if PagedItemList.childrenInPage}}
+					<i18n:message key="perc.ui.publish.incrementalPreview@Items queued for incremental"/>: {{PagedItemList.childrenCount}}
+					{{/if}}
+				</div>
+				<div class="float-right" id="perc-paging-buttons">
+                </div>
+			</div>
         </div>
         <div class="row">
             <div class="col">

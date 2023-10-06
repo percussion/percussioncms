@@ -196,12 +196,11 @@ public class PSCm1ListViewHelper extends PSBaseListViewHelper
             // if we have last modified info, then fix it up to last real user mod
             if (lastModifiedDate != null && StringUtils.isNotBlank(lastModifier))
             {
-                PSState state = getStateById(wf, itemEntry.getContentStateId());
-                PSPair<String, String> modInfo = folderHelper.fixupLastModified(idMapper.getGuid(new PSLocator(itemEntry.getContentId())), lastModifier, lastModifiedDate, state.isPublishable());
-                
-                displayProperties.put(CONTENT_LAST_MODIFIER_NAME, modInfo.getFirst());
-                displayProperties.put(CONTENT_LAST_MODIFIED_DATE_NAME, modInfo.getSecond());                
+                displayProperties.put(CONTENT_LAST_MODIFIER_NAME, lastModifier);
+                displayProperties.put(CONTENT_LAST_MODIFIED_DATE_NAME, PSDateUtils.getDateToString(lastModifiedDate));
+                //Removed the call that was replacing modifier name "rxserver" with previous modifier due to performance issues.
             }
+
         }
 
         if (StringUtils.isNotBlank(getCategory(pathItem)))
