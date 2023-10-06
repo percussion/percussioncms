@@ -713,10 +713,6 @@ function createPaginatedTable(data,startIndex){
             var pageNum = pageSpan.clone().text(pages[i]).addClass(clName);
 			pageNum[0].setAttribute("startIndex",((pages[i]-1)*PAGE_SIZE)+1);
             pagedItems.append(pageNum);
-            if(i<pages.length-1){
-                pagedItems.append(",");
-            }
-            pagedItems.append("&nbsp;");
         }
 
         var pagingBar = $("<div class='perc-wrapper'/>");
