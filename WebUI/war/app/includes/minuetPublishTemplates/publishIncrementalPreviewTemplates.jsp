@@ -41,7 +41,6 @@
                             <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Title"/></th>
                             <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Modified"/></th>
                             <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Modified By"/></th>
-                            <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Published"/></th>
                         </tr>
                       </thead>
                       <tbody id="percIncrementalPublishQueueList">
@@ -53,7 +52,6 @@
                             <td>{{name}}</td>
                           <td>{{#stringToDate (filterByValue columnData.column 'name' 'sys_contentlastmodifieddate')}}{{/stringToDate}}</td>
                           <td>{{#filterByValue columnData.column 'name' 'sys_contentlastmodifier'}}{{/filterByValue}}</td>
-                          <td>{{#filterByValue columnData.column 'name' 'sys_contentpublicationdate'}}{{/filterByValue}}</td>
                         </tr>
                         {{/each}}
                         {{else}}
@@ -102,7 +100,6 @@
                   <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Title"/></th>
                   <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Modified"/></th>
                   <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Modified By"/></th>
-                  <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Published"/></th>
               </tr>
             </thead>
             <tbody id="percIncrementalPublishRelatedItemsList">
@@ -119,7 +116,6 @@
                   <td>{{name}}</td>
                 <td>{{#stringToDate (filterByValue columnData.column 'name' 'sys_contentlastmodifieddate')}}{{/stringToDate}}</td>
                 <td>{{#filterByValue columnData.column 'name' 'sys_contentlastmodifier'}}{{/filterByValue}}</td>
-                <td>{{#filterByValue columnData.column 'name' 'sys_contentpublicationdate'}}{{/filterByValue}}</td>
               </tr>
               {{/each}}
               {{else}}
