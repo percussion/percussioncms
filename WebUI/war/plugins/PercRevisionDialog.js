@@ -186,6 +186,7 @@
             if(isRestorable)
             {
                 $("#revisionsTable").find(".perc-revisions-restore-img").on("click",function(){
+					$.blockUI();
                     var revId = $(this).attr("revId");
                     $.PercRevisionService.restoreRevision(itemId,revId,afterRestore);
                 })
@@ -248,6 +249,9 @@
          */
         function afterRestore(status,result)
         {
+            if ( $.blockUI ) {
+                $.unblockUI();
+            }
             var self = this;
 
             if(status === $.PercServiceUtils.STATUS_ERROR)
