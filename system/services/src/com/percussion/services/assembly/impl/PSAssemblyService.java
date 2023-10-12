@@ -837,7 +837,11 @@ public class PSAssemblyService implements IPSAssemblyService
          for (IPSAssemblyResult paginatedItem : paginatedItems)
          {
             String message = "Preview of paginated items in context other than 0 " + "is not supported.";
-            paginatedItem.setResultData(message.getBytes());
+            try {
+               paginatedItem.setResultData(message.getBytes());
+            }catch(IOException e){
+               log.error(PSExceptionUtils.getMessageForLog(e));
+            }
             assemblyResultMap.put(paginatedItem, paginatedItem);
          }
          perAssemblerItems.removeAll(paginatedItems);

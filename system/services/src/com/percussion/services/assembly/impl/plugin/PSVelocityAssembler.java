@@ -586,8 +586,11 @@ public class PSVelocityAssembler extends PSAssemblerBase
             results.append("</h2><p>");
             results.append(message).append(" : ").append(ae.getMessage());
             results.append("</p></div></body></html>");
-            work.setResultData(results.toString().getBytes(StandardCharsets.UTF_8));
-
+            try{
+               work.setResultData(results.toString().getBytes(StandardCharsets.UTF_8));
+            }catch(IOException e){
+               ms_log.error(PSExceptionUtils.getMessageForLog(e));
+            }
             return (IPSAssemblyResult) work;
 
 

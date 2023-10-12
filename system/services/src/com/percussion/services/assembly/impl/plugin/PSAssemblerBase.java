@@ -470,7 +470,11 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
    {
       work.setStatus(Status.FAILURE);
       work.setMimeType("text/plain");
-      work.setResultData(message.getBytes(StandardCharsets.UTF_8));
+      try{
+         work.setResultData(message.getBytes(StandardCharsets.UTF_8));
+      }catch(IOException e){
+         ms_log.error(PSExceptionUtils.getMessageForLog(e));
+      }
    }
    
    /**
@@ -489,8 +493,11 @@ public abstract class PSAssemblerBase implements IPSAssembler, IPSExtension
    {
       work.setStatus(status);
       work.setMimeType("text/plain");
-
-      work.setResultData(message.getBytes(StandardCharsets.UTF_8));
+      try{
+         work.setResultData(message.getBytes(StandardCharsets.UTF_8));
+      }catch(IOException e){
+         ms_log.error(PSExceptionUtils.getMessageForLog(e));
+      }
       return (IPSAssemblyResult) work;
 
    }
