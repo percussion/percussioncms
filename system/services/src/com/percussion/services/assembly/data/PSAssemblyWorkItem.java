@@ -823,12 +823,11 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
    /*
     * //see base class method for details
     */
-   public void setResultData(byte[] resultData)
-   {       
+   public void setResultData(byte[] resultData) throws IOException {
       clearResults();
       if (resultData != null && resultData.length > THRESHOLD)
       {
-         try {
+
             m_resultFile = new PSPurgableTempFile("result", ".tmp", m_tempDir);
             try (FileOutputStream os = new FileOutputStream(m_resultFile)) {
                try (ByteArrayInputStream is = new ByteArrayInputStream(resultData)) {
@@ -836,12 +835,9 @@ public class PSAssemblyWorkItem implements IPSAssemblyResult
                   return;
                }
             }
-         }
 
-         catch (IOException e)
-         {
-            ms_log.error("Couldn't create temp file", e);
-         }   
+
+
 
       }
       m_resultData = resultData;

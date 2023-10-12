@@ -27,15 +27,18 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.io.IOUtils;
 
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.util.PSPurgableTempFile;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 public class MutableAssemblyResult extends DelegateToAssemblyItemAssemblyResult {
-    
+    private static final Logger log = LogManager.getLogger();
     /**
      * Safe to serialize
      */
@@ -107,7 +110,11 @@ public class MutableAssemblyResult extends DelegateToAssemblyItemAssemblyResult 
     @Override
     public void clearResults() {
         setResultData(null);
-        getAssemblyItem().setResultData(null);
+        try{
+            getAssemblyItem().setResultData(null);
+        }catch(IOException e){
+            log.error(PSExceptionUtils.getMessageForLog(e));
+        }
         if (resultFile != null && ! fileReleased) {
            resultFile.release();
            resultFile = null;

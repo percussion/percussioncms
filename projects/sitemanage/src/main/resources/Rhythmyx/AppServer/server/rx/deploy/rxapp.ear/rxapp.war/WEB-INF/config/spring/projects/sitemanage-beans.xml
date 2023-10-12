@@ -1552,7 +1552,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         </constructor-arg>
 
         <property name="systemProps">
-            <ref bean="systemProperties"/>
+            <ref bean="psSystemProperties"/>
         </property>
     </bean>
     <bean id="pathService" class="com.percussion.pathmanagement.service.impl.PSPathService" lazy-init="true">
@@ -1640,7 +1640,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <!-- Utility Service -->
     <bean id="utilityService" class="com.percussion.utils.service.impl.PSUtilityService" autowire="constructor">
         <property name="systemProps">
-            <ref bean="systemProperties"/>
+            <ref bean="psSystemProperties"/>
         </property>
     </bean>
     <!--

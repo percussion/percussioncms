@@ -16,6 +16,7 @@
  */
 package com.percussion.services.assembly.impl.plugin;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtension;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
@@ -41,10 +42,7 @@ import com.percussion.utils.exceptions.PSExceptionHelper;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.jexl.PSJexlEvaluator;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -144,14 +142,12 @@ public class PSDebugAssembler implements IPSAssembler, IPSExtension
          {
             ms_log.error("Problem during assembly", e);
             item.setStatus(Status.FAILURE);
-            if (e.getLocalizedMessage() != null)
-            {
-               item.setResultData(e.getLocalizedMessage().getBytes());
+            try{
+               item.setResultData(e.getMessage().getBytes());
+            }catch(IOException io){
+               ms_log.error(PSExceptionUtils.getMessageForLog(io));
             }
-            else
-            {
-               item.setResultData(e.getClass().getName().getBytes());
-            }
+
             item.setMimeType("text/plain");
          }
       }

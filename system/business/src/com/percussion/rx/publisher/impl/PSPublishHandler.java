@@ -72,6 +72,7 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
@@ -399,8 +400,11 @@ public class PSPublishHandler implements MessageListener, IPSNotificationListene
                   result.setMimeType("text/plain");
                   String message = "Error expanding assembly result: " +
                           PSExceptionUtils.getMessageForLog(e);
-
+                  try {
                      result.setResultData(message.getBytes(StandardCharsets.UTF_8));
+                  }catch(IOException ioException){
+                     log.error(PSExceptionUtils.getMessageForLog(ioException));
+                  }
 
                }
             }
@@ -767,7 +771,11 @@ public class PSPublishHandler implements MessageListener, IPSNotificationListene
     */
    private void setEncodedResultData(IPSAssemblyItem work, String msg)
    {
-         work.setResultData(msg.getBytes(StandardCharsets.UTF_8));
+         try {
+            work.setResultData(msg.getBytes(StandardCharsets.UTF_8));
+         }catch(IOException e){
+            log.error(PSExceptionUtils.getMessageForLog(e));
+         }
          work.setMimeType("text/plain; charset=utf8");
    }
    

@@ -93,6 +93,7 @@ package com.percussion.rx.publisher.impl;
  import org.w3c.dom.Element;
 
  import javax.naming.NameNotFoundException;
+ import java.io.IOException;
  import java.io.StringReader;
  import java.io.UnsupportedEncodingException;
  import java.net.URL;
@@ -1290,7 +1291,11 @@ public class PSPublishingJob implements Runnable
       item.setDeliveryContext(context);
       if ((!dtype.isUnpublishingRequiresAssembly()) && unpublishingInfo != null)
       {
-         item.setResultData(unpublishingInfo);
+          try{
+            item.setResultData(unpublishingInfo);
+        }catch(IOException e){
+            log.error(PSExceptionUtils.getMessageForLog(e));
+        }
       }
       if (unpublishingInfo == null 
             && (!dtype.isUnpublishingRequiresAssembly()))
