@@ -36,14 +36,7 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -252,11 +245,22 @@ public class PSCalendarMonthModelTest
       doVelocityTest(ctx, "$rx.month.Weeks", "6");
       doVelocityTest(ctx, "$rx.month.Start", "2006-04-01");
       doVelocityTest(ctx, "$rx.month.End", "2006-04-30");
-     
+
       doVelocityTest(ctx, "$rx.month.StartDate.Time.Time",
-            "1143867600000");
+            String.valueOf(df.parse("2006-04-01").getTime()));
+
+      Calendar c = Calendar.getInstance();
+      c.set(Calendar.DAY_OF_MONTH, 30);
+      c.set(Calendar.MONTH, 3);
+      c.set(Calendar.YEAR, 2006);
+      c.set(Calendar.HOUR_OF_DAY, 23);
+      c.set(Calendar.MINUTE, 59);
+      c.set(Calendar.SECOND, 59);
+      c.set(Calendar.MILLISECOND, 999);
+      Long date = c.getTime().getTime();
+
       doVelocityTest(ctx, "$rx.month.EndDate.Time.Time",
-            "1146455999999");
+              date.toString());
 
       doVelocityTest(ctx, "$!rx.month.getEvents(1)", "");
       doVelocityTest(ctx, "$!rx.month.setEvents()", "");
