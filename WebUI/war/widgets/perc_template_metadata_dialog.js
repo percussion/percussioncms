@@ -34,14 +34,78 @@ $.perc_template_metadata_dialog = function(templateId) {
 
                "<div class = 'fieldGroup'><div class = 'perc-section-header'><div class = 'perc-section-label' groupname = 'perc-section-add-code-container'>" +
                "<span class = 'perc-min-max perc-items-maximizer'></span>Additional Code</div></div>" +
-               "<div id = 'perc-section-add-code-container' style='display: none'>" +
- 		       "<label for='perc_template_metadata_additional_head_content'>Additional head content:</label> <br/> " +
-		       "<textarea id='perc_template_metadata_additional_head_content' class='tempmeta' rows='10' cols='200'></textarea> <br />" +
-		       "<label for='perc_template_metadata_code_insert_after_body_start'>Code insert after body start:</label> <br/> " +
-		       "<textarea id='perc_template_metadata_code_insert_after_body_start' class='tempmeta' rows='10' cols='200'></textarea> <br />" +
-		      "<label for='perc_template_metadata_code_insert_before_body_close'>Code insert before body close:</label> <br/> " +
-		        "<textarea id='perc_template_metadata_code_insert_before_body_close' class='tempmeta' rows='10' cols='200'></textarea> </div></div>" +
-               
+               "<div id = 'perc-section-add-code-container' groupname= 'perc-section-add-code-container' type='sys_normal' style='display: none'>" +
+               "<label accesskey='' for='perc_template_metadata_additional_head_content'>Additional head content:</label> <br/> " +
+               "<textarea id='perc_template_metadata_additional_head_content' name='perc_template_metadata_additional_head_content' wrap='soft' class='datadisplay' aarenderer='MODAL' requirescleanup='no' codeeditor='yes' codeeditor_mode='html'></textarea>" +
+               "<script>"+
+               "var editor12 = CodeMirror.fromTextArea(document.getElementById('perc_template_metadata_additional_head_content'), {"+
+               "mode: 'htmlmixed',"+
+               "htmlMode: true,"+
+               "showCursorWhenSelecting: true,"+
+               "theme: 'default',"+
+               "lineNumbers: true,"+
+               "height: 'auto',"+
+               "lineWrapping: false,"+
+               "indentUnit: 2,"+
+               "tabSize: 4,"+
+               "indentWithTabs: true,"+
+               "matchBrackets: true,"+
+               "saveCursorPosition: true,"+
+               "styleActiveLine: true,"+
+               "spellcheck: true,"+
+               "autocorrect: true,"+
+               "autofocus: true,"+
+               "gutter: true,"+
+               "screenReaderLabel: 'HTML Source Code Editor'});"+
+               "setTimeout( editor12.refresh, 0 );"+
+               "</script><br />"+
+               "<label accesskey='' for='perc_template_metadata_code_insert_after_body_start'>Code insert after body start:</label> <br/> " +
+               "<textarea id='perc_template_metadata_code_insert_after_body_start' name='perc_template_metadata_code_insert_after_body_start' wrap='soft' class='datadisplay' aarenderer='MODAL' requirescleanup='no' codeeditor='yes' codeeditor_mode='html'></textarea> <br />" +
+               "<script>"+
+               "var editor13 = CodeMirror.fromTextArea(document.getElementById('perc_template_metadata_code_insert_after_body_start'), {"+
+               "mode: 'xml',"+
+               "htmlMode: true,"+
+               "showCursorWhenSelecting: true,"+
+               "theme: 'default',"+
+               "lineNumbers: true,"+
+               "height: 'auto',"+
+               "lineWrapping: false,"+
+               "indentUnit: 2,"+
+               "tabSize: 2,"+
+               "indentWithTabs: true,"+
+               "matchBrackets: true,"+
+               "saveCursorPosition: true,"+
+               "styleActiveLine: true,"+
+               "spellcheck: true,"+
+               "autocorrect: true,"+
+               "autofocus: true,"+
+               "screenReaderLabel: 'HTML Source Code Editor'});"+
+               "editor13.refresh();"+
+               "</script><br />"+
+               "<label accesskey='' for='perc_template_metadata_code_insert_before_body_close'>Code insert before body close:</label> <br/> " +
+               "<textarea id='perc_template_metadata_code_insert_before_body_close' name='perc_template_metadata_code_insert_before_body_close' wrap='soft' class='datadisplay' aarenderer='MODAL' requirescleanup='no' codeeditor='yes' codeeditor_mode='html'></textarea> " +
+               "<script>"+
+               "var editor14 = CodeMirror.fromTextArea(document.getElementById('perc_template_metadata_code_insert_before_body_close'), {"+
+               "mode: 'xml',"+
+               "htmlMode: true,"+
+               "showCursorWhenSelecting: true,"+
+               "theme: 'default',"+
+               "lineNumbers: true,"+
+               "height: 'auto',"+
+               "lineWrapping: false,"+
+               "indentUnit: 2,"+
+               "tabSize: 2,"+
+               "indentWithTabs: true,"+
+               "matchBrackets: true,"+
+               "saveCursorPosition: true,"+
+               "styleActiveLine: true,"+
+               "spellcheck: true,"+
+               "autocorrect: true,"+
+               "autofocus: true,"+
+               "screenReaderLabel: 'HTML Source Code Editor'});"+
+               "editor14.refresh();"+
+               "</script><br />"+
+               "</div></div>"+
                getSecueSectionFieldGroups() +
                "</div></div>").perc_dialog( {
          title: I18N.message("perc.ui.template.metadata.dialog@Template Metadata"),
