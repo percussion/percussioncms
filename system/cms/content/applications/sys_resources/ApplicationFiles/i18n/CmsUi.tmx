@@ -3692,6 +3692,46 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
         <seg>Vista previa de esta revisión</seg>
     </tuv>
 </tu>
+<tu tuid="perc.ui.revisionDialog.compare@compareRevisions">
+    <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Compare Revisions</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>comparar revisiones</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.selectRevToCompare@selectRevToCompare">
+    <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Select Revisions To Compare</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>seleccione revisiones para comparar</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.selectRev@selectRev">
+    <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Select Revision</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>seleccione revisione</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.itemTitle@ItemTitle">
+    <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Title</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Título</seg>
+    </tuv>
+</tu>
 <tu tuid="perc.ui.revisionDialog.label@Latest">
     <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
     <note xml:lang="en-us"></note>
