@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: santosh.dhariwal
-  Date: 10/12/2023
-  Time: 10:51 AM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page import="com.percussion.services.utils.jspel.PSRoleUtilities" %>
 <%@ taglib uri="/WEB-INF/tmxtags.tld" prefix="i18n" %>
 <%@ taglib uri="http://www.owasp.org/index.php/Category:OWASP_CSRFGuard_Project/Owasp.CsrfGuard.tld" prefix="csrf" %>
@@ -53,8 +46,9 @@
         }
 
         .perc-compare-header {
-            height: 35px;
+            height: 40px;
             background-color: #133c55;
+            color: #FFFFFF;
             margin: 10px;
             font-weight: 800;
             font-size: 14pt;
@@ -124,27 +118,18 @@
 
 <div class="container">
     <div class="perc-title" style="z-index: 4990;">
-        <div>I18N.message("perc.ui.revisionDialog.compare@compareRevisions")</div>
+        <i18n:message key="perc.ui.revisionDialog.compare@compareRevisions"/>
     </div>
-    <div class="perc-compare-header" class="container">
-        <div id="leftSide" style="float:left;" width="10%">
-
-            <div>
-                <table border="0" cellpadding="0" cellspacing="0" height="100%">
-
+    <div class="container">
+        <div id="leftSide" class="perc-compare-header"  style="float:left;" width="10%">
+            <div >
+                <i18n:message key="perc.ui.revisionDialog.selectRevToCompare@selectRevToCompare"/>
+            </div>
+            <div style="padding:20px">
+                <table  height="100%">
                     <tr>
-                        <td class="headercell" valign="top">
-                            <table border="0" cellpadding="0" cellspacing="0">
-                                <tr class="outerboxcell">
-                                    <td align="center" class="outerboxcellfont" colspan="2" height="2">
-                                    </td>
-                                </tr>
-                                <tr class="outerboxcell">
-                                    <td align="center" class="perc-compare-header"
-                                        style="color: #FFFFFF;margin-bottom:20px;padding:5px" colspan="2" height="2">
-                                        I18N.message("perc.ui.revisionDialog.selectRevToCompare@selectRevToCompare")
-                                    </td>
-                                </tr>
+                        <td class="headercell" >
+                            <table border="0"  cellpadding="0" cellspacing="0">
                                 <tr style="margin-bottom:20px;padding:5px">
                                     <td align="center" valign="top">
                                         <form name="itemdetails1">
@@ -160,7 +145,7 @@
                                                 </tr>
                                                 <tr class="datacell2">
                                                     <td align="left" class="datacellfontheader" height="20" width="150">
-                                                        I18N.message("perc.ui.revisionDialog.itemTitle@ItemTitle")
+                                                        <i18n:message key="perc.ui.revisionDialog.itemTitle@ItemTitle"/>
                                                     </td>
                                                     <td id="rev1Title" align="left" class="datacell1font">revData.revId
 
@@ -168,14 +153,14 @@
                                                 </tr>
                                                 <tr class="datacell1">
                                                     <td align="left" class="datacellfontheader" height="20" width="150">
-                                                        I18N.message("perc.ui.revisionDialog.label@Revision")
+                                                        <i18n:message key="perc.ui.revisionDialog.label@Revision"/>
                                                     </td>
                                                     <td id="rev1No" align="left" class="datacell1font">revData.revId
                                                         <input name="sys_revision" type="hidden" value="2"></td>
                                                 </tr>
                                                 <tr class="datacell2">
                                                     <td align="left" class="datacellfontheader" height="20" width="150">
-                                                        I18N.message("perc.ui.revisionDialog.label@Last Modified")
+                                                        <i18n:message key="perc.ui.revisionDialog.label@Last Modified"/>
                                                     </td>
                                                     <td id="rev1Date" align="left" class="datacell1font">revData.revId
 
@@ -183,7 +168,7 @@
                                                 </tr>
                                                 <tr class="datacell1">
                                                     <td align="left" class="datacellfontheader" height="20" width="150">
-                                                        I18N.message("perc.ui.revisionDialog.label@Last Modifier")
+                                                        <i18n:message key="perc.ui.revisionDialog.label@Last Modifier"/>
                                                     </td>
                                                     <td id="rev1ModifiedBy" align="left" class="datacell1font">
                                                         revData.revId
@@ -192,7 +177,7 @@
                                                 </tr>
                                                 <tr class="datacell2">
                                                     <td align="left" class="datacellfontheader" height="20" width="150">
-                                                        I18N.message("perc.ui.revisionDialog.label@Status")
+                                                        <i18n:message key="perc.ui.revisionDialog.label@Status"/>
                                                     </td>
                                                     <td id="rev1State" align="left" class="datacell1font">revData.revId
 
@@ -207,7 +192,7 @@
                                                  </tr> -->
                                                 <tr class="datacell2">
                                                     <td align="left" class="datacellfontheader" height="20" width="150">
-                                                        I18N.message("perc.ui.revisionDialog.selectRev@selectRev")
+                                                        <i18n:message key="perc.ui.revisionDialog.selectRev@selectRev"/>
                                                     </td>
                                                     <td align="left" class="datacell1font" height="20">
                                                         <select align="left" id="revisionList1"
@@ -242,7 +227,7 @@
                                                 </tr>
                                                 <tr class="datacell2">
                                                     <td align="left" class="datacellfontheader" height="20" width="150">
-                                                        I18N.message("perc.ui.revisionDialog.itemTitle@ItemTitle")
+                                                        <i18n:message key="perc.ui.revisionDialog.itemTitle@ItemTitle"/>
                                                     </td>
                                                     <td id="rev2Title" align="left" class="datacell1font" width="150">
 
@@ -250,21 +235,21 @@
                                                 </tr>
                                                 <tr class="datacell1">
                                                     <td align="left" class="datacellfontheader" height="20" width="150">
-                                                        I18N.message("perc.ui.revisionDialog.label@Revision")
+                                                        <i18n:message key="perc.ui.revisionDialog.label@Revision"/>
                                                     </td>
                                                     <td id="rev2No" align="left" class="datacell1font">1
                                                         <input name="sys_revision" type="hidden" value="1"></td>
                                                 </tr>
                                                 <tr class="datacell2">
                                                     <td align="left" class="datacellfontheader" height="20" width="150">
-                                                        I18N.message("perc.ui.revisionDialog.label@Last Modified")
+                                                        <i18n:message key="perc.ui.revisionDialog.label@Last Modified"/>
                                                     </td>
                                                     <td id="rev2Date" align="left" class="datacell1font">
                                                     </td>
                                                 </tr>
                                                 <tr class="datacell1">
                                                     <td align="left" class="datacellfontheader" height="20" width="150">
-                                                        I18N.message("perc.ui.revisionDialog.label@Last Modified")
+                                                        <i18n:message key="perc.ui.revisionDialog.label@Last Modified"/>
                                                     </td>
                                                     <td id="rev2ModifiedBy" align="left" class="datacell1font">admin1
 
@@ -272,7 +257,7 @@
                                                 </tr>
                                                 <tr class="datacell2">
                                                     <td align="left" class="datacellfontheader" height="20" width="150">
-                                                        I18N.message("perc.ui.revisionDialog.label@Status")
+                                                        <i18n:message key="perc.ui.revisionDialog.label@Status"/>
                                                     </td>
                                                     <td id="rev2State" align="left" class="datacell1font">Quick Edit
 
@@ -285,7 +270,7 @@
                                                   </tr> -->
                                                 <tr class="datacell2">
                                                     <td align="left" class="datacellfontheader" height="20" width="150">
-                                                        I18N.message("perc.ui.revisionDialog.selectRev@selectRev")
+                                                        <i18n:message key="perc.ui.revisionDialog.selectRev@selectRev"/>
                                                     </td>
                                                     <td align="left" class="datacell1font" height="20">
                                                         <select align="left" id="revisionList2"
@@ -324,34 +309,34 @@
                                                     </td>
                                                 </tr>
                                                 <tr class="datacell2">
-                                                    <td align="left" class="outerboxcellfont"
-                                                        style="margin-bottom:20px;padding:5px" colspan="2" height="20">
-                                                        <span class="ins-reg">&nbsp;&nbsp;a&nbsp;&nbsp;</span>
-                                                        <span>Added Text</span>
+                                                    <td  align="left" class="outerboxcellfont"
+                                                         style="margin-bottom:20px;padding:5px" colspan="2" height="20">
+                                                        <span tabindex="0" role="definition" id="AddedText" aria-label="Legend for Added Text"  class="ins-reg">&nbsp;&nbsp;a&nbsp;&nbsp;</span>
+                                                        <span tabindex="0" role="term" aria-details="AddedText" >Added Text</span>
                                                     </td>
 
                                                 </tr>
                                                 <tr class="datacell2">
                                                     <td align="left" style="margin-bottom:20px;padding:5px"
                                                         class="outerboxcellfont" colspan="2" height="20">
-                                                        <span class="ins-contrast">&nbsp;&nbsp;a&nbsp;&nbsp;</span>
-                                                        <span aria-details="Added Text-High Contrast">Added Text-High Contrast</span>
+                                                        <span tabindex="0" role="definition" id="AddedText-HighContrast" aria-label="Legend for Added Text in high contrast" class="ins-contrast">&nbsp;&nbsp;a&nbsp;&nbsp;</span>
+                                                        <span  role="term" aria-details="AddedText-HighContrast"  tabindex="0" >Added Text-High Contrast</span>
+                                                    </td>
+
+                                                </tr>
+                                                <tr class="datacell2">
+                                                    <td  align="left" style="margin-bottom:20px;padding:5px"
+                                                         class="outerboxcellfont" colspan="2" height="20">
+                                                        <span tabindex="0" role="definition" id = "RemovedText" aria-label="Legend for Removed Text" class="del-reg">&nbsp;&nbsp;a&nbsp;&nbsp;</span>
+                                                        <span tabindex="0" role="term" aria-details="RemovedText" >Removed Text</span>
                                                     </td>
 
                                                 </tr>
                                                 <tr class="datacell2">
                                                     <td align="left" style="margin-bottom:20px;padding:5px"
                                                         class="outerboxcellfont" colspan="2" height="20">
-                                                        <span class="del-reg">&nbsp;&nbsp;a&nbsp;&nbsp;</span>
-                                                        <span>Removed Text</span>
-                                                    </td>
-
-                                                </tr>
-                                                <tr class="datacell2">
-                                                    <td align="left" style="margin-bottom:20px;padding:5px"
-                                                        class="outerboxcellfont" colspan="2" height="20">
-                                                        <span class="del-contrast">&nbsp;&nbsp;a&nbsp;&nbsp;</span>
-                                                        <span>Removed Text-High Contrast</span>
+                                                        <span tabindex="0" role="definition" id="RemovedText-HighContrast" aria-label="Legend for Removed Text in high contrast" class="del-contrast">&nbsp;&nbsp;a&nbsp;&nbsp;</span>
+                                                        <span tabindex="0" role="term" aria-details="RemovedText-HighContrast">Removed Text-High Contrast</span>
                                                     </td>
 
                                                 </tr>
@@ -366,11 +351,15 @@
                 </table>
             </div>
         </div>
-        <div id="rightSide" style="float: left;margin-bottom:20px;" width="90%">
-            <div class="tab-container">
+        <div id="rightSide"  style="float:left;" width="90%">
+            <div class="perc-compare-header">
                 <a id="tabLink1" class="perc-compare-header" style="padding:5px" onclick="switchTab(0)">Revision 1</a>
                 <a id="tabLink2" class="perc-compare-header" style="padding:5px" onclick="switchTab(1)">Compare</a>
                 <a id="tabLink3" class="perc-compare-header" style="padding:5px" onclick="switchTab(2)">Revision 2</a>
+            </div>
+
+            <div class="tab-container" >
+
                 <div class="tab" style="padding:10px" id="tab1"></div>
                 <div class="tab" style="padding:10px" id="tab2"></div>
                 <div class="tab" style="padding:10px" id="tab3"></div>
@@ -467,8 +456,8 @@
         var rev2Id = list2.options[list2.selectedIndex].id;
 
 
-        document.getElementById("tabLink1").text = I18N.message( 'perc.ui.revisionDialog.label@Revision' ) +" : "+ rev1Id;
-        document.getElementById("tabLink3").text = I18N.message( 'perc.ui.revisionDialog.label@Revision' ) +" : "+ rev2Id;
+        document.getElementById("tabLink1").text ="<i18n:message key= 'perc.ui.revisionDialog.label@Revision'/> : "+ rev1Id;
+        document.getElementById("tabLink3").text = "<i18n:message key= 'perc.ui.revisionDialog.label@Revision' /> : "+ rev2Id;
 
         var rev1 = parseInt(rev1Id);
         var rev2 = parseInt(rev2Id);
