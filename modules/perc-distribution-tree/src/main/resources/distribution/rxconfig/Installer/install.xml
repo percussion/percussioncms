@@ -100,7 +100,7 @@
     <echo>install.dir= ${install.dir}</echo>
     <echo>upgrade=${do.upgrade}</echo>
     <echo>install=${do.install}</echo>
-
+    <mkdir dir="${install.dir}/temp"/>
     <path id="ant.deps" cache="true">
         <fileset dir="${install.dir}/jetty/base/lib/jdbc">
             <include name="**/*.jar" />

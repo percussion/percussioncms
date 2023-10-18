@@ -15,6 +15,7 @@
 <script src="../services/PercWorkflowService.js"></script>
 <script src="../services/PercRevisionService.js"></script>
 <script src="../services/PercItemPublisherService.js"></script>
+<script src="../services/PercCompareService.js"></script>
 <script src="../plugins/PercImportProgressDialog.js"></script>
 <script src="../plugins/perc_newsitedialog.js"></script>
 <script src="../plugins/iframednd.js"></script>

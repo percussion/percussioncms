@@ -1,198 +1,203 @@
 /**
-This function takes care of the session timout logic.
-*/
+ This function takes care of the session timout logic.
+ */
 (function($) {
-    $.perc_sessionTimeout = function(options) {
+	$.perc_sessionTimeout = function(options) {
+		var dialogTitle =  I18N.message("perc.ui.session.timeout@Still There");
+		var dialogMessageTimeout =  I18N.message("perc.ui.session.timeout@Auto Log Out");
 
-	getSessionTimeoutVariables();
+		var isDialogOn = false;
+		var countDownTime = null;
 
-	var dialogTitle =  I18N.message("perc.ui.session.timeout@Still There");
-	var dialogMessageTimeout =  I18N.message("perc.ui.session.timeout@Auto Log Out");
+		var sessionTimeoutLimit = null;
+		var sessionTimeoutWarning = null;
 
-	var isDialogOn = false;
-	var countDownTime = null;
-	var sessionTimeoutLimit = localStorage.getItem("sessionTimeoutLimit");
-	var sessionTimeoutWarning = localStorage.getItem("sessionTimeoutWarning");
+		var popup = (window.opener && window.opener !== window);
 
-	var popup = (window.opener && window.opener !== window);
+		getSessionTimeoutVariables();
 
-	var sessionPopupTime = (sessionTimeoutLimit-sessionTimeoutWarning)*1000;
+		/**
+		 Getting the session variables from config.xml file through servlet.
+		 For example in config.xml:
+		 <userSessionTimeout>1800</userSessionTimeout>
+		 <userSessionWarning>60</userSessionWarning>
+		 */
+		function getSessionTimeoutVariables() {
+			console.log("Calling getSessionTimeoutVariables() function***************");
+			$.ajax({
+				url: '/sessionCheckServlet',
+				type: 'get',
+				cache: false,
+				contentType: 'application/json; charset=utf-8',
+				dataType: 'json',
+				success: function(json) {
+					console.log("sessionTimeoutLimit: " + json['expiry']);
+					console.log("sessionTimeoutWarning: " + json['warning']);
 
-	//Entry point for session timeout logic.Setting setInterval process to execute when only warning time left in session timeout.
-	callSetInterval(sessionPopupTime);
+					sessionTimeoutLimit = json['expiry'];
+					sessionTimeoutWarning = json['warning'];
 
-	/**
-	Getting the session variables from config.xml file through servlet.
-	For example in config.xml:
-	<userSessionTimeout>1800</userSessionTimeout>
-	<userSessionWarning>60</userSessionWarning>
-	*/
-	function getSessionTimeoutVariables() {
-		console.log("Calling getSessionTimeoutVariables() function***************");
-		$.ajax({
-			url: '/sessionCheckServlet',
-			type: 'get',
-			cache: false,
-			contentType: 'application/json; charset=utf-8',
-			dataType: 'json',
-			success: function(json) {
-				console.log("sessionTimeoutLimit: " + json['expiry']);
-				console.log("sessionTimeoutWarning: " + json['warning']);
+					localStorage.setItem("sessionTimeoutLimit", sessionTimeoutLimit);
+					localStorage.setItem("sessionTimeoutWarning", sessionTimeoutWarning);
 
-				localStorage.setItem("sessionTimeoutLimit", json['expiry']);
-				localStorage.setItem("sessionTimeoutWarning", json['warning']);
+					var sessionPopupTime = (sessionTimeoutLimit-sessionTimeoutWarning)*1000;
 
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				console.log("error :" + XMLHttpRequest.responseText);
-			}
-		});
-	}
+					//Entry point for session timeout logic.Setting setInterval process to execute when only warning time left in session timeout.
+					callSetInterval(sessionPopupTime);
 
-	/**
-	This function is the main function which take cares of session timeout functionality.
-	*/
-	function trackSession() {
-		console.log("Calling trackSession***************");
-		sessionTimeoutLimit = localStorage.getItem("sessionTimeoutLimit");
-		sessionTimeoutWarning = localStorage.getItem("sessionTimeoutWarning");
-		if (sessionTimeoutWarning != null && sessionTimeoutLimit != null) {
-			if (isDialogOn) {
-				var timeLeft = countDownTime / 1000;
-				if (timeLeft < 1) {
-					logout();
-				} else {
-					$('#logouttime').html(convertMilliSecondsToStr(getRemainingTime()));
+
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					console.log("error :" + XMLHttpRequest.responseText);
 				}
-				return;
-			}
+			});
+		}
+
+		/**
+		 This function is the main function which take cares of session timeout functionality.
+		 */
+		function trackSession() {
+			console.log("Calling trackSession***************");
+			sessionTimeoutLimit = localStorage.getItem("sessionTimeoutLimit");
+			sessionTimeoutWarning = localStorage.getItem("sessionTimeoutWarning");
+			if (sessionTimeoutWarning != null && sessionTimeoutLimit != null) {
+				if (isDialogOn) {
+					var timeLeft = countDownTime / 1000;
+					if (timeLeft < 1) {
+						logout();
+					} else {
+						$('#logouttime').html(convertMilliSecondsToStr(getRemainingTime()));
+					}
+					return;
+				}
 				countDownTime = sessionTimeoutWarning*1000;
 				openSessionDialog();
 
 				//call tracksession() function for the remaining time in session timeout, to show decreasing seconds on warning popup.
 				callSetInterval(1000);
-		}
-	}
-
-	/**
-	Returns remaining second after decreasing one second from it.
-	*/
-	function getRemainingTime() {
-		return countDownTime -= 1000;
-
-	}
-
-	function convertMilliSecondsToStr(t) {
-		var seconds = Math.floor((t / 1000) % 60);
-		var minutes = Math.floor((t / 1000 / 60) % 60);
-		var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-		var ret = "";
-		if (hours > 0) {
-			ret += hours + ' hour';
-			if (hours > 1)
-				ret += "s";
-			ret += " ";
-		}
-		return ret + minutes + ' min ' + seconds + "s";;
-	}
-
-	/**
-	Extending the session so that session is alive. It is hitting the server through servlet.
-	After hitting servlet closing the session timeout dialog and resetting the variables.
-	*/
-	function extendSession() {
-		console.log("Calling extendSession***************");
-		$.ajax({
-			url: '/sessionExtendServlet',
-			type: 'get',
-			cache: false,
-			contentType: 'application/json; charset=utf-8',
-			dataType: 'json',
-			success: function(json) {
-				console.log("success: " + json['success']);
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				console.log("error :" + XMLHttpRequest.responseText);
 			}
-		});
-	}
+		}
 
-	function openSessionDialog() {
-		dialog = createDialog();
-		$('#logouttime').html(convertMilliSecondsToStr(countDownTime));
+		/**
+		 Returns remaining second after decreasing one second from it.
+		 */
+		function getRemainingTime() {
+			return countDownTime -= 1000;
 
-		function createDialog() {
-			let dialogMessage;
-			let button1;
+		}
 
-			isDialogOn = true;
-			dialogMessage = dialogMessageTimeout;
-			button1 = "Close";
+		function convertMilliSecondsToStr(t) {
+			var seconds = Math.floor((t / 1000) % 60);
+			var minutes = Math.floor((t / 1000 / 60) % 60);
+			var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+			var ret = "";
+			if (hours > 0) {
+				ret += hours + ' hour';
+				if (hours > 1)
+					ret += "s";
+				ret += " ";
+			}
+			return ret + minutes + ' min ' + seconds + "s";;
+		}
 
-
-			// Basic dialog content HTML markup
-			var dialogContent = "<div ' id='perc-session-timeout-content'><p>" +
-				dialogMessage + '</p><p><span id="logouttime"/>' +
-				"</p></div>";
-			var buttons = {};
-
-			// Create the upload dialog
-			var d = $(dialogContent).perc_dialog({
-				title: dialogTitle,
-				id: "perc-session-timeout-dialog",
-				width: 400,
-				resizable: false,
-				modal: true,
-				buttons: buttons,
-				percButtons: {
-					"Close": {
-						click: function() {
-							closeSessionDialog();
-						},
-						id: "perc-wfstep-close_session"
-					}
+		/**
+		 Extending the session so that session is alive. It is hitting the server through servlet.
+		 After hitting servlet closing the session timeout dialog and resetting the variables.
+		 */
+		function extendSession() {
+			console.log("Calling extendSession***************");
+			$.ajax({
+				url: '/sessionExtendServlet',
+				type: 'get',
+				cache: false,
+				contentType: 'application/json; charset=utf-8',
+				dataType: 'json',
+				success: function(json) {
+					console.log("success: " + json['success']);
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					console.log("error :" + XMLHttpRequest.responseText);
 				}
 			});
-			return $(d);
 		}
 
-		return dialog;
+		function openSessionDialog() {
+			dialog = createDialog();
+			$('#logouttime').html(convertMilliSecondsToStr(countDownTime));
 
-	} // End of function: openUploadDialog
+			function createDialog() {
+				let dialogMessage;
+				let button1;
 
-	function closeSessionDialog() {
-		extendSession();
-		dialog.remove();
-		isDialogOn = false;
-		localStorage.setItem("lastRequestTime", new Date().getTime());
-		countDownTime = null;
+				isDialogOn = true;
+				dialogMessage = dialogMessageTimeout;
+				button1 = "Close";
 
-		//Initiate new session timeout cycle
-		var sessionPopupTime = (sessionTimeoutLimit-sessionTimeoutWarning)*1000;
-		callSetInterval(sessionPopupTime);
-	}
 
-	// Logout from the server and close if popup window
-	function logout() {
-		if (popup) {
-			$.get("/Rhythmyx/logout", function() {
-				window.close();
-			});
-		} else {
-			top.document.location.href = '/Rhythmyx/logout';
+				// Basic dialog content HTML markup
+				var dialogContent = "<div ' id='perc-session-timeout-content'><p>" +
+					dialogMessage + '</p><p><span id="logouttime"/>' +
+					"</p></div>";
+				var buttons = {};
+
+				// Create the upload dialog
+				var d = $(dialogContent).perc_dialog({
+					title: dialogTitle,
+					id: "perc-session-timeout-dialog",
+					width: 400,
+					resizable: false,
+					modal: true,
+					buttons: buttons,
+					percButtons: {
+						"Close": {
+							click: function() {
+								closeSessionDialog();
+							},
+							id: "perc-wfstep-close_session"
+						}
+					}
+				});
+				return $(d);
+			}
+
+			return dialog;
+
+		} // End of function: openUploadDialog
+
+		function closeSessionDialog() {
+			extendSession();
+			dialog.remove();
+			isDialogOn = false;
+			localStorage.setItem("lastRequestTime", new Date().getTime());
+			countDownTime = null;
+
+			//Initiate new session timeout cycle
+			var sessionPopupTime = (sessionTimeoutLimit-sessionTimeoutWarning)*1000;
+			callSetInterval(sessionPopupTime);
 		}
-	}
 
-	//call trackSession() function after a given (intervalTime) time.
-	function callSetInterval(intervalTime){
-		var intervalId = localStorage.getItem("intervalId");
-		if(intervalId != null){
-			clearInterval(intervalId);
+		// Logout from the server and close if popup window
+		function logout() {
+			if (popup) {
+				$.get("/Rhythmyx/logout", function() {
+					window.close();
+				});
+			} else {
+				top.document.location.href = '/Rhythmyx/logout';
+			}
 		}
 
-		intervalId = setInterval(trackSession, intervalTime);
-		localStorage.setItem("intervalId", intervalId);
-	}
+		//call trackSession() function after a given (intervalTime) time.
+		function callSetInterval(intervalTime){
+			var intervalId = localStorage.getItem("intervalId");
+			if(intervalId != null){
+				clearInterval(intervalId);
+			}
 
-    };
+			console.log("1_intervalTime: " + intervalTime);
+			intervalId = setInterval(trackSession, intervalTime);
+			localStorage.setItem("intervalId", intervalId);
+		}
+
+	};
 })(jQuery);
