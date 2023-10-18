@@ -5,6 +5,9 @@
       <item index="0" class="java.lang.String" itemvalue="com.percussion.extension.IPSJexlMethod" />
     </list>
   </component>
+  <component name="ExcludeFromValidation">
+    <file url="file://$PROJECT_DIR$/system/services/src/com/percussion/services/assembly/impl/PSInlineLinkContentHandler.java" />
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="gwt" url="file://$PROJECT_DIR$/PCM-PkgMgtUI" />
