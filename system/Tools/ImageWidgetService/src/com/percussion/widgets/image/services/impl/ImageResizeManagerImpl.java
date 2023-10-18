@@ -386,7 +386,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
             IndexColorModel cm = (IndexColorModel) baseImage.getColorModel();
             outImage = new BufferedImage(width, height, imageType, cm);
         } else {
-            outImage = new BufferedImage(width, height, imageType);
+            outImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
         }
         return outImage;
     }
