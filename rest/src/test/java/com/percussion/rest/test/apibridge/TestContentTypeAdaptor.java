@@ -18,6 +18,7 @@
 package com.percussion.rest.test.apibridge;
 
 import com.percussion.rest.contenttypes.ContentType;
+import com.percussion.rest.contenttypes.ContentTypeFilter;
 import com.percussion.rest.contenttypes.IContentTypesAdaptor;
 import org.springframework.stereotype.Component;
 
@@ -49,6 +50,17 @@ public class TestContentTypeAdaptor implements IContentTypesAdaptor {
      */
     @Override
     public List<ContentType> listContentTypes(URI baseUri, int siteId) {
+        return null;
+    }
+
+    /***
+     * List ContentTypes available for the specified Site
+     * @param baseUri Originating URI
+     * @param filter A ContentTypeFilter that can be used to filter content types.
+     * @return An array of ContentTypes
+     */
+    @Override
+    public List<ContentType> listContentTypesByFilter(URI baseUri, ContentTypeFilter filter) {
         return null;
     }
 }

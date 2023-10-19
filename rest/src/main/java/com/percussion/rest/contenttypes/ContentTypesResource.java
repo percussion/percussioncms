@@ -22,14 +22,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.validation.Valid;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
@@ -48,7 +47,9 @@ public class ContentTypesResource {
     @Context
     private UriInfo uriInfo;
 
-    public ContentTypesResource(){}
+    public ContentTypesResource(){
+        //noop
+    }
 
     @GET
     @Path("/")
@@ -61,7 +62,7 @@ public class ContentTypesResource {
              @ApiResponse(responseCode = "404", description = "No Content Types found"),
              @ApiResponse(responseCode = "500", description = "Error")
     })
-    public List<ContentType> getContentTypes()
+    public List<ContentType> listContentTypes()
     {
         return new ContentTypeList(adaptor.listContentTypes(uriInfo.getBaseUri()));
     }
@@ -80,5 +81,34 @@ public class ContentTypesResource {
     public List<ContentType> getContentTypesBySite( @PathParam("id") int siteId)
     {
         return new ContentTypeList(adaptor.listContentTypes(uriInfo.getBaseUri(), siteId));
+    }
+
+
+    @GET
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Path("/by-filter")
+    @Produces(
+            {MediaType.APPLICATION_JSON})
+    @Operation(summary = "List available Content Types by Filter", description = "Lists Content Types available for a given filter."
+            , responses = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(array = @ArraySchema( schema = @Schema(implementation = ContentType.class)))),
+            @ApiResponse(responseCode = "404", description = "No Content Types found"),
+            @ApiResponse(responseCode = "500", description = "Error")
+    })
+    public List<ContentType> listContentTypesByFilter(@RequestBody(description = "ContentTypeFilter to use for listing content types.",
+            required = true,
+            content = @Content(
+                    schema=@Schema(implementation = ContentTypeFilter.class)))
+                                                          @Valid ContentTypeFilter filter) {
+        try{
+            List<ContentType> results = adaptor.listContentTypesByFilter(uriInfo.getBaseUri(), filter);
+            if(results == null || results.isEmpty()){
+                throw new WebApplicationException("Not Found.", 404);
+            }
+            return results;
+        }catch (Exception e){
+            throw new WebApplicationException(e.getMessage(), 500);
+        }
     }
 }

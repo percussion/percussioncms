@@ -265,7 +265,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
             throw new IllegalArgumentException("rotate must be 1 or -1");
         }
         log.debug("Original image size is {}, {}" , inImage.getWidth() ,
-                 inImage.getHeight());
+                inImage.getHeight());
         double i0 = inImage.getWidth() / 2.0D;
         double j0 = inImage.getHeight() / 2.0D;
         log.debug("Anchor point is {}, {}" , i0 , j0);
@@ -352,9 +352,6 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
                     if (pix == transparentPixel)
                         continue;
                     int irgb = icm.getRGB(pix);
-                    int ir = icm.getRed(pix);
-                    int ig = icm.getGreen(pix);
-                    int ib = icm.getBlue(pix);
                     int ia = icm.getAlpha(pix);
                     if ((ia < 100) && (count++ < 100))
                         log.debug("data pixel {} {} {} {} {}", i , j , pix ,
@@ -377,12 +374,13 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
         log.debug("image transparency is {}" , transparency);
         int imageType = baseImage.getType();
         log.debug("image type is {}" , imageType);
-        GraphicsConfiguration gc = baseImage.createGraphics()
-                .getDeviceConfiguration();
-        BufferedImage outImage = gc.createCompatibleImage(width, height, 2);
-        if (imageType == 0) {
-            outImage = new BufferedImage(width, height, 6);
-        } else if ((imageType == 13) || (imageType == 12)) {
+        BufferedImage outImage;
+
+        if(extension.equalsIgnoreCase("jpg") || extension.equalsIgnoreCase("jpeg") || extension.equalsIgnoreCase("jfif")){
+            outImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
+        } else if (imageType == BufferedImage.TYPE_CUSTOM) {
+            outImage = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+        } else if ((imageType == BufferedImage.TYPE_BYTE_INDEXED) || (imageType == BufferedImage.TYPE_BYTE_BINARY)) {
             IndexColorModel cm = (IndexColorModel) baseImage.getColorModel();
             outImage = new BufferedImage(width, height, imageType, cm);
         } else {
@@ -390,6 +388,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
         }
         return outImage;
     }
+
 
     protected Graphics2D getGraphics(BufferedImage image) {
         Graphics2D g2d = image.createGraphics();
@@ -409,7 +408,7 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
                 RenderingHints.VALUE_DITHER_ENABLE);
 
         ColorModel cm = image.getColorModel();
-        if (((cm instanceof IndexColorModel)) && (cm.hasAlpha())) {
+        if ((cm instanceof IndexColorModel) && (cm.hasAlpha())) {
             log.debug("clearing transparent image");
             g2d.setComposite(AlphaComposite.Clear);
             g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
@@ -437,36 +436,10 @@ public class ImageResizeManagerImpl implements ImageResizeManager {
         gce.setAttribute("transparentColorIndex",
                 String.valueOf(transparentColor));
 
-        logXml(root);
-
         metadata.mergeTree(metaFormatName, root);
         return metadata;
     }
 
-    protected void logXml(Element element) {
-        if (!log.isDebugEnabled())
-            return;
-        try {
-
-            TransformerFactory transFactory = TransformerFactory.newInstance();
-            transFactory.setAttribute("indent-number", 2);
-            Transformer idTransform = transFactory.newTransformer();
-            idTransform.setOutputProperty(OutputKeys.METHOD, "xml");
-            idTransform.setOutputProperty(OutputKeys.INDENT, "yes");
-            // Apache default indentation is 0
-            idTransform.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-            Source input = new DOMSource(element);
-
-            StringWriter out = new StringWriter();
-            StreamResult output = new StreamResult(out);
-
-            idTransform.transform(input, output);
-            log.debug(out);
-        } catch (TransformerException e) {
-            log.error("Transformer Exception: {}" , PSExceptionUtils.getMessageForLog(e));
-            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-        }
-    }
 
     protected IIOMetadataNode getChildMetadataNode(IIOMetadataNode root,
                                                    String nodeName) {

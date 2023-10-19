@@ -20,18 +20,17 @@ package com.percussion.rest.contenttypes;
 import java.net.URI;
 import java.util.List;
 
-/***
- * Defines the interface that backend API implementations must implement
- * for ContentTypes.
- */
-public interface IContentTypesAdaptor {
+public class ContentTypesTestAdaptor implements IContentTypesAdaptor {
 
     /***
      * List all content types available to the System
      * @param baseUri Requesting URI
      * @return A list of all available Content Types
      */
-    public List<ContentType> listContentTypes(URI baseUri);
+    @Override
+    public List<ContentType> listContentTypes(URI baseUri) {
+        return null;
+    }
 
     /***
      * List ContentTypes available for the specified Site
@@ -39,7 +38,10 @@ public interface IContentTypesAdaptor {
      * @param siteId Site Id for Site to filter Types by
      * @return An array of ContentTypes
      */
-    public List<ContentType> listContentTypes(URI baseUri, int siteId);
+    @Override
+    public List<ContentType> listContentTypes(URI baseUri, int siteId) {
+        return null;
+    }
 
     /***
      * List ContentTypes available for the specified Site
@@ -47,6 +49,8 @@ public interface IContentTypesAdaptor {
      * @param filter A ContentTypeFilter that can be used to filter content types.
      * @return An array of ContentTypes
      */
-    public List<ContentType> listContentTypesByFilter(URI baseUri, ContentTypeFilter filter);
-
+    @Override
+    public List<ContentType> listContentTypesByFilter(URI baseUri, ContentTypeFilter filter) {
+        return null;
+    }
 }

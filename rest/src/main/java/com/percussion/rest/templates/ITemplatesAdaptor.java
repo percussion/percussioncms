@@ -17,6 +17,11 @@
 
 package com.percussion.rest.templates;
 
+import java.net.URI;
+import java.util.List;
+
 public interface ITemplatesAdaptor {
+
+List<TemplateSummary> listTemplateSummaries(URI baseUri, TemplateFilter filter);
 
 }
