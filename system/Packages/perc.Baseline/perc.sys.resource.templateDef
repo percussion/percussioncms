@@ -9,7 +9,7 @@
     <description/>
     <global-template/>
     <global-template-usage>None</global-template-usage>
-    <label>perc.sys.resource</label>
+    <label>Page Site - Resource Template</label>
     <location-prefix/>
     <location-suffix/>
     <mime-type>text/html</mime-type>
