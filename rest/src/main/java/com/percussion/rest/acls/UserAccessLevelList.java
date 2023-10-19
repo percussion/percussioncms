@@ -22,10 +22,12 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @XmlRootElement(name = "AclEntryList")
+@XmlSeeAlso(UserAccessLevel.class)
 @ArraySchema(schema=@Schema(implementation = UserAccessLevel.class))
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserAccessLevelList extends ArrayList<UserAccessLevel> {
