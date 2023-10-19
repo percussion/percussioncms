@@ -20,11 +20,9 @@ import com.percussion.design.objectstore.PSConditionalEffect;
 import com.percussion.relationship.PSTestResult;
 
 /**
- * This class represents a pair of effect and it's test result. The effect 
+ * This class represents a pair of effect, and it's test result. The effect
  * processing can make use of this class to gather all effects their test 
- * results. One such use is by {@link com.percussion.cms.handlers.
- * PSRelationshipEffectProcessor effect processor} which walks throw each 
- * relationship running all effects attached to it. The analysis of test 
+ * results. The analysis of test
  * results is done later before running the attempt() methods of the effects.
  * 
  * @author RammohanVangapalli
@@ -33,7 +31,7 @@ public class PSEffectTestResultPair
 {
    /**
     * Constructor. Takes the effect and its test result.
-    * @param effect efefct tested, assumed not <code>null</code>.
+    * @param effect effect tested, assumed not <code>null</code>.
     * @param result result of the test, assumed not <code>null</code>
     */
    PSEffectTestResultPair(PSConditionalEffect effect, PSTestResult result)
