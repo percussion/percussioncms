@@ -15,22 +15,12 @@
  * limitations under the License.
  */
 
-package com.percussion.rest.test.apibridge;
-
-import com.percussion.rest.contenttypes.ContentType;
-import com.percussion.rest.contenttypes.ContentTypeFilter;
-import com.percussion.rest.contenttypes.IContentTypesAdaptor;
-import org.springframework.stereotype.Component;
+package com.percussion.rest.contenttypes;
 
 import java.net.URI;
 import java.util.List;
 
-@Component
-public class TestContentTypeAdaptor implements IContentTypesAdaptor {
-
-    public TestContentTypeAdaptor(){
-
-    }
+public class ContentTypesTestAdaptor implements IContentTypesAdaptor {
 
     /***
      * List all content types available to the System
