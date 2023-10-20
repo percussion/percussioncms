@@ -854,7 +854,7 @@
                     $nodeCount.on("keydown." + "level_" + levelIdx,
                         {"sectionId" : sectionObj.id}, function(eventHandler){
                             if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
-                                self.onNodeCountClick(evt);
+                                document.activeElement.click();
                             }
                         });
                 }

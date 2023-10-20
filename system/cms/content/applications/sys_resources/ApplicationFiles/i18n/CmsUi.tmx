@@ -3447,10 +3447,10 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
     <prop type="sectionname" xml:lang="en-us">Generate Canonical URLs</prop>
     <note xml:lang="en-us"></note>
     <tuv xml:lang="en-us">
-        <seg>Generate Canonical URLs</seg>
+        <seg>Generate Canonical URLs. Use the arrow keys to toggle between options.</seg>
     </tuv>
      <tuv xml:lang="es">
-        <seg>Generar URLs canónicas</seg>
+        <seg>Generar URLs canónicas. Utilice las teclas de flecha para alternar entre las opciones.</seg>
     </tuv>
 </tu>
 
