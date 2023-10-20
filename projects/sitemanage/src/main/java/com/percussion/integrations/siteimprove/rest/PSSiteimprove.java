@@ -202,6 +202,7 @@ public class PSSiteimprove {
 			JSONObject publishSettingsJSON = new JSONObject();
 			publishSettingsJSON.put("doProduction", publishSettings.getDoProduction());
 			publishSettingsJSON.put("doStaging", publishSettings.getDoStaging());
+			publishSettingsJSON.put("doAssetsScanExclude", publishSettings.getDoAssetsScanExclude());
 			publishSettingsJSON.put("doPreview", publishSettings.getDoPreview());
 			publishSettingsJSON.put("isSiteImproveEnabled", publishSettings.getIsSiteImproveEnabled());
 
@@ -279,7 +280,7 @@ public class PSSiteimprove {
 	private Boolean validateConfiguration(PSSiteImproveSiteConfigurations configuration) {
 		Boolean validSiteName = configuration.getSiteName() != null && !configuration.getSiteName().isEmpty();
 		return validSiteName && configuration.getDoPreview() != null
-				&& configuration.getDoStaging() != null && configuration.getDoProduction() != null;
+				&& configuration.getDoStaging() != null && configuration.getDoAssetsScanExclude() != null && configuration.getDoProduction() != null;
 	}
 
 	/**
