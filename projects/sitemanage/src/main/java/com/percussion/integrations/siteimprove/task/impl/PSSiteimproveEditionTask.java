@@ -46,6 +46,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.percussion.utils.guid.IPSGuid;
 import net.sf.json.JSONObject;
@@ -72,8 +73,7 @@ public class PSSiteimproveEditionTask implements IPSEditionTask {
 	private static final String IS_SITEIMPROVE_ENABLED = "isSiteImproveEnabled";
 	private static final String HTTPS = "https";
 	private static final String HTTP = "http";
-	Map<Long, String> templateDetails = new HashMap<>();
-
+	ConcurrentHashMap<Long, String> templateDetails = new ConcurrentHashMap<>();
 	private static IPSIntegrationProviderService siteimproveService = new PSSiteImproveProviderService();
 	private static final Logger logger = LogManager.getLogger(PSSiteimproveEditionTask.class);
 	private IPSMetadataService metadataService;
