@@ -22,11 +22,13 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @XmlRootElement(name = "CommunityList")
 @ArraySchema(schema=@Schema(implementation = Community.class))
+@XmlSeeAlso({Community.class})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommunityList extends ArrayList<Community> {
     public CommunityList(Collection<? extends Community> c) {

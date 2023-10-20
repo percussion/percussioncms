@@ -18,6 +18,7 @@
 package com.percussion.rest.acls;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.percussion.rest.Permissions;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @XmlRootElement(name = "AclEntryList")
-@XmlSeeAlso(UserAccessLevel.class)
+@XmlSeeAlso({UserAccessLevel.class,Permissions.class})
 @ArraySchema(schema=@Schema(implementation = UserAccessLevel.class))
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserAccessLevelList extends ArrayList<UserAccessLevel> {
