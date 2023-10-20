@@ -147,6 +147,13 @@
 							Staging Sites
 						</label>
 
+						<br/>
+
+						<label aria-label="Checkbox to enable for excluding assets from scan for sites">
+							<input type="checkbox" id="perc-si-exclude-assets" value="">
+							Exclude scanning Assets
+						</label>
+
 						<br/><br/>
 
 						<button id="perc-site-improve-advanced-btn" type="button" aria-label="Advanced Settings" class="btn btn-info site-improve-checkboxes-desc" data-moduleid="__MODULE_ID__" data-toggle="collapse" data-target="#advanced">Advanced</button>

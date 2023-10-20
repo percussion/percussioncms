@@ -178,7 +178,7 @@ public class RolesResource {
 	    public RoleList findRoles()
 	    {
 	    	try {
-				List<Role> ret = new ArrayList<>();
+				List<Role> ret;
 
 				ret = roleAdaptor.findRoles(uriInfo.getBaseUri(), "%");
 

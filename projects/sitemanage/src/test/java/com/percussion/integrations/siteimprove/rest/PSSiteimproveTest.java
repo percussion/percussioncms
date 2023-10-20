@@ -70,14 +70,14 @@ public class PSSiteimproveTest extends PSRestTestCase<PSSiteimproveRestClient> {
 
 	@Test
 	public void c_storeSiteConfigurationTest() throws Exception {
-		PSSiteImproveSiteConfigurations configurations = new PSSiteImproveSiteConfigurations(TESTING_SITENAME, true, false, true, null);
+		PSSiteImproveSiteConfigurations configurations = new PSSiteImproveSiteConfigurations(TESTING_SITENAME, true, false, false, true, null);
 		restClient.storeSiteConfig(configurations);
 	}
 
 	@Test
 	public void d_storeBadSiteConfigurationTest() throws Exception {
 		try {
-			PSSiteImproveSiteConfigurations configurations = new PSSiteImproveSiteConfigurations(null, null, null, null, null);
+			PSSiteImproveSiteConfigurations configurations = new PSSiteImproveSiteConfigurations(null, null, null, null, null, null);
 			restClient.storeSiteConfig(configurations);
 		} catch (Exception exception) {
 			Assert.assertTrue(exception instanceof RestClientException);

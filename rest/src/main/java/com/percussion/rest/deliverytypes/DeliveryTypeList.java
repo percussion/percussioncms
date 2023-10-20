@@ -17,16 +17,20 @@
 
 package com.percussion.rest.deliverytypes;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.ArrayList;
 import java.util.Collection;
 
 
 @XmlRootElement(name = "DeliveryType")
+@XmlSeeAlso(DeliveryType.class)
 @ArraySchema(schema=@Schema(implementation = DeliveryType.class))
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DeliveryTypeList extends ArrayList<DeliveryType> {
     public DeliveryTypeList(Collection<? extends DeliveryType> c) {
         super(c);
