@@ -216,8 +216,14 @@
     //Finder initialization code
     $(document).ready(function () {
         $.Percussion.PercFinderView();
-        $("#top-menu .button").on("click",function () {
+        $("#top-menu .button")
+		.on("click",function () {
             window.location.search = "?view=home&initialScreen=" + $(this).attr("for");
+        })
+		.on("keydown",function () {
+           if(event.code == "Enter" || event.code == "Space"){
+			   document.activeElement.click();
+		}
         })
     });
 </script>
