@@ -204,6 +204,25 @@
   style    associated style info
   title    advisory title/amplification
 -->
+
+   <!--
+    Control for Document Type
+
+	 var groupHtml = "<div id = '" + this.groupName + "' ><div class = 'perc-section-label' group='" + this.groupName + "'><span  class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel + "</div></div>";
+   -->
+
+   <psxctl:ControlMeta name="sys_DocType" dimension="single" choiceset="required">
+      <psxctl:Description>A control that allows use add doc type configuration</psxctl:Description>
+   </psxctl:ControlMeta>
+   <xsl:template match="Control[@name='sys_DocType']" mode="psxcontrol">
+      <div class='perc-metadata-setcion-wrapper perc-first-section'>
+         <textarea name="doctype" id='perc_template_metadata_custom_doctype' class='percCustomDoctype tempmeta perc-readOnlyText' readonly = 'readonly' rows='10' cols='80'></textarea> <br />
+         <input for="doctype" id='HTML5' style = 'width:auto' type='radio' name='doctype' value='html5' /> HTML5 (recommended)<br />
+         <input for="doctype"  id='XHTML' style = 'width:auto' type='radio' name='doctype' value= 'xhtml' /> XHTML Transitional<br />
+         <input for="doctype" id='Custom' style = 'width:auto' type='radio' name='doctype' value= 'custom' /> Custom<br />
+      </div>
+
+   </xsl:template>
    <!--
 control for radio button
 -->
