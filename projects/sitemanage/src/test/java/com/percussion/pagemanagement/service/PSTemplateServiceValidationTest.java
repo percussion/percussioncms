@@ -18,6 +18,7 @@ package com.percussion.pagemanagement.service;
 
 import com.percussion.share.service.IPSDataService;
 import com.percussion.share.service.exception.PSValidationException;
+import com.percussion.webservices.content.IPSContentDesignWs;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.integration.junit4.JMock;
@@ -71,7 +72,11 @@ public class PSTemplateServiceValidationTest
     private IPSAssetService assetService;
     private IPSPageService pageService;
     private IPSItemWorkflowService itemWorkflowService;
-    
+    private IPSContentDesignWs contentDesignWs;
+
+    public PSTemplateServiceValidationTest() {
+    }
+
     @SuppressWarnings("deprecation")
     @Before
     public void setUp() throws Exception
@@ -92,7 +97,7 @@ public class PSTemplateServiceValidationTest
         
         sut = new PSTemplateService(templateDao, 
                 widgetAssetRelationshipService, pageDao, pageDaoHelper, widgetService, 
-                workflowHelper, widgetDao, assemblyService, idMapper);
+                workflowHelper, widgetDao, assemblyService, idMapper,contentDesignWs);
         
         context.checking(new Expectations()
         {

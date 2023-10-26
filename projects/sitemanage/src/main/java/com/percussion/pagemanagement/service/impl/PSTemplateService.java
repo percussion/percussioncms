@@ -60,6 +60,7 @@ import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.sitemanage.service.IPSSiteSectionService;
 import com.percussion.utils.guid.IPSGuid;
 import com.percussion.utils.types.PSPair;
+import com.percussion.webservices.content.IPSContentDesignWs;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,7 @@ import static org.apache.commons.lang.StringUtils.equalsIgnoreCase;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 import static org.apache.commons.lang.StringUtils.substringAfterLast;
+import static org.apache.commons.lang.Validate.isTrue;
 import static org.apache.commons.lang.Validate.noNullElements;
 import static org.apache.commons.lang.Validate.notEmpty;
 import static org.apache.commons.lang.Validate.notNull;
@@ -113,6 +115,7 @@ public class PSTemplateService implements IPSTemplateService
     private IPSWidgetDao widgetDao;
     private IPSAssemblyService assemblyService;
     private IPSIdMapper idMapper;
+    private final IPSContentDesignWs contentDesignWs;
     
    
     
@@ -141,7 +144,8 @@ public class PSTemplateService implements IPSTemplateService
             IPSWorkflowHelper workflowHelper,
             IPSWidgetDao widgetDao, 
             IPSAssemblyService assemblyService,
-            IPSIdMapper idMapper
+            IPSIdMapper idMapper,
+            IPSContentDesignWs contentDesignWs
             )
     {
         super();
@@ -154,6 +158,7 @@ public class PSTemplateService implements IPSTemplateService
         this.widgetDao = widgetDao;
         this.assemblyService = assemblyService;
         this.idMapper = idMapper;
+        this.contentDesignWs = contentDesignWs;
         
        
     }
@@ -617,7 +622,26 @@ public class PSTemplateService implements IPSTemplateService
         
         return metadata;
     }
-    
+
+
+    public String getTemplateEditUrl(String id)
+    {
+        isTrue(isNotBlank(id), "id may not be blank");
+
+        String url = contentDesignWs.getItemEditUrl(idMapper.getGuid(id), TPL_CONTENT_TYPE,
+                IPSConstants.SYS_HIDDEN_FIELDS_VIEW_NAME);
+        return fixUrl(url);
+    }
+
+    private String fixUrl(String url)
+    {
+        isTrue(isNotBlank(url), "url may not be blank");
+
+        if (url.startsWith("../"))
+            url = "/Rhythmyx/" + url.substring(3);
+
+        return url;
+    }
     /*
      * see base interface method for details
      */

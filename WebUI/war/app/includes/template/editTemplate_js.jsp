@@ -56,3 +56,18 @@
 <script  src="../controllers/PercDecorationController.js"></script>
 <script  src="../controllers/PercCSSController.js"></script>
 <script  src="../plugins/PercContentEditorHandlers.js"></script>
+
+<%--  Code Mirror --%>
+<script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/lib/codemirror.js"></script>
+<script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/edit/matchbrackets.js"></script>
+<script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/xml/xml.js"></script>
+<script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/javascript/javascript.js"></script>
+<script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/css/css.js"></script>
+<script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/htmlmixed/htmlmixed.js"></script>
+<script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/mode/velocity/velocity.js"></script>
+<script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/dialog/dialog.js"></script>
+<script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/search/searchcursor.js"></script>
+<script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/search/search.js"></script>
+<script src="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/selection/active-line.js"></script>
+<link rel="stylesheet" href="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/lib/codemirror.css" />
+<link rel="stylesheet" href="/sys_resources/tinymce/plugins/codemirror/codemirror-4.8/addon/dialog/dialog.css"/>

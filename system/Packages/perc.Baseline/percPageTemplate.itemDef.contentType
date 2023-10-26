@@ -350,15 +350,7 @@
                      <PSXDisplayMapping>
                         <FieldRef>sys_title</FieldRef>
                         <PSXUISet>
-                           <PSXControlRef id="0" name="sys_EditBox">
-                              <PSXParam name="maxlength">
-                                 <DataLocator>
-                                    <PSXTextLiteral id="0">
-                                       <text>255</text>
-                                    </PSXTextLiteral>
-                                 </DataLocator>
-                              </PSXParam>
-                           </PSXControlRef>
+                           <PSXControlRef id="10000" name="sys_HiddenInput"/>
                         </PSXUISet>
                      </PSXDisplayMapping>
                      <PSXDisplayMapping>
@@ -387,15 +379,7 @@
                            <Label>
                               <PSXDisplayText>Label:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10000" name="sys_EditBox">
-                              <PSXParam name="maxlength">
-                                 <DataLocator>
-                                    <PSXTextLiteral id="0">
-                                       <text>300</text>
-                                    </PSXTextLiteral>
-                                 </DataLocator>
-                              </PSXParam>
-                           </PSXControlRef>
+                            <PSXControlRef id="10000" name="sys_HiddenInput"/>
                            <ErrorLabel>
                               <PSXDisplayText>Label:</PSXDisplayText>
                            </ErrorLabel>
@@ -407,15 +391,7 @@
                            <Label>
                               <PSXDisplayText>Description:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10001" name="sys_EditBox">
-                              <PSXParam name="maxlength">
-                                 <DataLocator>
-                                    <PSXTextLiteral id="0">
-                                       <text>500</text>
-                                    </PSXTextLiteral>
-                                 </DataLocator>
-                              </PSXParam>
-                           </PSXControlRef>
+                             <PSXControlRef id="10000" name="sys_HiddenInput"/>
                            <ErrorLabel>
                               <PSXDisplayText>Description:</PSXDisplayText>
                            </ErrorLabel>
@@ -427,15 +403,7 @@
                            <Label>
                               <PSXDisplayText>Source Template:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10000" name="sys_EditBox">
-                              <PSXParam name="maxlength">
-                                 <DataLocator>
-                                    <PSXTextLiteral id="0">
-                                       <text>200</text>
-                                    </PSXTextLiteral>
-                                 </DataLocator>
-                              </PSXParam>
-                           </PSXControlRef>
+                            <PSXControlRef id="10000" name="sys_HiddenInput"/>
                            <ErrorLabel>
                               <PSXDisplayText>Source Template:</PSXDisplayText>
                            </ErrorLabel>
@@ -447,7 +415,7 @@
                            <Label>
                               <PSXDisplayText>HTML Header:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10003" name="sys_EditBox"/>
+                             <PSXControlRef id="10000" name="sys_HiddenInput"/>
                            <ErrorLabel>
                               <PSXDisplayText>HTML Header:</PSXDisplayText>
                            </ErrorLabel>
@@ -459,7 +427,7 @@
                            <Label>
                               <PSXDisplayText>Body Markup:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10005" name="sys_EditBox"/>
+                            <PSXControlRef id="10000" name="sys_HiddenInput"/>
                            <ErrorLabel>
                               <PSXDisplayText>Body Markup:</PSXDisplayText>
                            </ErrorLabel>
@@ -471,7 +439,7 @@
                            <Label>
                               <PSXDisplayText>Data:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10001" name="sys_EditBox"/>
+                             <PSXControlRef id="10000" name="sys_HiddenInput"/>
                            <ErrorLabel>
                               <PSXDisplayText>Data:</PSXDisplayText>
                            </ErrorLabel>
@@ -483,7 +451,7 @@
                            <Label>
                               <PSXDisplayText>CSS Region:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10000" name="sys_EditBox"/>
+                             <PSXControlRef id="10000" name="sys_HiddenInput"/>
                            <ErrorLabel>
                               <PSXDisplayText>CSS Region:</PSXDisplayText>
                            </ErrorLabel>
@@ -495,7 +463,7 @@
                            <Label>
                               <PSXDisplayText>CSS Override:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10001" name="sys_EditBox"/>
+                            <PSXControlRef id="10000" name="sys_HiddenInput"/>
                            <ErrorLabel>
                               <PSXDisplayText>CSS Override:</PSXDisplayText>
                            </ErrorLabel>
@@ -507,27 +475,50 @@
                            <Label>
                               <PSXDisplayText>Theme:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10002" name="sys_EditBox">
-                              <PSXParam name="maxlength">
-                                 <DataLocator>
-                                    <PSXTextLiteral id="0">
-                                       <text>300</text>
-                                    </PSXTextLiteral>
-                                 </DataLocator>
-                              </PSXParam>
-                           </PSXControlRef>
+                            <PSXControlRef id="10000" name="sys_HiddenInput"/>
                            <ErrorLabel>
                               <PSXDisplayText>Theme:</PSXDisplayText>
                            </ErrorLabel>
                         </PSXUISet>
                      </PSXDisplayMapping>
                      <PSXDisplayMapping>
+                         <FieldRef>doc_type</FieldRef>
+                         <PSXUISet>
+                            <PSXControlRef id="10060" name="sys_DocType"/>
+                            <ErrorLabel>
+                               <PSXDisplayText>Doc_type:</PSXDisplayText>
+                            </ErrorLabel>
+                         </PSXUISet>
+                      </PSXDisplayMapping>
+                     <PSXDisplayMapping>
                         <FieldRef>additional_head_content</FieldRef>
                         <PSXUISet>
                            <Label>
                               <PSXDisplayText>Additional head content:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10005" name="sys_TextArea"/>
+                           <PSXControlRef id="10005" name="sys_TextArea">
+						    <PSXParam name="id">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                          <text>additional_head_content</text>
+                        </PSXTextLiteral>
+                      </DataLocator>
+                    </PSXParam>
+                    <PSXParam name="codeeditor">
+                      <DataLocator>
+                        <PSXTextLiteral id="0">
+                          <text>yes</text>
+                        </PSXTextLiteral>
+                      </DataLocator>
+                    </PSXParam>
+                    <PSXParam name="codeeditor_mode">
+                      <DataLocator>
+                        <PSXTextLiteral id="0">
+                          <text>html</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                              </PSXControlRef>
                            <ErrorLabel>
                               <PSXDisplayText>Additional head content:</PSXDisplayText>
                            </ErrorLabel>
@@ -539,7 +530,29 @@
                            <Label>
                               <PSXDisplayText>Code insert after body start:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10006" name="sys_TextArea"/>
+                           <PSXControlRef id="10006" name="sys_TextArea">
+						   <PSXParam name="id">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                          <text>code_insert_after_body_start</text>
+                        </PSXTextLiteral>
+                      </DataLocator>
+                    </PSXParam>
+                    <PSXParam name="codeeditor">
+                      <DataLocator>
+                        <PSXTextLiteral id="0">
+                          <text>yes</text>
+                        </PSXTextLiteral>
+                      </DataLocator>
+                    </PSXParam>
+                    <PSXParam name="codeeditor_mode">
+                      <DataLocator>
+                        <PSXTextLiteral id="0">
+                          <text>html</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                              </PSXControlRef>
                            <ErrorLabel>
                               <PSXDisplayText>Code insert after body start:</PSXDisplayText>
                            </ErrorLabel>
@@ -551,7 +564,29 @@
                            <Label>
                               <PSXDisplayText>Code insert before body close:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10007" name="sys_TextArea"/>
+                           <PSXControlRef id="10007" name="sys_TextArea">
+						   <PSXParam name="id">
+                                 <DataLocator>
+                                    <PSXTextLiteral id="0">
+                          <text>code_insert_before_body_close</text>
+                        </PSXTextLiteral>
+                      </DataLocator>
+                    </PSXParam>
+                    <PSXParam name="codeeditor">
+                      <DataLocator>
+                        <PSXTextLiteral id="0">
+                          <text>yes</text>
+                        </PSXTextLiteral>
+                      </DataLocator>
+                    </PSXParam>
+                    <PSXParam name="codeeditor_mode">
+                      <DataLocator>
+                        <PSXTextLiteral id="0">
+                          <text>html</text>
+                                    </PSXTextLiteral>
+                                 </DataLocator>
+                              </PSXParam>
+                              </PSXControlRef>
                            <ErrorLabel>
                               <PSXDisplayText>Code insert before body close:</PSXDisplayText>
                            </ErrorLabel>
@@ -559,40 +594,29 @@
                      </PSXDisplayMapping>
                      <PSXDisplayMapping>
                         <FieldRef>protected_region</FieldRef>
-                        <PSXUISet>
-                           <Label>
-                              <PSXDisplayText>Protected region:</PSXDisplayText>
-                           </Label>
-                           <PSXControlRef id="10001" name="sys_HiddenInput"/>
-                           <ErrorLabel>
-                              <PSXDisplayText>Protected region:</PSXDisplayText>
-                           </ErrorLabel>
-                        </PSXUISet>
+                            <PSXUISet>
+                               <Label>
+                                  <PSXDisplayText>Protected region:</PSXDisplayText>
+                               </Label>
+                                <PSXControlRef id="10000" name="sys_EditBox"/>
+                               <ErrorLabel>
+                                  <PSXDisplayText>Protected region:</PSXDisplayText>
+                               </ErrorLabel>
+                            </PSXUISet>
                      </PSXDisplayMapping>
                      <PSXDisplayMapping>
                         <FieldRef>protected_region_text</FieldRef>
-                        <PSXUISet>
+                         <PSXUISet>
                            <Label>
                               <PSXDisplayText>Protected region text:</PSXDisplayText>
                            </Label>
-                           <PSXControlRef id="10003" name="sys_HiddenInput"/>
+                            <PSXControlRef id="10000" name="sys_EditBox"/>
                            <ErrorLabel>
                               <PSXDisplayText>Protected region text:</PSXDisplayText>
                            </ErrorLabel>
                         </PSXUISet>
                      </PSXDisplayMapping>
-                     <PSXDisplayMapping>
-                        <FieldRef>doc_type</FieldRef>
-                        <PSXUISet>
-                           <Label>
-                              <PSXDisplayText>Doc_type:</PSXDisplayText>
-                           </Label>
-                           <PSXControlRef id="10006" name="sys_HiddenInput"/>
-                           <ErrorLabel>
-                              <PSXDisplayText>Doc_type:</PSXDisplayText>
-                           </ErrorLabel>
-                        </PSXUISet>
-                     </PSXDisplayMapping>
+
                      <PSXDisplayMapping>
                         <FieldRef>type</FieldRef>
                         <PSXUISet>
