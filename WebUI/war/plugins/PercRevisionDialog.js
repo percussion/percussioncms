@@ -160,8 +160,7 @@
                         "<img title= '" +I18N.message("perc.ui.revisionDialog.tooltip@PreviewRevision") +
                         "'id='compare'  alt='" + I18N.message("perc.ui.revisionDialog.tooltip@PreviewRevision") +
                         "' revId='"+ revdata.revId + "' class='perc-revisions-compare-img' style='vertical-align:middle;margin-right:1px;' src='/cm/images/icons/editor/revision-compare.png' />" +
-
-                        "<img title= '" + I18N.message("perc.ui.revisionDialog.tooltip@Restorable") + "' alt='"+ restorableTitle +"' revId='"+ revdata.revId + "' class='perc-revisions-restore-img' style='vertical-align:middle;' src='/cm/images/icons/editor/" + restorableIcon + " />";
+                        "<img title= '" + I18N.message("perc.ui.revisionDialog.tooltip@Restorable") + "' alt='restorableTitle' revId='" + revdata.revId + "' class='perc-revisions-restore-img' style='vertical-align:middle;margin-right:1px;' src='/cm/images/icons/editor/" + restorableIcon + "'  />";
                 }
                 var $rowHTML = $(
                     "<tr>" +

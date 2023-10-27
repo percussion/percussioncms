@@ -155,9 +155,16 @@
                     }
                 }
             };
+			$.PercBlockUI();
+            $.PercSiteTemplatesController(false).saveTemplateMetadata( metadataObj, function(success,result) {
+				$.unblockUI();
+				if(success){
+                    dialog.remove();
+				}else{
+					$.perc_utils.alert_dialog({title: "Template Save Failed", content: result});
+				}
+			});
 
-            $.PercSiteTemplatesController(false).saveTemplateMetadata( metadataObj, function() {});
-            dialog.remove();
         }
 
         // A private helper method to group the fields and create collapsible sections
