@@ -157,8 +157,8 @@
                         "' alt='" + I18N.message("perc.ui.revisionDialog.tooltip@PreviewRevision") +
                         "' revId='"+ revdata.revId + "' class='perc-revisions-preview-img' style='vertical-align:middle;margin-right:1px;' src='/cm/images/icons/editor/preview.png' />" +
 
-                        "<img title= '" +I18N.message("perc.ui.revisionDialog.tooltip@PreviewRevision") +
-                        "'id='compare'  alt='" + I18N.message("perc.ui.revisionDialog.tooltip@PreviewRevision") +
+                        "<img title= 'Compare this revision to latest revision' "  +
+                        "'id='compare'  alt='Compare this revision to latest revision' " +
                         "' revId='"+ revdata.revId + "' class='perc-revisions-compare-img' style='vertical-align:middle;margin-right:1px;' src='/cm/images/icons/editor/revision-compare.png' />" +
                         "<img title= '" + I18N.message("perc.ui.revisionDialog.tooltip@Restorable") + "' alt='restorableTitle' revId='" + revdata.revId + "' class='perc-revisions-restore-img' style='vertical-align:middle;margin-right:1px;' src='/cm/images/icons/editor/" + restorableIcon + "'  />";
                 }
@@ -212,11 +212,17 @@
             if(isRestorable)
             {
                 $("#revisionsTable").find(".perc-revisions-restore-img").on("click",function(){
-
-                    $.blockUI();
-
-                    var revId = $(this).attr("revId");
-                    $.PercRevisionService.restoreRevision(itemId,revId,afterRestore);
+					var revId = $(this).attr("revId");
+                    $.perc_utils.confirm_dialog({
+                        title: 'Restore Revision',
+                        question: 'Want to Restore Revision (' + revId + ') as current revision?',
+                        success: function()
+                        {
+                        $.blockUI();
+                        $.PercRevisionService.restoreRevision(itemId,revId,afterRestore);
+                        },
+                        cancel: function () {}
+                    });
                 });
                 $("#revisionsTable").find(".perc-revisions-restore-img").on("mouseenter", function(){
                     $(this).attr("src", "/cm/images/icons/editor/restoreOver.png");
