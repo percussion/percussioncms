@@ -157,7 +157,7 @@
        <simplexml.version>2.7.1</simplexml.version>
        <stax.version>1.0.1</stax.version>
         <poi.version>5.2.2</poi.version>
-        <esapi.version>2.3.0.0</esapi.version>
+        <esapi.version>2.5.2.0</esapi.version>
         <esapi.encoder.version>1.2.3</esapi.encoder.version>
         <ant.version>1.10.14</ant.version>
         <ant.contrib.version>1.0b3</ant.contrib.version>
