@@ -16,9 +16,17 @@ tinymce.PluginManager.add('percglobalvariables', function(editor, url) {
             return;
         }
         var topFrJQ = mainEditor.jQuery.topFrameJQuery;
-        var dialogHtml = '<div><div id="perc-global-variables-wrapper"><table id="perc-global-variables-table"><tbody><tr class="perc-row-0"><th align="left" class="perc-column-0 perc-global-variables-column-header">Variable name</th><th class="perc-column-1 perc-global-variables-column-header">Variable value</th></tr>';
+        var dialogHtml = '<div><div id="perc-global-variables-wrapper"><table id="perc-global-variables-table"><tbody><tr class="perc-row-0"><th scope="col" align="left" class="perc-column-0 perc-global-variables-column-header">Variable name</th><th scope="col" class="perc-column-1 perc-global-variables-column-header">Variable value</th></tr>';
+		var counter2 = 0;
         topFrJQ.each(PercGlobalVariablesData, function(varName, varValue){
-            dialogHtml += '<tr class="perc-wfconfig-row perc-gv-row"><td align:"left"="" class="perc-column-0 perc-global-variables-column"><input type="radio" class="perc-global-variables-radio" style="width:auto;"><span class="perc-roleName-wrapper perc-ellipsis perc-gv-name">' + varName + '</span></td><td align:"left"="" class="perc-column-1 perc-global-variables-column"><span class="perc-roleName-wrapper perc-ellipsis perc-gv-value">' + varValue + '</span></td></tr>'
+
+            dialogHtml += '<tr class="perc-wfconfig-row perc-gv-row"><td align:"left"="" class="perc-column-0 perc-global-variables-column"><input type="radio" class="perc-global-variables-radio" style="width:auto;"><span class="perc-roleName-wrapper perc-ellipsis perc-gv-name">' + varName + '</span></td><td align:"left"="" class="perc-column-1 perc-global-variables-column"><span class="perc-roleName-wrapper perc-ellipsis perc-gv-value">' + varValue + '</span></td></tr>';
+
+			if(counter2 == 0){
+				dialogHtml += '<tr class="perc-wfconfig-row perc-gv-row"><td scope = "row" align:"left"="" class="perc-column-0 perc-global-variables-column"><input type="radio" class="perc-global-variables-radio" style="width:auto;"><span class="perc-roleName-wrapper perc-ellipsis perc-gv-name">' + varName + '</span></td><td align:"left"="" class="perc-column-1 perc-global-variables-column"><span class="perc-roleName-wrapper perc-ellipsis perc-gv-value">' + varValue + '</span></td></tr>';
+			}
+
+			counter2++;
         });
         dialogHtml += '</table></div></div>';
         // if we are in the new blog post dialog, the width is

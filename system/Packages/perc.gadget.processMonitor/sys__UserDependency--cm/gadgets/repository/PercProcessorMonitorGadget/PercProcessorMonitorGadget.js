@@ -28,8 +28,8 @@
             "<div id=\"perc-process-monitor-table-container\">" +
             "<table id=\"perc-process-monitor-table\" width=\"100%\">" +
             "<tr for=\"header\">" +
-            "<th align=\"left\" width=\"25%\">" + I18N.message("perc.ui.gadgets.processmonitor@Process") + "</th>" +
-            "<th align=\"left\" width=\"75%\">" + I18N.message("perc.ui.gadgets.processmonitor@Status") + "</th>" +
+            "<th scope=\"col\" align=\"left\" width=\"25%\">" + I18N.message("perc.ui.gadgets.processmonitor@Process") + "</th>" +
+            "<th scope=\"col\" align=\"left\" width=\"75%\">" + I18N.message("perc.ui.gadgets.processmonitor@Status") + "</th>" +
             "</tr>" +
             "</table>" +
             "</div>" +
@@ -84,13 +84,13 @@
                         additonalMsg = I18N.message("perc.ui.gadgets.processmonitor@Please Close Window");
                     }
                     statusRows = "<tr for=\"data\">" +
-                        "<td for=\"error\" colspan=\"2\">" + I18N.message("perc.ui.gadgets.processmonitor@Error Fetching Processors") + " " + additonalMsg + "</td>" +
+                        "<td scope=\"row\" for=\"error\" colspan=\"2\">" + I18N.message("perc.ui.gadgets.processmonitor@Error Fetching Processors") + " " + additonalMsg + "</td>" +
                         "</tr>";
                     $("#perc-process-monitor-table").append(statusRows);
                     return;
                 }
                 var rowTempl = "<tr for=\"data\">" +
-                    "<td for=\"@@NAME@@\">@@NAME@@</td>" +
+                    "<td scope=\"row\" for=\"@@NAME@@\">@@NAME@@</td>" +
                     "<td>@@STATUS@@</td>" +
                     "</tr>";
                 $.each(results.data.psMonitorList.monitor, function(){
