@@ -49,8 +49,8 @@
                 <table id="perc-cookie-table" class="perc-cookie-consent-table table">
                     <thead>
                         <tr>
-                            <th class="col-header">Site</th>
-                            <th class="col-header">Total cookie consents</th>
+                            <th scope="col" class="col-header">Site</th>
+                            <th scope="col" class="col-header">Total cookie consents</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -77,11 +77,11 @@
                 <table id="perc-cookie-site-table" class="perc-cookie-consent-site-table table">
                     <thead>
                         <tr>
-                            <th>
+                            <th scope="col">
                                 Service/Cookie
                                 <span class="perc-sort" style="padding: 0 10 0 0;">&nbsp;</span>
                             </th>
-                            <th>
+                            <th scope="col">
                                 Total consents
                                 <span class="perc-sort" style="padding: 0 10 0 0;">&nbsp;</span>
                             </th>

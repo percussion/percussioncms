@@ -337,6 +337,9 @@
 
                 // create the table data
                 var columnTd = $("<td class='"+percType+" "+headerClass+" perc-datatable-column perc-ellipsis perc-index-"+colIndex+" perc-cell-"+colIndex+"-"+rowIndex+" "+firstLast+"' valign='top'>");
+                if(aoIndex ==1){
+                    columnTd = $("<td scope = row' class='"+percType+" "+headerClass+" perc-datatable-column perc-ellipsis perc-index-"+colIndex+" perc-cell-"+colIndex+"-"+rowIndex+" "+firstLast+"' valign='top'>");
+                }
                 var columnRow;
                 if(typeof column === "object") {
                     var content = "";
@@ -467,7 +470,7 @@
                     firstLast = "perc-last";
                 else
                     firstLast = "perc-middle";
-                var head = $("<th class='"+percType+" "+headerClass+" perc-datatable-head-column perc-index-"+index+" "+firstLast+"'>");
+                var head = $("<th scope='col' class='"+percType+" "+headerClass+" perc-datatable-head-column perc-index-"+index+" "+firstLast+"'>");
 
                 head.width(columnWidth);
 
