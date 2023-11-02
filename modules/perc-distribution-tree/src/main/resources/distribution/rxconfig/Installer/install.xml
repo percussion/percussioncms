@@ -1262,13 +1262,14 @@
             </fileset>
         </copy>
 
-        <copy todir="${install.dir}/jetty/base/start.d" failonerror="false" overwrite="false">
-            <fileset dir="${install.src}/jetty/defaults/start.d" followsymlinks="false" includes="jvm.ini">
-                <present present="srconly" targetdir="${install.dir}/jetty/base/start.d"/>
-            </fileset>
-        </copy>
-
-
+        <if>
+            <not>
+                <available file="${install.dir}/jetty/base/start.d/jvm.ini" type="file" />
+            </not>
+            <then>
+                <touch file="${install.dir}/jetty/base/start.d/jvm.ini" />
+            </then>
+        </if>
 
         <copy todir="${install.dir}/jetty/base/resources" failonerror="false" overwrite="false">
             <fileset dir="${install.src}/jetty/base/resources" followsymlinks="false" includes="log4j*.xml">
