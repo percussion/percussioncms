@@ -1267,7 +1267,7 @@
                 <available file="${install.dir}/jetty/base/start.d/jvm.ini" type="file" />
             </not>
             <then>
-                <touch file="${install.dir}/jetty/base/start.d/jvm.ini" /
+                <touch file="${install.dir}/jetty/base/start.d/jvm.ini" />
             </then>
         </if>
 
