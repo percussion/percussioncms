@@ -879,12 +879,6 @@
             fixIframeHeight();
             P.contentView($("#frame"), pageModel);
 
-            var tabindex=60;
-            var listItems = $("#perc-pageEditor-tabs li");
-            listItems.each(function(idx, li) {
-                var product = $(li);
-                $(product).attr('tabindex',tabindex++ );
-            });
         }
 
         function setupLayout()
