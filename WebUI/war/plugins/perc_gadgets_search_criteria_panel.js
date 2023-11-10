@@ -37,13 +37,13 @@
         var panelContent;
         panelContent =  '<div id="perc-search-criteria-panel-content" >';
         panelContent += '    <div id="perc-search-criteria-panel-content-header">';
-        panelContent += '        <button id="perc-search-criteria-panel-content-refresh-search" class="btn btn-primary" title="Click to refresh the results">Refresh</button>';
-        panelContent += '        <a id="perc-search-criteria-panel-content-select-filters" href="#" title="Click to select the filters used to search">Select Filters</a>';
+        panelContent += '        <button id="perc-search-criteria-panel-content-refresh-search" class="btn btn-primary" title="Click to refresh the results">'+ I18N.message("perc.ui.gadgets.licenseMonitor@Refresh") + '</button>';
+        panelContent += '        <a id="perc-search-criteria-panel-content-select-filters" href="#" title="Click to select the filters used to search">'+ I18N.message("perc.ui.workflow.status.gadget@Select Filters") + '</a>';
         panelContent += '    </div>';        
         if (criteriaObj != null && !checkAllValues(criteriaObj))
         {
             panelContent += '    <div id="perc-search-criteria-panel-content-fields" >';
-            panelContent +=     '    <span id="perc-search-criteria-panel-filters">Filters: </span>';
+            panelContent +=     '    <span id="perc-search-criteria-panel-filters">'+ I18N.message("perc.ui.gadgets.search.criteria@Filters")+ ': </span>';
             var numberIndex = 0;
             $.each(criteriaObj, function(index, value) {
                 var fieldName = value["name"];
