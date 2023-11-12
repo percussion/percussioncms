@@ -91,11 +91,7 @@ public abstract class PSAbstractContentItemDao<T extends IPSItemSummary> impleme
         notNull(id, "id");
         PSContentItem contentItem = contentItemDao.find(id);
         if (contentItem == null) {return null;}
-        
-        if ( ! getType().equals(contentItem.getType()) ) {
-           throw new LoadException("Type does not match!");
-        }
-        
+
         return getObjectFromContentItem(contentItem);
     }
     

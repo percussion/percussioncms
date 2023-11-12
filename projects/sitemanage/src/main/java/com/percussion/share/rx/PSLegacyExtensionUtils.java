@@ -16,7 +16,10 @@
  */
 package com.percussion.share.rx;
 
-import static org.apache.commons.lang.Validate.notNull;
+import com.percussion.extension.IPSExtensionDef;
+import com.percussion.server.IPSRequestContext;
+import com.percussion.services.guidmgr.data.PSLegacyGuid;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,10 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.collections.CollectionUtils;
-
-import com.percussion.extension.IPSExtensionDef;
-import com.percussion.server.IPSRequestContext;
+import static org.apache.commons.lang.Validate.notNull;
 
 /**
  * 
@@ -53,6 +53,24 @@ public class PSLegacyExtensionUtils
      */
     public static void addParameters(Map<String, String> paramMap, IPSExtensionDef def, Object[] params) {
         addParameters(paramMap, getParameterNames(def), params);
+    }
+
+    public static String getGUID(String id){
+        if(id != null && id.contains("-")){
+            return id;
+        }else{
+            PSLegacyGuid guid = new PSLegacyGuid(Integer.valueOf(id), 1);
+            return guid.toString();
+        }
+    }
+
+    public static String getGUID(String id,String revId){
+        if(id != null && id.contains("-")){
+            return id;
+        }else{
+            PSLegacyGuid guid = new PSLegacyGuid(Integer.valueOf(id), Integer.valueOf(revId));
+            return guid.toString();
+        }
     }
     
     /**

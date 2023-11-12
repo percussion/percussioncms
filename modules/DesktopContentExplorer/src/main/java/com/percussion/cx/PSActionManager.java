@@ -5809,8 +5809,26 @@ public class PSActionManager implements IPSConstants, IPSSelectionListener
                PSFileSaver fileSaver = new PSFileSaver(mi_actionurl);
                fileSaver.startFileSaver();
 
-            }
-            else if(  isRender(mi_actionurl)){
+            }else if(isCompareUrl(mi_actionurl)) {
+               mi_actionurl = mi_actionurl.replace("sys_Compare/compare.html","cm/app/compare.jsp");
+               String folderId = action.getParameters().getParameter("sys_folderid");
+              if(folderId == null ){
+                  PSNode parentNode = mi_selection.getParent();
+                  if(parentNode != null && parentNode.isFolderType()) {
+                     folderId = parentNode.getContentId();
+                     PSParameters params = action.getParameters();
+                     params.setParameter("sys_folderid", folderId);
+                     if (!mi_actionurl.contains("&sys_folderid=")) {
+                        mi_actionurl = mi_actionurl + "&sys_folderid=" + folderId;
+                     }
+                  }
+               }
+
+               Platform.runLater(() -> {
+                  startSwingBrowser();
+               });
+
+            } else if(  isRender(mi_actionurl)){
           //whatever has to be rendered, show in external browser
                //this.isExternalURL(mi_actionurl)
                URL url = PSBrowserUtils.toURL(mi_actionurl);
@@ -5832,11 +5850,17 @@ public class PSActionManager implements IPSConstants, IPSSelectionListener
             JSObject window = JSObject.getWindow(m_applet);
             window.call("showWindow", args);
          }
-
       }
       private boolean isRender(String url){
+         if((url.toLowerCase().contains("/render") && !url.toLowerCase().contains("sys_action")) );
+         return false;
+      }
 
-       return (url.toLowerCase().contains("/render") && !url.toLowerCase().contains("sys_action")) || url.toLowerCase().contains("sys_compare/compare.html") ;
+      private boolean isCompareUrl(String urlString){
+         if(urlString.toLowerCase().contains("sys_compare/compare.html") ){
+            return true;
+         }
+         return false;
       }
 
       private void startSwingBrowser()
