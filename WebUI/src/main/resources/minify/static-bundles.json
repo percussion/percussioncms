@@ -46,13 +46,13 @@
       "files": [
         "../target/minify-common/shared-common.js",
         "../target/minify-common/shared-finder.js",
-
         "services/perc_sectionServiceClient.js",
         "services/PercSiteService.js",
         "plugins/PercEditSectionLinksDialog.js",
         "plugins/PercSectionTreeDialog.js",
         "plugins/PercCopySiteDialog.js",
         "services/PercFolderService.js",
+        "services/PercCompareService.js",
         "plugins/perc_newSectionDialog.js",
         "plugins/perc_editSectionDialog.js",
         "plugins/perc_editSiteSectionDialog.js",
