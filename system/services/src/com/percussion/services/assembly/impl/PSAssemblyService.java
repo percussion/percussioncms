@@ -2119,6 +2119,10 @@ public class PSAssemblyService implements IPSAssemblyService
          {
             sid = String.valueOf(parentItem.getSiteId().longValue());
          }
+         if (StringUtils.isBlank(fid))
+         {
+            fid = String.valueOf(parentItem.getFolderId());
+         }
          if (StringUtils.isBlank(fid) && StringUtils.isNotBlank(sid))
          {
             IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
@@ -2133,7 +2137,7 @@ public class PSAssemblyService implements IPSAssemblyService
 
          List<PSLocator> folders = processor.getParents(PSRelationshipConfig.TYPE_FOLDER_CONTENT, lg.getLocator());
 
-         if (folders == null || folders.isEmpty())
+         if (StringUtils.isBlank(fid) && (folders == null || folders.isEmpty()))
          {
             throw new IllegalStateException("Navon must be contained in a folder: " + lg);
          }

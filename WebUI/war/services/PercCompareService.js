@@ -16,13 +16,13 @@
  */
 
 (function($){
-
-
     $.percCompareServiceInstance = null;
     $.PercCompareService = function () {
 
-        if($.percCompareServiceInstance == null)
+        if($.percCompareServiceInstance == null){
             $.percCompareServiceInstance = PercCompareService();
+        }
+
         return $.percCompareServiceInstance;
     };
 
@@ -35,28 +35,123 @@
         var allRevisions;
         var itemId;
         var title;
+        var siteId;
+        var folderId;
         var itemHref;
         var mobilePreview;
         var compareWindow;
+        var assemblerRenderer = false;
+        var templates;
+        var selectedTemplate;
 
         return {
             openComparisonWindow:openComparisonWindow,
+            compareRevisions:compareRevisions,
             setPageData:setPageData,
-            compareRevisions:compareRevisions
+            getAllReveisionsAndOpenComparisonWindow:getAllReveisionsAndOpenComparisonWindow,
+            setCompareWindow:setCompareWindow,
+            setAssemblyRenderer:setAssemblyRenderer
+
         };
+
+        function setAssemblyRenderer(assmRend){
+            $.percCompareServiceInstance.assemblerRenderer = assmRend;
+        }
+
+        function setCompareWindow(compareWind){
+            compareWindow = compareWind;
+        }
 
         function setPageData(page1,page2,comparedPage){
             $.percCompareServiceInstance.page1=page1;
             $.percCompareServiceInstance.page2=page2;
             $.percCompareServiceInstance.comparedPage = comparedPage;
         }
+        //sys_revision1=3&sys_contentid1=499&sys_siteid=301
 
-        function openComparisonWindow(itemId,title,selectedRev,latestRev,allRevisions){
+        function getAllReveisionsAndOpenComparisonWindow(itemId,selectedRev,siteId,folderId){
+            assemblerRenderer = true;
+            $.percCompareServiceInstance.siteId = siteId;
+            $.percCompareServiceInstance.folderId = folderId;
+            getAllTemplates(itemId,selectedRev,siteId,folderId);
+        }
+
+        function getAllTemplates(itemId,selectedRev,siteId,folderId){
+            var url = "../../../rest/templates/summaries-by-filter";
+            var payload = {TemplateFilter: {
+                    contentId: itemId,
+                }};
+            $.PercServiceUtils.makeJsonRequest(url,  $.PercServiceUtils.TYPE_POST,false, function callback(status,result){
+                if(status === $.PercServiceUtils.STATUS_ERROR)
+                {
+                    var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
+                    //$.perc_utils.alert_dialog({title: 'Error', content: defaultMsg});
+                    callback(false);
+                    return;
+                }else{
+                    var templateList = result.data.TemplateSummaryList;
+                    $.PercRevisionService.getRevisionDetails(itemId,function callback(status,result){
+                        if(status === $.PercServiceUtils.STATUS_ERROR)
+                        {
+                            var defaultMsg = $.PercServiceUtils.extractDefaultErrorMessage(result.request);
+                            // $.perc_utils.alert_dialog({title: 'Error', content: defaultMsg});
+                            callback(false);
+                            return;
+                        }else{
+                            var revData = convertRevisions(result.data.RevisionsSummary.revisions);
+                            openComparisonWindow(itemId,siteId,folderId,null,selectedRev,1,revData,templateList,true);
+                        }
+                    });
+                }
+            },payload);
+        }
+
+        function isComparable(response) {
+            const notAllowedCT = ["application/pdf", "image/gif", "application/octet-stream",
+                "image/jpeg","image/png","image/svg+xml","audio/mpeg","video/mp4","application/zip",
+                "application/x-gzip","application/x-tar"];
+            var contentType = response.headers.get("content-type");
+
+            if(notAllowedCT.includes(contentType)){
+                return false;
+            }else{
+                return true;
+            }
+        }
+
+        function isIteratable(value){
+
+            if(value != null && typeof value[Symbol.iterator] === 'function'){
+                return true;
+            }
+            return false;
+        }
+
+        function convertRevisions(revs){
+            var allRevisions = new Map([]);
+            if(isIteratable(revs)){
+                for (let item of revs) {
+                    allRevisions.set(Number(item.revId), { revId: item.revId, lastModified: item.lastModifiedDate, modifier: item.lastModifier,status : item.status});
+                }
+            }else if (typeof(revs) != 'undefined'){
+                allRevisions.set(Number(revs.revId), { revId: revs.revId, lastModified: revs.lastModifiedDate, modifier: revs.lastModifier,status : revs.status});
+
+            }
+            return allRevisions;
+        }
+
+        function openComparisonWindow(itemId,siteId,folderId,itemName,selectedRev,latestRev,allRevisions,templatesList,populateList,refreshLeftHand){
             $.percCompareServiceInstance.itemId = itemId;
-            $.percCompareServiceInstance.title = title;
-            $.percCompareServiceInstance.revision1 = selectedRev;
-            $.percCompareServiceInstance.revision2= latestRev;
-            $.percCompareServiceInstance.allRevisions = allRevisions;
+            $.percCompareServiceInstance.title = itemName;
+            $.percCompareServiceInstance.folderId = folderId;
+            $.percCompareServiceInstance.siteId = siteId;
+            $.percCompareServiceInstance.revision1 = Number(selectedRev);
+            $.percCompareServiceInstance.revision2= Number(latestRev);
+            $.percCompareServiceInstance.allRevisions=allRevisions;
+            $.percCompareServiceInstance.templates = templatesList;
+            if(assemblerRenderer){
+                $.percCompareServiceInstance.selectedTemplate = templatesList[0].templateId;
+            }
 
             // Retrieve the path for the given page id to build the friendly URL and open hte preview
             $.PercPathService.getPathItemById(itemId, function(status, result, errorCode) {
@@ -66,10 +161,15 @@
                     if(typeof mobilePreview === "undefined" || mobilePreview === null){
                         mobilePreview = false;
                     }
+                    $.percCompareServiceInstance.title = result.PathItem.name;
                     href = href.substring(1);
                     $.percCompareServiceInstance.itemHref = href;
                     $.percCompareServiceInstance.mobilePreview = mobilePreview;
-                    compareRevisions(selectedRev,latestRev,true );
+                    if(assemblerRenderer){
+                        compareRevisions(selectedRev,latestRev,false, templatesList[0].templateId,populateList,true);
+                    }else{
+                        compareRevisions(selectedRev,latestRev,true, null, null ,true,true);
+                    }
                 }
                 else {
                     // We failed retrieving the friendly URL. Show the error dialog
@@ -92,39 +192,68 @@
 
         function openCompareWindow(page1,page2,output){
             compareWindow = window.open('/cm/app/compare.jsp');
+            compareWindow.refreshUI($.percCompareServiceInstance,true);
         }
 
-        function refreshCompareWindow(page1,page2,output){
-            compareWindow.refreshUI(false);
+        function refreshCompareWindow(page1,page2,output,populateLists,refreshLeftHand){
+            if(refreshLeftHand){
+                compareWindow.refreshUI($.percCompareServiceInstance,populateLists);
+            }else{
+                compareWindow.refreshRightSide($.percCompareServiceInstance,populateLists);
+            }
         }
 
-        function compareRevisions(revId1,revId2,openWindow){
-            $.percCompareServiceInstance.revision1 = revId1;
-            $.percCompareServiceInstance.revision2 = revId2;
+        function compareRevisions(revId1,revId2,openWindow,selectedTemplate,populateLists,refreshLeftHand){
+            $.percCompareServiceInstance.revision1 = Number(revId1);
+            $.percCompareServiceInstance.revision2 = Number(revId2);
             var href1 = $.percCompareServiceInstance.itemHref;
             var href2=$.percCompareServiceInstance.itemHref;
             var mobilePreview = $.percCompareServiceInstance.mobilePreview;
 
             if(revId1)
             {
-                href1 += "?sys_revision=" + revId1 + "&percmobilepreview="+mobilePreview;
-            }
-            else{
-                href1 += "?percmobilepreview="+mobilePreview;
+                if(assemblerRenderer){
+                    href1 = "/assembler/render?sys_revision=" + revId1 + "&sys_context=0&sys_siteid="+
+                        $.percCompareServiceInstance.siteId+"&sys_contentid="+
+                        $.percCompareServiceInstance.itemId+
+                        "&sys_itemfilter=preview&sys_template=" + selectedTemplate +
+                        "&sys_folderid="+ $.percCompareServiceInstance.folderId;
+                }else{
+                    href1 += "?sys_revision=" + revId1 + "&percmobilepreview="+mobilePreview;
+                }
+
+
             }
 
             if(revId2)
             {
-                href2 += "?sys_revision=" + revId2 + "&percmobilepreview="+mobilePreview;
+                if(assemblerRenderer){
+                    href2 = "/assembler/render?sys_revision=" + revId2 +
+                        "&sys_context=0&sys_folderid=513&sys_siteid="+
+                        $.percCompareServiceInstance.siteId+"&sys_contentid="+ $.percCompareServiceInstance.itemId+
+                        "&sys_itemfilter=preview&sys_template=" + selectedTemplate+
+                        "&sys_folderid="+ $.percCompareServiceInstance.folderId;
+                }else{
+                    href2 += "?sys_revision=" + revId2 + "&percmobilepreview="+mobilePreview;
+                }
             }
-            else{
-                href2 += "?percmobilepreview="+mobilePreview;
-            }
+
             fetch(href1)
                 .then(function (response) {
                     switch (response.status) {
-                        case 200:
-                            return response.text();
+                        case 200:{
+                            if(!isComparable(response)){
+                                var contentType = response.headers.get("content-type");
+                                var message = "Page with ContentType:" + contentType + " is not comparable. Please select different template.";
+                                $.PercCompareService().setPageData(message,message,message);
+                                if(openWindow)
+                                    openCompareWindow(message,message,message);
+                                else
+                                    refreshCompareWindow(message,message,message,populateLists,refreshLeftHand);
+                            }else{
+                                return response.text();
+                            }
+                        }
                         case 404:
                             throw response;
                     }
@@ -145,12 +274,12 @@
                         .then(function (template) {
                             var page2 = template;
                             // Diff HTML strings
-                            let output = htmldiff(page1, page2);
+                            var output = htmldiff(page1, page2);
                             $.PercCompareService().setPageData(page1,page2,output);
                             if(openWindow)
                                 openCompareWindow(page1,page2,output);
                             else
-                                refreshCompareWindow(false);
+                                refreshCompareWindow(page1,page2,output,populateLists,refreshLeftHand);
                         })
                         .catch(function (response) {
                             console.log(response.statusText);

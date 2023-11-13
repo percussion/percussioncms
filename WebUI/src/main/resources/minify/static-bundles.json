@@ -19,6 +19,7 @@
         "services/PercDashboardService.js",
         "services/PercActivityService.js",
         "services/PercReusableSearchService.js",
+        "services/PercCompareService.js",
         "widgets/PercWizard/PercWizard.js",
         "plugins/perc_ChangePwDialog.js",
         "plugins/perc_ChangeUserEmailDialog.js",

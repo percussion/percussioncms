@@ -83,6 +83,7 @@ import com.percussion.share.data.IPSItemSummary;
 import com.percussion.share.data.PSItemProperties;
 import com.percussion.share.data.PSItemPropertiesList;
 import com.percussion.share.data.PSNoContent;
+import com.percussion.share.rx.PSLegacyExtensionUtils;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
@@ -233,9 +234,10 @@ public class PSItemService implements IPSItemService
 
         try {
             rejectIfBlank("getRevisions", "id", id);
+            String guid = PSLegacyExtensionUtils.getGUID(id);
             PSRevisionsSummary revSummary = new PSRevisionsSummary();
             try {
-                validateItemRestorable(id);
+                validateItemRestorable(guid);
                 revSummary.setRestorable(true);
             } catch (PSValidationException | PSNotFoundException e) {
                 revSummary.setRestorable(false);
@@ -243,11 +245,11 @@ public class PSItemService implements IPSItemService
             // revisions for the client side
             List<PSRevision> revisions = new ArrayList<>();
             // get the history details (revisions) for the page or asset from Rhythmyx
-            List<PSContentStatusHistory> _revisions = systemService.findContentStatusHistory(idMapper.getGuid(id));
+            List<PSContentStatusHistory> _revisions = systemService.findContentStatusHistory(idMapper.getGuid(guid));
             List<PSComment> comments = createCommentsFromHistory(_revisions);
             PSComponentSummary sum = null;
             try {
-                sum = workflowHelper.getComponentSummary(id);
+                sum = workflowHelper.getComponentSummary(guid);
             } catch (Exception e) {
                 throw new PSItemServiceException("The page you are trying to act on no longer exists in the system.", e);
             }
@@ -265,7 +267,7 @@ public class PSItemService implements IPSItemService
                 //The following code adds an entry from the item summary if the item is checked out to the current user
                 //and the head revision is not in the revisions.
                 int headRev = sum.getHeadLocator().getRevision();
-                if (workflowHelper.isCheckedOutToCurrentUser(id)) {
+                if (workflowHelper.isCheckedOutToCurrentUser(guid)) {
                     boolean found = false;
                     for (PSRevision rev : revs) {
                         if (rev.getRevId() == headRev) {

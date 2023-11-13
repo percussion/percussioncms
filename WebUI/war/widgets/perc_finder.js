@@ -84,7 +84,7 @@ var assetPagination = null;
         actionListeners = [],
             openListeners = [],
             _finderPathIdArray = {},
-			_percCompareService=null;
+            _percCompareService = $.PercCompareService();
             path_changed = function(p){ current_path = p; },
             finderOpenInProgress = false,
             lastClickPath = null,
@@ -1553,8 +1553,8 @@ var assetPagination = null;
         }
 
         function launchPageCompareView(itemId,itemName,selectedRev,latestRev,allRevisions){
-			_percCompareService = $.PercCompareService();
-            _percCompareService.openComparisonWindow(itemId,itemName,selectedRev,latestRev,allRevisions);
+            _percCompareService = $.PercCompareService();
+            _percCompareService.openComparisonWindow(itemId,null,null,itemName,selectedRev,latestRev,allRevisions);
         }
 
 
