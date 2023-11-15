@@ -26,8 +26,8 @@
                 width : 820,
                 height: 580,
                 steps : [
-                    {title : "Define your blog",      content : defineYourBlogWizardStep, cache : true, showRequiredFieldLabel : true},
-                    {title : "Select your templates", content : selectYourTemplatesStep,  cache : false}
+                    {title : I18N.message("perc.ui.blogs.Gadget@Define your blog"),      content : defineYourBlogWizardStep, cache : true, showRequiredFieldLabel : true},
+                    {title : I18N.message("perc.ui.blogs.Gadget@Select your templates"), content : selectYourTemplatesStep,  cache : false}
                 ],
                 id : "perc-new-blog-dialog",
                 style : "/cm/gadgets/repository/PercBlogsGadget/PercNewBlogDialog.css",
@@ -159,7 +159,7 @@
 	            }
 	            else if(status == percJQuery.PercServiceUtils.STATUS_SUCCESS && (result == percJQuery.PercUserService.ACCESS_READ || result == percJQuery.PercUserService.ACCESS_NONE))
 	            {
-	               percJQuery.perc_utils.alert_dialog({title: 'Warning', content: "You are not authorized to create a blog in the selected folder."});
+	               percJQuery.perc_utils.alert_dialog({title: 'Warning', content: I18N.message("perc.ui.blogs.Gadget@No Authorization")});
 	               hasWritePermission = false;
 	               return;
 	            }
@@ -214,17 +214,17 @@
             });
             
         var selectLocationDom = percJQuery("<div class='perc-select-blog-location'>")
-            .append("<div class='perc-select-blog-location-label perc-label'>* Select a location for your blog.</div>")
+            .append("<div class='perc-select-blog-location-label perc-label'>" + I18N.message("perc.ui.blogs.Gadget@Select a location") + "</div>")
             .append(tree)
             .append("<div class='perc-blog-location-error-message perc-error-message'>Blog location is a required field.</div>");
 
         var selectTextLinkDom = percJQuery("<div class='perc-select-blog-text-link-ui'>")
-            .append("<div class='perc-select-blog-text-link-label perc-label'>* Blog link text:</div>")
+            .append("<div class='perc-select-blog-text-link-label perc-label'>" + I18N.message("perc.ui.blogs.Gadget@Blog link text") + "</div>")
             .append("<div class='perc-select-blog-text-link-input perc-new-blog-input'><input type='text' aria-required='true' id='perc-blog-text-link'/>")
             .append("<div class='perc-blog-text-link-error-message perc-error-message'>Blog link text is a required field.</div>");
             
         var selectPageNameDom = percJQuery("<div class='perc-select-page-name-ui'>")
-            .append("<div class='perc-select-page-name-label perc-label'>* Blog name:</div>")
+            .append("<div class='perc-select-page-name-label perc-label'>" + I18N.message("perc.ui.blogs.Gadget@Blog name") + "</div>")
             .append("<div class='perc-select-page-name-input perc-new-blog-input'><input type='text' aria-required='true' id='perc-page-name' maxlength='50'/>")
             .append("<div class='perc-blog-page-name-error-message perc-error-message'>Blog name is a required field.</div>")
             .append("<div class='perc-blog-page-name-unique-error-message perc-error-message'>Blog name must be unique.</div>");
