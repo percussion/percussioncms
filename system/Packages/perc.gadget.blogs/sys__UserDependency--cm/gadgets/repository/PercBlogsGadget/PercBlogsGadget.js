@@ -243,10 +243,10 @@
                 percColumnWidths: ["*", "90"],
                 aoColumns: [{ sType: "string" }, { sType: "date" }],
                 iDisplayLength: itemsPerPage,
-                percHeaders: ["Blog Title", "Published"],
+                percHeaders: [I18N.message("perc.ui.blogs.Gadget@Blog Title"), I18N.message("perc.ui.gadgets.workflowStatus@Published")],
                 percData: percData,
                 percMenus: menus,
-                oLanguage: { sZeroRecords: "No Blogs Found. Click on the button above to create a new blog" }
+                oLanguage: { sZeroRecords: I18N.message("perc.ui.blogs.Gadget@No Blogs Found") }
             };
             miniMsg.dismissMessage(loadingMsg);
 

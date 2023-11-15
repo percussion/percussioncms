@@ -1117,6 +1117,69 @@
                 <seg>Haz clic para crear un nuevo blog.</seg>
             </tuv>
         </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Title">
+            <note xml:lang="en-us">Blog Title</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog Title</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Titulo de Blog</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@No Blogs Found">
+            <note xml:lang="en-us">No Blogs Found</note>
+            <tuv xml:lang="en-us">
+                <seg>No Blogs Found. Click on the button above to create a new blog</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>No se encontraron blogs. Haga clic en el botón de arriba para crear un nuevo blog</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Define your blog">
+            <note xml:lang="en-us">Define your blog</note>
+            <tuv xml:lang="en-us">
+                <seg>Define your blog</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Define tu blog</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Select your templates">
+            <note xml:lang="en-us">Select your templates</note>
+            <tuv xml:lang="en-us">
+                <seg>Select your templates</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Selecciona tus plantillas</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Select a location">
+            <note xml:lang="en-us">Select a location for your blog</note>
+            <tuv xml:lang="en-us">
+                <seg>* Select a location for your blog</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>* Seleccione una ubicación para su blog</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog link text">
+            <note xml:lang="en-us">Blog link text</note>
+            <tuv xml:lang="en-us">
+                <seg>* Blog link text:</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>* Texto del enlace del blog:</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog name">
+            <note xml:lang="en-us">Blog name</note>
+            <tuv xml:lang="en-us">
+                <seg>* Blog name:</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>* Nombre del blog:</seg>
+            </tuv>
+        </tu>
         <tu tuid="perc.ui.publish.title@Assembly URL">
             <note xml:lang="en-us">Title of the publish item error section.</note>
             <tuv xml:lang="en-us">
