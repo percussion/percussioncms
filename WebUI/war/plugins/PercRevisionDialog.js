@@ -157,8 +157,8 @@
                         "' alt='" + I18N.message("perc.ui.revisionDialog.tooltip@PreviewRevision") +
                         "' revId='"+ revdata.revId + "' class='perc-revisions-preview-img' style='vertical-align:middle;margin-right:1px;' src='/cm/images/icons/editor/preview.png' />" +
 
-                        "<img title= 'Compare this revision to latest revision' "  +
-                        "'id='compare'  alt='Compare this revision to latest revision' " +
+                        "<img title= '"  + I18N.message("perc.ui.revisionDialog.compare@compareRevisions") +
+                        "' 'id='compare'  alt='Compare this revision to latest revision' " +
                         "' revId='"+ revdata.revId + "' class='perc-revisions-compare-img' style='vertical-align:middle;margin-right:1px;' src='/cm/images/icons/editor/revision-compare.png' />" +
                         "<img title= '" + I18N.message("perc.ui.revisionDialog.tooltip@Restorable") + "' alt='restorableTitle' revId='" + revdata.revId + "' class='perc-revisions-restore-img' style='vertical-align:middle;margin-right:1px;' src='/cm/images/icons/editor/" + restorableIcon + "'  />";
                 }
