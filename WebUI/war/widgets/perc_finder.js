@@ -1554,7 +1554,12 @@ var assetPagination = null;
 
         function launchPageCompareView(itemId,itemName,selectedRev,latestRev,allRevisions){
             _percCompareService = $.PercCompareService();
-            _percCompareService.openComparisonWindow(itemId,null,null,itemName,selectedRev,latestRev,allRevisions);
+			_percCompareService.params.itemId = itemId;
+            _percCompareService.params.title = itemName;
+            _percCompareService.params.revision1 = Number(selectedRev);
+            _percCompareService.params.revision2= Number(latestRev);
+            _percCompareService.params.allRevisions=allRevisions;
+            _percCompareService.openComparisonWindow();
         }
 
 

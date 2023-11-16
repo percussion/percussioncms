@@ -3,6 +3,7 @@
 <!--
    These i18n resources are used by the CM UI. The Language
    tool will lookup this file when generating the translation keys for newly
+   tool will lookup this file when generating the translation keys for newly
    added language.
 
    All keys in this file should start with the prefix "perc.ui."
@@ -3762,9 +3763,130 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
         <seg>Compare Revisions</seg>
     </tuv>
       <tuv xml:lang="es">
-        <seg>comparar revisiones</seg>
+        <seg>Comparar revisiones</seg>
     </tuv>
 </tu>
+<tu tuid="perc.ui.revisionDialog.highContrast@High Contrast">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>High Contrast</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Alto contraste</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.selectTemplate@Select Template">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+   <tuv xml:lang="en-us">
+       <seg>Select Template</seg>
+   </tuv>
+   <tuv xml:lang="es">
+       <seg>Seleccionar plantilla</seg>
+   </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.notComparable@Not compareable">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+   <tuv xml:lang="en-us">
+       <seg>Page is not comparable. Please select different template.</seg>
+   </tuv>
+   <tuv xml:lang="es">
+       <seg>La página no es comparable. Por favor seleccione una plantilla diferente</seg>
+   </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.failedPageLoad@Failed Page Load">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+   <tuv xml:lang="en-us">
+       <seg>Failed to load page.</seg>
+   </tuv>
+   <tuv xml:lang="es">
+       <seg>No se pudo cargar la página.</seg>
+   </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.failedCompare@Failed Compare">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+   <tuv xml:lang="en-us">
+       <seg>Failed to compare pages.</seg>
+   </tuv>
+   <tuv xml:lang="es">
+       <seg>No se pudieron comparar páginas.</seg>
+   </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.revision@Revision">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Revision</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Revisión</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.compare@Compare">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Compare</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Comparar</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.legends@Legends">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Legends</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Leyendas</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.addedText@Added Text">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Added Text</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Texto agregado</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.addedTextHighContrast@Added Text High Contrast">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Added Text High Contrast</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Texto agregado de alto contraste</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.removedText@Removed Text">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Removed Text</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Texto eliminado</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.removedTextHighContrast@Removed Text High Contrast">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Removed Text High Contrast</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Texto eliminado de alto contraste</seg>
+    </tuv>
+</tu>
+
 <tu tuid="perc.ui.revisionDialog.selectRevToCompare@selectRevToCompare">
     <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
     <note xml:lang="en-us"></note>
@@ -3772,7 +3894,7 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
         <seg>Select Revisions To Compare</seg>
     </tuv>
       <tuv xml:lang="es">
-        <seg>seleccione revisiones para comparar</seg>
+        <seg>Seleccione revisiones para comparar</seg>
     </tuv>
 </tu>
 <tu tuid="perc.ui.revisionDialog.selectRev@selectRev">
@@ -3782,7 +3904,7 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
         <seg>Select Revision</seg>
     </tuv>
       <tuv xml:lang="es">
-        <seg>seleccione revisione</seg>
+        <seg>Seleccione revisione</seg>
     </tuv>
 </tu>
 <tu tuid="perc.ui.revisionDialog.itemTitle@ItemTitle">

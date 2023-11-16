@@ -26,21 +26,19 @@
 
 
 %>
-
-<i18n:settings lang="<%=locale %>" prefixes="perc.ui." debug="<%= debug %>"/>
-<script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
-<script type="text/javascript" src="/cm/services/PercCompareService.js"></script>
-<script type="text/javascript" src="/cm/services/PercRevisionService.js"></script>
-<script type="text/javascript" src="/cm/plugins/perc_path_constants.js"></script>
-<script type="text/javascript" src="/cm/services/PercServiceUtils.js"></script>
-<script type="text/javascript" src="/cm/services/PercPathService.js"></script>
-<script type="text/javascript" src="/cm/widgets/htmldiff.js"></script>
-<script type="text/javascript" src="/cm/plugins/perc_utils.js"></script>
-
-
-
 <html>
 <head>
+    <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;sys_lang=<%= locale %>"></script>
+    <script src="/JavaScriptServlet"></script>
+    <i18n:settings lang="<%=locale %>" prefixes="perc.ui.revisionDialog." debug="<%= debug %>"/>
+    <script src="/cm/jslib/profiles/3x/jquery/jquery-3.6.0.js"></script>
+    <script type="text/javascript" src="/cm/services/PercCompareService.js"></script>
+    <script type="text/javascript" src="/cm/services/PercRevisionService.js"></script>
+    <script type="text/javascript" src="/cm/plugins/perc_path_constants.js"></script>
+    <script type="text/javascript" src="/cm/services/PercServiceUtils.js"></script>
+    <script type="text/javascript" src="/cm/services/PercPathService.js"></script>
+    <script type="text/javascript" src="/cm/widgets/htmldiff.js"></script>
+    <script type="text/javascript" src="/cm/plugins/perc_utils.js"></script>
     <style>
         .tab {
             display: none;
@@ -143,7 +141,7 @@
 
 <div class="container">
     <div class="perc-title" style="z-index: 4990;">
-        <i18n:message key="perc.ui.revisionDialog.compare@compareRevisions"/>
+        <i18n:message key="perc.ui.revisionDialog.compareRevision@compareRevisions"/>
     </div>
     <div width="100%">
         <section>
@@ -300,7 +298,7 @@
                                                         </tr>
                                                         <tr class="datacell1" id="templateList">
 
-                                                            <td align="left" class="datacellfontheader" height="20" width="150">Select Template</td>
+                                                            <td align="left" class="datacellfontheader" height="20" width="150"><i18n:message key="perc.ui.revisionDialog.selectTemplate@Select Template"/></td>
                                                             <td align="left" class="datacell1font"  height="20">
                                                                 <select id="variantlist" onchange="compareSelectedRevisions();">
                                                                 </select>
@@ -311,7 +309,7 @@
                                                             <td align="left" class="datacellfontheader" height="20" width="150">
                                                                 <label class="perc-checkbox-label">
                                                                     <input id="contrastCheckbox" type="checkbox" name="checkbox"
-                                                                           onchange="setContrast()" value="text">High Contrast
+                                                                           onchange="setContrast()" value="text"><i18n:message key="perc.ui.revisionDialog.highContrast@High Contrast"/> :
                                                                 </label>
                                                             </td>
                                                             <td align="left" class="datacell1font">
@@ -326,14 +324,14 @@
                                                             <td align="left"
                                                                 style="margin-bottom:20px;padding:5px;font-weight: bold;"
                                                                 class="outerboxcellfont" colspan="2" height="2">
-                                                                Legends :
+                                                                <i18n:message key="perc.ui.revisionDialog.legends@Legends"/> :
                                                             </td>
                                                         </tr>
                                                         <tr class="datacell2">
                                                             <td  align="left" class="outerboxcellfont"
                                                                  style="margin-bottom:20px;padding:5px" colspan="2" height="20">
                                                                 <span tabindex="0" role="definition" id="AddedText" aria-label="Legend for Added Text"  class="ins-reg">&nbsp;&nbsp;a&nbsp;&nbsp;</span>
-                                                                <span tabindex="0" role="term" aria-details="AddedText" >Added Text</span>
+                                                                <span tabindex="0" role="term" aria-details="AddedText" ><i18n:message key="perc.ui.revisionDialog.addedText@Added Text"/></span>
                                                             </td>
 
                                                         </tr>
@@ -341,7 +339,7 @@
                                                             <td align="left" style="margin-bottom:20px;padding:5px"
                                                                 class="outerboxcellfont" colspan="2" height="20">
                                                                 <span tabindex="0" role="definition" id="AddedText-HighContrast" aria-label="Legend for Added Text in high contrast" class="ins-contrast">&nbsp;&nbsp;a&nbsp;&nbsp;</span>
-                                                                <span  role="term" aria-details="AddedText-HighContrast"  tabindex="0" >Added Text-High Contrast</span>
+                                                                <span  role="term" aria-details="AddedText-HighContrast"  tabindex="0" ><i18n:message key="perc.ui.revisionDialog.addedTextHighContrast@Added Text High Contrast"/></span>
                                                             </td>
 
                                                         </tr>
@@ -349,7 +347,7 @@
                                                             <td  align="left" style="margin-bottom:20px;padding:5px"
                                                                  class="outerboxcellfont" colspan="2" height="20">
                                                                 <span tabindex="0" role="definition" id = "RemovedText" aria-label="Legend for Removed Text" class="del-reg">&nbsp;&nbsp;a&nbsp;&nbsp;</span>
-                                                                <span tabindex="0" role="term" aria-details="RemovedText" >Removed Text</span>
+                                                                <span tabindex="0" role="term" aria-details="RemovedText" ><i18n:message key="perc.ui.revisionDialog.removedText@Removed Text"/></span>
                                                             </td>
 
                                                         </tr>
@@ -357,7 +355,7 @@
                                                             <td align="left" style="margin-bottom:20px;padding:5px"
                                                                 class="outerboxcellfont" colspan="2" height="20">
                                                                 <span tabindex="0" role="definition" id="RemovedText-HighContrast" aria-label="Legend for Removed Text in high contrast" class="del-contrast">&nbsp;&nbsp;a&nbsp;&nbsp;</span>
-                                                                <span tabindex="0" role="term" aria-details="RemovedText-HighContrast">Removed Text-High Contrast</span>
+                                                                <span tabindex="0" role="term" aria-details="RemovedText-HighContrast"><i18n:message key="perc.ui.revisionDialog.removedTextHighContrast@Removed Text High Contrast"/></span>
                                                             </td>
 
                                                         </tr>
@@ -375,9 +373,9 @@
 
             <div id="rightSide"  width="90%">
                 <div class="perc-compare-header">
-                    <a id="tabLink1" class="perc-compare-header" style="padding:5px" onclick="switchTab(0)">Revision 1</a>
-                    <a id="tabLink2" class="perc-compare-header" style="padding:5px" onclick="switchTab(1)">Compare</a>
-                    <a id="tabLink3" class="perc-compare-header" style="padding:5px" onclick="switchTab(2)">Revision 2</a>
+                    <a id="tabLink1" class="perc-compare-header" style="padding:5px" onclick="switchTab(0)"><i18n:message key="perc.ui.revisionDialog.revision@Revision"/> 1</a>
+                    <a id="tabLink2" class="perc-compare-header" style="padding:5px" onclick="switchTab(1)"><i18n:message key="perc.ui.revisionDialog.compare@Compare"/></a>
+                    <a id="tabLink3" class="perc-compare-header" style="padding:5px" onclick="switchTab(2)"><i18n:message key="perc.ui.revisionDialog.revision@Revision"/> 2</a>
                 </div>
 
                 <div class="tab-container" >
@@ -404,16 +402,28 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
             console.log("setRevisionPages Called");
-            var data;
-            if(parent.opener != null && typeof(parent.opener) !== "undefined" ){
-                data = parent.opener._percCompareService;
-                refreshUI(data,true);
+            var percCompareService;
+            if(parent.opener != null && typeof(parent.opener) !== "undefined" && typeof(parent.opener._percCompareService) !== "undefined"){
+                percCompareService = parent.opener._percCompareService;
+                refreshFullPage(percCompareService.params);
 
             }else{
-                data = $.PercCompareService();
-                data.setCompareWindow(window);
-                data.setAssemblyRenderer(true);
-                setData(data);
+                percCompareService = $.PercCompareService();
+                percCompareService.params.compareWindow = window;                   ;
+                var params = getParams();
+                var revId1 = params['sys_revision1'];
+                var itemId = params['sys_contentid1'];
+                var siteId = params['sys_siteid'];
+                var folderId = params['sys_folderid'];
+                percCompareService.params.itemId = itemId;
+                percCompareService.params.revision1 = revId1;
+                percCompareService.params.siteId = siteId;
+                percCompareService.params.folderId = folderId;
+                percCompareService.params.openNewWindow = false;
+                if(typeof(siteId) != 'undefined') {
+                    percCompareService.params.assemblerRenderer= true;
+                }
+                percCompareService.openComparisonWindow(params);
             }
         }
     );
@@ -459,34 +469,15 @@
 
     }
 
-    function setData(data ){
-        var params = getParams();
-        var revId1 = params['sys_revision1'];
-        var itemId = params['sys_contentid1'];
-        var siteId = params['sys_siteid'];
-        var folderId = params['sys_folderid'];
-        data.getAllReveisionsAndOpenComparisonWindow(itemId,revId1,siteId,folderId);
-
-    }
-
-    function refreshRightSide(data,populateLists) {
+    function refreshRightSide(data) {
         document.getElementById('page1').srcdoc = data.page1;
         document.getElementById('comparedPage').srcdoc = data.comparedPage;
         document.getElementById('page2').srcdoc = data.page2;
-
-        if(populateLists){
-            populateRevision(data);
-            if(data.assemblerRenderer){
-                populateTemplates(data);
-            }
-        }
     }
 
-    function refreshUI(data,populateLists) {
-
-
-        var rev1Data = data.allRevisions.get(data.revision1);
-        var rev2Data = data.allRevisions.get(data.revision2);
+    function refreshFullPage(data) {
+        var rev1Data = data.allRevisions.get(Number(data.revision1));
+        var rev2Data = data.allRevisions.get(Number(data.revision2));
         document.getElementById('page1').srcdoc = data.page1;
         document.getElementById('comparedPage').srcdoc = data.comparedPage;
         document.getElementById('page2').srcdoc = data.page2;
@@ -505,11 +496,11 @@
         document.getElementById("rev2ModifiedBy").innerHTML = rev2Data.modifier;
         document.getElementById("rev2State").innerHTML = rev2Data.status;
 
-        document.getElementById("tabLink1").text = "Revision: " + rev1Data.revId;
-        document.getElementById("tabLink3").text = "Revision: " + rev2Data.revId;
+        document.getElementById("tabLink1").text = "Revision : " + rev1Data.revId;
+        document.getElementById("tabLink3").text = "Revision : " + rev2Data.revId;
 
 
-        if(populateLists){
+        if(data.refreshFullPage){
             populateRevision(data);
             let templateRow = document.getElementById("templateList");
             if(data.assemblerRenderer){
@@ -542,9 +533,13 @@
 
 
     function populateRevision(data){
+        if(data.revisionsPopulated){
+            return;
+        }
 
         const list1 = document.getElementById("revisionList1");
         const list2 = document.getElementById("revisionList2");
+
 
         for (const [key, value] of data.allRevisions) {
 
@@ -563,6 +558,7 @@
 
         list1.value = data.revision1;
         list2.value = data.revision2;
+        data.revisionsPopulated = true;
 
 
     }
@@ -588,18 +584,27 @@
         var rev1 = parseInt(rev1Id);
         var rev2 = parseInt(rev2Id);
 
-        var temp1 = parseInt(tempId);
 
-        var data = $.PercCompareService();
+
+        var percCompareService = $.PercCompareService();
 
         if(parent.opener != null && parent.opener._percCompareService){
-            data =  parent.opener._percCompareService;
+            percCompareService =  parent.opener._percCompareService;
         }else{
-            data.setCompareWindow(window);
-            data.setAssemblyRenderer(true);
+            percCompareService.params.comapreWindow = window;
         }
-        data.compareRevisions(rev1, rev2, false,temp1,false,false);
-        refreshUI(data,false);
+
+        if(typeof(tempId) != 'undefined' && typeof(tempId) != null){
+            percCompareService.params.assemblerRenderer = true;
+            var temp1 = parseInt(tempId);
+            percCompareService.params.selectedTemplate = temp1;
+        }
+        percCompareService.params.revision1 = rev1;
+        percCompareService.params.revision2 = rev2;
+        percCompareService.params.openWindow = false;
+        percCompareService.params.refreshFullPage = false;
+        percCompareService.loadComparePages();
+        refreshRightSide(percCompareService.params);
     }
 
     function openSelectRevision(url) {
