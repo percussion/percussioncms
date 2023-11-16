@@ -204,6 +204,7 @@
         "plugins/PercDataList.js",
         "plugins/PercAddItemDialog.js",
         "services/PercUserService.js",
+        "services/PercCompareService.js",
         "controllers/PercUserController.js",
         "views/PercUserView.js",
         "controllers/PercRoleController.js",

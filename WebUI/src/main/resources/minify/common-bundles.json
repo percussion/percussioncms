@@ -75,6 +75,7 @@
         "services/PercWorkflowService.js",
         "services/PercRevisionService.js",
         "services/PercItemPublisherService.js",
+        "services/PercCompareService.js",
         "plugins/PercImportProgressDialog.js",
         "plugins/perc_newsitedialog.js",
         "plugins/iframednd.js",
