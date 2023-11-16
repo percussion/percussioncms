@@ -172,7 +172,7 @@
         });
         var chkBoxContent = "<input class = 'perc-header-checkbox' type = 'checkbox' />";
 
-        var headers = [chkBoxContent, "Title", "&nbsp;", "Status", "Last Modified By", "Asset Type","Modified","Published"];
+        var headers = [chkBoxContent, I18N.message("perc.ui.publish.title@Title"), "&nbsp;", I18N.message("perc.ui.publish.title@Status"), I18N.message("perc.ui.publish.title@Last Modified By"), I18N.message("perc.ui.asset.status.gadget@Asset Type"),I18N.message("perc.ui.gadgets.workflowStatus@Modified"),I18N.message("perc.ui.publish.title@Published")];
         var headerClasses = ["CheckBox", "Title", "Preview", "Status", "Last Modified By", "AssetType","Modified","Published"];
 
         var aoColumns = [
@@ -193,7 +193,7 @@
         var percColumnWidths = ["30", "*", "30","110","110","80","135","135"];
         if($.browser.chrome || $.browser.safari)
             percColumnWidths = ["10", "*", "10","90","90","60","115","115"];
-        var oLanguage = {sZeroRecords: "No Assets Found", oPaginate : {sFirst : "&lt;&lt;", sPrevious : "&lt;", sNext : "&gt;", sLast : "&gt;&gt;"}, sInfo : " ", sInfoEmpty : " "};
+        var oLanguage = {sZeroRecords: I18N.message("perc.ui.asset.status.gadget@No Assets Found"), oPaginate : {sFirst : "&lt;&lt;", sPrevious : "&lt;", sNext : "&gt;", sLast : "&gt;&gt;"}, sInfo : " ", sInfoEmpty : " "};
 
         var showPreviewBtnOnHover = true;
         var config = {percColumnWidths : percColumnWidths, percVisibleColumns : percVisibleColumns, iDisplayLength : itemsPerPage, percData : percData, percHeaders : headers, percHeaderClasses: headerClasses, aoColumns : aoColumns, showPreviewBtnOnHover:showPreviewBtnOnHover, additionalIframeHeight : 45, oLanguage : oLanguage};
