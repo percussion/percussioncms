@@ -1181,6 +1181,96 @@
                 <seg>* Nombre del blog:</seg>
             </tuv>
         </tu>
+        <tu tuid="perc.ui.blogs.Gadget@No Authorization">
+            <note xml:lang="en-us">You are not authorized to create a blog in the selected folder</note>
+            <tuv xml:lang="en-us">
+                <seg>You are not authorized to create a blog in the selected folder.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>No estás autorizado a crear un blog en la carpeta seleccionada.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Location Required">
+            <note xml:lang="en-us">Blog location is a required field</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog location is a required field.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>La ubicación del blog es un campo obligatorio.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Link Text Required">
+            <note xml:lang="en-us">Blog link text is a required field</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog link text is a required field.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>El texto del enlace del blog es un campo obligatorio.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Name Required">
+            <note xml:lang="en-us">Blog name is a required field</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog name is a required field.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>El nombre del blog es un campo obligatorio.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Unique Blog Name">
+            <note xml:lang="en-us">Blog name must be unique</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog name must be unique.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>El nombre del blog debe ser único.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Index Page Template Required">
+            <note xml:lang="en-us">Blog index page template is required</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog index page template is required.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Se requiere plantilla de página de índice del blog.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Post Page Template Required">
+            <note xml:lang="en-us">Blog post page template is required</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog post page template is required.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>>Se requiere plantilla de página de publicación de blog.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Index Page Template Select">
+            <note xml:lang="en-us">Select a template for the blog index page</note>
+            <tuv xml:lang="en-us">
+                <seg>Select a template for the blog index page:</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Seleccione una plantilla para la página de índice del blog:</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Post Page Template Select">
+            <note xml:lang="en-us">Select a template for the blog post page</note>
+            <tuv xml:lang="en-us">
+                <seg>Select a template for the blog post page:</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Seleccione una plantilla para la página de publicación del blog:</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Make Copies">
+            <note xml:lang="en-us">Make copies of the blog templates for use by this blog</note>
+            <tuv xml:lang="en-us">
+                <seg>Make copies of the blog templates for use by this blog</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Haga copias de las plantillas del blog para usarlas en este blog</seg>
+            </tuv>
+        </tu>
         <tu tuid="perc.ui.publish.title@Assembly URL">
             <note xml:lang="en-us">Title of the publish item error section.</note>
             <tuv xml:lang="en-us">
@@ -5167,6 +5257,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                         <seg>Proceso</seg>
                     </tuv>
      </tu>
+     <tu tuid="perc.ui.gadgets.processmonitor@ProcessMonitor">
+                     <prop type="sectionname" xml:lang="en-us">Process Monitor</prop>
+                     <note xml:lang="en-us"></note>
+                     <tuv xml:lang="en-us">
+                         <seg>Process Monitor</seg>
+                     </tuv>
+                     <tuv xml:lang="es">
+                         <seg>Monitor de proceso</seg>
+                     </tuv>
+      </tu>
      <tu tuid="perc.ui.gadgets.processmonitor@Status">
                     <prop type="sectionname" xml:lang="en-us">Process Monitor</prop>
                     <note xml:lang="en-us"></note>
@@ -14577,6 +14677,116 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	</tuv>
 	  <tuv xml:lang="es">
 		<seg>No se encontraron páginas</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@No Assets Found">
+	<prop type="sectionname" xml:lang="en-us">No Assets Found</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>No Assets Found</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>No se encontraron activos</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@Asset Type">
+	<prop type="sectionname" xml:lang="en-us">Asset Type</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Asset Type</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Tipo de activo</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Not Found">
+	<prop type="sectionname" xml:lang="en-us">No Global Variables Found</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>No Global Variables Found</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>No se encontraron variables globales</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Variable name">
+	<prop type="sectionname" xml:lang="en-us">Variable name</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Variable name</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Nombre de la variable</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Variable value">
+	<prop type="sectionname" xml:lang="en-us">Variable value</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Variable value</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Valor variable</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Variable error">
+	<prop type="sectionname" xml:lang="en-us">Error saving the variable</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Error saving the variable.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Error al guardar la variable.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@No Blank Name">
+	<prop type="sectionname" xml:lang="en-us">Name must not be blank</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Name must not be blank.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>El nombre no debe estar en blanco.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@No Blank Value">
+	<prop type="sectionname" xml:lang="en-us">Value must not be blank</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Value must not be blank.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>El valor no debe estar en blanco.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Select Different Name">
+	<prop type="sectionname" xml:lang="en-us">A variable already exists with this name, please select a different name</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>A variable already exists with this name, please select a different name.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Ya existe una variable con este nombre; seleccione un nombre diferente.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Delete Global Variable">
+	<prop type="sectionname" xml:lang="en-us">Delete Global Variable</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Delete Global Variable</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Eliminar variable global</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Error Delete Variable">
+	<prop type="sectionname" xml:lang="en-us">Error deleting the variable</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Error deleting the variable.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Error al eliminar la variable.</seg>
 	</tuv>
 </tu>
 

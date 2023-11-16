@@ -103,13 +103,13 @@
     {
         if(varName.trim() == "")
         {
-            displayErrorMessage(dialog, "Name must not be blank.", "#perc_variable_name");
+            displayErrorMessage(dialog, I18N.message("perc.ui.global.variables.gadget@No Blank Name"), "#perc_variable_name");
             return;
         }
         
         if(varValue.trim() == "")
         {
-            displayErrorMessage(dialog, "Value must not be blank.", "#perc_variable_value");
+            displayErrorMessage(dialog, I18N.message("perc.ui.global.variables.gadget@No Blank Value"), "#perc_variable_value");
             return;
         }
         
@@ -126,7 +126,7 @@
             {
                 if(varData[varName])
                 {
-                    displayErrorMessage(dialog, "A variable already exists with this name, please select a different name.", "#perc_variable_name");
+                    displayErrorMessage(dialog, I18N.message("perc.ui.global.variables.gadget@Select Different Name"), "#perc_variable_name");
                     return;
                 }
                 varData[varName] = varValue;
@@ -145,7 +145,7 @@
             }
             else
             {
-                alertDialog("Error", "Error saving the variable.");
+                alertDialog("Error", I18N.message("perc.ui.global.variables.gadget@Variable error"));
             }
         });
         dialog.remove();
@@ -157,7 +157,7 @@
     function _deleteVariable(event)
     {
         var rowData = event.data;
-        var options = {title: "Delete Global Variable",
+        var options = {title: I18N.message("perc.ui.global.variables.gadget@Delete Global Variable"),
             question:"Are you sure you want to delete the global variable '" + rowData.varName + "'?",
             type:"OK_CANCEL",
             cancel:function(){},
@@ -172,7 +172,7 @@
                         }
                         else
                         {
-                            alertDialog("Error", "Error deleting the variable.");
+                            alertDialog("Error", I18N.message("perc.ui.global.variables.gadget@Error Delete Variable"));
                         }
                     });
                 }
@@ -187,8 +187,8 @@
     {
         $.PercGlobalVariableActions = { title : "", menuItemsAlign : "left", stayInsideOf : ".dataTables_wrapper",
                 items : [
-                    {label : "Edit",  callback : _editVariable},
-                    {label : "Delete",   callback : _deleteVariable}
+                    {label : I18N.message("perc.ui.gadgets.licenseMonitor@Edit"),  callback : _editVariable},
+                    {label : I18N.message("perc.ui.dashboard@Delete"),   callback : _deleteVariable}
         ]};
         var menus = [];
         var dataRows = [];
@@ -217,7 +217,7 @@
             bPaginate: true,
             percData: dataRows,
             iDisplayLength : itemsPerPage,
-            percHeaders: ["Variable name", "Variable value"],
+            percHeaders: [I18N.message("perc.ui.global.variables.gadget@Variable name"), I18N.message("perc.ui.global.variables.gadget@Variable value")],
             aoColumns: [{
                 sType: "string"
             }, {
@@ -225,7 +225,7 @@
             }],
             percMenus : menus,
             oLanguage: {
-                sZeroRecords: "No Global Variables Found",
+                sZeroRecords: I18N.message("perc.ui.global.variables.gadget@Not Found"),
                 oPaginate: {
                     sFirst: "&lt;&lt;",
                     sPrevious: "&lt;",
