@@ -168,7 +168,7 @@
         <bc.version>1.74</bc.version>
         <jackson.version>2.14.2</jackson.version>
         <jsoup.version>1.15.3</jsoup.version>
-        <json.version>20230227</json.version>
+        <json.version>20230618</json.version>
         <junit.version>4.13.1</junit.version>
         <cactus.version>13-1.7.1</cactus.version>
         <cactus.sysproperties>cactus.contextURL</cactus.sysproperties>

@@ -52,7 +52,7 @@
                                     <exclude>com.rometools:rome-modules</exclude>
                                     <exclude>com.rometools:rome</exclude>
                                     <exclude>com.rometools:rome-utils</exclude>
-                                    <exclude> org.jdom:jdom</exclude>
+                                    <exclude>org.jdom:jdom</exclude>
                                     <exclude>org.slf4j:slf4j-api</exclude>
                                     <exclude>org.apache.shiro:shiro-web</exclude>
                                     <exclude>org.apache.shiro:shiro-core</exclude>
@@ -87,19 +87,33 @@
                                 </relocation>
                             </relocations>
                             <filters>
-                            <filter>
-                            <artifact>org.json:json</artifact>
-                            </filter>
-                            <filter>
-                                <!-- Do not copy the signatures in the META-INF folder.
-                                Otherwise, this might cause SecurityExceptions when using the JAR. -->
-                                <artifact>*:*</artifact>
-                                <excludes>
-                                    <exclude>META-INF/*.SF</exclude>
-                                    <exclude>META-INF/*.DSA</exclude>
-                                    <exclude>META-INF/*.RSA</exclude>
-                                </excludes>
-                            </filter>
+                                <filter>
+                                <artifact>org.json:json</artifact>
+                                </filter>
+                                <filter>
+                                    <!-- Do not copy the signatures in the META-INF folder.
+                                    Otherwise, this might cause SecurityExceptions when using the JAR. -->
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                        <artifact>org.apache.shindig:shindig-social-api</artifact>
+                                    <excludes>
+                                    <exclude>canonicaldb.json</exclude>
+                                    <exclude>files/canonicaldb.json</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <artifact>org.apache.shindig:shindig-gadgets</artifact>
+                                    <excludes>
+                                        <exclude>config/oauth.json</exclude>
+                                        <exclude>oauth.json</exclude>
+                                    </excludes>
+                                </filter>
                             </filters>
                         </configuration>
                     </execution>
@@ -222,7 +236,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20070829</version>
+            <version>20230618</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
