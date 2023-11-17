@@ -228,7 +228,7 @@
         var percVisibleColumns = null;
         if (!isLargeColumn) percVisibleColumns = [0, 3];
 
-        var headers = ["Title", "Title Tag", "Issues", "Severity"];
+        var headers = [I18N.message("perc.ui.publish.title@Title"), I18N.message("perc.ui.seo.gadget@Title Tag"), I18N.message("perc.ui.seo.gadget@Issues"), I18N.message("perc.ui.seo.gadget@Severity")];
 
         var columnWidths = ["*", "103", "140", "70"];
 

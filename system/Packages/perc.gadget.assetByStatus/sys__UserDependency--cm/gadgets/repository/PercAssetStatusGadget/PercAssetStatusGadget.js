@@ -485,14 +485,15 @@
     //Search filter code
     $(document).ready(function() {
         var searchConfig;
-        var labels = {"assetType":"Asset Type", "workflow": "Workflow", "state": "Status", "modifiedby": "Last Edited by"};
+        var labels = {"assetType":I18N.message("perc.ui.asset.status.gadget@Asset Type"), "workflow": I18N.message("perc.ui.gadgets.workflowStatus@Workflow"), "state": I18N.message("perc.ui.gadgets.workflowStatus@Status"), "modifiedby": I18N.message("perc.ui.asset.status.gadget@Last Edited by")};
         var defaultWorkflow;
+        document.getElementById('perc-bulk-approve-button').innerText=I18N.message("perc.ui.workflow.status.gadget@Approve");
         function getDefaultConfig()
         {
             var searchConfig = {
                 "assetType": {"name": "All", "value":"@all"},
                 "workflow": (defaultWorkflow != null ? defaultWorkflow : {"name": "Default Workflow", "value":"6"}),
-                "state": {"name": "Pending", "value":"4"},
+                "state": {"name": I18N.message("perc.ui.workflow.status.gadget@Pending"), "value":"4"},
                 "modifiedby":{"name": "All", "value":"@all"}};
             return searchConfig;
         }
