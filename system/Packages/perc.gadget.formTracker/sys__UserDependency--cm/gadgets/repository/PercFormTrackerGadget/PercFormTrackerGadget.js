@@ -164,7 +164,7 @@
         if(!isLargeColumn)
             percVisibleColumns = [0,1];
 
-        var percHeaders = ["Description", "New", "Total"];
+        var percHeaders = [I18N.message("perc.ui.editSiteSectionDialog.label@Description"), I18N.message("perc.ui.forms.tracker.gadget@New"), I18N.message("perc.ui.forms.tracker.gadget@Total")];
 
         var percColumnWidths = ["*","38","40"];
 

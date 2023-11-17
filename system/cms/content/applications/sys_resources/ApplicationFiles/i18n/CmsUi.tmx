@@ -14659,6 +14659,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 		<seg>Aprobar</seg>
 	</tuv>
 </tu>
+<tu tuid="perc.ui.workflow.status.gadget@Pending">
+	<prop type="sectionname" xml:lang="en-us">Pending</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Pending</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Pendiente</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.workflow.status.gadget@Default Workflow">
+	<prop type="sectionname" xml:lang="en-us">Default Workflow</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Default Workflow</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Flujo de trabajo predeterminado</seg>
+	</tuv>
+</tu>
 <tu tuid="perc.ui.workflow.status.gadget@Select Filters">
 	<prop type="sectionname" xml:lang="en-us">Select Filters</prop>
 	<note xml:lang="en-us"></note>
@@ -14687,6 +14707,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	</tuv>
 	  <tuv xml:lang="es">
 		<seg>No se encontraron activos</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@Last Edited by">
+	<prop type="sectionname" xml:lang="en-us">Last Edited by</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Last Edited by</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Última edición por</seg>
 	</tuv>
 </tu>
 <tu tuid="perc.ui.asset.status.gadget@Asset Type">
@@ -14787,6 +14817,56 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	</tuv>
 	  <tuv xml:lang="es">
 		<seg>Error al eliminar la variable.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.forms.tracker.gadget@New">
+	<prop type="sectionname" xml:lang="en-us">New</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>New</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Nuevo</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.forms.tracker.gadget@Total">
+	<prop type="sectionname" xml:lang="en-us">Total</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Total</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Total</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.seo.gadget@Title Tag">
+	<prop type="sectionname" xml:lang="en-us">Title Tag</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Title Tag</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Etiqueta de título</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.seo.gadget@Issues">
+	<prop type="sectionname" xml:lang="en-us">Issues</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Issues</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Asuntos</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.seo.gadget@Severity">
+	<prop type="sectionname" xml:lang="en-us">Severity</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Severity</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Gravedad</seg>
 	</tuv>
 </tu>
 
