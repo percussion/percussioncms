@@ -66,29 +66,15 @@ public class PSSiteImportLogViewer extends HttpServlet  {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        try {
+        try(PrintWriter out = response.getWriter()) {
+            response.setContentType("text/plain");
+            String outputMsg = null;
             String templateId = request.getParameter("templateId");
             String siteName = request.getParameter("siteName");
-            boolean existsFlag = ("true".equalsIgnoreCase(request.getParameter("exists")));
 
 
             PSSite site = null;
-            if (StringUtils.isBlank(templateId) && !StringUtils.isBlank(siteName)) {
-                try {
-                    site = siteDao.find(siteName);
-                    if (site == null) {
-                        log.error("Couldn't load site: {}", siteName);
-                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load site.");
-                        return;
-                    }
-                    templateId = site.getBaseTemplateName();
-                } catch (PSDataServiceException e) {
-                    log.error(PSExceptionUtils.getMessageForLog(e));
-                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Couldn't load site.");
-                    return;
-                }
-            }
+
 
             List<PSImportLogEntry> logs = null;
             String templateName = "";
@@ -102,19 +88,12 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                 } catch (PSDataServiceException e) {
                     log.error(PSExceptionUtils.getMessageForLog(e));
                     log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server Error");
+                    outputMsg = "No report log found for this template";
+                    out.write(outputMsg);
                     return;
                 }
             }
-            /*
-            if (logs == null || logs.isEmpty()) {
-                response.sendError(HttpServletResponse.SC_NO_CONTENT, "Couldn't find import log");
-                return;
-            }
-            */
-            if (logs != null && logs.size() >0) {
-
-
+            if (logs != null && !logs.isEmpty()) {
                 if (StringUtils.isBlank(siteName)) {
                     try {
                         siteName = siteMgr.getItemSites(idMapper.getGuid(templateId)).get(0).getName();
@@ -124,7 +103,8 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                                 PSExceptionUtils.getMessageForLog(e));
                         log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 
-                        response.sendError(HttpServletResponse.SC_NOT_FOUND, "Couldn't load template.");
+                        outputMsg = "No report log found for this template";
+                        out.write(outputMsg);
                         return;
                     }
                 }
@@ -150,16 +130,16 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                 // Get all logids for those pages, sort them ascending - .25
                 // For each, get and stream output - .25
 
-                response.setContentType("text/plain");
+
                 response.setHeader("Content-Disposition", "attachment;filename=" + SecureStringUtils.stripAllLineBreaks(
                         siteName) + "-" + SecureStringUtils.stripAllLineBreaks(templateName) + "-importlog.txt");
-                PrintWriter out = response.getWriter();
+
                 if (templateLogEntry != null) {
                     out.println(templateLogEntry.getLogData());
                 }
 
                 // now write out each page's log
-                if (pageLogIds != null) {
+                if (!pageLogIds.isEmpty()) {
                     for (Long pageLogId : pageLogIds) {
                         PSImportLogEntry pageLog = logDao.findLogEntryById(pageLogId);
                         if (pageLog != null) {
@@ -168,7 +148,8 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                     }
                 }
             }else{
-                response.getWriter().write("No report log found for this template");
+                outputMsg = "No report log found for this template";
+                out.write(outputMsg);
             }
         } catch (IOException e) {
             throw new ServletException(e);
@@ -187,7 +168,7 @@ public class PSSiteImportLogViewer extends HttpServlet  {
     /**
      * Call doGet method
      * @author federicoromanelli
-     * @throws IOException
+     * @throws ServletException
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -213,6 +194,8 @@ public class PSSiteImportLogViewer extends HttpServlet  {
     {
         PSSiteImportLogViewer.logDao = logDao;
     }
+
+
 
     public static IPSTemplateService getTemplateService()
     {
