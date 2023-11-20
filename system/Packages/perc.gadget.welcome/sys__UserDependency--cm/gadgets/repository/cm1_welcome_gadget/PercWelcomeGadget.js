@@ -22,6 +22,12 @@
     var perc_utils = percJQuery.perc_utils;
     //On document ready replace the bookmarklet href with generated bookmarklet code and add the click event to the more info link.
     $(document).ready(function() {
+        document.getElementById('perc-gadget-welcome-link-1').innerText=I18N.message("perc.ui.welcome.gadget@Documentation");
+        document.getElementById('perc-gadget-welcome-link-2').innerText=I18N.message("perc.ui.welcome.gadget@Creation");
+        document.getElementById('perc-gadget-welcome-link-3').innerText=I18N.message("perc.ui.welcome.gadget@Percussion Community");
+        document.getElementById('perc-gadget-welcome-link-4').innerText=I18N.message("perc.ui.welcome.gadget@Ask Questions");
+        document.getElementById('perc-gadget-welcome-link-5').innerText=I18N.message("perc.ui.welcome.gadget@Add Percussion Linkback");
+        document.getElementById('perc-gadget-welcome-link-6').innerText=I18N.message("perc.ui.welcome.gadget@Percussion Linkback Explanation");
         $("#perc_linkback_anchor").attr("href",generateBookMarklet()).on("click",function(event){event.preventDefault();});
         $("#perc_linkback_moreinfo_link").on("click",function(){displayMoreInfoDialog();});
     });
