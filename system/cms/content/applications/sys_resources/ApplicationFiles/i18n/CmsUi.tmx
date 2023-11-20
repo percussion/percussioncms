@@ -14869,6 +14869,105 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 		<seg>Gravedad</seg>
 	</tuv>
 </tu>
-
+<tu tuid="perc.ui.welcome.gadget@Documentation">
+	<prop type="sectionname" xml:lang="en-us">Documentation</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Documentation</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Documentación</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.welcome.gadget@Creation">
+	<prop type="sectionname" xml:lang="en-us">All the basics on creating and maintaining your website(s) with Percussion CMS</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>All the basics on creating and maintaining your website(s) with Percussion CMS.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Todos los conceptos básicos para crear y mantener su(s) sitio(s) web con Percussion CMS.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.welcome.gadget@Percussion Community">
+	<prop type="sectionname" xml:lang="en-us">Percussion Community</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Percussion Community</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Comunidad de percusión</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.welcome.gadget@Ask Questions">
+	<prop type="sectionname" xml:lang="en-us">Ask questions and discuss ideas with fellow Percussion CMS users</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Ask questions and discuss ideas with fellow Percussion CMS users.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Haga preguntas y discuta ideas con otros usuarios de Percussion CMS.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.welcome.gadget@Add Percussion Linkback">
+	<prop type="sectionname" xml:lang="en-us">Add Percussion Linkback</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Add Percussion Linkback</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Agregar enlace de percusión</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.welcome.gadget@Percussion Linkback Explanation">
+	<prop type="sectionname" xml:lang="en-us">Percussion Linkback provides quick access from your website back to Percussion CMS to facilitate quick edits and easy navigation. When viewing a page on your website, click the Percussion Linkback bookmark, and you will be brought to the corresponding page in CMS for you to edit</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Percussion Linkback provides quick access from your website back to Percussion CMS to facilitate quick edits and easy navigation. When viewing a page on your website, click the Percussion Linkback bookmark, and you will be brought to the corresponding page in CMS for you to edit.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Percussion Linkback proporciona acceso rápido desde su sitio web a Percussion CMS para facilitar ediciones rápidas y una navegación sencilla. Cuando vea una página en su sitio web, haga clic en el marcador Percussion Linkback y accederá a la página correspondiente en CMS para que pueda editarla.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.site.improve.gadget@Welcome Text">
+	<prop type="sectionname" xml:lang="en-us">Welcome to the Siteimprove gadget</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Welcome to the Siteimprove gadget.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Bienvenido al gadget de Siteimprove.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.site.improve.gadget@Explanation">
+	<prop type="sectionname" xml:lang="en-us">Explanation</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Using this gadget, you will be able to integrate Siteimprove with CMS.The integration will alert Siteimprove to page changes whenever pages are published from CMS.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Con este gadget, podrá integrar Siteimprove con CMS.La integración alertará a Siteimprove sobre los cambios en las páginas cada vez que se publiquen desde CMS.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.site.improve.gadget@Existing Site Improve">
+	<prop type="sectionname" xml:lang="en-us">I already have Siteimprove</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>I already have Siteimprove</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Ya tengo Siteimprove</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.site.improve.gadget@Try Site Improve">
+	<prop type="sectionname" xml:lang="en-us">I want to try out Siteimprove</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>I want to try out Siteimprove</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Quiero probar Siteimprove</seg>
+	</tuv>
+</tu>
     </body>
 </tmx>

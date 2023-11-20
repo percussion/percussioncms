@@ -35,6 +35,13 @@ var SITEIMPROVE_COOKIE_NAME = 'siteimprove_credentials';
 
 $(function () {
 
+    $(document).ready(function() {
+        document.getElementById('perc-site-improve-welcome-text').innerText=I18N.message("perc.ui.site.improve.gadget@Welcome Text");
+        document.getElementById('perc-site-improve-explanation').innerText=I18N.message("perc.ui.site.improve.gadget@Explanation");
+        document.getElementById('perc-existing-site-improve-btn').innerText=I18N.message("perc.ui.site.improve.gadget@Existing Site Improve");
+        document.getElementById('perc-try-site-improve-btn').innerText=I18N.message("perc.ui.site.improve.gadget@Try Site Improve");
+    });
+
     //Hold onto our site configuration.
     var siteInfos = {};
 

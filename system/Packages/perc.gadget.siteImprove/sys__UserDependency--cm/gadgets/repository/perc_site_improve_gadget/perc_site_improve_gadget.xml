@@ -47,10 +47,14 @@
 
 				<br/>
 
-				<div class="perc-site-improve-text perc-site-improve-text-center perc-site-improve-text-main">
+				<div id="perc-site-improve-welcome-text" class="perc-site-improve-text perc-site-improve-text-center perc-site-improve-text-main">
 					<p>
 						Welcome to the Siteimprove gadget.
-						<br/><br/>
+					</p>
+				</div>
+				<br/>
+				<div id="perc-site-improve-explanation" class="perc-site-improve-text perc-site-improve-text-center perc-site-improve-text-main">
+					<p>
 						Using this gadget, you will be able to integrate Siteimprove with CMS.
 						The integration will alert Siteimprove to page changes whenever pages are published from CMS.
 					</p>
