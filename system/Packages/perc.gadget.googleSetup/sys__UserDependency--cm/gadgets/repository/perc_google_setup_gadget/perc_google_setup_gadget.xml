@@ -169,6 +169,7 @@
 <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js" ></script>
 <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
 <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js" ></script>
+<script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
         <script  src="/cm/plugins/perc_utils.js"></script>
         <script  src="/cm/plugins/perc_path_constants.js"></script>
         <script  src="/cm/services/PercServiceUtils.js"></script>
@@ -569,7 +570,7 @@
               }
               else
               {
-                 sitesContainer.append("<table width='100%' cellspacing='0' cellpadding='3'><tr class='odd'><td align='center'>No Sites Found</td></tr></tbody></table>");
+                 sitesContainer.append("<table width='100%' cellspacing='0' cellpadding='3'><tr class='odd'><td align='center'>"+I18N.message("perc.ui.google.setup.gadget@No Sites Found")+"</td></tr></tbody></table>");
               }
            }
 
@@ -796,8 +797,8 @@
               {
                     percJQuery.perc_utils.confirm_dialog({
                        id: "confirmDelete",
-                       title: 'Warning',
-                       question: 'Please confirm that you wish to remove your Google Analytics credentials from Percussion. Upon next publish, the Google Analytics script code will be removed from all published pages.',
+                       title: I18N.message("perc.ui.role.controller@Warning Title"),
+                       question: I18N.message("perc.ui.google.setup.gadget@Confirm Remove"),
                        width: 500,
                        cancel:
                            function(){},
@@ -852,6 +853,17 @@
               }
            }
            $(document).ready(function(){
+
+               document.getElementById('perc-ga-top-label').innerText=I18N.message("perc.ui.google.setup.gadget@Connect Google");
+               document.getElementById('perc-email-label').innerText=I18N.message("perc.ui.google.setup.gadget@Google Email");
+               document.getElementById('perc-credentials-label').innerText=I18N.message("perc.ui.google.setup.gadget@Google Json File");
+               document.getElementById('perc-ga-connect').title=I18N.message("perc.ui.google.setup.gadget@Credential Test");
+               document.getElementById('perc-ga-delete').title=I18N.message("perc.ui.google.setup.gadget@Clear Credentials");
+               document.getElementById('perc-ga-delete').innerText=I18N.message("perc.ui.google.setup.gadget@Clear Credentials");
+               document.getElementById('perc-ga-site-profile-label').innerText=I18N.message("perc.ui.google.setup.gadget@Select Google Profile");
+               document.getElementById('perc-ga-save').title=I18N.message("perc.ui.google.setup.gadget@Save Analytics");
+               document.getElementById('perc-ga-cancel').title=I18N.message("perc.ui.google.setup.gadget@Revert Changes");
+
               // Preload the over images
               $.perc_utils.preLoadImages(
                  "/cm/gadgets/repository/perc_google_setup_gadget/images/buttonSaveOver.png",
@@ -886,9 +898,9 @@
            <div id="perc-ga-provider-creds">
            <div id="perc-ga-top-label"><label>Connect to Google:</label></div>
 
-           <label>Google Service Account email:</label><br/><input class="perc-ga-textfield" id="perc-ga-user" type="text"/>
+           <label id="perc-email-label">Google Service Account email:</label><br/><input class="perc-ga-textfield" id="perc-ga-user" type="text"/>
            <form class="testConnectionForm" enctype="multipart/form-data">
-		<label>Google Service Account .json credentials file:</label>
+		<label id="perc-credentials-label">Google Service Account .json credentials file:</label>
 		<br/>
 		<input name="file" class="perc-ga-textfield" id="perc-ga-pwd" type="file" accept=".json"/>
            </form>

@@ -578,7 +578,7 @@
         var title = $gadget.find(".gadgets-gadget-title");
         var titleButtons = $gadget.find(".gadgets-gadget-title-button-bar");
         titleButtons.css("float", "right");
-        var gadgetMenuButton = $("<img tabindex='0' src='../images/images/gadgetMenuButton.png' class='perc-gadget-menu-button' style='cursor:pointer' title='Click to show the Gadget Menu' alt='Gadget menu icon'/>").on('click',function(event)
+        var gadgetMenuButton = $("<img tabindex='0' src='../images/images/gadgetMenuButton.png' class='perc-gadget-menu-button' style='cursor:pointer' title='" + I18N.message("perc.ui.dashboard@Show Gadget Menu") + "' alt='Gadget menu icon'/>").on('click',function(event)
         {
             event.stopPropagation();
             showMenu(self, titleBar,event);
@@ -623,7 +623,7 @@
         menu.on({
             mouseenter: function() { },
             mouseleave: function() {  menu.hide(); }
-        })
+        });
 
         menu.css("top", menuY).css("left", menuX).css("display", "block");
         // update the menu items based on the current state of the gadget
@@ -696,7 +696,7 @@
         $(".ui-resizable-handle").on({
             mouseenter: function() { },
             mouseleave: function() {  menu.hide(); }
-        })
+        });
 
 
     }
@@ -1218,7 +1218,6 @@
             return false;
         }
         var category = $(gadget).data('gadget').category.split(",");
-        var predefinedCategories = [];
         $('.perc-gadget-category-predefined').text(function(i, text)
         {
             predefinedCategories[i] = text.toLowerCase();
@@ -1613,8 +1612,8 @@
     function getWidthOfCol()
     {
         var tableWidth = $(window).width() - 27;
-        $("#col-0").css("width", tableWidth * .33);
-        $("#col-1").css("width", tableWidth * .67);
+        $("#col-0").css("width", tableWidth * 0.33);
+        $("#col-1").css("width", tableWidth * 0.67);
     }
 
     /**

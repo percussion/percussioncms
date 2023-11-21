@@ -19,19 +19,18 @@ var PercServiceUtils = percJQuery.PercServiceUtils;
 var currentReportType;
 var currentReportEndpoint;
 
-const percReportsList = [
-    {type: 'All Files', endpoint: 'all-files'},
-    {type: 'All Images', endpoint: 'all-images'},
-    {type: 'Non-ADA Compliant Files', endpoint: 'non-ada-compliant-files'},
-    {type: 'Non-ADA Compliant Images', endpoint: 'non-ada-compliant-images'}
-];
-
 $(document).ready(function() {
     displayAvailableReports();
     bindReportEvents();
 });
 
 function displayAvailableReports() {
+    const percReportsList = [
+        {type: I18N.message("perc.ui.reports.gadget@All Files"), endpoint: 'all-files'},
+        {type: I18N.message("perc.ui.reports.gadget@All Images"), endpoint: 'all-images'},
+        {type: I18N.message("perc.ui.reports.gadget@Non-ADA Compliant Files"), endpoint: 'non-ada-compliant-files'},
+        {type: I18N.message("perc.ui.reports.gadget@Non-ADA Compliant Images"), endpoint: 'non-ada-compliant-images'}
+    ];
     var reportListHtml = '';
     $(percReportsList).each(function(index, report) {
         reportListHtml +=  `<div class="perc-report-row">
@@ -67,10 +66,10 @@ function requestReport(path) {
 
 function requestReportCallback(status, result) {
     if (status == 'error') {
-        showReportAlert(`There was an problem creating the report '${currentReportType}'`);
+        showReportAlert(I18N.message("perc.ui.reports.gadget@Report Problem")+`'${currentReportType}'`);
     }
     else {
-        showReportAlert(`Create report request generated Successfully'${currentReportType}'`);
+        showReportAlert(I18N.message("perc.ui.reports.gadget@Report Successful")+`'${currentReportType}'`);
     }
 }
 
