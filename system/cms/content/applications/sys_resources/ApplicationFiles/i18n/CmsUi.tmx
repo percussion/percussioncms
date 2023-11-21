@@ -8568,6 +8568,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>No se puede cargar la lista de gadgets.</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.dashboard@Show Gadget Menu">
+        <prop type="sectionname" xml:lang="en-us">Click to show the Gadget Menu</prop>
+        <note xml:lang="en-us"></note>
+        <tuv xml:lang="en-us">
+            <seg>Click to show the Gadget Menu</seg>
+        </tuv>
+          <tuv xml:lang="es">
+            <seg>Haga clic para mostrar el menú de gadgets</seg>
+        </tuv>
+     </tu>
 	 <tu tuid="perc.ui.edit.region.properties.dialog@Enter Width">
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
@@ -14967,6 +14977,166 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	</tuv>
 	  <tuv xml:lang="es">
 		<seg>Quiero probar Siteimprove</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.reports.gadget@All Files">
+	<prop type="sectionname" xml:lang="en-us">All Files</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>All Files</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Todos los archivos</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.reports.gadget@All Images">
+	<prop type="sectionname" xml:lang="en-us">All Images</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>All Images</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Todas las imágenes</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.reports.gadget@Non-ADA Compliant Files">
+	<prop type="sectionname" xml:lang="en-us">Non-ADA Compliant Files</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Non-ADA Compliant Files</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Archivos que no cumplen con ADA</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.reports.gadget@Non-ADA Compliant Images">
+	<prop type="sectionname" xml:lang="en-us">Non-ADA Compliant Images</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Non-ADA Compliant Images</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Imágenes que no cumplen con ADA</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.reports.gadget@Report Problem">
+	<prop type="sectionname" xml:lang="en-us">There was an problem creating the report</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>There was an problem creating the report</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Hubo un problema al crear el informe.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.reports.gadget@Report Successful">
+	<prop type="sectionname" xml:lang="en-us">Create report request generated Successfully</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Create report request generated Successfully</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Crear solicitud de informe generada con éxito</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Connect Google">
+	<prop type="sectionname" xml:lang="en-us">Connect to Google</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Connect to Google:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Conéctate a Google:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Google Email">
+	<prop type="sectionname" xml:lang="en-us">Google Service Account email</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Google Service Account email:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Correo electrónico de la cuenta de servicio de Google:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Google Json File">
+	<prop type="sectionname" xml:lang="en-us">Google Service Account .json credentials file</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Google Service Account .json credentials file:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Archivo de credenciales .json de la cuenta de servicio de Google:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Credential Test">
+	<prop type="sectionname" xml:lang="en-us">Credential Test</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Test the credentials by attempting to connect to Google Analytics.If successful the profile lists will be updated.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Pruebe las credenciales intentando conectarse a Google Analytics.Si tiene éxito, las listas de perfiles se actualizarán.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Clear Credentials">
+	<prop type="sectionname" xml:lang="en-us">Clear credentials</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Clear credentials</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Borrar credenciales</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Select Google Profile">
+	<prop type="sectionname" xml:lang="en-us">Select Google Profile</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Select a Google profile for each site:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Seleccione un perfil de Google para cada sitio:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Save Analytics">
+	<prop type="sectionname" xml:lang="en-us">Save Analytics</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Save analytics settings to the server.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Guarde la configuración de análisis en el servidor.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Revert Changes">
+	<prop type="sectionname" xml:lang="en-us">Revert Changes</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Revert any unsaved changes.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Revierta los cambios no guardados.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Confirm Remove">
+	<prop type="sectionname" xml:lang="en-us">Confirm Remove</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Please confirm that you wish to remove your Google Analytics credentials from Percussion. Upon next publish, the Google Analytics script code will be removed from all published pages.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Confirme que desea eliminar sus credenciales de Google Analytics de Percussion. En la próxima publicación, el código de secuencia de comandos de Google Analytics se eliminará de todas las páginas publicadas.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@No Sites Found">
+	<prop type="sectionname" xml:lang="en-us">No Sites Found</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>No Sites Found</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>No se encontraron sitios</seg>
 	</tuv>
 </tu>
     </body>
