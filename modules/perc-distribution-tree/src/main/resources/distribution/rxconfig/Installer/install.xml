@@ -472,6 +472,7 @@
         <include name="JRE-64/**"/>
         <include name="logs/**"/>
         <include name="sys_resources/**" />
+        <include name="bin/phantomjs.exe"/>
         <!-- Delete any left over translations artifacts -->
         <include name="tobetranslated.tmx"/>
         <include name="PercussionCM.exe"/>
@@ -1410,21 +1411,6 @@
         <echo>Creating jetty work and logs directory..</echo>
         <mkdir dir="${install.dir}/jetty/base/work"/>
         <mkdir dir="${install.dir}/jetty/base/logs"/>
-
-        <if>
-            <isset property="${isWindows}"/>
-            <then>
-                <echo>Windows install detected, setting compatibility mode for phantomjs.exe...</echo>
-                <exec executable="reg.exe">
-                    <arg value="Add"/>
-                    <arg value="&quot;HKLM\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers&quot;"/>
-                    <arg value="/v"/>
-                    <arg value="&quot;${install.dir}/bin/phantomjs.exe&quot;"/>
-                    <arg value="/d"/>
-                    <arg value="&quot;WIN7RTM&quot;"/>
-                </exec>
-            </then>
-        </if>
 
         <echo>Fixing Line Feeds...</echo>
         <fixcrlf srcdir="${install.dir}"  preservelastmodified="true">
