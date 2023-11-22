@@ -16,12 +16,6 @@
     <properties>
         <version.arquillian>1.1.11.Final</version.arquillian>
         <version.shrinkwrap>1.0.0-cr-3</version.shrinkwrap>
-        <phantomjs.version>2.1.1</phantomjs.version>
-        <windows.url>https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-${phantomjs.version}-windows.zip
-        </windows.url>
-        <linux.url>https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-${phantomjs.version}-linux-x86_64.tar.bz2
-        </linux.url>
-        <download-folder>${project.basedir}/target/phantomjs-download</download-folder>
     </properties>
 
     <profiles>
@@ -85,57 +79,6 @@
                        <id>default-deploy</id>
                        <phase>none</phase>
                    </execution>
-                   <execution>
-                       <id>phantomjs-nexus-deploy-win</id>
-                       <phase>deploy</phase>
-                       <goals>
-                           <goal>deploy-file</goal>
-                       </goals>
-                       <configuration>
-                           <repositoryId>repo-man</repositoryId>
-                           <file>${download-folder}/phantomjs-${phantomjs.version}-windows.zip</file>
-                           <url>https://mvn.intsof.com/repositories/thirdparty/</url>
-                           <groupId>phantomjs</groupId>
-                           <artifactId>phantomjs-win</artifactId>
-                           <version>2.1.1</version>
-                           <packaging>zip</packaging>
-                           <generatePom>true</generatePom>
-                       </configuration>
-                   </execution>
-                   <execution>
-                       <id>phantomjs-nexus-deploy-linux</id>
-                       <phase>deploy</phase>
-                       <goals>
-                           <goal>deploy-file</goal>
-                       </goals>
-                       <configuration>
-                           <repositoryId>repo-man</repositoryId>
-                           <file>${download-folder}/phantomjs-${phantomjs.version}-linux-x86_64.tar.bz2</file>
-                           <url>https://mvn.intsof.com/repositories/thirdparty/</url>
-                           <groupId>phantomjs</groupId>
-                           <artifactId>phantomjs-linux</artifactId>
-                           <version>2.1.1</version>
-                           <packaging>tar.bz2</packaging>
-                           <generatePom>true</generatePom>
-                       </configuration>
-                   </execution>
-                   <execution>
-                       <id>phantomjs-nexus-deploy-macosx</id>
-                       <phase>deploy</phase>
-                       <goals>
-                           <goal>deploy-file</goal>
-                       </goals>
-                       <configuration>
-                           <repositoryId>repo-man</repositoryId>
-                           <file>${download-folder}/phantomjs-${phantomjs.version}-macosx.zip</file>
-                           <url>https://mvn.intsof.com/repositories/thirdparty/</url>
-                           <groupId>phantomjs</groupId>
-                           <artifactId>phantomjs-macosx</artifactId>
-                           <version>2.1.1</version>
-                           <packaging>zip</packaging>
-                           <generatePom>true</generatePom>
-                       </configuration>
-                   </execution>
                </executions>
             </plugin>
         </plugins>
@@ -144,52 +87,8 @@
 </profile>
     </profiles>
     <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.1</version>
-                <executions>
-                    <execution>
-                        <id>copy-phantomjs-archive</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>
-                                ${project.build.outputDirectory}/phantomjs-inst
-                            </outputDirectory>
-                            <includeArtifactIds>phantomjs-linux,phantomjs-win,phantomjs-macosx</includeArtifactIds>
-                            <stripVersion>true</stripVersion>
-
-                        </configuration>
-                    </execution>
-
-                </executions>
-            </plugin>
-
-        </plugins>
     </build>
     <dependencies>
-        <dependency>
-            <groupId>phantomjs</groupId>
-            <artifactId>phantomjs-linux</artifactId>
-            <version>2.1.1</version>
-            <type>tar.bz2</type>
-        </dependency>
-        <dependency>
-            <groupId>phantomjs</groupId>
-            <artifactId>phantomjs-win</artifactId>
-            <version>2.1.1</version>
-            <type>zip</type>
-        </dependency>
-        <dependency>
-            <groupId>phantomjs</groupId>
-            <artifactId>phantomjs-macosx</artifactId>
-            <version>2.1.1</version>
-            <type>zip</type>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
