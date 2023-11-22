@@ -79,6 +79,7 @@
     <script src="/cm/gadgets/repository/common/lib/jqplot/jqplot.logAxisRenderer.js" ></script>
 
     <script src="/cm/gadgets/repository/perc_traffic_gadget/perc_traffic_gadget.js" ></script>
+    <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
     
     <style>
         .perc-gadget-errormessage {
@@ -230,10 +231,15 @@
                 miniMsg.dismissMessage(loadingMsg);
                 busy = false;
                 $("#chart1")
-                    .html("<div class='perc-gadget-errormessage'>Please select a site in the settings</div>");
-                $("#perc-graph-labels").hide();
+                    .html("<div id='perc-traffic-error' class='perc-gadget-errormessage'>Please select a site in the settings</div>");
+				document.getElementById('perc-traffic-error').innerText=I18N.message("perc.ui.traffic.gadget@Select Site");
+				$("#perc-graph-labels").hide();
                 $("#perc-traffic-show-hide-details").hide();
             }
+            document.getElementById('perc-label-right').innerText=I18N.message("perc.ui.traffic.gadget@Activity");
+			document.getElementById('perc-label-left').innerText=I18N.message("perc.ui.traffic.gadget@Visits");
+			document.getElementById('perc-traffic-show-hide-details').innerText=I18N.message("perc.ui.traffic.gadget@Show Details");
+			document.getElementById('perc-traffic-error-message').innerText=I18N.message("perc.ui.traffic.gadget@Select Date Range");
         });
         
         var dateFormat = "m/d/yy";
