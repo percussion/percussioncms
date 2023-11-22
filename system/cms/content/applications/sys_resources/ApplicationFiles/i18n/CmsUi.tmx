@@ -14727,6 +14727,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 		<seg>Tipo de activo</seg>
 	</tuv>
 </tu>
+<tu tuid="perc.ui.global.variables.gadget@Add Variable">
+	<prop type="sectionname" xml:lang="en-us">Add Variable</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Add Variable</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Agregar variable</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Create Global Variable">
+	<prop type="sectionname" xml:lang="en-us">Click to create global variable</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Click to create global variable</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Haga clic para crear una variable global</seg>
+	</tuv>
+</tu>
 <tu tuid="perc.ui.global.variables.gadget@Not Found">
 	<prop type="sectionname" xml:lang="en-us">No Global Variables Found</prop>
 	<note xml:lang="en-us"></note>
