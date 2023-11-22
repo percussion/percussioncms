@@ -42,6 +42,29 @@
         <script  src="/cm/gadgets/repository/perc_cookie_consent_gadget/cookie_consent_gadget.js"></script>
         <script  src="/cm/jslib/profiles/3x/jquery/plugins/jquery-datatables/js/jquery.dataTables.js"></script>
         <script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+        <script>
+		$(document).ready(function(){
+			document.getElementById('perc-cookie-site').innerText=I18N.message("perc.ui.gadgets.workflowStatus@Site");
+			document.getElementById('perc-cookie-total-consent').innerText=I18N.message("perc.ui.gadgets.cookieConsent@Total cookie consents");
+			document.getElementById('export-link').innerText=I18N.message("perc.ui.gadgets.cookieConsent@Export Cookie Entries");
+			document.getElementById('export-link').title=I18N.message("perc.ui.gadgets.cookieConsent@Export Cookie Entries");
+			document.getElementById('perc-cookie-back-button').innerText=I18N.message("perc.ui.common.label@Back");
+			document.getElementById('perc-site-cookie').innerText=I18N.message("perc.ui.navMenu.finder@Site:");
+			document.getElementById('perc-cookie-service').innerText=I18N.message("perc.ui.gadgets.cookieConsent@Service Cookie");
+			document.getElementById('perc-total-consent').innerText=I18N.message("perc.ui.gadgets.cookieConsent@Total consents");
+			document.getElementById('export-site-link').innerText=I18N.message("perc.ui.gadgets.cookieConsent@Export Link");
+			document.getElementById('advanced-all-sites-btn').title=I18N.message("perc.ui.gadgets.cookieConsent@Advanced Settings");
+			document.getElementById('advanced-all-sites-btn').innerText=I18N.message("perc.ui.gadgets.cookieConsent@Advanced");
+			document.getElementById('advanced-site-btn').title=I18N.message("perc.ui.gadgets.cookieConsent@Advanced Settings");
+			document.getElementById('advanced-site-btn').innerText=I18N.message("perc.ui.gadgets.cookieConsent@Advanced");
+			document.getElementById('delete-all-sites').innerText=I18N.message("perc.ui.gadgets.cookieConsent@Delete All");
+			document.getElementById('cookie-consent-delete-btn').title=I18N.message("perc.ui.gadgets.cookieConsent@Delete All");
+			document.getElementById('cookie-consent-delete-btn').innerText=I18N.message("perc.ui.gadgets.cookieConsent@Delete entry");
+			document.getElementById('delete-selected-site').innerText=I18N.message("perc.ui.gadgets.cookieConsent@Delete Selected");
+			document.getElementById('cookie-consent-site-delete-btn').title=I18N.message("perc.ui.gadgets.cookieConsent@Delete Selected");
+			document.getElementById('cookie-consent-site-delete-btn').innerText=I18N.message("perc.ui.gadgets.cookieConsent@Delete entries for site");
+		});
+        </script>
 
         <div class="perc-gadget perc-cookie-consent-gadget" aria-label="cookie-consent gadget" data-moduleid="__MODULE_ID__">
             <!-- Content.  Populated by cookie_consent_gadget.js -->
@@ -49,8 +72,8 @@
                 <table id="perc-cookie-table" class="perc-cookie-consent-table table">
                     <thead>
                         <tr>
-                            <th scope="col" class="col-header">Site</th>
-                            <th scope="col" class="col-header">Total cookie consents</th>
+                            <th scope="col" id="perc-cookie-site" class="col-header">Site</th>
+                            <th scope="col" id="perc-cookie-total-consent" class="col-header">Total cookie consents</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -71,18 +94,18 @@
                 <button id="perc-cookie-back-button" aria-label="Back to cookie consent main screen" title="Click to see cookie consent entries for all sites" class="btn btn-primary">Back</button>
                 <br/>
                 <div id="site-name-section">
-                    <span class="site-desc"><b>Site:</b></span>
+                    <span id="perc-site-cookie" class="site-desc"><b>Site:</b></span>
                     <span class="site-name"></span>
                 </div>
                 <table id="perc-cookie-site-table" class="perc-cookie-consent-site-table table">
                     <thead>
                         <tr>
                             <th scope="col">
-                                Service/Cookie
+                                <label id="perc-cookie-service">Service/Cookie</label>
                                 <span class="perc-sort" style="padding: 0 10 0 0;">&nbsp;</span>
                             </th>
                             <th scope="col">
-                                Total consents
+                                <label id="perc-total-consent">Total consents</label>
                                 <span class="perc-sort" style="padding: 0 10 0 0;">&nbsp;</span>
                             </th>
                         </tr>
@@ -104,7 +127,7 @@
             <div id="delete-btn-all">
                 <button tabindex="0" id="advanced-all-sites-btn" title="Advanced Settings" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced" style = 'float:left'>Advanced</button>
                 <div id="advanced" class="collapse cookie-consent-advanced">
-                    <p>Delete all cookie consent entries.</p>
+                    <label id="delete-all-sites" ><p>Delete all cookie consent entries.</p></label>
                     <button tabindex="0" id="cookie-consent-delete-btn" title="Delete all cookie consent entries" aria-label="Delete all cookie consent entries" class="cookie-consent-delete-btn">Delete entries</button>
                 </div>
             </div>
@@ -113,7 +136,7 @@
             <div id="delete-btn-site" style="display: none;">
                 <button id="advanced-site-btn" title="Advanced Settings" type="button" aria-label="Advanced Settings" class="btn btn-primary advanced" data-toggle="collapse" data-target="#advanced-site" style = 'float:left'>Advanced</button>
                 <div id="advanced-site" class="collapse cookie-consent-advanced">
-                    <p>Delete cookie consent entries for site: </p>
+                    <label id="delete-selected-site" ><p>Delete cookie consent entries for site: </p></label>
                     <button id="cookie-consent-site-delete-btn" title="Delete cookie consent entries for selected site" aria-label="Delete cookie consent entries for selected site" class="cookie-consent-delete-btn">Delete entries for site</button>
                 </div>
             </div>

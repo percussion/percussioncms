@@ -6357,6 +6357,116 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                         <seg>No se encontraron entradas de consentimiento de cookies. El servicio de entrega puede no estar disponible.</seg>
                     </tuv>
      </tu>
+     <tu tuid="perc.ui.gadgets.cookieConsent@Total cookie consents">
+                         <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                         <note xml:lang="en-us"></note>
+                         <tuv xml:lang="en-us">
+                             <seg>Total cookie consents</seg>
+                         </tuv>
+                         <tuv xml:lang="es">
+                             <seg>Consentimientos totales de cookies</seg>
+                         </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Export Cookie Entries">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Export All Cookie Consent Entries</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Exportar todas las entradas de consentimiento de cookies</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Service Cookie">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Service/Cookie</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Servicio/Cookie</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Total consents">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Total consents</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Consentimientos totales</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Export Link">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Export Link</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Enlace de exportación</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Advanced">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Advanced</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Avanzado</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Advanced Settings">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Advanced Settings</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Ajustes avanzados</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Delete All">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Delete all cookie consent entries.</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Elimine todas las entradas de consentimiento de cookies.</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Delete entry">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Delete entries</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Eliminar entradas</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Delete Selected">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Delete cookie consent entries for selected site.</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Eliminar entradas de consentimiento de cookies para el sitio:</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Delete entries for site">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Delete entries for site</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Eliminar entradas para el sitio</seg>
+                 </tuv>
+    </tu>
      <tu tuid="perc.ui.widgets.commentsForm@This Field Is Required">
                     <prop type="sectionname" xml:lang="en-us">Comments Form</prop>
                     <note xml:lang="en-us"></note>
@@ -14739,6 +14849,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 		<seg>Tipo de activo</seg>
 	</tuv>
 </tu>
+<tu tuid="perc.ui.global.variables.gadget@Add Variable">
+	<prop type="sectionname" xml:lang="en-us">Add Variable</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Add Variable</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Agregar variable</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Create Global Variable">
+	<prop type="sectionname" xml:lang="en-us">Click to create global variable</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Click to create global variable</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Haga clic para crear una variable global</seg>
+	</tuv>
+</tu>
 <tu tuid="perc.ui.global.variables.gadget@Not Found">
 	<prop type="sectionname" xml:lang="en-us">No Global Variables Found</prop>
 	<note xml:lang="en-us"></note>
@@ -15137,6 +15267,86 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	</tuv>
 	  <tuv xml:lang="es">
 		<seg>No se encontraron sitios</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.widget.config.gadget@Uncheck Widgets">
+	<prop type="sectionname" xml:lang="en-us">Uncheck Widgets</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Uncheck widgets in the list below to prevent them from being added to pages or templates. Existing pages or templates using these widgets will not be affected.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Desmarque los widgets en la lista siguiente para evitar que se agreguen a páginas o plantillas. Las páginas o plantillas existentes que utilicen estos widgets no se verán afectadas.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.widget.config.gadget@Percussion Widgets">
+	<prop type="sectionname" xml:lang="en-us">Percussion widgets</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Percussion widgets:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Widgets de percusión:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.widget.config.gadget@Custom Widgets">
+	<prop type="sectionname" xml:lang="en-us">Custom widgets</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Custom widgets:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Widgets personalizados:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.traffic.gadget@Select Site">
+	<prop type="sectionname" xml:lang="en-us">Please select a site in the settings</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Please select a site in the settings</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Por favor seleccione un sitio en la configuración</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.traffic.gadget@Activity">
+	<prop type="sectionname" xml:lang="en-us">Activity</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Activity</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Actividad</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.traffic.gadget@Visits">
+	<prop type="sectionname" xml:lang="en-us">Visits</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Visits</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Visitas</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.traffic.gadget@Show Details">
+	<prop type="sectionname" xml:lang="en-us">Show details</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Show details</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Mostrar detalles</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.traffic.gadget@Select Date Range">
+	<prop type="sectionname" xml:lang="en-us">Select a date range that includes at least one data point</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Select a date range that includes at least one data point</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Seleccione un rango de fechas que incluya al menos un punto de datos</seg>
 	</tuv>
 </tu>
     </body>
