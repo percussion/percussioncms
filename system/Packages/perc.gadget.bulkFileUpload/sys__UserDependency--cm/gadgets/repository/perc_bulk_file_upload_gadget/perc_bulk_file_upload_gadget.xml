@@ -30,6 +30,34 @@
     <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/perc_bulk_file_upload_finder_tree.js"></script>
     <script src="/cm/gadgets/repository/perc_bulk_file_upload_gadget/js/perc_bulk_file_upload.js"></script>
 
+    <script>
+        $(document).ready(function() {
+            document.getElementById('perc-bulk-target-collapser').title=I18N.message("perc.ui.gadget.bulkUpload@Expand Target Folder");
+			document.getElementById('perc-bulk-target-folder-label').innerText=I18N.message("perc.ui.gadget.bulkUpload@Target folder");
+			document.getElementById('perc-bulk-target-folder').innerText=I18N.message("perc.ui.gadget.bulkUpload@Select target folder");
+			document.getElementById('bulk_approve').title=I18N.message("perc.ui.gadget.bulkUpload@Approves Uploads");
+			document.getElementById('perc-bulk-approve-onupload-label').innerText=I18N.message("perc.ui.gadget.bulkUpload@Approve assets");
+			document.getElementById('perc-bulk-asset-type').innerText=I18N.message("perc.ui.gadget.bulkUpload@Asset type");
+			document.getElementById('perc-html-selector-label').innerText=I18N.message("perc.ui.gadget.bulkUpload@Extract HTML");
+			document.getElementById('perc-html-selector').title=I18N.message("perc.ui.gadget.bulkUpload@Valid Css");
+			document.getElementById('perc-html-include-outerhtml').title=I18N.message("perc.ui.gadget.bulkUpload@Outer Html");
+			document.getElementById('perc-html-include-innerhtml').title=I18N.message("perc.ui.gadget.bulkUpload@Inner Html");
+			document.getElementById('perc-files-upload-label').innerText=I18N.message("perc.ui.gadget.bulkUpload@Add files for upload");
+			document.getElementById('perc-files-upload').title=I18N.message("perc.ui.gadget.bulkUpload@Add files for upload");
+			document.getElementById('perc-upload-start').title=I18N.message("perc.ui.gadget.bulkUpload@Start upload");
+			document.getElementById('perc-upload-start-span').innerText=I18N.message("perc.ui.gadget.bulkUpload@Start upload");
+			document.getElementById('perc-upload-cancel').title=I18N.message("perc.ui.gadget.bulkUpload@Cancel upload");
+			document.getElementById('perc-upload-cancel-span').innerText=I18N.message("perc.ui.gadget.bulkUpload@Cancel upload");
+			document.getElementById('perc-upload-clear').title=I18N.message("perc.ui.gadget.bulkUpload@Clear uploads");
+			document.getElementById('perc-upload-clear-span').innerText=I18N.message("perc.ui.gadget.bulkUpload@Clear All");
+			document.getElementById('perc-bulk-details-collapser').title=I18N.message("perc.ui.gadget.bulkUpload@Expand upload details");
+			document.getElementById('perc-bulk-details-label').innerText=I18N.message("perc.ui.gadget.bulkUpload@Zero Files Queued");
+			document.getElementById('perc-bulk-name').innerText=I18N.message("perc.ui.gadget.bulkUpload@Name");
+			document.getElementById('perc-bulk-size').innerText=I18N.message("perc.ui.gadget.bulkUpload@Size");
+			document.getElementById('perc-bulk-type').innerText=I18N.message("perc.ui.gadget.bulkUpload@Type");
+        });
+    </script>
+
     <!-- HTML -->
     <div class="perc-gadget perc-bulk-file-upload-gadget" id="fileupload" data-module-id="__MODULE_ID__">
         <!-- DynaTree Folder Selection -->
@@ -48,7 +76,7 @@
                 </div>
                 <br/>
                 <div style="clear: both;"></div>
-                <label class="perc-label" for="perc-bulk-asset-type">Asset type:</label><br />
+                <label id="perc-bulk-asset-type" class="perc-label" for="perc-bulk-asset-type">Asset type:</label><br />
                 <select id="perc-bulk-asset-type">
                     <option value="file" selected>File</option>
                     <option value="flash">Flash</option>
@@ -60,7 +88,7 @@
                 <br />
                 <div style="height: 10px;"></div>
                 <div id = "perc-selector-wrapper">
-                    <label class = "perc-label" for="perc-html-selector">Extract HTML from element:</label><br />
+                    <label class = "perc-label" id="perc-html-selector-label" for="perc-html-selector">Extract HTML from element:</label><br />
                     <input  title = "Enter any valid CSS3 Selector to specify the element."  type = "text"  id = "perc-html-selector" />
                     <div style="height: 10px;"></div>
                     <div id = "perc-selector-options">
@@ -80,12 +108,12 @@
                 <!-- The fileinput-button span is used to style the file input field as button -->
                 <span id="perc-upload-add" class="btn perc-button btn-primary fileinput-button">
                     <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
-                    <label for="perc-files-upload" >Add files for upload</label>
+                    <label id="perc-files-upload-label" for="perc-files-upload" >Add files for upload</label>
                     <input tabindex="0" type="file" id="perc-files-upload" name="files[]" title="Add files for upload" multiple>
                 </span>
                 <button tabindex="0" id="perc-upload-start" title="Start upload" type="submit" class="btn perc-button btn-primary" aria-label="Start upload">
                     <span aria-hidden="true" class="glyphicon glyphicon-upload"></span>
-                    <span>Start upload</span>
+                    <span id="perc-upload-start-span">Start upload</span>
                 </button>
                 <!-- invisibile button to trigger upload start -->
                 <button id="perc-upload-trigger" type="button" aria-hidden="true" hidden></button>
@@ -93,11 +121,11 @@
                 <br/>
                 <button tabindex="0" id="perc-upload-cancel" title="Cancel upload" type="button" class="btn perc-button btn-primary" aria-label="Cancel upload">
                     <span aria-hidden="true" class="glyphicon glyphicon-ban-circle"></span>
-                    <span>Cancel upload</span>
+                    <span id="perc-upload-cancel-span">Cancel upload</span>
                 </button>
                 <button tabindex="0" id="perc-upload-clear" title="Clear uploads" type="button" class="btn btn-primary perc-button delete" aria-label="Clear uploads">
                     <span aria-hidden="true" class="glyphicon glyphicon-trash"></span>
-                    <span>Clear All</span>
+                    <span id="perc-upload-clear-span">Clear All</span>
                 </button>
             </div>
             <!-- The global progress state -->
@@ -121,9 +149,9 @@
                     <table id="perc-added-files" role="presentation" class="table table-striped">
                         <tbody class="files">
                             <tr>
-                                <th>Name</th>
-                                <th>Size</th>
-                                <th colspan="2">Type</th>
+                                <th id="perc-bulk-name">Name</th>
+                                <th id="perc-bulk-size">Size</th>
+                                <th id="perc-bulk-type" colspan="2">Type</th>
                             </tr>
                         </tbody>
                     </table>
