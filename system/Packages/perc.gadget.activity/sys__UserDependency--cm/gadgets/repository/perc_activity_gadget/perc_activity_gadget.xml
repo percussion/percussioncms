@@ -64,6 +64,8 @@
     
     <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
     <script src="/cm/gadgets/repository/perc_activity_gadget/perc_activity_gadget.js" ></script>
+    <script  src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
+
     
     <script >
         var loadingMsg = null;
@@ -81,6 +83,7 @@
 
     <script>
         $(document).ready(function() {
+        document.getElementById('perc-field-howmany-validation').innerText=I18N.message("perc.ui.activity.gadget@How Many");
             $("#perc-field-howmany-validation").hide();
             var messageFlag = false;
             
@@ -107,7 +110,7 @@
                     site = result;
                 }
                 var site_title = site == "" ? "All Sites" : site; 
-                var title = "ACTIVITY: During Last " + durationValue + " " + durationType + " (" + site_title + ")";   
+                var title = I18N.message("perc.ui.activity.gadget@Activity During Last") + " " + durationValue + " " + durationType + " (" + site_title + ")";
                 
                 gadgets.window.setTitle(title); 
                 

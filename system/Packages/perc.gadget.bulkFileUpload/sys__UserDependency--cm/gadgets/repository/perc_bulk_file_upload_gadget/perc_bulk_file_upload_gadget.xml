@@ -51,7 +51,8 @@
 			document.getElementById('perc-upload-clear').title=I18N.message("perc.ui.gadget.bulkUpload@Clear uploads");
 			document.getElementById('perc-upload-clear-span').innerText=I18N.message("perc.ui.gadget.bulkUpload@Clear All");
 			document.getElementById('perc-bulk-details-collapser').title=I18N.message("perc.ui.gadget.bulkUpload@Expand upload details");
-			document.getElementById('perc-bulk-details-label').innerText=I18N.message("perc.ui.gadget.bulkUpload@Zero Files Queued");
+			document.getElementById('perc-bulk-details-label').innerText=I18N.message("perc.ui.perc.categories@Details");
+			document.getElementById('perc-bulk-status').innerText=I18N.message("perc.ui.gadget.bulkUpload@Zero Files Queued");
 			document.getElementById('perc-bulk-name').innerText=I18N.message("perc.ui.gadget.bulkUpload@Name");
 			document.getElementById('perc-bulk-size').innerText=I18N.message("perc.ui.gadget.bulkUpload@Size");
 			document.getElementById('perc-bulk-type').innerText=I18N.message("perc.ui.gadget.bulkUpload@Type");
