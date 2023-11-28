@@ -49,7 +49,7 @@ public class PSScreenCapture {
     private static final String IMAGE_PATH_TOKEN="@@file@@";
     private static final String IMAGE_URL_TOKEN="@@url@@";
 
-    private static PSProperties ms_serverProps = new PSProperties();
+    private static PSProperties ms_serverProps = null;
 
 
     public static final String EMPTY_THUMB_RESOURCE = "META-INF/resources/sys_resources/images/thumbnail/empty-thumb.jpg";
