@@ -147,6 +147,7 @@
                 <entry key="noCacheTemplates" default=""/>
                 <entry key="compressOutput" default="false"/>
                 <entry key="allowLinksToOrphans" value="true" default="true" operation="="/>
+                <entry key="screenshotCommandLine" default=""/>
 
 
                 <!-- Properties to remove if present -->
