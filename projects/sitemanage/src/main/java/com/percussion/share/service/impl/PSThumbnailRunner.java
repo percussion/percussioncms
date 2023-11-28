@@ -316,13 +316,14 @@ public class PSThumbnailRunner implements Runnable {
 			String fileSuffix, String siteFolder, PSPage page) throws MalformedURLException {
 		if (page != null) {
 			String thumbnailFilePath = siteFolder + id + fileSuffix;
+			//To fix the path separator for file path.
+			thumbnailFilePath = (new File(thumbnailFilePath)).getAbsolutePath();
 			String path = (page.getFolderPath() + "/" + page.getName()).replace(
 					"//", "/");
 			URL url = PSUrlUtils.createUrl("127.0.0.1", null, path,
 					sessionParameterMap.iterator(), null, requestContext, true);
 			try
 			{
-
 				PSScreenCapture.takeCapture(url.toString(), thumbnailFilePath,
 						1180, 860);
 				PSThumbnailImageUtils.resizeThumbnail(thumbnailFilePath);
