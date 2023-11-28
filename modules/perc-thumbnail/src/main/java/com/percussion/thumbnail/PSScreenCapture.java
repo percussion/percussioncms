@@ -53,28 +53,11 @@ public class PSScreenCapture {
 
 
     public static final String EMPTY_THUMB_RESOURCE = "META-INF/resources/sys_resources/images/thumbnail/empty-thumb.jpg";
-    public static final String WEB_CAP_JS_RESOURCE = "META-INF/resources/sys_resources/js/webcap.js";
-     private static final String OS = System.getProperty("os.name")
-            .toLowerCase();
-
-    private static volatile Boolean install = true;
-
-    private static final File WEB_CAP_PATH = new File(PathUtils.getRxDir(null), "sys_resources/js/webcap.js");
-
 
     public static void generateEmptyThumb(String imagePathForGeneration) {
         copyResource(EMPTY_THUMB_RESOURCE, new File(imagePathForGeneration));
 
     }
-
-    private static synchronized void extractExecutable() {
-
-        if (install)
-        {
-            copyWebCapResource();
-        }
-    }
-
 
     private static PSProperties getServerProperties() {
         if(ms_serverProps != null){
@@ -95,15 +78,14 @@ public class PSScreenCapture {
     public static String getRxConfigDir(String path) {
 
         File item = new File(PathUtils.getRxDir(null), path);
-        if (item.exists() == false)
+        if (!item.exists())
         {
             throw new IllegalArgumentException("file does not exist: " + item.getAbsolutePath());
         }
         return item.getAbsolutePath();
     }
 
-    public static void takeCapture(String urlForCapture, String imagePath,
-                                    int width, int height) {
+    public static void takeCapture(String urlForCapture, String imagePath) {
         try{
             Properties serverProps = getServerProperties();
             if(serverProps == null){
@@ -135,12 +117,6 @@ public class PSScreenCapture {
             log.error("Failed to capture screenshot : {}",e.getLocalizedMessage());
         }
 
-    }
-
-    private static void copyWebCapResource() {
-        if (!WEB_CAP_PATH.exists()) {
-                copyResource(WEB_CAP_JS_RESOURCE, WEB_CAP_PATH);
-        }
     }
 
     private static void copyResource(String resourceName, File destination) {

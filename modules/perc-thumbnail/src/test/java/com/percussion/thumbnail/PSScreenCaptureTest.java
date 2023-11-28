@@ -97,7 +97,7 @@ public class PSScreenCaptureTest {
     public void capture(int height, int width) throws IOException {
         File file = new File(System.getProperty(RXDEPLOYDIR),"testimg_"+height+"_"+width+".jpg");
         log.info("Taking capture to "+file.getAbsolutePath());
-        PSScreenCapture.takeCapture("https://www.percussion.com",file.getAbsolutePath(), width,height);
+        PSScreenCapture.takeCapture("https://www.percussion.com",file.getAbsolutePath());
         assertTrue(file.exists());
         BufferedImage bimg = ImageIO.read(file);
 
