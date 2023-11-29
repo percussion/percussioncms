@@ -44,7 +44,8 @@ public class PSSiteSummary extends PSDataItemSummarySingleFolderPath implements 
     private String description;
     
     private String baseUrl;
-    
+
+
     private String defaultFileExtention;
     
     private boolean isCanonical = true;
@@ -224,6 +225,7 @@ public class PSSiteSummary extends PSDataItemSummarySingleFolderPath implements 
     {
         this.baseUrl = baseUrl;
     }
+
 
     /**
      * TODO: Check why getId is returning the name property of the class.

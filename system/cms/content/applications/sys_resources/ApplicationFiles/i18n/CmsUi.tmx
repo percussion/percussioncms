@@ -1719,6 +1719,16 @@
                 <seg>¿Qué te gustaría usar para una plantilla?</seg>
             </tuv>
         </tu>
+        <tu tuid="perc.ui.newsitedialog.text@Extract section names">
+                    <prop type="sectionname" xml:lang="en-us">New Site Dialog</prop>
+                    <note xml:lang="en-us"></note>
+                    <tuv xml:lang="en-us">
+                        <seg>Extract section names by query parameter</seg>
+                    </tuv>
+                    <tuv xml:lang="es">
+                        <seg>Extraer nombres de secciones por parámetro de consulta</seg>
+                    </tuv>
+                </tu>
          <tu tuid="perc.ui.newsitedialog.text@page2 summary">
             <prop type="sectionname" xml:lang="en-us">New Site Dialog</prop>
             <note xml:lang="en-us"></note>

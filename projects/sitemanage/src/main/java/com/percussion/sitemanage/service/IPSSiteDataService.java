@@ -28,13 +28,7 @@ import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSSpringValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
-import com.percussion.sitemanage.data.PSPubInfo;
-import com.percussion.sitemanage.data.PSSaasSiteConfig;
-import com.percussion.sitemanage.data.PSSite;
-import com.percussion.sitemanage.data.PSSiteProperties;
-import com.percussion.sitemanage.data.PSSitePublishProperties;
-import com.percussion.sitemanage.data.PSSiteStatisticsSummary;
-import com.percussion.sitemanage.data.PSSiteSummary;
+import com.percussion.sitemanage.data.*;
 import com.percussion.sitemanage.error.PSSiteImportException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -173,7 +167,9 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @return the created site, never <code>null</code>.
      * @throws PSSiteImportException if an unexpected error occurred during site
      *             import.
+     * @deprecated use the async method instead.
      */
+    @Deprecated
     public PSSite createSiteFromUrl(@Context HttpServletRequest request, PSSite site) throws PSSiteImportException, PSValidationException;
     
     /**
@@ -181,7 +177,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * Its related components are also created.
      * 
      * @param request the {@link HttpServletRequest} object that represents that request.
-     * @param site the new site with only name and baseUrl set. Not
+     * @param config the import configuration for the new site with only name and baseUrl set. Not
      *            <code>null</code> and the name of the site cannot be one of
      *            the existing site.
      * 
@@ -190,7 +186,7 @@ public interface IPSSiteDataService extends IPSDataService<PSSite,PSSiteSummary,
      * @throws PSSiteImportException if an unexpected error occurred during site
      *             import.
      */
-    public Long createSiteFromUrlAsync(@Context HttpServletRequest request, PSSite site) throws PSValidationException, IPSFolderService.PSWorkflowNotFoundException;
+    public Long createSiteFromUrlAsync(@Context HttpServletRequest request, PSSiteImportConfiguration config) throws PSValidationException, IPSFolderService.PSWorkflowNotFoundException;
     
     /**
      * Once the import from url job is completed, it gets the site that was

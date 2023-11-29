@@ -67,6 +67,17 @@
                 <br/>
                 <input title="url" class="perc_dialog_input perc_dialog_field" id="url" name="url" maxlength="2048" type="text"/>
             </div>
+
+			<p class="hint"><strong>Configuration</strong></p>
+			<div class="perc_url_field">
+                <input class="perc_dialog_input" type="checkbox" name="queryParamaterFieldRequired" id="queryParamaterFieldRequired" />
+				<label class="perc_dialog_label" for="type_url"><i18n:message key="perc.ui.newsitedialog.text@Extract section names"/></label>
+                <br/>
+                <input title="url" disabled="true" class="perc_dialog_input perc_dialog_field" id="queryParamaterField" name="queryParamaterField" maxlength="2048" type="text"/>
+            </div>
+
+
+
             <div class="perc_percussion_template_field">
                 <input class="perc_dialog_input" type="radio" name="site_type" id="type_percussion_template" value="type_percussion_template" /><label class="perc_dialog_label" for="type_percussion_template"><i18n:message key="Percussion Templates"/></label>
             </div>

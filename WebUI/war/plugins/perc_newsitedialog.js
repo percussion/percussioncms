@@ -40,7 +40,11 @@ var $perc_newSiteDialogLayout;
                     var siteNameField = $("#sitename"),
                         templateNameField = $("#templatename"),
                         urlField = $("#url"),
-                        defaultSiteOption = $('input#type_url');
+                        defaultSiteOption = $('input#type_url'),
+						queryParamaterField = $("#queryParamaterField");
+						queryParamaterFieldRequired = $("#queryParamaterFieldRequired");
+
+
 
                     // This check is performed because the dialog is never removed from the DOM. If the
                     // dialog doesn't exist, initialize it. Else clear its fields.
@@ -64,6 +68,13 @@ var $perc_newSiteDialogLayout;
                                 urlField
                                     .attr('readonly', 'readonly')
                                     .attr('disabled', 'true');
+								queryParamaterField
+									.attr('readonly', 'readonly')
+                                    .attr('disabled', 'true');
+								$('#queryParamaterFieldRequired').prop('checked', false);
+								queryParamaterFieldRequired
+									.attr('readonly', 'readonly')
+                                    .attr('disabled', 'true');
                                 clearValidationErrorMessage(urlField);
                             }
                             else
@@ -71,8 +82,26 @@ var $perc_newSiteDialogLayout;
                                 urlField
                                     .removeAttr('readonly')
                                     .removeAttr('disabled');
-                            }
+								queryParamaterFieldRequired
+									.removeAttr('readonly')
+                                    .removeAttr('disabled');
+							}
                         });
+						$('#queryParamaterFieldRequired').click(function() {
+							if(this.checked){
+								queryParamaterField
+									.removeAttr('readonly')
+                                    .removeAttr('disabled');
+							}else{
+								$('#queryParamaterField').val("");
+								queryParamaterField
+									.attr('readonly', 'readonly')
+                                    .attr('disabled', 'true');
+							}
+
+						});
+
+
 
                         // Create a themplate selector using images: initialize the element
                         var $tempList = $('#perc_templateList').perc_imageselect(
@@ -169,6 +198,7 @@ var $perc_newSiteDialogLayout;
         }
         var siteNameField = $("#sitename"),
             urlField = $("#url"),
+			queryParamaterField = $("#queryParamaterField"),
 
             // Will hold the information needed to redirect to the Design manager
             memento = {
@@ -269,7 +299,7 @@ var $perc_newSiteDialogLayout;
             var querystring = $.deparam.querystring();
             $.PercNavigationManager.goToLocation(
                 $.PercNavigationManager.VIEW_DESIGN,
-                fields.name,
+                newSite.name,
                 null,
                 null,
                 null,
@@ -285,15 +315,21 @@ var $perc_newSiteDialogLayout;
         // We use :checked inside a filter to fix an IE compatibility issue
         if (dialog.find('input[type=radio]').filter(':checked').attr('id') === "type_url")
         {
-            var fields = {
+            var newSite = {
                 name: siteNameField.val().trim(),
-                baseUrl: urlField.val().trim()
+                baseUrl: urlField.val().trim(),
+				queryParamater: queryParamaterField.val().trim()
             };
 
             // If the URL entered lacks 'http(s)://' prefix, append 'http://'
-            if(! (/^(https?):\/\//i).test(fields.baseUrl)) {
-                fields.baseUrl = 'http://' + fields.baseUrl;
+            if(! (/^(https?):\/\//i).test(newSite.baseUrl)) {
+                newSite.baseUrl = 'http://' + newSite.baseUrl;
             }
+
+			var importConfig = {
+				mapQueryParamToPageName: queryParamaterField.val().trim(),
+				site: newSite
+			};
 
             // We don't have to go to the next step, an error dialog could appear
             continueToNextStep = false;
@@ -318,7 +354,7 @@ var $perc_newSiteDialogLayout;
                 },
                 startProgressCallback: function(callbackJobIdHandler)
                 {
-                    $.PercSiteService.createSiteFromUrlAsync(fields, function(status, jobId) {
+                    $.PercSiteService.createSiteFromUrlAsync(importConfig, function(status, jobId) {
                         // callbackJobIdHandler is specified by the Import Progress dialog
                         callbackJobIdHandler(status, jobId);
                     });

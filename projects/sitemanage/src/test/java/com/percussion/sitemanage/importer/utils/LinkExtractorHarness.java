@@ -63,7 +63,7 @@ public final class LinkExtractorHarness {
 					      .referrer("http://www.google.com")
 					      .get();
 				final List<PSLink> links = PSLinkExtractor
-						.getLinksForDocument(doc, null, null, site);
+						.getLinksForDocument(doc, null, null, site, null);
 				final Iterator<PSLink> linkIterator = links.iterator();
 				while (linkIterator.hasNext()) {
 					final PSLink link = linkIterator.next();

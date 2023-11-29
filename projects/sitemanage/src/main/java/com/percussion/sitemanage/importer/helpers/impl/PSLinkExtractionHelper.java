@@ -216,7 +216,7 @@ public class PSLinkExtractionHelper extends PSImportHelper
         String themeRootUrl = getThemeRootUrl(context);
         String siteName = context.getSite().getName();
         PSSiteQueue siteQueue = getSiteQueue(context.getSite().getSiteId());
-        final List<PSLink> links = PSLinkExtractor.getLinksForDocument(pageContent.getSourceDocument(), log, siteQueue, context.getSite().getBaseUrl());
+        final List<PSLink> links = PSLinkExtractor.getLinksForDocument(pageContent.getSourceDocument(), log, siteQueue, context.getSite().getBaseUrl(), context.getImportConfiguration());
         final List<PSLink> imageLinks = PSLinkExtractor.getImagesForDocument(pageContent.getSourceDocument(), log);
         
         
@@ -461,6 +461,7 @@ public class PSLinkExtractionHelper extends PSImportHelper
                     
                     
                     int id = ((PSLegacyGuid) getIdMapper().getGuid(page.getId())).getContentId();
+                    //TODO: Sitecontext need to be passed as a parameter
                     getImportQueue().addCatalogedPageIds(context.getSite(), context.getUserAgent(),
                             Arrays.asList(id));
                 }

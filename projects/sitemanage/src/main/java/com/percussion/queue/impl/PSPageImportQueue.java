@@ -305,6 +305,7 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 	public void performPageImport(PSSite site, Integer id, String userAgent)
 			throws InterruptedException, PSSiteImportException {
 		String pageId = m_idMapper.getString(new PSLegacyGuid(id, -1));
+		//TODO: make this a parameter
 		PSSiteImportCtx siteImportContext = new PSSiteImportCtx();
 		siteImportContext.setCanceled(this.m_importContext.isCanceled());
 		m_importService.importCatalogedPage(site, pageId, userAgent,

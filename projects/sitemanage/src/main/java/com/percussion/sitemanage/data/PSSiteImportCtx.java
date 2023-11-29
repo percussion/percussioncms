@@ -56,6 +56,17 @@ public class PSSiteImportCtx
     String userAgent;
 
     boolean isCanceled = false;
+
+
+    public PSSiteImportConfiguration getImportConfiguration() {
+        return importConfiguration;
+    }
+
+    public void setImportConfiguration(PSSiteImportConfiguration importConfiguration) {
+        this.importConfiguration = importConfiguration;
+    }
+
+    PSSiteImportConfiguration importConfiguration;
     
     /**
      * @return the siteUrl
@@ -283,6 +294,8 @@ public class PSSiteImportCtx
     {
         this.summaryStats = summaryStats;
     }
+
+
 
 
 }
