@@ -3,6 +3,7 @@
 <Module>
     <ModulePrefs title="Bulk Upload" category="content" description="This gadget provides the ability to upload local file system content directly to the Assets Library." thumbnail="images/gadgetIconBulkFileUpload.png" height="465">
         <Require feature="perc_core"/>
+        <Require feature="settitle" />
         <Require feature="perc_jquery_ui"/>
         <Require feature="perc_collapser"/>
         <Require feature="dynamic-height"/>
@@ -56,6 +57,7 @@
 			document.getElementById('perc-bulk-name').innerText=I18N.message("perc.ui.gadget.bulkUpload@Name");
 			document.getElementById('perc-bulk-size').innerText=I18N.message("perc.ui.gadget.bulkUpload@Size");
 			document.getElementById('perc-bulk-type').innerText=I18N.message("perc.ui.gadget.bulkUpload@Type");
+			gadgets.window.setTitle(I18N.message("perc.ui.gadget.bulkUpload@Bulk Upload"));
         });
     </script>
 
