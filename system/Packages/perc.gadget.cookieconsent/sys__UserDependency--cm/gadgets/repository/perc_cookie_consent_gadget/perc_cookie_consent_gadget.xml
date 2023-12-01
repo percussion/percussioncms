@@ -63,6 +63,7 @@
 			document.getElementById('delete-selected-site').innerText=I18N.message("perc.ui.gadgets.cookieConsent@Delete Selected");
 			document.getElementById('cookie-consent-site-delete-btn').title=I18N.message("perc.ui.gadgets.cookieConsent@Delete Selected");
 			document.getElementById('cookie-consent-site-delete-btn').innerText=I18N.message("perc.ui.gadgets.cookieConsent@Delete entries for site");
+			gadgets.window.setTitle(I18N.message("perc.ui.gadgets.cookieConsent@COOKIE CONSENT"));
 		});
         </script>
 

@@ -6105,6 +6105,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                          <seg>Por favor seleccione un sitio en la configuración</seg>
                      </tuv>
       </tu>
+      <tu tuid="perc.ui.gadgets.comments@COMMENTS">
+                   <prop type="sectionname" xml:lang="en-us">COMMENTS</prop>
+                   <note xml:lang="en-us"></note>
+                   <tuv xml:lang="en-us">
+                       <seg>COMMENTS</seg>
+                   </tuv>
+                   <tuv xml:lang="es">
+                       <seg>COMENTARIOS</seg>
+                   </tuv>
+      </tu>
+      <tu tuid="perc.ui.gadgets.comments@COMMENTS MODERATION">
+                   <prop type="sectionname" xml:lang="en-us">COMMENTS</prop>
+                   <note xml:lang="en-us"></note>
+                   <tuv xml:lang="en-us">
+                       <seg>COMMENTS MODERATION:</seg>
+                   </tuv>
+                   <tuv xml:lang="es">
+                       <seg>MODERACIÓN DE COMENTARIOS:</seg>
+                   </tuv>
+     </tu>
      <tu tuid="perc.ui.gadgets.cookieConsent@Error">
                     <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
                     <note xml:lang="en-us"></note>
@@ -6115,6 +6135,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                         <seg>Error</seg>
                     </tuv>
      </tu>
+     <tu tuid="perc.ui.gadgets.cookieConsent@COOKIE CONSENT">
+                     <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                     <note xml:lang="en-us"></note>
+                     <tuv xml:lang="en-us">
+                         <seg>COOKIE CONSENT</seg>
+                     </tuv>
+                     <tuv xml:lang="es">
+                         <seg>CONSENTIMIENTO DE COOKIES</seg>
+                     </tuv>
+      </tu>
      <tu tuid="perc.ui.gadgets.cookieConsent@Loading">
                     <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
                     <note xml:lang="en-us"></note>
@@ -14474,6 +14504,17 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
          </tuv>
       </tu>
 
+      <tu tuid="perc.ui.gadget.bulkUpload@Bulk Upload">
+            <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+            <note xml:lang="en-us"></note>
+            <tuv xml:lang="en-us">
+                <seg>BULK UPLOAD</seg>
+            </tuv>
+            <tuv xml:lang="es">
+                <seg>CARGA MASIVA</seg>
+            </tuv>
+     </tu>
+
      <tu tuid="perc.ui.utils@Please fill all required fields">
      	    <prop type="sectionname" xml:lang="en-us">Settings</prop>
      	    <note xml:lang="en-us"></note>
@@ -15360,6 +15401,36 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 		<seg>No se encontraron sitios</seg>
 	</tuv>
 </tu>
+<tu tuid="perc.ui.google.setup.gadget@Select Google Analytics Profile">
+	<prop type="sectionname" xml:lang="en-us">Select Google Analytics Profile</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Select Google Analytics Profile</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Seleccione el perfil de Google Analytics</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Enter API Key">
+	<prop type="sectionname" xml:lang="en-us">Enter API Key for this Google Analytics Profile</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Enter API Key for this Google Analytics Profile</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Ingrese la clave API para este perfil de Google Analytics</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@GOOGLE SETUP">
+	<prop type="sectionname" xml:lang="en-us">GOOGLE SETUP</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>GOOGLE SETUP</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>CONFIGURACIÓN DE GOOGLE</seg>
+	</tuv>
+</tu>
 <tu tuid="perc.ui.widget.config.gadget@Uncheck Widgets">
 	<prop type="sectionname" xml:lang="en-us">Uncheck Widgets</prop>
 	<note xml:lang="en-us"></note>
@@ -15458,6 +15529,36 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	</tuv>
 	  <tuv xml:lang="es">
 		<seg>ACTIVIDAD: Durante el último</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.activity.gadget@Changes">
+	<prop type="sectionname" xml:lang="en-us">Changes</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Changes</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Cambios</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.activity.gadget@Updates">
+	<prop type="sectionname" xml:lang="en-us">Updates</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Updates</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Actualizaciones</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.activity.gadget@Take Downs">
+	<prop type="sectionname" xml:lang="en-us">Take Downs</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Take Downs</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Derribar</seg>
 	</tuv>
 </tu>
     </body>
