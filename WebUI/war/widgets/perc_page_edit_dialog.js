@@ -178,6 +178,11 @@
             var FileNameField = iframeContainer.find("label[for='sys_title']").closest('div[type]');
             iframeContainer.find("#perc-pageSum-container").after(FileNameField);
 
+			iframeContainer.find("#perc-content-edit-sys_title").attr("aria-required","true");
+			iframeContainer.find("#perc-content-edit-resource_link_title").attr("aria-required","true");
+			iframeContainer.find("#perc-content-edit-page_title").attr("aria-required","true");
+
+
             //bind collapsible event
             iframeContainer.find(".perc-section-label").off('click').on('click',function() {
                 $(this).find(".perc-min-max").toggleClass('perc-items-minimizer').toggleClass('perc-items-maximizer');
