@@ -28,6 +28,7 @@
         document.getElementById('perc-gadget-welcome-link-4').innerText=I18N.message("perc.ui.welcome.gadget@Ask Questions");
         document.getElementById('perc-gadget-welcome-link-5').innerText=I18N.message("perc.ui.welcome.gadget@Add Percussion Linkback");
         document.getElementById('perc-gadget-welcome-link-6').innerText=I18N.message("perc.ui.welcome.gadget@Percussion Linkback Explanation");
+        gadgets.window.setTitle(I18N.message("perc.ui.gadgets.welcome@WELCOME"));
         $("#perc_linkback_anchor").attr("href",generateBookMarklet()).on("click",function(event){event.preventDefault();});
         $("#perc_linkback_moreinfo_link").on("click",function(){displayMoreInfoDialog();});
     });

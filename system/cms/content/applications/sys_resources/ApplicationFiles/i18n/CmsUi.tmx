@@ -5185,6 +5185,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                         <seg>Última actualización</seg>
                     </tuv>
      </tu>
+     <tu tuid="perc.ui.gadgets.welcome@WELCOME">
+                     <prop type="sectionname" xml:lang="en-us">WELCOME</prop>
+                     <note xml:lang="en-us"></note>
+                     <tuv xml:lang="en-us">
+                         <seg>WELCOME</seg>
+                     </tuv>
+                     <tuv xml:lang="es">
+                         <seg>BIENVENIDO</seg>
+                     </tuv>
+      </tu>
      <tu tuid="perc.ui.gadgets.welcome@Linkback Not Supported">
                     <prop type="sectionname" xml:lang="en-us">Welcome</prop>
                     <note xml:lang="en-us"></note>
@@ -15111,6 +15121,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 		<seg>Total</seg>
 	</tuv>
 </tu>
+<tu tuid="perc.ui.forms.tracker.gadget@FORMS TRACKER">
+	<prop type="sectionname" xml:lang="en-us">FORMS TRACKER</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>FORMS TRACKER</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>SEGUIMIENTO DE FORMAS</seg>
+	</tuv>
+</tu>
 <tu tuid="perc.ui.seo.gadget@Title Tag">
 	<prop type="sectionname" xml:lang="en-us">Title Tag</prop>
 	<note xml:lang="en-us"></note>
@@ -15199,6 +15219,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	</tuv>
 	  <tuv xml:lang="es">
 		<seg>Percussion Linkback proporciona acceso rápido desde su sitio web a Percussion CMS para facilitar ediciones rápidas y una navegación sencilla. Cuando vea una página en su sitio web, haga clic en el marcador Percussion Linkback y accederá a la página correspondiente en CMS para que pueda editarla.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.site.improve.gadget@SITEIMPROVE">
+	<prop type="sectionname" xml:lang="en-us">SITEIMPROVE</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>SITEIMPROVE</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>MEJORAR EL SITIO</seg>
 	</tuv>
 </tu>
 <tu tuid="perc.ui.site.improve.gadget@Welcome Text">
@@ -15509,6 +15539,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	</tuv>
 	  <tuv xml:lang="es">
 		<seg>Seleccione un rango de fechas que incluya al menos un punto de datos</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.traffic.gadget@TRAFFIC">
+	<prop type="sectionname" xml:lang="en-us">TRAFFIC</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>TRAFFIC</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>TRÁFICO</seg>
 	</tuv>
 </tu>
 <tu tuid="perc.ui.activity.gadget@How Many">
