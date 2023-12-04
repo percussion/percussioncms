@@ -240,6 +240,7 @@
 			document.getElementById('perc-label-left').innerText=I18N.message("perc.ui.traffic.gadget@Visits");
 			document.getElementById('perc-traffic-show-hide-details').innerText=I18N.message("perc.ui.traffic.gadget@Show Details");
 			document.getElementById('perc-traffic-error-message').innerText=I18N.message("perc.ui.traffic.gadget@Select Date Range");
+			gadgets.window.setTitle(I18N.message("perc.ui.traffic.gadget@TRAFFIC"));
         });
         
         var dateFormat = "m/d/yy";

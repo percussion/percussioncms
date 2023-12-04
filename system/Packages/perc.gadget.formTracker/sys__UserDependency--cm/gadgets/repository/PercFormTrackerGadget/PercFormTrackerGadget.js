@@ -86,7 +86,7 @@
     // state variables
     var isLargeColumn = true;
     var oTable;
-    var formTrackerTable = undefined;
+    var formTrackerTable;
     var tableDiv;
     var siteName;
     var rowsPerGadgetPage;
@@ -104,7 +104,6 @@
         }
         siteName=site;
         tableDiv = $(this);
-        gadgets.window.setTitle("FORMS TRACKER");
 
         if(typeof(rows) ==='undefined'){
             rowsPerGadgetPage = itemsPerPage;
@@ -113,11 +112,11 @@
         }
 
         loadGadget(site);
-    }
+    };
 
     function loadGadget(site) {
         formService.getAllForms(site,function(status, result, message) {
-            createFormTrackerTable(result, message)
+            createFormTrackerTable(result, message);
         });
     }
     

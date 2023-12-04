@@ -3,6 +3,7 @@
 <Module>
     <ModulePrefs title="Welcome" category="content" description="This gadget provides an introduction to Percussion CMS with links to documentation, the forum, and support." thumbnail="images/gadgetIconWelcome.png" height="320">
         <Require feature="perc_core"/>
+        <Require feature="settitle" />
         <Require feature="perc_jquery_ui"/>
     </ModulePrefs>
     <Content type="html">
