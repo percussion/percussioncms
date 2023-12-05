@@ -4,6 +4,7 @@
     <ModulePrefs title="Reports" category="analytics" description="This gadget allows an administrator to generate and download reports" thumbnail="images/gadgetReports.png" height="225" adminOnly="true">
         <Require feature="perc_core"/>
         <Require feature="perc_jquery_ui"/>
+        <Require feature="settitle" />
     </ModulePrefs>
     <Content type="html">
         <![CDATA[

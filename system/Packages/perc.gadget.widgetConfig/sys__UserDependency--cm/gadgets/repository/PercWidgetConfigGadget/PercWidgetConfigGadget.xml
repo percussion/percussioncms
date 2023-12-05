@@ -157,6 +157,7 @@
             document.getElementById('perc-widget-config-label').innerText=I18N.message("perc.ui.widget.config.gadget@Uncheck Widgets");
             document.getElementById('perc-widget-config-label-pw').innerText=I18N.message("perc.ui.widget.config.gadget@Percussion Widgets");
             document.getElementById('perc-widget-config-label-cw').innerText=I18N.message("perc.ui.widget.config.gadget@Custom Widgets");
+            gadgets.window.setTitle(I18N.message("perc.ui.widget.config.gadget@Widget Configuration"));
         });
     </script>
     <div id="perc-widget-config-container">

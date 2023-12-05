@@ -40,7 +40,7 @@
         if(site == null)
             site="";
         loadGadget(site, durationType, durationValue);
-    }
+    };
 
     function loadGadget(site, durationType, durationValue) {
         PercActivityService
@@ -60,7 +60,7 @@
     function createActivityTable(data) {
         var percData = [];
         var contentActivity = data.ContentActivity;
-        for(i in contentActivity) 
+        for(var i in contentActivity)
         {
             var activity  = contentActivity[i];
             
@@ -77,9 +77,9 @@
             
             percData.push(row);
         }
-        
-        var headers = ["Name","Total","Changes","New","Updates", "Take Downs", "Pending"];
-        
+
+        var headers = [I18N.message("perc.ui.folderPropsDialog.label@Name"),I18N.message("perc.ui.forms.tracker.gadget@Total"),I18N.message("perc.ui.activity.gadget@Changes"),I18N.message("perc.ui.forms.tracker.gadget@New"),I18N.message("perc.ui.activity.gadget@Updates"), I18N.message("perc.ui.activity.gadget@Take Downs"), I18N.message("perc.ui.workflow.status.gadget@Pending")];
+
         var aoColumns = [
                 { sType: "string"  },
                 { sType: "numeric" },

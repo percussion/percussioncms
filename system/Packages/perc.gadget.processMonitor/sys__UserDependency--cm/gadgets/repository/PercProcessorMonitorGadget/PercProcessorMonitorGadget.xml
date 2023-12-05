@@ -22,6 +22,7 @@
             miniMsg = new gadgets.MiniMessage(__MODULE_ID__);
             loadingMsg = miniMsg.createStaticMessage("Loading...");
             $.renderProcessMonitor(percJQuery,true);
+            gadgets.window.setTitle(I18N.message("perc.ui.gadgets.processmonitor@Process Monitor"));
         });
 
         function _expandNotify(){
