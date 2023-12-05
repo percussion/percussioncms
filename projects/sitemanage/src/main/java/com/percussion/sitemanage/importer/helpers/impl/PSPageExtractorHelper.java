@@ -359,14 +359,14 @@ public class PSPageExtractorHelper extends PSGenericMetadataExtractorHelper {
 		return m_pageCatalogService;
 	}
 
-	public static synchronized void importPageIfNecessary(
+	public void importPageIfNecessary(
 			PSSiteImportCtx context, IPSPageCatalogService pageCatalogService,
 			boolean pageImport) throws PSSiteImportException {
 		// Something in the depths of this is not thread safe. Thus the sync and
 		// static
 		final String STATUS_MESSAGE = "changing page information";
 		if (pageImport) {
-			if (context.isCanceled()) {
+			if (context.isCanceled() || context.getCatalogedPageId() == null) {
 				return;
 			}
 

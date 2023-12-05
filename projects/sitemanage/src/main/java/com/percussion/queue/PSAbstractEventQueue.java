@@ -157,7 +157,7 @@ public abstract class PSAbstractEventQueue<T>
 
 protected PSPair<PSSiteQueue, Integer> getNextQueueEvent(long timeOut) throws InterruptedException
    {
-      timeOut = timeOut < 0 ? 0 : timeOut;
+      timeOut = timeOut <= 0 ? 100 : timeOut;
       PSPair<PSSiteQueue, Integer> eventSet = null;
 
       synchronized (m_queueMonitor)

@@ -1181,7 +1181,7 @@ try {
                 return new PSUnassignedResults();
             }
             PSSiteQueue siteQueue =  getPageImportQueue().getPageIds(site.getSiteId());
-//TODO Fix null pointer here
+
             List<Integer> catalogedIds = siteQueue.getCatalogedIds();
             List<Integer> importedIds = siteQueue.getImportedIds();
             List<Integer> importingIds = siteQueue.getImportingIds();

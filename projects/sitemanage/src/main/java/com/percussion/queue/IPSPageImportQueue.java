@@ -19,6 +19,7 @@ package com.percussion.queue;
 
 import com.percussion.queue.impl.PSSiteQueue;
 import com.percussion.sitemanage.data.PSSite;
+import com.percussion.sitemanage.data.PSSiteImportCtx;
 
 import java.util.List;
 
@@ -44,8 +45,18 @@ public interface IPSPageImportQueue
     /**
      * Gets the page IDs that are cached for the specified site.
      * 
-     * @param siteId the ID of the site, not <code>null</code>.
+     * @param siteContext the siteImportContext that has all details of site, not <code>null</code>.
      * 
+     * @return the page IDs, which are cloned from the cached info, never <code>null</code>.
+     */
+    PSSiteQueue getPageIds(PSSiteImportCtx siteContext);
+
+
+    /**
+     * Gets the page IDs that are cached for the specified site.
+     *
+     * @param siteId the siteId
+     *
      * @return the page IDs, which are cloned from the cached info, never <code>null</code>.
      */
     PSSiteQueue getPageIds(Long siteId);
