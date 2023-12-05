@@ -22,6 +22,7 @@ var currentReportEndpoint;
 $(document).ready(function() {
     displayAvailableReports();
     bindReportEvents();
+    gadgets.window.setTitle(I18N.message("perc.ui.reports.gadget@Reports"));
 });
 
 function displayAvailableReports() {

@@ -5307,6 +5307,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                         <seg>Última actualización</seg>
                     </tuv>
      </tu>
+     <tu tuid="perc.ui.gadgets.processmonitor@Process Monitor">
+                     <prop type="sectionname" xml:lang="en-us">Process Monitor</prop>
+                     <note xml:lang="en-us"></note>
+                     <tuv xml:lang="en-us">
+                         <seg>PROCESS MONITOR</seg>
+                     </tuv>
+                     <tuv xml:lang="es">
+                         <seg>MONITOREO DE PROCESO</seg>
+                     </tuv>
+     </tu>
      <tu tuid="perc.ui.gadgets.welcome@WELCOME">
                      <prop type="sectionname" xml:lang="en-us">WELCOME</prop>
                      <note xml:lang="en-us"></note>
@@ -5336,6 +5346,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                     <tuv xml:lang="es">
                         <seg>Añadir Bookmarklet</seg>
                     </tuv>
+     </tu>
+     <tu tuid="perc.ui.gadgets.sitewideFramework@Sitewide Framework">
+                     <prop type="sectionname" xml:lang="en-us">Sitewide Framework Gadget</prop>
+                     <note xml:lang="en-us"></note>
+                     <tuv xml:lang="en-us">
+                         <seg>SITEWIDE FRAMEWORK</seg>
+                     </tuv>
+                     <tuv xml:lang="es">
+                         <seg>MARCO PARA TODO EL SITIO</seg>
+                     </tuv>
      </tu>
      <tu tuid="perc.ui.gadgets.sitewideFramework@Override Percussion Foundation">
                     <prop type="sectionname" xml:lang="en-us">Sitewide Framework Gadget</prop>
@@ -15123,6 +15143,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 		<seg>Agregar variable</seg>
 	</tuv>
 </tu>
+<tu tuid="perc.ui.global.variables.gadget@Global Variables">
+	<prop type="sectionname" xml:lang="en-us">Global Variables</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>GLOBAL VARIABLES</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>VARIABLES GLOBALES</seg>
+	</tuv>
+</tu>
 <tu tuid="perc.ui.global.variables.gadget@Create Global Variable">
 	<prop type="sectionname" xml:lang="en-us">Click to create global variable</prop>
 	<note xml:lang="en-us"></note>
@@ -15393,6 +15423,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 		<seg>Quiero probar Siteimprove</seg>
 	</tuv>
 </tu>
+<tu tuid="perc.ui.reports.gadget@Reports">
+	<prop type="sectionname" xml:lang="en-us">Reports</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>REPORTS</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>INFORMES</seg>
+	</tuv>
+</tu>
 <tu tuid="perc.ui.reports.gadget@All Files">
 	<prop type="sectionname" xml:lang="en-us">All Files</prop>
 	<note xml:lang="en-us"></note>
@@ -15581,6 +15621,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	</tuv>
 	  <tuv xml:lang="es">
 		<seg>CONFIGURACIÓN DE GOOGLE</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.widget.config.gadget@Widget Configuration">
+	<prop type="sectionname" xml:lang="en-us">Widget Configuration</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>WIDGET CONFIGURATION</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>CONFIGURACIÓN DE WIDGETS</seg>
 	</tuv>
 </tu>
 <tu tuid="perc.ui.widget.config.gadget@Uncheck Widgets">
