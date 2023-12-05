@@ -8,6 +8,7 @@
         <div class="perc-widget-field-entry"><@- type.toLowerCase().replace("_", " ") @></div>
         <div class="perc-widget-field-entry"><div class="perc-widget-field-actions" for="<@- name @>" ><span role="button" tabindex="128" title='<i18n:message key="perc.ui.widget.builder@Edit"/>' class="perc-widget-field-action-edit" style="cursor:pointer"><i18n:message key="perc.ui.widget.builder@Edit"/></span> | <span role="button" tabindex="129" title='<i18n:message key="perc.ui.widget.builder@Delete"/>' class="perc-widget-field-action-delete" style="cursor:pointer"><i18n:message key="perc.ui.widget.builder@Delete"/></span></div>
         </div>
+    </div>
 </script>
 
 <!-- Template for General tab of widget builder -->
