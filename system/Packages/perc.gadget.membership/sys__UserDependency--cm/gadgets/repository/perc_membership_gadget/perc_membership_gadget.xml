@@ -78,6 +78,7 @@
             loadingMsg = miniMsg.createStaticMessage("Loading...");            
             
             $(".perc-membership-gadget").PercMembershipGadget(site,rows);
+            gadgets.window.setTitle(I18N.message("perc.ui.gadgets.membership@MEMBERSHIP"));
         })
         
         function _expandNotify(){

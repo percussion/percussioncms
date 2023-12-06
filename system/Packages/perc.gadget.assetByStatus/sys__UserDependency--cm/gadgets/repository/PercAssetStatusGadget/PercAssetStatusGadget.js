@@ -492,7 +492,7 @@
         {
             var searchConfig = {
                 "assetType": {"name": "All", "value":"@all"},
-                "workflow": (defaultWorkflow != null ? defaultWorkflow : {"name": "Default Workflow", "value":"6"}),
+                "workflow": (defaultWorkflow != null ? defaultWorkflow : {"name": I18N.message("perc.ui.asset.status.gadget@Default Workflow"), "value":"6"}),
                 "state": {"name": I18N.message("perc.ui.workflow.status.gadget@Pending"), "value":"4"},
                 "modifiedby":{"name": "All", "value":"@all"}};
             return searchConfig;
@@ -667,9 +667,9 @@
             var state = searchConfig.state.value;
             var lasteditedby = searchConfig.modifiedby.value;
 
-            var assetName = assetType === "" || assetType === "@all"? "(All Assets)" : WidgetLabelByContentTypeId[assetType]?"(" + WidgetLabelByContentTypeId[assetType] + ")":"";
-            var workflowName = searchConfig.workflow.name === "" || searchConfig.workflow.name === "All" ? "All Workflows" : searchConfig.workflow.name;
-            var stateName = searchConfig.state.name === "" || searchConfig.state.name === "All" ? "All States" : searchConfig.state.name;
+            var assetName = assetType === "" || assetType === "@all"? I18N.message("perc.ui.asset.status.gadget@All Assets") : WidgetLabelByContentTypeId[assetType]?"(" + WidgetLabelByContentTypeId[assetType] + ")":"";
+            var workflowName = searchConfig.workflow.name === "" || searchConfig.workflow.name === "All" ? I18N.message("perc.ui.asset.status.gadget@All Workflows") : searchConfig.workflow.name;
+            var stateName = searchConfig.state.name === "" || searchConfig.state.name === "All" ? I18N.message("perc.ui.asset.status.gadget@All States") : searchConfig.state.name;
 
             var title = "ASSETS BY STATUS: " + workflowName + " - " + stateName + " " + assetName;
             gadgets.window.setTitle(title);
