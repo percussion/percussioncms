@@ -260,10 +260,12 @@ public class PSLinkExtractionHelper extends PSImportHelper
 
                         link.getElement().attr(HREF, pathToTargetItem);
                         link.getElement().attr(PERC_MANAGED_ATTR, "true");
-
-                        catalogPage(context, log, link, conn.getResponseStatusCode(),
-                                resolvedUrlTarget);
+                        //Don't include external links in catalog Pages
+                        if(link.getAbsoluteLink().startsWith(context.getSiteUrl())) {
+                            catalogPage(context, log, link, conn.getResponseStatusCode(),
+                                    resolvedUrlTarget);
                             catalogedCount++;
+                        }
                     }
                     else
                     {
