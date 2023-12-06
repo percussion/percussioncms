@@ -5535,6 +5535,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                         <seg>Todos los estados</seg>
                     </tuv>
      </tu>
+     <tu tuid="perc.ui.gadgets.membership@MEMBERSHIP">
+                     <prop type="sectionname" xml:lang="en-us">Membership Gadget</prop>
+                     <note xml:lang="en-us"></note>
+                     <tuv xml:lang="en-us">
+                         <seg>MEMBERSHIP</seg>
+                     </tuv>
+                     <tuv xml:lang="es">
+                         <seg>AFILIACIÓN</seg>
+                     </tuv>
+     </tu>
      <tu tuid="perc.ui.gadgets.membership@No Accounts Found Long">
                     <prop type="sectionname" xml:lang="en-us">Membership Gadget</prop>
                     <note xml:lang="en-us"></note>
@@ -14979,6 +14989,56 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	</tuv>
 	  <tuv xml:lang="es">
 		<seg>No se encontraron páginas</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@ASSETS BY STATUS">
+	<prop type="sectionname" xml:lang="en-us">ASSETS BY STATUS</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>ASSETS BY STATUS:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>BIENES POR ESTADO:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@Default Workflow">
+	<prop type="sectionname" xml:lang="en-us">Default Workflow</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Default Workflow</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Flujo de trabajo predeterminado</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@All States">
+	<prop type="sectionname" xml:lang="en-us">All States</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>All States</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Todos los Estados</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@All Assets">
+	<prop type="sectionname" xml:lang="en-us">All Assets</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>(All Assets)</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>(Todos los activos)</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@All Workflows">
+	<prop type="sectionname" xml:lang="en-us">All Workflows</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>All Workflows</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>All Workflows</seg>
 	</tuv>
 </tu>
 <tu tuid="perc.ui.asset.status.gadget@No Assets Found">
