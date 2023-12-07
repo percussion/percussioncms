@@ -99,7 +99,7 @@
 <!-- Template for display tab of widget builder -->
 <script type="text/template" id="perc-widget-display-editor-template">
 <csrf:form name="perc-widget-display-tab-form" action="templates.jsp" method="post">
-    <div type="sys_normal">
+    <div type="sys_normal" id="perc-widget-display-html">
 	    <textarea id="widgetHtml" title='<i18n:message key = "perc.ui.publishing.history@DisplayHTML"/>' name="widgetHtml" wrap="soft" class="datadisplay" rows="25" cols="110"><@- widgetHtml @></textarea>
         <br/>
         <script>
@@ -118,6 +118,9 @@
                 autocorrect: true,
                 autofocus: true,
                 screenReaderLabel: 'Widget Source Code Editor'});
+
+            const innerDiv = document.querySelector('#perc-widget-display-html').querySelector('.CodeMirror');
+            $(innerDiv).children().children().attr({'title':'<i18n:message key = "perc.ui.publishing.history@DisplayHTML"/>'});
     </script>
     </div>
 </csrf:form>
