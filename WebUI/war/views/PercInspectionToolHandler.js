@@ -24,6 +24,8 @@
     var splittedRegionContent = [];
     var undoBuffer = [];
     var allNonInspectableElements = [];
+    var tagsArray = ["div","address","article","aside","blockquote","canvas","dd","div","dl","dt","fieldset","figcaption","figure","footer","form","h1","h2","h3","h4","h5","h6","header","hr","li","main","nav","noscript","ol","p","pre","section","table","tfoot","ul","video"];
+
 
     //Ensure node is defined for IE8 browser
     if (!window['Node']) {
@@ -42,7 +44,7 @@
         Node.NOTATION_NODE = 12;
     }
 
-    //This is a global callback intialized in inspection tool click event callback.
+    //This is a global callback initialized in inspection tool click event callback.
     //this callback is called in afterRender method to add inspection tool related events.
     var reactivateInspectionToolCallback = null;
     var gTemplateInspectionRules = null;
@@ -70,7 +72,7 @@
          * bind to .perc-region and .perc-widget
          */
         $("#perc-region-tool-inspector").off("click").on("click",function(event){
-            updateRegionInspecToolButton();
+            updateRegionInspectToolButton();
             event.stopPropagation();
         });
 
@@ -132,7 +134,7 @@
     }
 
     /**
-     * Callback function that handles the after effects of saving the temaplte
+     * Callback function that handles the after effects of saving the template
      */
     function saveCallback()
     {
@@ -146,7 +148,7 @@
     }
 
     /**
-     * Callback function that handles the afer efects of cancelling a template
+     * Callback function that handles the after effects of cancelling a template
      */
     function cancelCallback()
     {
@@ -202,18 +204,34 @@
         applyNonInspectableMarkup();
         applyInspectableMarkup();
     }
+
+
+
+    function checkTags(regWidgets){
+        var returnVal = true;
+        for (var i = 0; i < tagsArray.length; i++) {
+            if ( !regWidgets.eq(0).children().eq(0).is(tagsArray[i])){
+                returnVal = true;
+            }else{
+                returnVal = false;
+                break;
+            }
+        }
+        return returnVal;
+    }
+
     function applyNonInspectableMarkup()
     {
         //Markup empty, multi, non-html, page widget, empty html widget regions
         var iframeJQuery = window.frames[0].jQuery;
         iframeJQuery(".perc-region.perc-region-leaf").filter(function(){
             var regWidgets = iframeJQuery(this).find(".perc-widget");
-            return regWidgets.lenght !==1 || //Select if there are more than 1 widget
+            return regWidgets.length !==1 || //Select if there are more than 1 widget
                 regWidgets.eq(0).attr("widgetdefid") !== 'percRawHtml' || //Select if the widget is not html
                 regWidgets.eq(0).hasClass(".perc-locked") || //Select if the widget is locked
                 regWidgets.eq(0).children().length===0 || //If there are no elements under widget
                 regWidgets.eq(0).find(".html-sample-content").length === 1 || //Select if the widget has sample content
-                (regWidgets.eq(0).children().length === 1 && !regWidgets.eq(0).children().eq(0).is("div"))|| //Select if there is only one element and it is not div
+                (regWidgets.eq(0).children().length === 1 && checkTags(regWidgets) )|| //Select if there is only one element and it is not any of the given in tagsArray
                 (regWidgets.eq(0).children().length === 1 && regWidgets.eq(0).children().eq(0).is("div") && regWidgets.eq(0).children().eq(0).children().length === 0 && regWidgets.eq(0).children().eq(0).outerHeight(true) === 0 && regWidgets.eq(0).children().eq(0).innerHeight() === 0);
         }).addClass("perc-region-itool-unselectable");
     }
@@ -276,13 +294,13 @@
 
     function _initGlobalTemplateInspectionRules()
     {
-        var singleFormElementRule = {"apply": function(inspectableElemenets){
+        var singleFormElementRule = {"apply": function(inspectableElements){
                 var response = {"status":false,
                     //TODO: I18N TEST
                     message:I18N.message("perc.ui.iframe.view@Page Form Based Sorry"),
                     consoleMsg:I18N.message("perc.ui.iframe.view@Page Form Based Info")
                 };
-                if(!(inspectableElemenets.lenght ===1 && inspectableElemenets.eq(0).children().length === 1 && inspectableElemenets.eq(0).children().eq(0).is("form")))
+                if(!(inspectableElements.lenght ===1 && inspectableElements.eq(0).children().length === 1 && inspectableElements.eq(0).children().eq(0).is("form")))
                 {
                     response.status = true;
                     response.message = "";
@@ -292,13 +310,13 @@
             }};
         gTemplateInspectionRules.push(singleFormElementRule);
 
-        var singleTableElementRule = {"apply": function(inspectableElemenets){
+        var singleTableElementRule = {"apply": function(inspectableElements){
                 var response = {"status":false,
                     //TODO: I18N TEST
                     message:I18N.message("perc.ui.iframe.view@Page Table Based Sorry"),
                     consoleMsg:I18N.message("perc.ui.iframe.view@Page Table Based Info")
                 };
-                if(!(inspectableElemenets.length ===1 && inspectableElemenets.eq(0).children().length === 1 && inspectableElemenets.eq(0).children().eq(0).is("table")))
+                if(!(inspectableElements.length ===1 && inspectableElements.eq(0).children().length === 1 && inspectableElements.eq(0).children().eq(0).is("table")))
                 {
                     response.status = true;
                     response.message = "";
@@ -308,13 +326,13 @@
             }};
         gTemplateInspectionRules.push(singleTableElementRule);
 
-        var singleNonDivElementRule = {"apply": function(inspectableElemenets){
+        var singleNonDivElementRule = {"apply": function(inspectableElements){
                 var response = {"status":false,
                     //TODO: I18N TEST
                     message:I18N.message("perc.ui.iframe.view@Page Not Inspectable Sorry"),
                     consoleMsg:I18N.message("perc.ui.iframe.view@Page Not Inspectable Info")
                 };
-                var filteredInspectableElems = inspectableElemenets.filter(function(){
+                var filteredInspectableElems = inspectableElements.filter(function(){
                     var curElem =  window.frames[0].jQuery(this);
                     var isOneNonDivElem = curElem.children().length === 1 && !curElem.children().eq(0).is("div");
                     return !(isOneNonDivElem);
@@ -331,12 +349,12 @@
     }
 
     /**
-     * Detects and logs whether whether the template is not inspectable due to a known issue.
-     * Initializes the global inspection rules if they are not intialized yet.
+     * Detects and logs whether the template is not inspectable due to a known issue.
+     * Initializes the global inspection rules if they are not initialized yet.
      */
     function detectAndLogInspectionInfo()
     {
-        //If the console object is not present, no need for detetction
+        //If the console object is not present, no need for detection
         if(!window.console)
             return;
         if(gTemplateInspectionRules == null)
@@ -344,7 +362,7 @@
             gTemplateInspectionRules = [];
             _initGlobalTemplateInspectionRules();
         }
-        var inspectableElemenets = _iframe.contents().find(".perc-widget[widgetdefid='percRawHtml']:not('.perc-locked')").filter(":only-child").filter(function(){
+        var inspectableElements = _iframe.contents().find(".perc-widget[widgetdefid='percRawHtml']:not('.perc-locked')").filter(":only-child").filter(function(){
             var curElem = window.frames[0].jQuery(this);
             var isSampleContent = curElem.find(".html-sample-content").length === 1;
             return !(isSampleContent);
@@ -352,7 +370,7 @@
 
         for(i=0;i<gTemplateInspectionRules.length;i++)
         {
-            var resp = gTemplateInspectionRules[i].apply(inspectableElemenets);
+            var resp = gTemplateInspectionRules[i].apply(inspectableElements);
             if(!resp.status)
             {
                 console.log(resp.consoleMsg);
@@ -416,7 +434,7 @@
                 }
                 widgetDiv.attr('ownerId', tempContent.ownerid);
                 if (tempContent.isTransparent) {
-                    widgetDiv.addClass('perc-widget-transperant');
+                    widgetDiv.addClass('perc-widget-transparent');
                 }
                 //Remove the height and width attribute of Widget's Region puff
                 widgetDiv.parents('.perc-region-puff:first').removeAttr('style').addClass('perc-new-splitted-region');
@@ -431,10 +449,10 @@
     }
 
     /**
-     * Toggle the state of the Inspect Too button on click
+     * Toggle the state of the Inspect to button on click
      *
      */
-    function updateRegionInspecToolButton(){
+    function updateRegionInspectToolButton(){
         var inspectorButton = $("#perc-region-tool-inspector");
         var msg = I18N.message("perc.ui.iframe.view@Template Unsaved Changes") +
             I18N.message("perc.ui.iframe.view@Click Dont Save");
@@ -503,19 +521,19 @@
         iframeContents.find('.perc-region-puff').addClass('perc-region-puff-gray');
         iframeContents.find('.perc-new-splitted-region').removeClass('perc-region-puff-gray');
 
-        var highligtherDiv = iframeContents.find("#itool-placeholder-highlighter");
-        if (highligtherDiv.length < 1) {
+        var highlighterDiv = iframeContents.find("#itool-placeholder-highlighter");
+        if (highlighterDiv.length < 1) {
             iframeContents.find(".perc-region:first").append("<div id='itool-placeholder-highlighter' style='display:none;position:absolute;z-index:60000;opacity:0.8;filter:alpha(opacity=80);'></div>");
-            highligtherDiv = iframeContents.find("#itool-placeholder-highlighter");
+            highlighterDiv = iframeContents.find("#itool-placeholder-highlighter");
         }
 
-        //Add events to non inspectable events
-        addNonInspectableEvents(iframeContents, iframeJQuery, highligtherDiv);
+        //Add events to non-inspectable events
+        addNonInspectableEvents(iframeContents, iframeJQuery, highlighterDiv);
         //Add events to inspectable elements
-        addInspectableEvents(iframeContents, iframeJQuery, highligtherDiv);
+        addInspectableEvents(iframeContents, iframeJQuery, highlighterDiv);
 
         iframeContents.find(".perc-region:first").addClass('perc-itool-custom-cursor').on('mouseleave',function(){
-            highligtherDiv.hide();
+            highlighterDiv.hide();
             iframeContents.find(".perc-itool-highlighter").removeClass("perc-itool-highlighter");
         });
 
@@ -523,7 +541,7 @@
 
     }
 
-    function addNonInspectableEvents(iframeContents, iframeJQuery, highligtherDiv)
+    function addNonInspectableEvents(iframeContents, iframeJQuery, highlighterDiv)
     {
         //Bind mouseenter and mouseleave event to all non-inspectable elements (including non-html widgets)
         iframeContents.find(".perc-region-itool-unselectable").on("mouseenter", function(){
@@ -533,7 +551,7 @@
             currentElem.css('background-color', 'orange').attr('title', 'You cannot further sub-divide this region.').css('cursor', 'default').css('z-index', '1000000');
             //currentElem.PercTooltip();
 
-            //Higlight region of currently selected element with dashed blue border
+            //highlight region of currently selected element with dashed blue border
             iframeContents.find('.perc-region-puff').addClass('perc-region-puff-gray');
             currentElem.closest('.perc-region-puff').removeClass('perc-region-puff-gray');
 
@@ -543,7 +561,7 @@
                 iframeJQuery(this).attr('tempTitle', titleValue);
                 iframeJQuery(this).removeAttr('title');
             });
-            highligtherDiv.hide();
+            highlighterDiv.hide();
         }).on("mouseleave",function(){
             var currentElem = iframeJQuery(this);
             currentElem.find('div').each(function() {
@@ -556,7 +574,7 @@
 
     }
 
-    function addInspectableEvents(iframeContents, iframeJQuery, highligtherDiv)
+    function addInspectableEvents(iframeContents, iframeJQuery, highlighterDiv)
     {
         //Bind mouseenter and mouseleave event to all children of inspectable elements
         iframeJQuery('body').on('mouseenter', '.perc-itool-selectable-elem, .perc-itool-multi-selectable-highlighter', function(event){
@@ -567,26 +585,26 @@
                 event.shiftKey && iframeJQuery(this).hasClass("perc-itool-multi-selectable");
             if(!isValidElem)
                 return;
-            //Hide the  perc-itool-multi-selectable-highlighter div so that mousenter event can be fired on below div (.perc-itool-selectable-elem)
+            //Hide the  perc-itool-multi-selectable-highlighter div so that mouseenter event can be fired on below div (.perc-itool-selectable-elem)
             if(currentElem.hasClass('perc-itool-multi-selectable-highlighter')) {
                 currentElem.hide();
             }
             iframeContents.find(".perc-itool-highlighter").removeClass("perc-itool-highlighter");
-            highligtherDiv.show();
+            highlighterDiv.show();
 
-            //Higlight region of currently selected element with dashed blue border
+            //highlight region of currently selected element with dashed blue border
             iframeContents.find('.perc-region-puff').addClass('perc-region-puff-gray');
             currentElem.closest('.perc-region-puff').removeClass('perc-region-puff-gray');
 
-            highligtherDiv.offset({
+            highlighterDiv.offset({
                 "top": currentElem.offset().top,
                 "left": currentElem.offset().left
             });
-            highligtherDiv.height(currentElem.innerHeight()).width(currentElem.innerWidth());
+            highlighterDiv.height(currentElem.innerHeight()).width(currentElem.innerWidth());
 
             currentElem.addClass("perc-itool-highlighter");
 
-            highligtherDiv.off("click").on("click",function(event){
+            highlighterDiv.off("click").on("click",function(event){
                 event.preventDefault();
                 itoolSelectionHandler(event);
             });
@@ -599,7 +617,7 @@
         });
     }
     /**
-     * Utility method called when eleement is selected in inspect mode
+     * Utility method called when element is selected in inspect mode
      */
     function itoolSelectionHandler(){
         var iframeContents = _iframe.contents();
@@ -633,7 +651,7 @@
     }
 
     /**
-     *  Find all the siblings of selected element and put an aboslute Div on each of them with gray border.
+     *  Find all the siblings of selected element and put an absolute Div on each of them with gray border.
      */
     function highlightSiblings(curSelectedElem) {
         var iframeContents = _iframe.contents();
@@ -689,7 +707,7 @@
     }
 
     /**
-     *  Utility method to updated the DOM on mouser over to preview the Stacked or Sibe by Side action
+     *  Utility method to update the DOM on mouser over to preview the Stacked or Side by Side action
      *  @param (className) : this can be 'perc-row'(if user selects Stacked operation) 'perc-col' (if user selects Side by Side operation)
      *  @callback : callback function.
      */
@@ -751,7 +769,7 @@
 
         }
 
-        // If there is only one selected element,turn its border into blue. If there are mulitple selected element keep their border green but turn its wrapper div border to blue
+        // If there is only one selected element,turn its border into blue. If there are multiple selected element keep their border green but turn its wrapper div border to blue
         if(selElems.length === 1) {
             iframeJQuery('.perc-itool-selected-green-border').css('border-color', '#00afea');
         }
@@ -765,11 +783,11 @@
         }
     }
     /**
-     *  Utility method to updated the DOM on mouser over to preview the Stacked or Sibe by Side action
+     *  Utility method to update the DOM on mouser over to preview the Stacked or Side by Side action
      *  @param (className) : this can be 'perc-row'(if user selects Stacked operation) 'perc-col' (if user selects Side by Side operation)
      *  @callback : callback function.
      */
-    function itoolPreviewMouseOut(className, callack) {
+    function itoolPreviewMouseOut(className, callback) {
         var iframeContents = _iframe.contents();
         var iframeJQuery = window.frames[0].jQuery;
         var selElems = iframeJQuery(".perc-itool-selected-elem");
@@ -792,18 +810,18 @@
         });
     }
 
-    /** Utlitiy method to higlight the siblings of selected Div via the the absolute positioned Div with Blue border.
-     *  param @highligheterDiv = id of absolute positioned div
+    /** Utility method to highlight the siblings of selected Div via the absolute positioned Div with Blue border.
+     *  param @highlighterDiv = id of absolute positioned div
      *  param @ selectedElement = id of an element around which blue border need to be shown
      */
 
-    function _divHighlighter(highligheterDiv, selectedElement) {
-        highligheterDiv.show();
-        highligheterDiv.offset({
+    function _divHighlighter(highlighterDiv, selectedElement) {
+        highlighterDiv.show();
+        highlighterDiv.offset({
             "top": selectedElement.offset().top,
             "left": selectedElement.offset().left
         });
-        highligheterDiv.height(selectedElement.innerHeight() - 10).width(selectedElement.innerWidth() - 10);
+        highlighterDiv.height(selectedElement.innerHeight() - 10).width(selectedElement.innerWidth() - 10);
     }
 
     /**
@@ -904,8 +922,8 @@
         _guardSplitRegions(false);
     }
 
-    // The gurad function will make sure that before we execute split functionality- we have identified the siblings
-    // of selected element i.e we are replicating the mouserOver functionality.
+    // The guard function will make sure that before we execute split functionality- we have identified the siblings
+    // of selected element i.e. we are replicating the mouserOver functionality.
     // This is especially done for the autotest where mouseover can't be fire.
     function _guardSplitRegions(flag){
         var iframeJQuery = window.frames[0].jQuery;
@@ -928,8 +946,8 @@
 
     function _splitRegions(isHorizontal){
         updateInspectToolMenu(false);
-        var currTemplObj = jQuery.extend(true, {}, _model.getTemplateObj());
-        undoBuffer.push(currTemplObj);
+        var currTempObj = jQuery.extend(true, {}, _model.getTemplateObj());
+        undoBuffer.push(currTempObj);
         clearItoolMarkup();
         var regDirection = isHorizontal ? 'south' : 'left';
         var iframeJQuery = window.frames[0].jQuery;
@@ -937,7 +955,7 @@
         var selectedEle = iframeJQuery('.perc-itool-region-puff-self');
         var parentRegionPuff = selectedEle.parents('.perc-region-puff:first').attr('id');
         var oriWidgetId = selectedEle.parents(".perc-widget[widgetdefid='percRawHtml']").attr('widgetid');
-        var isTransparent = selectedEle.parents(".perc-widget[widgetdefid='percRawHtml']").hasClass('perc-widget-transperant');
+        var isTransparent = selectedEle.parents(".perc-widget[widgetdefid='percRawHtml']").hasClass('perc-widget-transparent');
         var widOwnerId = selectedEle.parents('.perc-widget-puff:first').attr('ownerId');
         iframeJQuery.fn.reverse = [].reverse;
         var selfRegion = iframeJQuery('.perc-self-wrapper');

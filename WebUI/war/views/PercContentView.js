@@ -227,7 +227,7 @@
                     if(widgetid in specialWidgets.LockedWidgets)
                         $(this).addClass("perc-locked");
                     if(widgetid in specialWidgets.TransperantWidgets)
-                        $(this).addClass("perc-widget-transperant");
+                        $(this).addClass("perc-widget-transparent");
                 });
             return root.contents().find('.perc-widget');
         }
