@@ -1468,6 +1468,12 @@
             <version>8.1.4-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.sejda.imageio</groupId>
+            <artifactId>webp-imageio</artifactId>
+            <version>0.1.6</version>
+        </dependency>
+
     </dependencies>
     <distributionManagement>
         <snapshotRepository>
