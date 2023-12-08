@@ -96,7 +96,7 @@
                     else{
                         siteName = result;
                     }
-                    var gadgetTitle = siteName == "@all" ? "All Sites" : siteName; 
+                    var gadgetTitle = siteName == "@all" ? I18N.message("perc.ui.blogs.Gadget@All Sites") : siteName;
                     gadgetTitle = "BLOGS:  (" + gadgetTitle + ")";
                     gadgets.window.setTitle(gadgetTitle);             
                     

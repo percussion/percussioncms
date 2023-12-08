@@ -109,7 +109,7 @@
                 else{
                     site = result;
                 }
-                var site_title = site == "" ? "All Sites" : site; 
+                var site_title = site == "" ? I18N.message("perc.ui.blogs.Gadget@All Sites") : site;
                 var title = I18N.message("perc.ui.activity.gadget@Activity During Last") + " " + durationValue + " " + durationType + " (" + site_title + ")";
                 
                 gadgets.window.setTitle(title); 
