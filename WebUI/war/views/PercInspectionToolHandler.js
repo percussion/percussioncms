@@ -244,7 +244,7 @@
                 return this.nodeType === Node.TEXT_NODE && iframeJQuery(this).text().trim().length > 0;
             }).wrap('<span class="perc-itool-text-node-wrapper"/>');
 
-            if(iframeJQuery(this).children().lenght === 1) //Drill into
+            if(iframeJQuery(this).children().length === 1) //Drill into
             {
                 var currentElem = iframeJQuery(this);
                 while (currentElem.children().length === 1 && currentElem.children().eq(0).is("div"))
@@ -300,7 +300,7 @@
                     message:I18N.message("perc.ui.iframe.view@Page Form Based Sorry"),
                     consoleMsg:I18N.message("perc.ui.iframe.view@Page Form Based Info")
                 };
-                if(!(inspectableElements.lenght ===1 && inspectableElements.eq(0).children().length === 1 && inspectableElements.eq(0).children().eq(0).is("form")))
+                if(!(inspectableElements.length ===1 && inspectableElements.eq(0).children().length === 1 && inspectableElements.eq(0).children().eq(0).is("form")))
                 {
                     response.status = true;
                     response.message = "";
