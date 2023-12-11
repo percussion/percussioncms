@@ -1108,7 +1108,15 @@
 				<seg>Error</seg>
             </tuv>
         </tu>
-
+        <tu tuid="perc.ui.blogs.Gadget@All Sites">
+			<note xml:lang="en-us">All Sites</note>
+			<tuv xml:lang="en-us">
+				<seg>All Sites</seg>
+			</tuv>
+			  <tuv xml:lang="es">
+				<seg>Todos los sitios</seg>
+			</tuv>
+        </tu>
         <tu tuid="perc.ui.blogs.Gadget.title@text">
             <note xml:lang="en-us">Title of the column.</note>
             <tuv xml:lang="en-us">
@@ -5047,6 +5055,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Filtros</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.gadgets.seo@SEO AUDIT">
+        <prop type="sectionname" xml:lang="en-us">SEO AUDIT</prop>
+        <note xml:lang="en-us"></note>
+        <tuv xml:lang="en-us">
+            <seg>SEO AUDIT</seg>
+        </tuv>
+          <tuv xml:lang="es">
+            <seg>AUDITORÍA SEO</seg>
+        </tuv>
+     </tu>
    <tu tuid="perc.ui.gadgets.seo@Default Title">
 	    <prop type="sectionname" xml:lang="en-us">SEO</prop>
 	    <note xml:lang="en-us"></note>
@@ -15841,6 +15859,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	</tuv>
 	  <tuv xml:lang="es">
 		<seg>Derribar</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.iframe.gadget@EXTERNAL APPLICATION">
+	<prop type="sectionname" xml:lang="en-us">EXTERNAL APPLICATION</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>EXTERNAL APPLICATION</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>APLICACIÓN EXTERNA</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.iframe.gadget@Iframes Not Supported">
+	<prop type="sectionname" xml:lang="en-us">Iframes Not Supported</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Your browser doesn't support iframes.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Su navegador no soporta iframes.</seg>
 	</tuv>
 </tu>
     </body>

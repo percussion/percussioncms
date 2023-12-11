@@ -113,8 +113,8 @@
                         state = $.isArray(enumVals.entries) ? enumVals.entries[0].value : enumVals.entries.value;
                     }
 
-                    var site_title = site == null ? "All Sites" : site;
-                    var title = "SEO AUDIT: " + workflow + " - " + state + " (" + site_title + ")";
+                    var site_title = site == null ? I18N.message("perc.ui.blogs.Gadget@All Sites") : site;
+                    var title = I18N.message("perc.ui.gadgets.seo@SEO AUDIT") + ": " + workflow + " - " + state + " (" + site_title + ")";
                     gadgets.window.setTitle(title);
 
                     var rows = parseInt(prefs.getString("zrows"));
