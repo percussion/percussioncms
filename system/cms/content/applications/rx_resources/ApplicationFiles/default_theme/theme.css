@@ -251,7 +251,7 @@ margin-right: 15px;
 
 .perc-list-element {
 
-    list-style-image: url("images/bullet.png");
+    list-style-image: url("/rx_resources/default_theme/images/bullet.png");
 }
 
 /*Root class for all image auto list widgets*/
@@ -647,7 +647,7 @@ textarea.form-error-msg {
 
 ul.perc-list-main-container  li.perc-tag-element, li.perc-archive-year, ul.perc-archive-flat li.perc-archive-month {
 
-    list-style-image: url("images/bullet.png");
+    list-style-image: url("/rx_resources/default_theme/images/bullet.png");
 }
 
 ul.perc-comma-separated-main-container li.perc-tag-element, ul.perc-archive-hierarchical li.perc-archive-month {
@@ -1635,7 +1635,7 @@ margin-right: 15px;
 
 .perc-list-element {
 
-    list-style-image: url("images/bullet.png");
+    list-style-image: url("/rx_resources/default_theme/images/bullet.png");
 }
 
 /*Root class for all image auto list widgets*/
@@ -2031,7 +2031,7 @@ textarea.form-error-msg {
 
 ul.perc-list-main-container  li.perc-tag-element, li.perc-archive-year, ul.perc-archive-flat li.perc-archive-month {
 
-    list-style-image: url("images/bullet.png");
+    list-style-image: url("/rx_resources/default_theme/images/bullet.png");
 }
 
 ul.perc-comma-separated-main-container li.perc-tag-element, ul.perc-archive-hierarchical li.perc-archive-month {
