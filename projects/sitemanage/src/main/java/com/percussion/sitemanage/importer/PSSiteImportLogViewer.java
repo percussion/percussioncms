@@ -139,7 +139,7 @@ public class PSSiteImportLogViewer extends HttpServlet  {
                 }
 
                 // now write out each page's log
-                if (!pageLogIds.isEmpty()) {
+                if (pageLogIds!=null && !pageLogIds.isEmpty()) {
                     for (Long pageLogId : pageLogIds) {
                         PSImportLogEntry pageLog = logDao.findLogEntryById(pageLogId);
                         if (pageLog != null) {
