@@ -137,16 +137,19 @@ public class PSHTMLHeaderImporter
                 String fullThemePath = "";
                 String convertedLink = "";
 
-                // only append ".css" for stylesheets
-                if (isValidCssLinkElement(link))
-                {
-                    fullThemePath = urlConverter.getFileSystemPathForCss(remoteUrl);
-                    convertedLink = urlConverter.convertToThemeLinkForCss(remoteUrl);
-                }
-                else
-                {
-					fullThemePath = urlConverter.getFileSystemPath(remoteUrl);
-					convertedLink = urlConverter.convertToThemeLink(remoteUrl);
+                //While Importing external sites/Templates, don't convert external links
+                if(!remoteUrl.startsWith(this.siteUrl)){
+                    fullThemePath = remoteUrl;
+                    convertedLink = remoteUrl;
+                }else {
+                    // only append ".css" for stylesheets
+                    if (isValidCssLinkElement(link)) {
+                        fullThemePath = urlConverter.getFileSystemPathForCss(remoteUrl);
+                        convertedLink = urlConverter.convertToThemeLinkForCss(remoteUrl);
+                    } else {
+                        fullThemePath = urlConverter.getFileSystemPath(remoteUrl);
+                        convertedLink = urlConverter.convertToThemeLink(remoteUrl);
+                    }
                 }
                 // Add the link path into the map
                 linkPaths.put(remoteUrl, fullThemePath);
