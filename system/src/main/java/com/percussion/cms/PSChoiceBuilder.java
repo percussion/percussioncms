@@ -209,7 +209,6 @@ public class PSChoiceBuilder
             break;
 
          default:
-            log.info("No case is called");
             break;
       }
 
@@ -909,7 +908,6 @@ public class PSChoiceBuilder
                   break;
 
                default:
-                  log.info("No case called.");
                   break;
             }
          }
@@ -1010,7 +1008,6 @@ public class PSChoiceBuilder
                break;
 
             default:
-               log.info("None of the case is called.");
                break;
 
          }
@@ -1065,7 +1062,6 @@ public class PSChoiceBuilder
             break;
 
          default:
-            log.info("Cases not used.");
             break;
       }
 
@@ -1092,7 +1088,6 @@ public class PSChoiceBuilder
                break;
 
             default:
-               log.info("No Case used.");
                break;
          }
       }
