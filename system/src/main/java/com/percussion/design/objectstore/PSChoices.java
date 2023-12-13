@@ -23,7 +23,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -362,7 +361,7 @@ public class PSChoices extends PSComponent
       catch (IllegalArgumentException e)
       {
          throw new IllegalArgumentException(e.getLocalizedMessage());
-      };
+      }
 
       setDefaultSelected(c.m_defaultSelected);
       m_global = c.getGlobal();
@@ -424,8 +423,8 @@ public class PSChoices extends PSComponent
       int nextFlags = PSXmlTreeWalker.GET_NEXT_ALLOW_SIBLINGS |
          PSXmlTreeWalker.GET_NEXT_RESET_CURRENT;
 
-      String data = null;
-      Element node = null;
+      String data;
+      Element node;
       try
       {
          PSXmlTreeWalker tree = new PSXmlTreeWalker(sourceNode);
@@ -490,7 +489,7 @@ public class PSChoices extends PSComponent
             String key = null;
             node = tree.getNextElement(CHOICE_LIST_KEY_ELEM, firstFlags);
             if (node != null)
-               key = tree.getElementData(node);
+               key = PSXmlTreeWalker.getElementData(node);
 
             try
             {

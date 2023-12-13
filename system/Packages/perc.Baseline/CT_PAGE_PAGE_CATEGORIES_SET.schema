@@ -31,5 +31,10 @@
          <name>CONTENTID</name>
          <name>REVISIONID</name>
       </index>
+      <index action="c" isUnique="y" name="IX_CT_PAGE_PAGE_CAT_ID_TREE">
+         <name>CONTENTID</name>
+         <name>REVISIONID</name>
+         <name>PAGE_CATEGORIES_TREE</name>
+      </index>
    </indexdefinitions>
 </table>
