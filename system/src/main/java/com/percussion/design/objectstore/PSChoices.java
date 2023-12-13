@@ -649,6 +649,7 @@ public class PSChoices extends PSComponent
    }
 
    // see IPSComponent
+   @Override
    public void validate(IPSValidationContext context)
       throws PSSystemValidationException
    {
