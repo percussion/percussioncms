@@ -32,10 +32,16 @@ import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.rx.design.PSDesignModelUtils;
 import com.percussion.security.PSSecurityProvider;
 import com.percussion.server.PSRequest;
+import com.percussion.services.contentchange.IPSContentChangeService;
+import com.percussion.services.contentchange.data.PSContentChangeEvent;
+import com.percussion.services.contentchange.data.PSContentChangeType;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
 import com.percussion.services.legacy.IPSCmsObjectMgr;
 import com.percussion.services.legacy.IPSItemEntry;
+import com.percussion.services.sitemgr.IPSSite;
+import com.percussion.services.sitemgr.IPSSiteManager;
+import com.percussion.services.sitemgr.PSSiteManagerLocator;
 import com.percussion.services.workflow.data.PSState;
 import com.percussion.services.workflow.data.PSTransition;
 import com.percussion.services.workflow.data.PSTransitionRole;
@@ -107,6 +113,9 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
     private final IPSCmsObjectMgr cmsObjectMgr;
     
     private final IPSMetadataService metadataService;
+
+    @Autowired
+    IPSContentChangeService changeService;
     
     /**
      * Create an instance of the workflow helper.
@@ -743,6 +752,7 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
 	        	try{
 		            PSLegacyGuid guid = (PSLegacyGuid)idMapper.getGuid(tid);
 		            transitionItem(guid.getContentId(), WF_TAKE_DOWN_TRANSITION, null, null);
+                    addToIncrementalQueue(guid.getContentId());
 	        	}catch(Exception e){
 	        		log.error("An error occurred while transitioning item id: {} to Pending. Error: {}", tid,
                             PSExceptionUtils.getMessageForLog(e));
@@ -751,6 +761,30 @@ public class PSWorkflowHelper implements IPSWorkflowHelper
 	        }
 		
 	}
+
+    /**
+     * Adding Archived Asset to Incremental Queue of all the sites.
+     * @param assetId
+     */
+    private void addToIncrementalQueue(int assetId){
+        IPSSiteManager m_siteMgr = PSSiteManagerLocator.getSiteManager();
+        List<IPSSite> sites = m_siteMgr.findAllSites();
+        if(sites != null) {
+            for (IPSSite site:sites) {
+                try{
+                    PSContentChangeEvent changeEvent = new PSContentChangeEvent();
+                    changeEvent.setChangeType(PSContentChangeType.PENDING_LIVE);
+                    changeEvent.setContentId(assetId);
+                    changeEvent.setSiteId(site.getSiteId());
+                    changeService.contentChanged(changeEvent);
+                } catch (IPSGenericDao.SaveException e) {
+                    log.error("An error occurred while adding asset to incremental queue item id: {}. Error: {}", assetId,
+                            PSExceptionUtils.getMessageForLog(e));
+                    log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+                }
+            }
+        }
+    }
 
 	@Override
 	public void transitionToReview(Set<String> ids) throws PSValidationException {
