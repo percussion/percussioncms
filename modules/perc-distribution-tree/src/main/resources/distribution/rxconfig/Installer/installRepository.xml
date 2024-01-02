@@ -49,6 +49,14 @@
                        silenceerrors="false"
         />
 
+        <PSExecSQLRemoveDupes rootDir="${install.dir}"
+                       printExceptionStackTrace="true"
+                       qualifyingTableName="CT_PAGE_PAGE_CATEGORIES_SET"
+                       columns="CONTENTID, REVISIONID, PAGE_CATEGORIES_TREE"
+                       failonerror="false"
+                       silenceerrors="false"
+        />
+
         <PSExecSQLStmt rootDir="${install.dir}"
                        printExceptionStackTrace="true"
                        qualifyTableNames="PSX_CONTENTCHANGEEVENT,RXSITES"
