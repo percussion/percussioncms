@@ -9,6 +9,7 @@ import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.jdbc.PSJdbcUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.tools.ant.BuildException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,8 +27,13 @@ public class PSExecSQLRemoveDupes extends PSExecSQLStmt{
                 + "rxconfig/Installer/rxrepository.properties";
 
         File f = new File(propFile);
-        if (!(f.exists() && f.isFile()))
+        if (!(f.exists() && f.isFile())) {
+            log.error("Unable to connect to the repository datasource file: {}", propFile);
+            if(isFailonerror() && !isSilenceErrors()){
+                throw new BuildException("Unable to connect to the repository datasource file:" + propFile);
+            }
             return;
+        }
 
         try (FileInputStream in = new FileInputStream(f)) {
             Properties props = new Properties();
@@ -89,7 +95,20 @@ public class PSExecSQLRemoveDupes extends PSExecSQLStmt{
                             }
                             queryDelete.append(meta.getColumnName(i));
                             queryDelete.append(" = ");
-                            queryDelete.append(rs.getObject(i));
+                            switch(meta.getColumnType(i)){
+                                case Types.NCHAR:
+                                case Types.CLOB:
+                                case Types.CHAR:
+                                case Types.LONGNVARCHAR:
+                                case Types.NVARCHAR:
+                                case Types.VARCHAR:
+                                case Types.NCLOB:
+                                    queryDelete.append("'").append(rs.getObject(i)).append("'");
+                                    break;
+                                default:
+                                    queryDelete.append(rs.getObject(i));
+                            }
+
                             pstmtInsert.setObject(i, rs.getObject(i));
                         }
                         PSLogger.logInfo("Executing delete statement : " + queryDelete);

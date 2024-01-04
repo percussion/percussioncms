@@ -26,14 +26,17 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+import org.springframework.util.Assert;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /***
  * Test the ant task
@@ -43,32 +46,72 @@ public class TestExecSQLRemoveDupes {
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-    Connection conn;
+    private String repoRoot;
+    private String oldRepoRoot;
+    private String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+    private String connectionURL = "jdbc:derby:CMDB;create=true;user=CMDB;password=demo";
+
+
+
     @Before
     public void setup() throws Exception{
-        System.setProperty("derby.system.home", "C:/derby");
-        String driver = "org.apache.derby.jdbc.EmbeddedDriver";
-        String connectionURL = "jdbc:derby:memory:testDB;create=true;user=root;password=root";
+        temporaryFolder.create();
+        repoRoot = temporaryFolder.getRoot().getAbsolutePath() + File.separator + "Repository";
+        oldRepoRoot = System.getProperty("derby.system.home");
+        System.setProperty("derby.system.home",repoRoot );
+
         Class.forName(driver);
-        conn = DriverManager.getConnection(connectionURL);
-        Statement statement = conn.createStatement();
-        String sql = "CREATE TABLE CT_PAGE_PAGE_CATEGORIES_SET (CONTENTID int , REVISIONID int , SORTRANK int, PAGE_CATEGORIES_TREE varchar(512))";
-        statement.execute(sql);
-        sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10016, 1, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
-        statement.execute(sql);
-        sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10016, 2, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
-        statement.execute(sql);
-        sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10016, 3, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
-        statement.execute(sql);
-        sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10016, 4, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
-        statement.execute(sql);
-        sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10016, 1, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
-        statement.execute(sql);
+        try(Connection conn = DriverManager.getConnection(connectionURL)) {
+            Statement statement = conn.createStatement();
+            String sql = "CREATE TABLE CT_PAGE_PAGE_CATEGORIES_SET (CONTENTID int , REVISIONID int , SORTRANK int, PAGE_CATEGORIES_TREE varchar(512))";
+            statement.execute(sql);
+            sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10016, 1, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
+            statement.execute(sql);
+            sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10016, 2, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
+            statement.execute(sql);
+            sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10016, 3, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
+            statement.execute(sql);
+            sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10016, 4, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
+            statement.execute(sql);
+            sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10016, 1, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
+            statement.execute(sql);
+        }
+
+        Files.createDirectories(temporaryFolder.getRoot().toPath().resolve("rxconfig/Installer/"));
+        PSTaskTestUtils.copy(PSTaskTestUtils.getRepositoryFileFromResources(),
+                temporaryFolder.getRoot().toPath().resolve("rxconfig/Installer/rxrepository.properties"));
     }
 
     @After
     public void after() throws Exception{
-        conn.close();
+
+        //Restore system property if it had been set to not interfere with other tests
+        if(oldRepoRoot!=null) {
+            System.setProperty("derby.system.home", oldRepoRoot);
+        }
+    }
+
+    @Test
+    public void testTask() throws SQLException, ClassNotFoundException {
+
+        PSExecSQLRemoveDupes task = new PSExecSQLRemoveDupes();
+
+        task.setQualifyingTableName("CT_PAGE_PAGE_CATEGORIES_SET");
+        task.setColumns("CONTENTID,REVISIONID,PAGE_CATEGORIES_TREE");
+        task.setRootDir(temporaryFolder.getRoot().getAbsolutePath() + File.separator);
+        task.execute();
+
+        //Now make sure that the data was updated correctly
+        Class.forName(driver);
+        try(Connection conn = DriverManager.getConnection(connectionURL)) {
+
+           // TODO: Robin - Add assertions to check if expected count and results are there
+        }
+    }
+
+    @Test
+    public void testMultiLevelDupes(){
+        //TODO: Robin - Insert multi level dupes - run task  - verify expected count and data is there
     }
 
 }
