@@ -79,6 +79,7 @@ public class PSChoiceBuilder
 {
 
    private static final Logger log = LogManager.getLogger(PSChoiceBuilder.class);
+   static final String PARAMETER_NOT_NULL = "parameters cannot be null";
 
    /**
     * Convenience method that calls {@link #addChoiceElement(Document, Element,
@@ -189,7 +190,7 @@ public class PSChoiceBuilder
             break;
 
          case PSChoices.TYPE_LOCAL:
-            result = addLocalChoiceElement(doc, parent, choices, data, isNewDoc,
+            result = addLocalChoiceElement(doc, parent, choices, isNewDoc,
                ignoreNullEntry, filter);
             break;
 
@@ -201,14 +202,18 @@ public class PSChoiceBuilder
             result = addInternalLookupChoiceElement(doc, parent, choices, data,
                isNewDoc, ignoreNullEntry, filter);
             break;
+
          case PSChoices.TYPE_TABLE_INFO:
             result = addTableChoiceElement(doc, parent, choices, data,
                   isNewDoc, ignoreNullEntry, filter);
+            break;
+
+         default:
+            break;
       }
 
       // fix the dynamic workflow
       setDynamicWorkflows(parent, data.getRequest());
-
       return result;
    }
 
@@ -218,7 +223,7 @@ public class PSChoiceBuilder
          throws PSDataExtractionException
    {
       if (doc == null || parent == null || choices == null || data == null)
-         throw new IllegalArgumentException("parameters cannot be null");
+         throw new IllegalArgumentException(PARAMETER_NOT_NULL);
       boolean addedElem = false;
 
       if (choices.getType() != PSChoices.TYPE_TABLE_INFO
@@ -228,7 +233,7 @@ public class PSChoiceBuilder
 
       try
       {
-         addedElem = addChoiceElement(doc, parent, entries, data, choices
+         addedElem = addChoiceElement(doc, parent, entries, choices
                .getNullEntry(), choices.getDefaultSelected(), choices
                .getSortOrder(), isNewDoc, ignoreNullEntry, filter);
       }
@@ -398,7 +403,7 @@ public class PSChoiceBuilder
    {
      if (doc == null || parent == null ||
           choices == null || execData == null)
-         throw new IllegalArgumentException("parameters cannot be null");
+         throw new IllegalArgumentException(PARAMETER_NOT_NULL);
 
       boolean addedElem = false;
       if (choices.getType() != PSChoices.TYPE_GLOBAL)
@@ -410,7 +415,7 @@ public class PSChoiceBuilder
          Iterator entries = getGlobalLookupEntries(Integer.toString(
             choices.getGlobal()), request); 
 
-         addedElem = addChoiceElement(doc, parent, entries, execData,
+         addedElem = addChoiceElement(doc, parent, entries,
             choices.getNullEntry(), choices.getDefaultSelected(),
             choices.getSortOrder(), isNewDoc, ignoreNullEntry, filter);
       }
@@ -419,8 +424,7 @@ public class PSChoiceBuilder
          if (e instanceof PSDataExtractionException)
          {
             e.fillInStackTrace();
-            PSDataExtractionException de = (PSDataExtractionException)e; 
-            throw de;
+            throw (PSDataExtractionException)e;
          }
          else if(e.getLanguageString() == null)
          {
@@ -433,7 +437,6 @@ public class PSChoiceBuilder
                e.getErrorCode(), e.getErrorArguments());
          }
       }
-
       return addedElem;
    }
 
@@ -458,17 +461,17 @@ public class PSChoiceBuilder
     *    otherwise.
     */
    private static boolean addLocalChoiceElement(Document doc, Element parent,
-      PSChoices choices, PSExecutionData data,
+      PSChoices choices,
         boolean isNewDoc, boolean ignoreNullEntry, PSChoiceFilter filter)
       throws PSDataExtractionException
    {
       if (doc == null || parent == null || choices == null)
-         throw new IllegalArgumentException("parameters cannot be null");
+         throw new IllegalArgumentException(PARAMETER_NOT_NULL);
 
       if (choices.getType() != PSChoices.TYPE_LOCAL)
          return false;
 
-      return addChoiceElement(doc, parent, choices.getLocal(), data,
+      return addChoiceElement(doc, parent, choices.getLocal(),
          choices.getNullEntry(), choices.getDefaultSelected(),
          choices.getSortOrder(), isNewDoc, ignoreNullEntry, filter);
    }
@@ -498,7 +501,7 @@ public class PSChoiceBuilder
    {
       if (doc == null || parent == null ||
           choices == null || execData == null)
-         throw new IllegalArgumentException("parameters cannot be null");
+         throw new IllegalArgumentException(PARAMETER_NOT_NULL);
 
       if (choices.getType() != PSChoices.TYPE_LOOKUP)
          return false;
@@ -545,20 +548,14 @@ public class PSChoiceBuilder
    {
       if (doc == null || parent == null ||
           choices == null || execData == null)
-         throw new IllegalArgumentException("parameters cannot be null");
+         throw new IllegalArgumentException(PARAMETER_NOT_NULL);
 
       if (choices.getType() != PSChoices.TYPE_INTERNAL_LOOKUP)
          return false;
 
       boolean addedElem = false;
       URL url = getLookupUrl(choices, execData, false, true);
-
       PSRequest request = execData.getRequest();
-      String lang =
-       (String)request.getUserSession().getPrivateObject(
-       PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG);
-     if (lang == null)
-         lang = PSI18nUtils.DEFAULT_LANG;
       PSRequestContext requestContext = new PSRequestContext(request);
       try
       {
@@ -570,7 +567,6 @@ public class PSChoiceBuilder
          PSInternalRequest irequest =
             PSServer.getInternalRequest(
               url.getPath(), request,paramMap,false);
-              
 
          ArrayList entries = new ArrayList();
          if(null == irequest)
@@ -581,7 +577,6 @@ public class PSChoiceBuilder
             entries.add(
                new PSEntry("invalid",
                   new PSDisplayText("Error! Invalid Choice Resource")));
-
          }
          else
          {
@@ -592,19 +587,15 @@ public class PSChoiceBuilder
                   IPSServerErrors.UNKNOWN_PROCESSING_ERROR,
                   request.getUserSessionId());
 
-
             NodeList nodes = resultDoc.getElementsByTagName(
                PSEntry.XML_NODE_NAME);
             for (int i=0; i<nodes.getLength(); i++)
                entries.add(
                   new PSEntry((Element) nodes.item(i), null, null));
-
          }
-         addedElem = addChoiceElement(doc, parent, entries.iterator(), execData,
+         addedElem = addChoiceElement(doc, parent, entries.iterator(),
             choices.getNullEntry(), choices.getDefaultSelected(),
             choices.getSortOrder(), isNewDoc, ignoreNullEntry, filter);
-
-
          return addedElem;
       }
       catch (PSException e)
@@ -616,7 +607,6 @@ public class PSChoiceBuilder
             throw new PSDataExtractionException(e.getLanguageString(),
                               e.getErrorCode(), e.getErrorArguments());
       }
-
    }
 
    /**
@@ -649,7 +639,6 @@ public class PSChoiceBuilder
                   param.getValue());
             params.put(param.getName(), extractor.extract(execData));
          }
-
          return params;
       }
       catch (IllegalArgumentException ex)
@@ -657,7 +646,6 @@ public class PSChoiceBuilder
          // indicates we did not fully implement a new replacement value
          throw new IllegalArgumentException(ex.getLocalizedMessage());
       }
-
    }
 
    /**
@@ -738,7 +726,6 @@ public class PSChoiceBuilder
                paramsIter = params.entrySet().iterator();
             }
 
-
             String href = urlRequest.getHref();
             // if we are going to make an internal request, try to make the
             // request absolute from the rx root rather than relative, since the
@@ -751,13 +738,11 @@ public class PSChoiceBuilder
                href = PSServer.getRequestRoot() + "/" +
                   href.substring(RELATIVE_URL_PREFIX.length(), href.length());
             }
-
             url = PSUrlUtils.createUrl(requestContext.getServerHostAddress(),
-               new Integer(requestContext.getServerListenerPort()),
+               requestContext.getServerListenerPort(),
                href, paramsIter, urlRequest.getAnchor(),
                requestContext);
          }
-
          return url;
       }
       catch (MalformedURLException e)
@@ -808,8 +793,7 @@ public class PSChoiceBuilder
     *    otherwise.
     */
    private static boolean addChoiceElement(Document doc, Element parent,
-      Iterator choices, PSExecutionData data,
-       PSNullEntry nullEntry, Iterator defaultSelected,
+      Iterator choices, PSNullEntry nullEntry, Iterator defaultSelected,
       int sortOrder, boolean isNewDoc, boolean ignoreNullEntry,
       PSChoiceFilter filter) throws PSDataExtractionException
    {
@@ -819,7 +803,7 @@ public class PSChoiceBuilder
       {
          // Retrieve selected value for this choice control if it exists
          Element valEl = 
-            PSXMLDomUtil.getFirstElementChild(parent, "Value");
+            PSXMLDomUtil.getFirstElementChild(parent, DISPLAYVALUE_NAME);
          if(valEl != null)
             selectedValue = PSXMLDomUtil.getElementData(valEl);   
       }
@@ -829,12 +813,7 @@ public class PSChoiceBuilder
          log.error(PSExceptionUtils.getMessageForLog(e));
          log.debug(PSExceptionUtils.getDebugMessageForLog(e));
       }
-      
-      String lang =
-       (String)data.getRequest().getUserSession().getSessionObject(
-        PSI18nUtils.USER_SESSION_OBJECT_SYS_LANG);
-      if (lang == null)
-         lang = PSI18nUtils.DEFAULT_LANG;
+
       /*
        * Always create the entries list in sequence. This might be reordered
        * later in the sortEntries call.
@@ -853,13 +832,13 @@ public class PSChoiceBuilder
             (!ignoreNullEntry && nullEntry != null &&
             value.equals(nullEntry.getValue())) )
          {
-            throw new PSDataExtractionException(lang,
-              IPSServerErrors.CE_DUPLICATE_CHOICES);
+            log.warn("Ignoring Duplicate value for choice builder: {}", value);
+            continue;
          }
          values.add( value );
 
          String label = entry.getLabel().getText();
-         Integer sequence = new Integer(entry.getSequence());
+         Integer sequence = entry.getSequence();
          String srcType = entry.getSourceType();
 
          List mapEntry = (List) entriesMap.get(sequence);
@@ -875,7 +854,7 @@ public class PSChoiceBuilder
        * all other entries in order of their sequence.
        */
       ArrayList entries = new ArrayList();
-      Integer noSequence = new Integer(-1);
+      Integer noSequence = -1;
       List noSequenceValue = null;
       Iterator keys = entriesMap.keySet().iterator();
       while (keys.hasNext())
@@ -927,6 +906,9 @@ public class PSChoiceBuilder
                case PSDefaultSelected.TYPE_TEXT:
                   select(displayChoices, ds.getText());
                   break;
+
+               default:
+                  break;
             }
          }
       }
@@ -937,7 +919,6 @@ public class PSChoiceBuilder
 
       if (addedElem || addedNullEntry)
          parent.appendChild(displayChoices);
-
       return addedElem;
    }
 
@@ -1025,6 +1006,10 @@ public class PSChoiceBuilder
 
             case PSChoices.SORT_ORDER_USER:
                break;
+
+            default:
+               break;
+
          }
 
          entries.clear();
@@ -1075,6 +1060,9 @@ public class PSChoiceBuilder
                   nullEntry.getValue(), nullEntry.getLabel().getText(),
                   nullEntry.getSourceType());
             break;
+
+         default:
+            break;
       }
 
       // if we have a nullEntry add it as the sort order defines
@@ -1097,6 +1085,9 @@ public class PSChoiceBuilder
                parent.insertBefore(
                   nullElement, nodes.item(nullEntry.getSequence()));
                addedElem = true;
+               break;
+
+            default:
                break;
          }
       }
@@ -1282,7 +1273,7 @@ public class PSChoiceBuilder
             val = tree.getElementData();
          if (val == null || val.trim().length() == 0)
          {
-            Object args[] = {DISPLAYENTRY_NAME,
+            Object[] args = {DISPLAYENTRY_NAME,
                DISPLAYVALUE_NAME, val};
             throw new PSUnknownNodeTypeException(
                IPSObjectStoreErrors.XML_ELEMENT_INVALID_CHILD, args);
@@ -1296,7 +1287,7 @@ public class PSChoiceBuilder
             label = tree.getElementData();
          if (label == null || label.trim().length() == 0)
          {
-            Object args[] = {DISPLAYENTRY_NAME,
+            Object[] args = {DISPLAYENTRY_NAME,
                DISPLAYLABEL_NAME, label};
             throw new PSUnknownNodeTypeException(
                IPSObjectStoreErrors.XML_ELEMENT_INVALID_CHILD, args);

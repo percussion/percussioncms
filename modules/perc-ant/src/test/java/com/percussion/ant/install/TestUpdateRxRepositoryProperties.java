@@ -48,26 +48,13 @@ public class TestUpdateRxRepositoryProperties {
          return Paths.get(TestUpdateRxRepositoryProperties.class.getResource(resource).toURI());
      }
 
-    public  void copyFolder(Path src, Path dest) throws IOException {
-        Files.walk(src)
-                .forEach(source -> copy(source, dest.resolve(src.relativize(source))));
-    }
 
-    private void copy(Path source, Path dest) {
-        try {
-            Files.copy(source, dest, REPLACE_EXISTING);
-            //Set the copied file to be writeable so config updates don't fail - source control sets read-oly attr on resources when checked in
-            dest.toFile().setWritable(true);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
 
     private Path setupRoot() throws IOException, URISyntaxException {
 
         Path p =  temporaryFolder.getRoot().toPath();
 
-        copyFolder(getResourcePath("/com/percussion/ant/install/mockinstall"),p);
+        PSTaskTestUtils.copyFolder(getResourcePath("/com/percussion/ant/install/mockinstall"),p);
 
         return p;
     }
