@@ -17,44 +17,31 @@
 
 package com.percussion.ant.install;
 
-import com.percussion.install.InstallUtil;
-import com.percussion.security.xml.PSSecureXMLUtils;
-import com.percussion.utils.jdbc.PSJdbcUtils;
-import org.apache.derby.jdbc.EmbeddedDriver;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import com.percussion.install.PSLogger;
+import org.junit.*;
 import org.junit.rules.TemporaryFolder;
-import org.springframework.util.Assert;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Properties;
+import java.sql.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /***
  * Test the ant task
  */
 public class TestExecSQLRemoveDupes {
 
-    @Rule
-    public TemporaryFolder temporaryFolder = new TemporaryFolder();
+    @ClassRule
+    public static TemporaryFolder temporaryFolder = new TemporaryFolder();
 
-    private String repoRoot;
-    private String oldRepoRoot;
-    private String driver = "org.apache.derby.jdbc.EmbeddedDriver";
-    private String connectionURL = "jdbc:derby:CMDB;create=true;user=CMDB;password=demo";
+    private static String repoRoot;
+    private static String oldRepoRoot;
+    private static final String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+    private static final String connectionURL = "jdbc:derby:CMDB;create=true;user=CMDB;password=demo";
 
-
-
-    @Before
-    public void setup() throws Exception{
+    @BeforeClass
+    public static void setup() throws Exception{
         temporaryFolder.create();
         repoRoot = temporaryFolder.getRoot().getAbsolutePath() + File.separator + "Repository";
         oldRepoRoot = System.getProperty("derby.system.home");
@@ -84,7 +71,6 @@ public class TestExecSQLRemoveDupes {
 
     @After
     public void after() throws Exception{
-
         //Restore system property if it had been set to not interfere with other tests
         if(oldRepoRoot!=null) {
             System.setProperty("derby.system.home", oldRepoRoot);
@@ -92,26 +78,84 @@ public class TestExecSQLRemoveDupes {
     }
 
     @Test
-    public void testTask() throws SQLException, ClassNotFoundException {
+    public void testTask() throws SQLException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 
         PSExecSQLRemoveDupes task = new PSExecSQLRemoveDupes();
-
         task.setQualifyingTableName("CT_PAGE_PAGE_CATEGORIES_SET");
         task.setColumns("CONTENTID,REVISIONID,PAGE_CATEGORIES_TREE");
         task.setRootDir(temporaryFolder.getRoot().getAbsolutePath() + File.separator);
         task.execute();
 
         //Now make sure that the data was updated correctly
-        Class.forName(driver);
+        System.setProperty("derby.system.home",repoRoot );
+        Class.forName(driver).newInstance();
         try(Connection conn = DriverManager.getConnection(connectionURL)) {
+            Statement statement = conn.createStatement();
+            String sql = "SELECT CONTENTID, REVISIONID, PAGE_CATEGORIES_TREE  FROM CT_PAGE_PAGE_CATEGORIES_SET GROUP BY CONTENTID, REVISIONID, PAGE_CATEGORIES_TREE HAVING count(*)>1";
+            ResultSet resultSet = statement.executeQuery(sql);
+            int count =0;
+            while(resultSet.next()) {
+                count++;
+            }
+            PSLogger.logInfo("Duplicate rows in testTask() is:" + count);
+            assertEquals(0,count);
 
-           // TODO: Robin - Add assertions to check if expected count and results are there
+            String sql1 = "SELECT CONTENTID, REVISIONID, PAGE_CATEGORIES_TREE FROM CT_PAGE_PAGE_CATEGORIES_SET";
+            ResultSet resultSetTotal = statement.executeQuery(sql1);
+            int countTotal =0;
+            while(resultSetTotal.next()) {
+                countTotal++;
+            }
+            PSLogger.logInfo("Total count in testTask() is:" + countTotal);
+            assertEquals(4,countTotal);
         }
     }
 
     @Test
-    public void testMultiLevelDupes(){
-        //TODO: Robin - Insert multi level dupes - run task  - verify expected count and data is there
+    public void testMultiLevelDupes() throws SQLException, ClassNotFoundException, IllegalAccessException, InstantiationException{
+        System.setProperty("derby.system.home",repoRoot );
+        Class.forName(driver).newInstance();
+        try(Connection conn = DriverManager.getConnection(connectionURL)) {
+            Statement statement = conn.createStatement();
+            String sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10017, 5, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
+            statement.execute(sql);
+            sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10017, 5, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
+            statement.execute(sql);
+            sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10017, 5, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
+            statement.execute(sql);
+            sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10018, 4, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
+            statement.execute(sql);
+            sql = "INSERT INTO CT_PAGE_PAGE_CATEGORIES_SET VALUES (10016, 1, null, '/Categories/0edc15ca-d187-28fc-95a1-9ba6ff508992')";
+            statement.execute(sql);
+
+            PSExecSQLRemoveDupes newTask = new PSExecSQLRemoveDupes();
+            newTask.setQualifyingTableName("CT_PAGE_PAGE_CATEGORIES_SET");
+            newTask.setColumns("CONTENTID,REVISIONID,PAGE_CATEGORIES_TREE");
+            newTask.setRootDir(temporaryFolder.getRoot().getAbsolutePath() + File.separator);
+            newTask.execute();
+        }
+        System.setProperty("derby.system.home",repoRoot );
+        Class.forName(driver).newInstance();
+        try(Connection connection = DriverManager.getConnection(connectionURL)) {
+            Statement statement = connection.createStatement();
+            String sql = "SELECT CONTENTID, REVISIONID, PAGE_CATEGORIES_TREE  FROM CT_PAGE_PAGE_CATEGORIES_SET GROUP BY CONTENTID, REVISIONID, PAGE_CATEGORIES_TREE HAVING count(*)>1";
+            ResultSet resultSet = statement.executeQuery(sql);
+            int count =0;
+            while(resultSet.next()) {
+                count++;
+            }
+            PSLogger.logInfo("Duplicate rows in testMultiLevelDupes() is:" + count);
+            assertEquals(0,count);
+
+            String sql1 = "SELECT CONTENTID, REVISIONID, PAGE_CATEGORIES_TREE FROM CT_PAGE_PAGE_CATEGORIES_SET";
+            ResultSet resultSetTotal = statement.executeQuery(sql1);
+            int countTotal =0;
+            while(resultSetTotal.next()) {
+                countTotal++;
+            }
+            PSLogger.logInfo("Total count in testMultiLevelDupes() is:" + countTotal);
+            assertEquals(6,countTotal);
+        }
     }
 
 }
