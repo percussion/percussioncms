@@ -36,12 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.xml.parsers.ParserConfigurationException;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -124,7 +119,7 @@ public class PSHeaderInfoPanel extends JPanel
       buttons.put("headerinfo.user", createLogoutButton(e -> {
          int dialogButton = JOptionPane.YES_NO_OPTION;
          String message = m_res.getString("headerinfo.logout.confirm");
-         int dialogResult = JOptionPane.showConfirmDialog(this,message, message, dialogButton);
+         int dialogResult = JOptionPane.showConfirmDialog(null,message, message, dialogButton);
          if (dialogResult == JOptionPane.YES_OPTION)
          {
             PSContentExplorerApplication.getBaseFrame().logout();
@@ -268,7 +263,6 @@ public class PSHeaderInfoPanel extends JPanel
       
       logout.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.BLACK, 1),
             BorderFactory.createEmptyBorder(1, 1, 1, 1)));
-     
       logout.addActionListener(al);
       logout.setMnemonic(mn.charAt(0));
 
