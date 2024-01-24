@@ -44,6 +44,13 @@ public interface IPSDeliveryInfoService
     public String findBaseByServerType(String type);
 
     /**
+     * Finds first server by server type
+     * @param type
+     * @return Delivery Server Info
+     */
+    public String findBaseByServerName(String type);
+
+    /**
      * Finds a server that run the specified service.
      * @param service the service type name. Cannot be <code>null</code>, or
      * empty.
