@@ -106,7 +106,7 @@ var assetPagination = null;
             $input = $control.find('input.perc-finder-goto-or-search:first');
             val = $input.val();
             isGoto = /^\//.test(val);
-            isNotAllowed=/\[/.test(val) || /\]/.test(val);//check if bracket is there in url[]
+            isNotAllowed=/\[/.test(val) || /]/.test(val);//check if bracket is there in url[]
             if(isNotAllowed) {
                 return false;
             }
@@ -307,7 +307,7 @@ var assetPagination = null;
                 try {
                     $("#perc_site_map").perc_site_map('layoutAll');
                 }catch(error){
-                    //Gettign Initialization error in case site not selected... needs to be ignored
+                    //Getting Initialization error in case site not selected... needs to be ignored
                 }
             }
         }
@@ -688,7 +688,7 @@ var assetPagination = null;
                     $("#mcol-path-summary").val( new_path.join('/') );
                     // here we are injecting the siteimprove plugin
                     var searchPath = $("#mcol-path-summary").val();
-                    if((searchPath.indexOf('/Sites') >= 0) && searchPath !== '/Sites') {
+                    if((typeof searchPath !== 'undefined') && (searchPath.indexOf('/Sites') >= 0) && searchPath !== '/Sites') {
                         var siteName = getSiteNameByPath(searchPath);
                         injectSiteImprove(siteName, getCurrentPath());
                     }
@@ -1087,7 +1087,7 @@ var assetPagination = null;
             }
 
             /**
-             * onDrop action called when dropping an item on a eligable drop zone.
+             * onDrop action called when dropping an item on a eligible drop zone.
              * @param event {object} the event object passed by the fired event handler.
              * @param ui {object} the special ui object passed by the jQuery drop event.
              */
@@ -1476,7 +1476,7 @@ var assetPagination = null;
             $.PercAssetService.getAssetViewForAssetId(id, function(status, result){
                 if(status == $.PercServiceUtils.STATUS_SUCCESS)
                 {
-                    var nRef = window.open(result, "percAssetPreviewWindow" + id.replace(/\-/g, ""));
+                    var nRef = window.open(result, "percAssetPreviewWindow" + id.replace(/-/g, ""));
                     $(nRef.document).ready(function(){
                         if(revId)
                         {
@@ -1523,7 +1523,7 @@ var assetPagination = null;
                     // any bars when null. Both IE and FF show the same header in the new
                     // window as the original by passing "" and follow the user's preference
                     // as whether to open in a tab or window.
-                    var nRef = window.open(href, "percPagePreviewWindow" + id.replace(/\-/g, ""));
+                    var nRef = window.open(href, "percPagePreviewWindow" + id.replace(/-/g, ""));
                     $(nRef.document).ready(function() {
                         if(revId) {
                             window.setTimeout(function() {
@@ -1596,7 +1596,7 @@ var assetPagination = null;
                     // any bars when null. Both IE and FF show the same header in the new
                     // window as the original by passing "" and follow the user's preference
                     // as whether to open in a tab or window.
-                    var nRef = window.open(href, "percPagePreviewWindow" + id.replace(/\-/g, ""));
+                    var nRef = window.open(href, "percPagePreviewWindow" + id.replace(/-/g, ""));
                     $(nRef.document).ready(function() {
                         if(revId) {
                             window.setTimeout(function() {
