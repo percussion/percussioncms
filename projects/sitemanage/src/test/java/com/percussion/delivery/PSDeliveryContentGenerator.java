@@ -156,6 +156,11 @@ public class PSDeliveryContentGenerator extends PSGenericContentGenerator<Delive
                 return null;
             }
             @Override
+            public String findBaseByServerName(String type) {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            @Override
             public PSDeliveryInfo findByService(String service, String type) {
                 // TODO Auto-generated method stub
                 return null;
@@ -226,6 +231,11 @@ public class PSDeliveryContentGenerator extends PSGenericContentGenerator<Delive
             }
             @Override
             public String findBaseByServerType(String type) {
+                // TODO Auto-generated method stub
+                return null;
+            }
+            @Override
+            public String findBaseByServerName(String type) {
                 // TODO Auto-generated method stub
                 return null;
             }

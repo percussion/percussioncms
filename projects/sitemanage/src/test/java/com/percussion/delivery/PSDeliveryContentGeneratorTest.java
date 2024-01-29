@@ -158,6 +158,11 @@ public class PSDeliveryContentGeneratorTest
                         // TODO Auto-generated method stub
                         return null;
                     }
+                    @Override
+                    public String findBaseByServerName(String type) {
+                        // TODO Auto-generated method stub
+                        return null;
+                    }
 
                     @Override
                     public PSDeliveryInfo findByService(String service, String type) {
