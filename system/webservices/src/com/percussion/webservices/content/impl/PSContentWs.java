@@ -422,16 +422,23 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
 
       PSRequest request = getNewRequest();
       PSErrorsException errors = new PSErrorsException();
+      logger.info("Processing {} items for deletion...",ids.size());
+      long count = 0;
+      long size =ids.size();
       for (IPSGuid id : ids)
       {
          try
          {
             PSLegacyGuid guid = handleRevision((PSLegacyGuid) id);
-
+            logger.info(".");
             List<String> itemIds = new ArrayList<>();
             itemIds.add(String.valueOf(guid.getContentId()));
 
             PSContentDataHandler.purgeItems(request, itemIds);
+            count++;
+            if(count % 10 == 0){
+               logger.info("{} items remaining..",size -count);
+            }
          }
          catch (PSException | PSValidationException | PSErrorException e)
          {
@@ -444,7 +451,7 @@ public class PSContentWs extends PSContentBaseWs implements IPSContentWs
             errors.addError(id, error);
          }
       }
-
+      logger.info("Delete operation completed.");
       if (errors.hasErrors())
          throw errors;
    }
