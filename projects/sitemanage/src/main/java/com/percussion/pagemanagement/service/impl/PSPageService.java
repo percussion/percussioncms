@@ -892,8 +892,7 @@ try {
         }
 
         /**
-         * This method returns true if ext of a page is present in the list
-         * of mimeTypes present in mimemap.properties file.
+         * This method returns true if ext of a page is of type "text/html"
          */
         private boolean validateMimeType(String name)
         {
@@ -901,7 +900,7 @@ try {
                 int lastIndexDot = name.lastIndexOf(".");
                 String ext = name.substring(lastIndexDot+1);
                 String mimeTypePresent = PSContentFactory.guessMimeType(ext);
-                return mimeTypePresent!=null;
+                return mimeTypePresent != null && mimeTypePresent.equals("text/html");
             }
             return true;
         }
@@ -952,7 +951,7 @@ try {
 
             if (!validateMimeType(name))
             {
-                String msg = "Cannot create a page with name \"" + name + "\" because this name has an unknown mime type as file extension.";
+                String msg = "Cannot create a page with name \"" + name + "\" because it has an unknown mime type as file extension.";
                 log.debug(msg);
                 e.rejectValue("name", "page.unknownMimeType", msg);
             }
