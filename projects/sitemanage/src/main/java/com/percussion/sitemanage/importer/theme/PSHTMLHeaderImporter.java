@@ -198,13 +198,20 @@ public class PSHTMLHeaderImporter
                 
                 if(isNotBlank(remoteUrl))
                 {
-                    String fullThemePath = urlConverter.getFileSystemPath(remoteUrl);
+                    String fullThemePath;
+                    String convertedLink;
+                    //Don't change external Links while importing sites and templates
+                    if(!remoteUrl.startsWith(this.siteUrl) && remoteUrl.toLowerCase().startsWith("http")) {
+                        fullThemePath = remoteUrl;
+                        convertedLink = remoteUrl;
+                    }else {
+                        fullThemePath = urlConverter.getFileSystemPath(remoteUrl);
+                        convertedLink = urlConverter.convertToThemeLink(remoteUrl);
+                    }
                     scriptPaths.put(remoteUrl, fullThemePath);
-                    String convertedLink = urlConverter.convertToThemeLink(remoteUrl);
-                    
                     // Log the information related to the processed element
                     appendHeaderImporterMessage(MessageFormat.format(CONVERTED_SCRIPT_URL, script.attr("src"), convertedLink));
-                    
+
                     // Set the new path for the script being processed
                     script.attr("src", convertedLink);
                 }
