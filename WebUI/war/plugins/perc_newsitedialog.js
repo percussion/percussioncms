@@ -339,7 +339,7 @@ var $perc_newSiteDialogLayout;
 
             // Open the Import Progress dialog
             $.PercImportProgressDialog({
-                showVideo: true,
+                showVideo: false,
                 backgroundRefreshCallback: function()
                 {
                     // When the import progress dialog closes and there is an import in progress,
