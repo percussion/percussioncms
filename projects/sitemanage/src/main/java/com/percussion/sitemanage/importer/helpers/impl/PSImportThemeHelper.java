@@ -106,8 +106,8 @@ public class PSImportThemeHelper extends PSImportHelper
         try
         {
             Document sourceDoc = pageContent.getSourceDocument();
-            
-            String baseUrl = getBaseUrl(context, sourceDoc);
+
+            String baseUrl = context.getSite().getBaseUrl();
             if (baseUrl.equals(""))
                 baseUrl = context.getSiteUrl();
             
