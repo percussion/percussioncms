@@ -18,6 +18,8 @@
 package com.percussion.sitemanage.importer.utils;
 
 import static org.apache.commons.io.FileUtils.copyURLToFile;
+import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
+
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 import com.percussion.HTTPClient.Log;
@@ -39,6 +41,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -171,7 +174,36 @@ public class PSFileDownLoadJobRunner implements Runnable
         int timeout = PSSiteImporter.getImportTimeout();
         if (timeout > 0)
         {
-            copyURLToFile(fileUrl, file, timeout, timeout);
+            URL source = fileUrl;
+            File destination = file;
+            int connectionTimeout = timeout;
+            int readTimeout = timeout;
+            URLConnection connection = source.openConnection();
+            connection.setConnectTimeout(connectionTimeout);
+            connection.setReadTimeout(readTimeout);
+            connection.addRequestProperty("User-Agent", "Mozilla");
+            InputStream stream = connection.getInputStream();
+            Throwable var6 = null;
+
+            try {
+                copyInputStreamToFile(stream, destination);
+            } catch (Throwable var15) {
+                var6 = var15;
+                throw var15;
+            } finally {
+                if (stream != null) {
+                    if (var6 != null) {
+                        try {
+                            stream.close();
+                        } catch (Throwable var14) {
+                            var6.addSuppressed(var14);
+                        }
+                    } else {
+                        stream.close();
+                    }
+                }
+
+            }
         }
         else
         {
