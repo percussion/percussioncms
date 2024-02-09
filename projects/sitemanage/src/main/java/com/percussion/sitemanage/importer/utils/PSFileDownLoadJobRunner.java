@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
@@ -49,6 +50,8 @@ import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.Validate;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class PSFileDownLoadJobRunner implements Runnable
 {
@@ -153,9 +156,13 @@ public class PSFileDownLoadJobRunner implements Runnable
             if (doesFileExist(file))
                 localResults.add(new PSPair<>(true, getWarningMessage(url, destinationPath)));
 
-            copyToFile(fileUrl, file);
+            if(copyToFile(fileUrl, file)){
+                localResults.add(new PSPair<>(true, getSucessMessage(url, destinationPath)));
+            }else{
+                localResults.add(new PSPair<>(true, getWarningMessage(url, destinationPath)));
+            }
 
-            localResults.add(new PSPair<>(true, getSucessMessage(url, destinationPath)));
+
         }
         catch (Exception e)
         {
@@ -168,47 +175,60 @@ public class PSFileDownLoadJobRunner implements Runnable
         
     }
 
-    private void copyToFile(URL fileUrl, File file) throws IOException
+    private boolean copyToFile(URL fileUrl, File file) throws IOException
     {
-
+        boolean returnStatus = false;
         int timeout = PSSiteImporter.getImportTimeout();
         if (timeout > 0)
         {
+
             URL source = fileUrl;
             File destination = file;
             int connectionTimeout = timeout;
             int readTimeout = timeout;
-            URLConnection connection = source.openConnection();
-            connection.setConnectTimeout(connectionTimeout);
-            connection.setReadTimeout(readTimeout);
-            connection.addRequestProperty("User-Agent", "Mozilla");
-            InputStream stream = connection.getInputStream();
+            HttpsURLConnection connection = null;
             Throwable var6 = null;
+            InputStream stream = null;
+            try{
+                connection = (HttpsURLConnection)source.openConnection();
+                connection.addRequestProperty("User-Agent", "Mozilla");
+                connection.connect();
+                if(connection.getResponseCode() != HttpURLConnection.HTTP_OK &&
+                        connection.getResponseCode() != HttpURLConnection.HTTP_MOVED_PERM &&
+                        connection.getResponseCode() != HttpURLConnection.HTTP_MOVED_TEMP) {
+                    return returnStatus;
+                }
+                connection.setConnectTimeout(connectionTimeout);
+                connection.setReadTimeout(readTimeout);
 
-            try {
+                stream = connection.getInputStream();
+
                 copyInputStreamToFile(stream, destination);
+                returnStatus = true;
             } catch (Throwable var15) {
                 var6 = var15;
                 throw var15;
             } finally {
-                if (stream != null) {
-                    if (var6 != null) {
-                        try {
-                            stream.close();
-                        } catch (Throwable var14) {
-                            var6.addSuppressed(var14);
-                        }
-                    } else {
+                if (var6 != null) {
+                    try {
                         stream.close();
+                    } catch (Throwable var14) {
+                        var6.addSuppressed(var14);
                     }
+                } else {
+                    stream.close();
                 }
-
+                if(connection !=null){
+                    connection.disconnect();
+                }
             }
         }
         else
         {
             copyURLToFile(fileUrl, file);
+            returnStatus = true;
         }
+        return returnStatus;
     }
 
     /**
@@ -247,12 +267,15 @@ public class PSFileDownLoadJobRunner implements Runnable
             {
                 String fileExtension = "." + FilenameUtils.getExtension(destinationPath);
                 tempImage = new PSPurgableTempFile("tempImage", fileExtension, null);
-                copyToFile(fileUrl, tempImage);
-                destinationPath = URLDecoder.decode(destinationPath);
-                InputStream fileInput = new FileInputStream(tempImage);
-                createAsset(fileInput, destinationPath, this.assetCreator);
+                if(copyToFile(fileUrl, tempImage)) {
+                    destinationPath = URLDecoder.decode(destinationPath);
+                    InputStream fileInput = new FileInputStream(tempImage);
+                    createAsset(fileInput, destinationPath, this.assetCreator);
 
-                localResults.add(new PSPair<>(true, getSucessMessage(url, destinationPath)));
+                    localResults.add(new PSPair<>(true, getSucessMessage(url, destinationPath)));
+                }else{
+                    localResults.add(new PSPair<>(true, getWarningMessage(url, destinationPath)));
+                }
             }
             return localResults;
         }
