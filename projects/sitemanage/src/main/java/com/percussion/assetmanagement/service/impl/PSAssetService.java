@@ -1958,11 +1958,14 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
         {
             PSPurgableTempFile ptf = new PSPurgableTempFile("tmp", extension, null, fileName, fileType, null);
             try(FileOutputStream fos = new FileOutputStream(ptf)) {
-				PSCopyStream.copyStream(request.getFileContents(), fos);
+				Long copyCount  = PSCopyStream.copyStream(request.getFileContents(), fos);
+				if(copyCount >0) {
+					fieldsMap.put(fieldBase, ptf);
 
-				fieldsMap.put(fieldBase, ptf);
-
-				return assetDao.save(asset);
+					return assetDao.save(asset);
+				}else{
+					throw new Exception("File "+fileName+" does not exist.");
+				}
 			}
         }
         catch(Exception e)
