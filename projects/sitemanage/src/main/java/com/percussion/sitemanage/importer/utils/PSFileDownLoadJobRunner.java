@@ -17,38 +17,33 @@
 
 package com.percussion.sitemanage.importer.utils;
 
-import static org.apache.commons.io.FileUtils.copyURLToFile;
-import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
-
-import static org.springframework.util.CollectionUtils.isEmpty;
-
-import com.percussion.HTTPClient.Log;
 import com.percussion.HTTPClient.URI;
 import com.percussion.pathmanagement.service.impl.PSPathUtils;
-import com.percussion.share.service.exception.PSExtractHTMLException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
-import com.percussion.sitemanage.importer.PSSiteImporter;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
+import com.percussion.sitemanage.importer.PSSiteImporter;
 import com.percussion.sitemanage.importer.helpers.impl.PSImportThemeHelper.LogCategory;
 import com.percussion.sitemanage.importer.theme.PSAssetCreator;
-import com.percussion.sitemanage.importer.theme.PSFileDownloader;
 import com.percussion.util.PSPurgableTempFile;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.types.PSPair;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.Validate;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.Validate;
+import static org.apache.commons.io.FileUtils.copyInputStreamToFile;
+import static org.springframework.util.CollectionUtils.isEmpty;
 
 public class PSFileDownLoadJobRunner implements Runnable
 {
@@ -75,13 +70,14 @@ public class PSFileDownLoadJobRunner implements Runnable
         if (obj instanceof PSFileDownLoadJobRunner)
         {
             PSFileDownLoadJobRunner compareJob = (PSFileDownLoadJobRunner) obj;
-            if (compareJob.getJob().getFile() == this.getJob().getFile()
-                    && compareJob.getJob().getUrl() == this.getJob().getUrl()
-                    && compareJob.getJob().getCreateAsset() == this.getJob().getCreateAsset())
-                return true;
+            return compareJob.getJob().getFile().equals(this.getJob().getFile())
+                    && compareJob.getJob().getUrl().equals(this.getJob().getUrl())
+                    && compareJob.getJob().getCreateAsset().equals(this.getJob().getCreateAsset());
         }
         return false;
     }
+
+
 
     public void setRequestInfo(Map<String, Object> requestInfoMap)
     {
@@ -153,13 +149,16 @@ public class PSFileDownLoadJobRunner implements Runnable
             if (doesFileExist(file))
                 localResults.add(new PSPair<>(true, getWarningMessage(url, destinationPath)));
 
-            copyToFile(fileUrl, file);
+            if(copyToFile(fileUrl, file)){
+                localResults.add(new PSPair<>(true, getSucessMessage(url, destinationPath)));
+            }else{
+                localResults.add(new PSPair<>(true, getMissingMessage(url, destinationPath)));
+            }
 
-            localResults.add(new PSPair<>(true, getSucessMessage(url, destinationPath)));
+
         }
         catch (Exception e)
         {
-            Exception debug = e;
             File destFile = new File(destinationPath);
             PSPair<Boolean, String> result = new PSPair<>(false, getErrorMessage(url, destFile.getName()));
             localResults.add(result);
@@ -168,47 +167,51 @@ public class PSFileDownLoadJobRunner implements Runnable
         
     }
 
-    private void copyToFile(URL fileUrl, File file) throws IOException
+    private boolean copyToFile(URL fileUrl, File file) throws IOException
     {
-
+        boolean returnStatus = false;
         int timeout = PSSiteImporter.getImportTimeout();
-        if (timeout > 0)
-        {
-            URL source = fileUrl;
-            File destination = file;
-            int connectionTimeout = timeout;
-            int readTimeout = timeout;
-            URLConnection connection = source.openConnection();
-            connection.setConnectTimeout(connectionTimeout);
-            connection.setReadTimeout(readTimeout);
-            connection.addRequestProperty("User-Agent", "Mozilla");
-            InputStream stream = connection.getInputStream();
-            Throwable var6 = null;
 
-            try {
-                copyInputStreamToFile(stream, destination);
-            } catch (Throwable var15) {
-                var6 = var15;
-                throw var15;
+            HttpsURLConnection connection = null;
+            Exception savedException = null;
+            InputStream stream = null;
+            try{
+                connection = (HttpsURLConnection) fileUrl.openConnection();
+                connection.addRequestProperty("User-Agent", "Mozilla");
+                connection.connect();
+                if(connection.getResponseCode() != HttpURLConnection.HTTP_OK &&
+                        connection.getResponseCode() != HttpURLConnection.HTTP_MOVED_PERM &&
+                        connection.getResponseCode() != HttpURLConnection.HTTP_MOVED_TEMP) {
+                    returnStatus=false;
+                }else {
+                    connection.setConnectTimeout(timeout);
+                    connection.setReadTimeout(timeout);
+
+                    stream = connection.getInputStream();
+
+                    copyInputStreamToFile(stream, file);
+                    returnStatus = true;
+                }
+            } catch (Exception e) {
+                savedException = e;
+                throw e;
             } finally {
-                if (stream != null) {
-                    if (var6 != null) {
+                if(stream != null) {
+                    if (savedException != null) {
                         try {
                             stream.close();
-                        } catch (Throwable var14) {
-                            var6.addSuppressed(var14);
+                        } catch (Exception e2) {
+                            savedException.addSuppressed(e2);
                         }
                     } else {
                         stream.close();
                     }
                 }
-
+                if(connection !=null){
+                    connection.disconnect();
+                }
             }
-        }
-        else
-        {
-            copyURLToFile(fileUrl, file);
-        }
+        return returnStatus;
     }
 
     /**
@@ -229,7 +232,6 @@ public class PSFileDownLoadJobRunner implements Runnable
      */
     public List<PSPair<Boolean, String>> downloadCreateAsset(String url, String destinationPath)
     {
-        PSPurgableTempFile tempImage = null;
         List<PSPair<Boolean, String>> localResults = new ArrayList<>();
 
         try
@@ -246,13 +248,17 @@ public class PSFileDownLoadJobRunner implements Runnable
             else
             {
                 String fileExtension = "." + FilenameUtils.getExtension(destinationPath);
-                tempImage = new PSPurgableTempFile("tempImage", fileExtension, null);
-                copyToFile(fileUrl, tempImage);
-                destinationPath = URLDecoder.decode(destinationPath);
-                InputStream fileInput = new FileInputStream(tempImage);
-                createAsset(fileInput, destinationPath, this.assetCreator);
-
-                localResults.add(new PSPair<>(true, getSucessMessage(url, destinationPath)));
+                try(PSPurgableTempFile tempImage = new PSPurgableTempFile("tempImage", fileExtension, null)) {
+                    if (copyToFile(fileUrl, tempImage)) {
+                        destinationPath = URLDecoder.decode(destinationPath);
+                        try (InputStream fileInput = new FileInputStream(tempImage)) {
+                            createAsset(fileInput, destinationPath, this.assetCreator);
+                        }
+                        localResults.add(new PSPair<>(true, getSucessMessage(url, destinationPath)));
+                    } else {
+                        localResults.add(new PSPair<>(true, getMissingMessage(url, destinationPath)));
+                    }
+                }
             }
             return localResults;
         }
@@ -261,12 +267,6 @@ public class PSFileDownLoadJobRunner implements Runnable
             File destFile = new File(destinationPath);
             localResults.add(new PSPair<>(false, getErrorMessage(url, destFile.getName())));
             return localResults;
-        }
-        finally
-        {
-            // delete the temp file
-            if (tempImage != null)
-                tempImage.delete();
         }
     }
     
@@ -336,6 +336,20 @@ public class PSFileDownLoadJobRunner implements Runnable
     }
 
     /**
+     * Builds the informational message to use when a file was already
+     * downloaded.
+     *
+     * @param url {@link String} with the url, Assumed not be <code>null</code>.
+     * @param destinationPath {@link String}, assumed not be <code>null</code>.
+     * @return a {@link String} with the message, never <code>null</code> or
+     *         empty.
+     */
+    private static String getMissingMessage(String url, String destinationPath)
+    {
+        return "Skip download '" + url + "' to '" + destinationPath + "', as such file is not downloadable from the server.";
+    }
+
+    /**
      * Logs the results into the logger. Uses the object returned from the
      * download methods, which already has the messages and the status.
      * 
@@ -382,7 +396,7 @@ public class PSFileDownLoadJobRunner implements Runnable
     /**
      * Checks if a given file was already downloaded.
      * 
-     * @param url {@link File} file to be downloaded, assumed not be
+     * @param file {@link File} file to be downloaded, assumed not be
      *            <code>null</code>.
      * @return a {@link Boolean} flag that indicates if the file was already
      *         downloaded, true if file exists. Never <code>null</code>. empty.
