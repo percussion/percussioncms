@@ -17,7 +17,7 @@
 
 package com.percussion.sitemanage.importer.utils;
 
-class PSFileDownloadJob
+public class PSFileDownloadJob
 {
     String file;
 
