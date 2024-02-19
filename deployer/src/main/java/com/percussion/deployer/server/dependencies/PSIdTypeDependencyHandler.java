@@ -134,6 +134,6 @@ public abstract class PSIdTypeDependencyHandler extends PSDependencyHandler
    }
 
    public static boolean isIdTypeMappingEnabled(){
-      return true; //TODO: drive this off of the operating mode
+      return false; //TODO: drive this off of the operating mode
    }
 }
