@@ -41,6 +41,15 @@ public class PSTemplateSummary extends PSAbstractPersistantObject {
      */
     private static final long serialVersionUID = -2647068336786632480L;
 
+    protected static final int MAX_DESCRIPTION=-1;
+    protected static final int MAX_SOURCE_TEMPLATE=200;
+    protected static final int MAX_LABEL = 300;
+    protected static final int MAX_THEME = 300;
+    protected static final int MAX_PROTECTED_REGION=200;
+    protected static final int MAX_DOCTYPE=1000;
+    protected static final int MAX_TYPE=100;
+
+
     /**
      * The ID of the Template, initialized by constructor, never
      * <code>null</code> or modified after that.
@@ -185,6 +194,9 @@ public class PSTemplateSummary extends PSAbstractPersistantObject {
 
     
     public void setLabel(String label) {
+        if(label != null && label.length()>MAX_LABEL)
+            label = label.substring(0,MAX_LABEL);
+
         this.label = label;
     }
 
@@ -213,7 +225,10 @@ public class PSTemplateSummary extends PSAbstractPersistantObject {
      */
     public void setSourceTemplateName(String srcTemplate)
     {  
-       this.sourceTemplateName = srcTemplate;
+       if(srcTemplate.length()>MAX_SOURCE_TEMPLATE)
+           srcTemplate = srcTemplate.substring(0,MAX_SOURCE_TEMPLATE);
+
+        this.sourceTemplateName = srcTemplate;
     }
 
     public String getType()
@@ -223,6 +238,9 @@ public class PSTemplateSummary extends PSAbstractPersistantObject {
 
     public void setType(String type)
     {
+        if(type.length()>MAX_TYPE)
+            type = type.substring(0,MAX_TYPE);
+
         this.type = type;
     }
 

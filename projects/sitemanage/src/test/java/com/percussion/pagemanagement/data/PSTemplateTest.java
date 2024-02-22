@@ -110,6 +110,56 @@ public class PSTemplateTest {
     private static final String CSS_REGION="css-region";
 
 
+    @Test
+    public void testLongStrings(){
+        String testVal="";
+        for(int i = 0;i<PSTemplateSummary.MAX_SOURCE_TEMPLATE+10;i++){
+            testVal = testVal +i;
+        }
+
+        testTemplate.setSourceTemplateName(testVal);
+        assertEquals(testVal.substring(0,PSTemplateSummary.MAX_SOURCE_TEMPLATE),testTemplate.getSourceTemplateName());
+        assertEquals(PSTemplateSummary.MAX_SOURCE_TEMPLATE,testTemplate.getSourceTemplateName().length());
+
+        testVal="";
+        for(int i = 0;i<PSTemplateSummary.MAX_TYPE+10;i++){
+            testVal = testVal +i;
+        }
+
+        testTemplate.setType(testVal);
+        assertEquals(PSTemplateSummary.MAX_TYPE,testTemplate.getType().length());
+        assertEquals(testVal.substring(0,PSTemplateSummary.MAX_TYPE),testTemplate.getType());
+
+        testVal="";
+        for(int i = 0;i< PSTemplateSummary.MAX_LABEL +10;i++){
+            testVal = testVal +i;
+        }
+
+        testTemplate.setLabel(testVal);
+        assertEquals(testVal.substring(0,PSTemplateSummary.MAX_LABEL),testTemplate.getLabel());
+        assertEquals(PSTemplateSummary.MAX_LABEL,testTemplate.getLabel().length());
+
+        testVal="";
+        for(int i = 0;i< PSTemplateSummary.MAX_THEME+10;i++){
+            testVal = testVal +i;
+        }
+
+        testTemplate.setTheme(testVal);
+        assertEquals(testVal.substring(0,PSTemplateSummary.MAX_THEME),testTemplate.getTheme());
+        assertEquals(PSTemplateSummary.MAX_THEME,testTemplate.getTheme().length());
+
+        testVal="";
+        for(int i = 0;i< PSTemplateSummary.MAX_PROTECTED_REGION+10;i++){
+            testVal = testVal +i;
+        }
+
+        testTemplate.setProtectedRegion(testVal);
+        assertEquals(testVal.substring(0,PSTemplateSummary.MAX_PROTECTED_REGION),testTemplate.getProtectedRegion());
+        assertEquals(PSTemplateSummary.MAX_PROTECTED_REGION,testTemplate.getProtectedRegion().length());
+
+
+
+    }
 
     @After
     public void tearDown() throws Exception {

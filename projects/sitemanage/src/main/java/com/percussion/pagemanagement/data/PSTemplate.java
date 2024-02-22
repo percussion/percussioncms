@@ -273,6 +273,9 @@ public class PSTemplate extends PSTemplateSummary implements IPSHtmlMetadata
      */
     public void setTheme(String theme)
     {
+        if(theme != null && theme.length()>MAX_THEME)
+            theme = theme.substring(0,MAX_THEME);
+
         this.theme = theme;
     }
     
@@ -360,6 +363,10 @@ public class PSTemplate extends PSTemplateSummary implements IPSHtmlMetadata
     */
     public void setProtectedRegion(String protectedRegion)
     {
+        if(protectedRegion != null && protectedRegion.length()>MAX_PROTECTED_REGION) {
+            protectedRegion = protectedRegion.substring(0, MAX_PROTECTED_REGION);
+        }
+
         this.protectedRegion = protectedRegion;
     }
 
@@ -448,6 +455,7 @@ public class PSTemplate extends PSTemplateSummary implements IPSHtmlMetadata
      * 
      * @return the string with the type of template. May be <code>null</code>.
      */
+    @Override
     public String getType()
     {
         return type;
@@ -459,8 +467,12 @@ public class PSTemplate extends PSTemplateSummary implements IPSHtmlMetadata
      * 
      * @param type - the type of template
      */
+    @Override
     public void setType(String type)
     {
+        if(type != null && type.length()>MAX_TYPE)
+            type = type.substring(0,MAX_TYPE);
+
         this.type = type;
     }
     
