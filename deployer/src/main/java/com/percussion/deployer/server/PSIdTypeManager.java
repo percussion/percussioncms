@@ -239,7 +239,7 @@ public class PSIdTypeManager
       throws PSDeployException
    {
       if (idTypes == null)
-         throw new IllegalArgumentException("idTypes may not be null");
+        return;
       
       idTypes.setChoiceFilters(null);
 
@@ -557,7 +557,7 @@ public class PSIdTypeManager
             "elementName may not be null or empty");
             
       if (idTypes == null)
-         throw new IllegalArgumentException("idTypes may not be null");
+        return;
       
       if (usedMappings == null)
          throw new IllegalArgumentException("usedMappings may not be null");
@@ -599,7 +599,7 @@ public class PSIdTypeManager
       PSApplicationIDTypes usedMappings)
    {
       if (idTypes == null)
-         throw new IllegalArgumentException("idTypes may not be null");
+        return;
       
       if (usedMappings == null)
          throw new IllegalArgumentException("usedMappings may not be null");

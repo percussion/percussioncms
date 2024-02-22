@@ -177,8 +177,15 @@
                            <columnAlias/>
                         </PSXBackEndColumn>
                      </DataLocator>
-                     <DataType>text</DataType>
-                     <DataFormat>500</DataFormat>
+                      <DataType>text</DataType>
+                      <DataFormat>max</DataFormat>
+                      <DefaultValue>
+                         <DataLocator>
+                            <PSXTextLiteral id="0">
+                               <text/>
+                            </PSXTextLiteral>
+                         </DataLocator>
+                      </DefaultValue>
                      <OccurrenceSettings delimiter=";" dimension="optional" multiValuedType="delimited"/>
                      <PSXSearchProperties enableTransformation="no" id="0" tokenizeSearchContent="no" userCustomizable="yes" userSearchable="yes" visibleToGlobalQuery="yes"/>
                   </PSXField>

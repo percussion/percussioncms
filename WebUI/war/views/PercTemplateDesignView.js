@@ -21,7 +21,7 @@
     var VIEW_MODE_CATALOG = 1;
     var UNASSIGNED_MAX_RESULTS = 10;
     var intervalId = 0;
-    
+
     P.templateDesignView = function()
     {
         var frame = $('#frame');
@@ -96,27 +96,27 @@
         var actionNames = [I18N.message("perc.ui.template.design.view@Actions"), I18N.message("perc.ui.template.design.view@Create Template From Page"), I18N.message("perc.ui.template.design.view@Add Template"), I18N.message("perc.ui.template.design.view@Export Template"), I18N.message("perc.ui.template.design.view@Import Template")];
         var disableAction = [true, isEnable, isEnable, false, isEnable];
         percTemplateActions.PercDropdown(
-        {
-            percDropdownRootClass: "perc-dropdown-template-action",
-            percDropdownOptionLabels: actionNames,
-            percDropdownCallbacks: [
-                function() {},
-                _createTemplateFromPage,
-                _addTemplate,
-                function() {},
-                _importTemplate
-            ],
-            percDropdownCallbackData: [I18N.message("perc.ui.template.design.view@Actions"), I18N.message("perc.ui.template.design.view@Create Template From Page"), I18N.message("perc.ui.template.design.view@Add Template"), I18N.message("perc.ui.template.design.view@Export Template"), I18N.message("perc.ui.template.design.view@Import Template")],
-            percDropdownDisabledFlag: disableAction
-        });
-        
+            {
+                percDropdownRootClass: "perc-dropdown-template-action",
+                percDropdownOptionLabels: actionNames,
+                percDropdownCallbacks: [
+                    function() {},
+                    _createTemplateFromPage,
+                    _addTemplate,
+                    function() {},
+                    _importTemplate
+                ],
+                percDropdownCallbackData: [I18N.message("perc.ui.template.design.view@Actions"), I18N.message("perc.ui.template.design.view@Create Template From Page"), I18N.message("perc.ui.template.design.view@Add Template"), I18N.message("perc.ui.template.design.view@Export Template"), I18N.message("perc.ui.template.design.view@Import Template")],
+                percDropdownDisabledFlag: disableAction
+            });
+
         /*Work around for issue with PercDropdown.js
          * dropdownOptionItem
                 .data("callback", callbacks[k])
                 .data("callbackData", callbackData[k])
                 
                 Should be passed l, not k
-         */ 
+         */
         $(".perc-dropdown-option-CreateTemplatefromPage").addClass("perc-drop-disabled").css("color", "#9FA3AA");
 
         //Add View dropdown menu in toolbar
@@ -124,28 +124,28 @@
 
         //Setup template gallery.
         $("#tabs").tabs(
-        {
-            disabled: [1, 2, 3],
-            show: function()
             {
-                fixBottomHeight();
-            },
-            select: function(event, ui)
-            {
-                // The persist method will check to see if the editor has been
-                // initialised.
-                if(!gSelectTemp) return false;
+                disabled: [1, 2, 3],
+                show: function()
+                {
+                    fixBottomHeight();
+                },
+                select: function(event, ui)
+                {
+                    // The persist method will check to see if the editor has been
+                    // initialised.
+                    if(!gSelectTemp) return false;
 
-                var self = $(this);
+                    var self = $(this);
 
-                _hideIframe();
+                    _hideIframe();
 
-                // remove all scrollbars in the templates view
-                $("body").css("overflow", "hidden");
+                    // remove all scrollbars in the templates view
+                    $("body").css("overflow", "hidden");
 
-                return;
-            }
-        });
+                    return;
+                }
+            });
 
         // Publish accesor methods view operations of the design manager
         this.getCurrentTemplatesView = getCurrentView;
@@ -157,7 +157,7 @@
 
         //Initialize the unassigned panel.
         initializeUnassignedPanel();
-        
+
         function setPanelPreference(showPanel, pageNumber){
             var siteName = $.PercNavigationManager.getSiteName();
             var panelSettings = JSON.parse($.cookie("perc-unassigned-panel-" + siteName + "-settings"));
@@ -168,11 +168,11 @@
                     panelSettings.pageNumber = pageNumber;
             }
             else{
-               panelSettings = {"showPanel":showPanel, "pageNumber":pageNumber};
+                panelSettings = {"showPanel":showPanel, "pageNumber":pageNumber};
             }
             $.cookie("perc-unassigned-panel-" + siteName + "-settings", JSON.stringify(panelSettings));
         }
-        
+
         function initializeUnassignedPanel(){
             var panelExpanderIcon = $(".perc-panel-expander-icon");
             var panel = $(".perc-unassigned-panel");
@@ -181,7 +181,7 @@
                     setPanelPreference(panelExpanderIcon.is(".perc-collapsed"));
                     if (panelExpanderIcon.is(".perc-collapsed")){
                         panel.removeClass("perc-closed").addClass("perc-opened");
-						panelExpanderIcon.attr('title','<i18n:message key = "perc.ui.workflow.view@Minimize"/>');
+                        panelExpanderIcon.attr('title','<i18n:message key = "perc.ui.workflow.view@Minimize"/>');
                         panel.show("slide",{},500,function(){
                             $("#perc-assigned-templates").template_selected('updateTemplatesPagingSize');
                         });
@@ -190,21 +190,21 @@
                         intervalId = setInterval(requestUnassignedPages, 10000);
                     }
                     else{
-                        panel.removeClass("perc-opened").addClass("perc-closed");                    
+                        panel.removeClass("perc-opened").addClass("perc-closed");
                         panel.hide("slide",{},500,function(){
                             $("#perc-assigned-templates").template_selected('updateTemplatesPagingSize');
                         });
                         panelExpanderIcon.removeClass("perc-expanded").addClass("perc-collapsed");
-						panelExpanderIcon.attr('title','<i18n:message key = "perc.ui.workflow.view@Maximize"/>');
+                        panelExpanderIcon.attr('title','<i18n:message key = "perc.ui.workflow.view@Maximize"/>');
                         window.clearInterval(intervalId);
                         setPanelPreference(false);
                     }
                 }
             });
-			panelExpanderIcon.on("keydown", function(event){
+            panelExpanderIcon.on("keydown", function(event){
                 if(event.code == "Enter" || event.code == "Space"){
-						document.activeElement.click();
-				}
+                    document.activeElement.click();
+                }
             });
 
             var siteName = $.PercNavigationManager.getSiteName();
@@ -236,69 +236,69 @@
             else{
                 panelExpanderIcon.addClass("perc-disabled");
             }
-            
+
             //Set a filter to each of the paging selectors to allow only digits.
             var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
             $.perc_filterField(percJump, $.perc_textFilters.ONLY_DIGITS);
-            
+
             // Pagination controls - Previous button
             $('.perc-unassigned-panel .perc-template-pages-controls .previous').on("click",
                 function(evt){
                     unassignedPreviousClick(evt);
                 });
-            
+
             // Pagination controls - Next button - Click
             $('.perc-unassigned-panel .perc-template-pages-controls .next').on("click",
                 function(evt){
                     unassignedNextClick(evt);
                 });
-            
-             // Pagination controls - Text input for page selector
+
+            // Pagination controls - Text input for page selector
             $('.perc-unassigned-panel .perc-template-pages-controls').on("submit",function()
             {
                 requestUnassignedPages(parseInt(percJump.val()));
                 return false;
             });
-			//setting attributes for first child, for Action dropdown
-			var actionMenuAnchor_child = $("#perc-dropdown-actions").children().children().children();
-			for(var i=0; i<actionMenuAnchor_child.length; i++){
-				var child = actionMenuAnchor_child[i];
-				if(child.nodeName=="A"){
-					child.tabIndex="0";
-					child.setAttribute("role", "button");
-					child.title='I18N.message("perc.ui.template.design.view@Actions")';
-					break;
-				}
-			}
-			//setting attributes for first child, for View dropdown
-			var viewMenuAnchor_child = $("#perc-dropdown-view").children().children().children();
-			for(var i=0; i<viewMenuAnchor_child.length; i++){
-				var child = viewMenuAnchor_child[i];
-				if(child.nodeName=="A"){
-					child.tabIndex="0";
-					child.setAttribute("role", "button");
-					child.title='I18N.message("perc.ui.template.design.view@View")';
-					break;
-				}
-			}
+            //setting attributes for first child, for Action dropdown
+            var actionMenuAnchor_child = $("#perc-dropdown-actions").children().children().children();
+            for(var i=0; i<actionMenuAnchor_child.length; i++){
+                var child = actionMenuAnchor_child[i];
+                if(child.nodeName=="A"){
+                    child.tabIndex="0";
+                    child.setAttribute("role", "button");
+                    child.title='I18N.message("perc.ui.template.design.view@Actions")';
+                    break;
+                }
+            }
+            //setting attributes for first child, for View dropdown
+            var viewMenuAnchor_child = $("#perc-dropdown-view").children().children().children();
+            for(let i=0; i<viewMenuAnchor_child.length; i++){
+                let child = viewMenuAnchor_child[i];
+                if(child.nodeName=="A"){
+                    child.tabIndex="0";
+                    child.setAttribute("role", "button");
+                    child.title='I18N.message("perc.ui.template.design.view@View")';
+                    break;
+                }
+            }
 
         }
-        
+
         function unassignedPreviousClick(event){
             var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
             requestUnassignedPages(parseInt(percJump.val())-1);
         }
-        
+
         function unassignedNextClick(event){
             var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
             requestUnassignedPages(parseInt(percJump.val())+1);
         }
-        
+
         function requestUnassignedPages(pageNumber){
             if (typeof(pageNumber) == "undefined"){
                 //Use the current pageNumber
                 var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
-                 pageNumber = percJump.val()!=""? parseInt(percJump.val()): 1;
+                pageNumber = percJump.val()!=""? parseInt(percJump.val()): 1;
             }
             if(isNaN(pageNumber)){
                 pageNumber = 1;
@@ -307,7 +307,7 @@
             setPanelPreference(null, pageNumber);
             var startIndex = (((pageNumber-1) * UNASSIGNED_MAX_RESULTS) + 1);
             var siteName = $.PercNavigationManager.getSiteName();
-            
+
             if (typeof(siteName) != "undefined"){
                 $.PercPageService.getUnassignedPagesBySite(siteName, startIndex, UNASSIGNED_MAX_RESULTS, function(status, result){
                     if(status == $.PercServiceUtils.STATUS_SUCCESS){
@@ -324,7 +324,7 @@
                 });
             }
         }
-        
+
         function updatePaging(startIndex, childrenCount, totalItems){
             var panel = $(".perc-unassigned-panel");
             var pageRange = panel.find(".perc-panel-page-group-range");
@@ -353,7 +353,7 @@
                             unassignedPreviousClick(evt);
                         });
             }
-            
+
             var endIndex = startIndex + UNASSIGNED_MAX_RESULTS - 1;
             if(endIndex >= totalItems){
                 panel.find(".next")
@@ -367,11 +367,11 @@
                     .addClass('next')
                     .off('click')
                     .on("click", function(evt){
-                            unassignedNextClick(evt);
+                        unassignedNextClick(evt);
                     });
             }
         }
-        
+
         function updateProgressBar(importStatus){
             var progressPanel = $(".perc-panel-progress");
             var progressFinishedMessage = progressPanel.find(".perc-progress-finished");
@@ -394,7 +394,7 @@
                 // 34 max character can show the progress container at 11px font-size.
                 if (message.length > 34)
                     message = message.replace(" cataloged pages", "");
-                
+
                 progressMessage.text(message);
                 progressFinishedMessage.hide();
                 progressContainer.show();
@@ -420,36 +420,37 @@
                 if(typeof(childrenInPage) != "undefined" && childrenInPage[i])
                     page = childrenInPage[i];
                 var pageObj = $("<li/>")
-                                .attr("id", page.id)
-                                .attr("title", page.path)
-                                //.append(
-                                //    $("<img/>").addClass("perc-left-img")
-                                //)
-                                .append(
-                                    $("<img/>").addClass("perc-left-img")
-                                        .attr("src","../images/images/inspectButton.png")
-                                        .attr("data", JSON.stringify(page))
-                                )
-                                .append(
-                                    $("<div/>").text(page.name)
-                                )
-                                .append(
-                                    $("<span/>").addClass("perc-imported-page-dropdown")
-                                )
-                                ;
-                
+                    .attr("id", page.id)
+                    .attr("title", page.path)
+                    //.append(
+                    //    $("<img/>").addClass("perc-left-img")
+                    //)
+                    .append(
+                        $("<img alt='Inspect Button'/>").addClass("perc-left-img")
+                            .attr("src","../images/images/inspectButton.png")
+                            .attr("data", JSON.stringify(page))
+
+                    )
+                    .append(
+                        $("<div/>").text(page.name)
+                    )
+                    .append(
+                        $("<span/>").addClass("perc-imported-page-dropdown")
+                    )
+                ;
+
                 pageObj.find(".perc-left-img").PercImageTooltip();
                 pageObj.find(".perc-imported-page-dropdown").PercDropdown(
-                                        {
-                                            percDropdownRootClass: "perc-imported-page-dropdown-list",
-                                            percDropdownOptionLabels: ["", "Open Page", "Change Template"],
-                                            percDropdownCallbacks: [function() {}, 
-                                                _openThisPage,
-                                                _changeTemplate
-                                            ],
-                                            percDropdownCallbackData:['', {'pageId': page.id, 'pagePath':page.path}, {'pageId': page.id}]
-                                    });
-                
+                    {
+                        percDropdownRootClass: "perc-imported-page-dropdown-list",
+                        percDropdownOptionLabels: ["", "Open Page", "Change Template"],
+                        percDropdownCallbacks: [function() {},
+                            _openThisPage,
+                            _changeTemplate
+                        ],
+                        percDropdownCallbackData:['', {'pageId': page.id, 'pagePath':page.path}, {'pageId': page.id}]
+                    });
+
                 switch (page.status){
                     case "Imported":
                         pageObj.addClass("perc-imported-page").on("click", function(evt){
@@ -501,15 +502,15 @@
                 panel.find(".perc-imported-page[id='"+ selectedPageId +"']").addClass("perc-imported-page-selected");
             }
         }
-        
+
         function _openThisPage(opts) {
             $.PercNavigationManager.openPage(opts.data.pagePath, true);
         }
-        
+
         function _changeTemplate(opts) {
             $.PercChangeTemplateDialog().openDialog(opts.data.pageId, '', $.PercNavigationManager.getSiteName(), function() { window.location.reload(); });
         }
-        
+
         /**
          * Returns the current template design manager view by checking the following class
          * "perc-templates-detailed" presence
@@ -567,14 +568,14 @@
                 if (newTemplateName !== undefined && newTemplateName !== '')
                 {
                     // Invoke the jQuery widget method refresh passing the (optional) template
-                    // name to fouse is after refreshing the panel
+                    // name to focus is after refreshing the panel
                     $("#perc-assigned-templates").template_selected('refresh', newTemplateName);
                 }
             });
         }
-        
+
         /**
-         * Creates the template from the selcted page from the imported pages.
+         * Creates the template from the selected page from the imported pages.
          */
         function _createTemplateFromPage()
         {
@@ -582,7 +583,7 @@
             if ($(".perc-dropdown-option-CreateTemplatefromPage").hasClass('perc-drop-disabled')) {
                 $.unblockUI();
                 return;
-            }    
+            }
             var pageId = $(".perc-imported-page-selected").attr("id");
             if(!pageId)
             {
@@ -593,9 +594,9 @@
             {
                 $.PercWorkflowController().checkOut("percPage",  pageId, function(status)
                 {
-                   if(status)//Workflow controller presents the appropriate error message to the user if fails to check out.
-                   {
-                       $.PercTemplateService().createTemplateFromPage(pageId, $.PercNavigationManager.getSiteName(), function(status, data){
+                    if(status)//Workflow controller presents the appropriate error message to the user if fails to check out.
+                    {
+                        $.PercTemplateService().createTemplateFromPage(pageId, $.PercNavigationManager.getSiteName(), function(status, data){
                             if(!status)
                             {
                                 $.perc_utils.alert_dialog({title:I18N.message("perc.ui.publish.title@Error"),content:data.errorMessage});
@@ -604,25 +605,28 @@
                             {
                                 var percJump = $(".perc-unassigned-panel .perc-template-pages-controls .perc-jump");
                                 requestUnassignedPages(parseInt(percJump.val()));
-                                
-                                    if (data.name !== undefined && data.name !== '')
-                                    {
-                                        _cleanMementoView();
-                                        // Invoke the jQuery widget method refresh passing the (optional) template
-                                        // name to fouse is after refreshing the panel
-                                        //This works, but it is seriously cheesy.
-                                        $.cookie("templateImport", data.name);
-                                        $.PercBlockUI();
-                                        location.reload();
-                                        //$("#perc-assigned-templates").template_selected('refresh', data.name);
-                                    }
+
+                                if (typeof data !== "undefined" && data.name !== undefined && data.name !== '')
+                                {
+                                    _cleanMementoView();
+                                    // Invoke the jQuery widget method refresh passing the (optional) template
+                                    // name to focus is after refreshing the panel
+                                    //This works, but it is seriously cheesy.
+                                    $.cookie("templateImport", data.name);
+                                    $.PercBlockUI();
+                                    location.reload();
+                                    //$("#perc-assigned-templates").template_selected('refresh', data.name);
+                                }else{
+                                    $.PercBlockUI();
+                                    location.reload();
+                                }
                             }
-                       });
-                   }               
-                });                        
+                        });
+                    }
+                });
             }
         }
-        
+
         /**
          * Creates "View" menu. The menu has a toggle option that allows the
          * user to switch between "Catalog" and "Thumbnails" modes. When the
@@ -647,7 +651,7 @@
                 disableView = [true, true];
                 callbackFunctions = [function()
                 {},
-                _switchToThumbnailView];
+                    _switchToThumbnailView];
                 callbackData = [I18N.message("perc.ui.template.design.view@View"), I18N.message("perc.ui.template.design.view@Thumbnails")];
             }
             else if(currentMode == VIEW_MODE_THUMBNAILS)
@@ -656,7 +660,7 @@
                 disableView = [true, true];
                 callbackFunctions = [function()
                 {},
-                _switchToCatalogView];
+                    _switchToCatalogView];
                 callbackData = [I18N.message("perc.ui.template.design.view@View"), I18N.message("perc.ui.template.design.view@Catalog")];
             }
 
@@ -669,24 +673,24 @@
             percTemplateView.html("");
 
             percTemplateView.PercDropdown(
-            {
-                percDropdownRootClass: "perc-dropdown-template-view",
-                percDropdownOptionLabels: viewNames,
-                percDropdownCallbacks: callbackFunctions,
-                percDropdownCallbackData: callbackData,
-                percDropdownDisabledFlag: disableView
-            });
-			//setting attributes for first child, for View dropdown
-			var viewMenuAnchor_child = $("#perc-dropdown-view").children().children().children();
-			for(var i=0; i<viewMenuAnchor_child.length; i++){
-				var child = viewMenuAnchor_child[i];
-				if(child.nodeName=="A"){
-					child.tabIndex="0";
-					child.setAttribute("role", "button");
-					child.title='I18N.message("perc.ui.template.design.view@View")';
-					break;
-				}
-			}
+                {
+                    percDropdownRootClass: "perc-dropdown-template-view",
+                    percDropdownOptionLabels: viewNames,
+                    percDropdownCallbacks: callbackFunctions,
+                    percDropdownCallbackData: callbackData,
+                    percDropdownDisabledFlag: disableView
+                });
+            //setting attributes for first child, for View dropdown
+            var viewMenuAnchor_child = $("#perc-dropdown-view").children().children().children();
+            for(var i=0; i<viewMenuAnchor_child.length; i++){
+                var child = viewMenuAnchor_child[i];
+                if(child.nodeName=="A"){
+                    child.tabIndex="0";
+                    child.setAttribute("role", "button");
+                    child.title='I18N.message("perc.ui.template.design.view@View")';
+                    break;
+                }
+            }
         }
 
         /**
@@ -701,7 +705,7 @@
 
         /**
          * Shows basic information of templates.
-         * Displays a wraped list of thumbnails.
+         * Displays a wrapped list of thumbnails.
          */
         function _switchToThumbnailView()
         {
@@ -718,7 +722,7 @@
             $(".perc-next-templates-carousel").css("display", "none");
 
             $("#perc-assigned-templates").width('auto').height('auto');
-            // Scroll to the begining
+            // Scroll to the beginning
             $("#perc-assigned-templates").data("scrollable").begin();
             $(".perc-items").width('auto');
 
@@ -736,8 +740,8 @@
             fixIframeHeight();
             // Auto-scroll to selected item
             $('#perc-activated-templates-scrollable').trigger('autoscroll');
-            
-            //close and Hide the unasignedPanel
+
+            //close and Hide the unassignedPanel
             closeAndHideUnassignedPanel();
         }
 
@@ -747,7 +751,7 @@
             var panelExpanderIcon = $(".perc-panel-expander-icon");
             var panel = $(".perc-unassigned-panel");
             if (panelExpanderIcon.is(".perc-expanded")){
-                panel.removeClass("perc-opened").addClass("perc-closed");                    
+                panel.removeClass("perc-opened").addClass("perc-closed");
                 panel.hide();
                 panelExpanderIcon.removeClass("perc-expanded").addClass("perc-collapsed");
                 window.clearInterval(intervalId);
@@ -756,14 +760,14 @@
             panelExpander.hide();
             container.css("margin-left", "0px");
         }
-        
+
         function showUnassignedPanel(){
             var container = $("#perc-template-view-container");
             var panelExpander = $(".perc-unassigned-panel-expander");
             panelExpander.show();
             container.css("margin-left", "38px");
         }
-        
+
         /**
          * Shows detailed information of templates,
          * including applied pages.
@@ -795,12 +799,12 @@
             $("#perc-activated-templates").addClass('perc-templates-detailed');
             //Create view menu again, to show "Thumbnails" option.
             _createViewMenu(VIEW_MODE_CATALOG);
-            // Recaulculate the height of the bottom div and the container
+            // Recalculate the height of the bottom div and the container
             $("#perc-assigned-templates").height('auto');
             fixIframeHeight();
             // Auto-scroll to selected item
             $('#perc-activated-templates-scrollable').trigger('autoscroll');
-            
+
             //Show Unassigned panel expander.
             showUnassignedPanel();
         }
@@ -851,16 +855,16 @@
             });
 
             $("#region-tool").draggable(
-            {
-                helper: 'clone',
-                iframeFix: true,
-                delay:$.dragDelay,
-                refreshPositions: true
-            });
+                {
+                    helper: 'clone',
+                    iframeFix: true,
+                    delay:$.dragDelay,
+                    refreshPositions: true
+                });
             $("#w1").data("widget", {
                 definitionId: 'widgetType'
             }).draggable(
-            {});
+                {});
 
         }
 
@@ -908,52 +912,52 @@
 
             // Wrap the iframe inside the dialog
             dialog = $(dialogHTML).perc_dialog(
-            {
-                resizable: false,
-                title: I18N.message("perc.ui.template.design.view@Import Template"),
-                modal: true,
-                closeOnEscape: true,
-                percButtons: {
-                    "Import": {
-                        click: function()
-                        {
-                            var actionUrl = $.perc_paths.TEMPLATE_IMPORT;
-                            $.PercTemplateService().getSiteProperties($.PercNavigationManager.getSiteName(), function(status, result)
+                {
+                    resizable: false,
+                    title: I18N.message("perc.ui.template.design.view@Import Template"),
+                    modal: true,
+                    closeOnEscape: true,
+                    percButtons: {
+                        "Import": {
+                            click: function()
                             {
-                                if(status)
+                                var actionUrl = $.perc_paths.TEMPLATE_IMPORT;
+                                $.PercTemplateService().getSiteProperties($.PercNavigationManager.getSiteName(), function(status, result)
                                 {
-                                    actionUrl = actionUrl + "/" + result.SiteProperties.id;
-                                    var checkValue = $("#perc-import-template-frame").contents().find(".perc-template-import-field").val();
+                                    if(status)
+                                    {
+                                        actionUrl = actionUrl + "/" + result.SiteProperties.id;
+                                        var checkValue = $("#perc-import-template-frame").contents().find(".perc-template-import-field").val();
 
-                                    // Show error message if user clicks Import without selecting any file.
-                                    if(checkValue == "")
-                                    {
-                                        $("#perc-import-template-frame").css('height', '67px');
-                                        $("#perc-import-template-frame").contents().find(".perc-import-error").show();
-                                        return;
+                                        // Show error message if user clicks Import without selecting any file.
+                                        if(checkValue == "")
+                                        {
+                                            $("#perc-import-template-frame").css('height', '67px');
+                                            $("#perc-import-template-frame").contents().find(".perc-import-error").show();
+                                            return;
+                                        }
+                                        $("#perc-import-template-frame").contents().find("#perc-import-template-form").attr("action", actionUrl);
+                                        $("#perc-import-template-frame").contents().find("#perc-import-template-form").trigger("submit");
+                                        $("#perc-import-template-frame").on("load",function()
+                                        {
+                                            closeDialogOnSuccess();
+                                        });
                                     }
-                                    $("#perc-import-template-frame").contents().find("#perc-import-template-form").attr("action", actionUrl);
-                                    $("#perc-import-template-frame").contents().find("#perc-import-template-form").trigger("submit");
-                                    $("#perc-import-template-frame").on("load",function()
-                                    {
-                                        closeDialogOnSuccess();
-                                    });
-                                }
-                            });
+                                });
+                            },
+                            id: "perc-template-import"
                         },
-                        id: "perc-template-import"
+                        "Cancel": {
+                            click: function()
+                            {
+                                dialog.remove();
+                            },
+                            id: "perc-import-dialog-cancel"
+                        }
                     },
-                    "Cancel": {
-                        click: function()
-                        {
-                            dialog.remove();
-                        },
-                        id: "perc-import-dialog-cancel"
-                    }
-                },
-                id: "perc-import-dialog",
-                width: 490
-            });
+                    id: "perc-import-dialog",
+                    width: 490
+                });
         }
 
         // Close or reload the dialog based on server feedback after import.
