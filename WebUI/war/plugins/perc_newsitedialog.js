@@ -110,7 +110,7 @@ var $perc_newSiteDialogLayout;
                                 onSelect: function(val, url)
                                 {
                                     $('#perc_selectedTemplate img').remove();
-                                    $('#perc_selectedTemplate').html("<img src='" + url + "'/>" + "<br/><span>" + val.split(".")[2] + "</span>");
+                                    $('#perc_selectedTemplate').html("<img alt='' src='" + url + "'/>" + "<br/><span>" + val.split(".")[2] + "</span>");
                                     $('#selectedtemplate').val(val);
                                 }
                             });
@@ -175,7 +175,7 @@ var $perc_newSiteDialogLayout;
                 },
                 onNext: _onNext,
                 // We specify a validation function/method that calls the corresponding method from the
-                // the validate library
+                // validate library
                 onValidate: function()
                 {
                     return v.form();
@@ -323,7 +323,7 @@ var $perc_newSiteDialogLayout;
 
             // If the URL entered lacks 'http(s)://' prefix, append 'http://'
             if(! (/^(https?):\/\//i).test(newSite.baseUrl)) {
-                newSite.baseUrl = 'http://' + newSite.baseUrl;
+                newSite.baseUrl = 'https://' + newSite.baseUrl;
             }
 
 			var importConfig = {
@@ -455,7 +455,7 @@ var $perc_newSiteDialogLayout;
 
     function _getFieldValues()
     {
-        var results = new Object();
+        var results = {};
         $("#perc_newSiteDialog .perc_dialog_field").each(function()
         {
             results[this.id] = $(this).val();
@@ -470,7 +470,7 @@ var $perc_newSiteDialogLayout;
     }
     /**
      * Retrieves the existing sites from the response object and compares the value against
-     * each one of those (case insensitive).
+     * each one of those (case-insensitive).
      * @param validator - unused
      * @param element - unused
      * @param value {String} - the name of the site to check, must be a non-emtpy string.
