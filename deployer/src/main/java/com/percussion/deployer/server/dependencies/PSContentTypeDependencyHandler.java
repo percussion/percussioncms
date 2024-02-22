@@ -1588,7 +1588,7 @@ public class PSContentTypeDependencyHandler
          throw new IllegalArgumentException("item definition may not be null");
 
       if (idTypes == null)
-         throw new IllegalArgumentException("idTypes may not be null");
+        return;
 
       if (idMap == null)
          throw new IllegalArgumentException("idMap may not be null");

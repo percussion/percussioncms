@@ -827,14 +827,15 @@ public class PSSiteTemplateService implements IPSSiteTemplateService
             existingTemplateNames.add(templateSummary.getName());
         }
 
-        int count = 0;
-        String generatedTemplateName = templateName;
-        while (existingTemplateNames.contains(generatedTemplateName))
-        {
-            count++;
-            generatedTemplateName = PSPageManagementUtils.getNameForCount(templateName, count);
+        int count = 1;
+        String generatedTemplateName;
+        for(String tname : existingTemplateNames){
+            if(tname.contains(templateName)){
+                count++;
+            }
         }
 
+        generatedTemplateName = PSPageManagementUtils.getNameForCount(templateName, count);
         return generatedTemplateName;
     }
    
