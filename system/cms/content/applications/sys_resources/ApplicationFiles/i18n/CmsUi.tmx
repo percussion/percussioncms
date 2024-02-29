@@ -1824,11 +1824,11 @@
       <prop type="sectionname" xml:lang="en-us">Delete Site</prop>
 	<note xml:lang="en-us"></note>
       <tuv xml:lang="en-us">
-        <seg>&lt;span id = 'perc-delete-dialog-warning'&gt;Warning:&lt;/span&gt; &lt;br\&gt; &lt;span id = 'perc-warning-red'&gt;You are about to delete the site: '{0}' &lt;/span&gt;&lt;br\&gt;&lt;strong&gt;All pages, sections, folders and templates in this site will be deleted.&lt;br\&gt; &lt;br\&gt;&lt;/strong&gt; &lt;span id='perc-delete-warn-msg'&gt; Note: deleting '{0}' from CMS will not remove published site content in '{0}' from your live web server.&lt;br\&gt; &lt;br\&gt; Please check &lt;a title='Percussion Software - Documentation' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a&gt; for instructions on how to remove all live site content first before deleting a site.&lt;/span&gt; </seg>
+        <seg>&lt;span id = 'perc-delete-dialog-warning'&gt;Warning:&lt;/span&gt; &lt;br\&gt; &lt;span id = 'perc-warning-red'&gt;You are about to delete the site: '{0}' &lt;/span&gt;&lt;br\&gt;&lt;strong&gt;All pages, sections, folders and templates in this site will be deleted.&lt;br\&gt; &lt;br\&gt;&lt;/strong&gt; &lt;span id='perc-delete-warn-msg'&gt; Note: deleting '{0}' from CMS will not remove published site content in '{0}' from your live web server.&lt;br\&gt; &lt;br\&gt; Please check &lt;a title='Percussion Software - Documentation' href='https://percussioncmshelp.intsof.com/'&gt;percussioncmshelp.intsof.com&lt;/a&gt; for instructions on how to remove all live site content first before deleting a site.&lt;/span&gt; </seg>
       </tuv>
       <tuv xml:lang="es">
         <seg>&lt;span id = 'perc-delete-dialog-warning'&gt;Advertencia:&lt;/span&gt; &lt;br\&gt; &lt;span id = 'perc-warning-red'&gt;Estás a punto de eliminar el sitio: '{0}' &lt;/span&gt;&lt;br\&gt;&lt;strong&gt;Todas las páginas, secciones, carpetas y plantillas de este sitio se eliminarán.&lt;br\&gt; &lt;br\&gt;&lt;/strong&gt; &lt;span id='perc-delete-warn-msg'&gt; Nota: eliminar '{0}' de CMS no eliminará el contenido del sitio publicado en '{0}' de su servidor web en directo.&lt;br\&gt; &lt;br\&gt; Por favor, compruebe &lt;a title='Software de Percussion -
-Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a&gt; Para obtener instrucciones sobre cómo eliminar todo el contenido del sitio en vivo antes de eliminar un sitio.&lt;/span&gt; </seg>
+Documentación' href='https://percussioncmshelp.intsof.com/'&gt;percussioncmshelp.intsof.com&lt;/a&gt; Para obtener instrucciones sobre cómo eliminar todo el contenido del sitio en vivo antes de eliminar un sitio.&lt;/span&gt; </seg>
       </tuv>
   </tu>
 <tu tuid="perc.ui.deletesitedialog.warning@Processing">
@@ -4261,10 +4261,10 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
         <prop type="sectionname" xml:lang="en-us">User Management</prop>
         <note xml:lang="en-us">Message listing users that were not imported from LDAP</note>
         <tuv xml:lang="en-us">
-            <seg>Some of the users were not imported due to a server side error. Refer to the documentation on configuring LDAP/Active Directory: https://help.percussion.com/</seg>
+            <seg>Some of the users were not imported due to a server side error. Refer to the documentation on configuring LDAP/Active Directory: https://percussioncmshelp.intsof.com/</seg>
         </tuv>
         <tuv xml:lang="es">
-            <seg>Algunos de los usuarios no se importaron debido a un error del lado del servidor. Consulte la documentación sobre la configuración de LDAP / Active Directory: https://help.percussion.com/</seg>
+            <seg>Algunos de los usuarios no se importaron debido a un error del lado del servidor. Consulte la documentación sobre la configuración de LDAP / Active Directory: https://percussioncmshelp.intsof.com/</seg>
         </tuv>
     </tu>
 

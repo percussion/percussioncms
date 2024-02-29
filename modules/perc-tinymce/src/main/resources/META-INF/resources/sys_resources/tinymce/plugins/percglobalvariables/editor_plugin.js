@@ -124,7 +124,7 @@
                 longname : 'Insert global variables',
                 author : 'Percussion Software Inc.',
                 authorurl : 'https://www.percussion.com',
-                infourl : 'https://help.percussion.com/cm1',
+                infourl : 'https://percussioncmshelp.intsof.com/cm1',
                 version : tinymce.majorVersion + "." + tinymce.minorVersion
             };
         },
