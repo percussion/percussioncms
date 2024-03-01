@@ -104,7 +104,7 @@
     <div class="perc-logo" role="img" aria-label="<i18n:message key="perc.ui.header@Percussion Logo"/>"></div>
     <%-- logout must be after help because they both float and we want logout to left of help --%>
     <div class="perc-logout"><a tabindex="1" role="button" href="javascript:void(0)" id="perc-changepw" title="<i18n:message key="perc.ui.change.pw@Change Password"/>"><i18n:message key="perc.ui.common.label@Welcome"/>
-        <span><%= request.getAttribute("currentUserName") %></span></a> | <a tabindex="2" role="button" href="https://help.percussion.com/"
+        <span><%= request.getAttribute("currentUserName") %></span></a> | <a tabindex="2" role="button" href="https://percussioncmshelp.intsof.com/"
                                                                              target="_blank" title="<i18n:message key="perc.ui.common.label@Help" />" rel="noopener noreferrer"><i18n:message key="perc.ui.common.label@Help"/></a> <%
         if (fullrolestr.contains("Admin")){
               %>| <a tabindex="3" role="button" href="/rest/api-docs?url=/rest/openapi.json&docExpansion=none&deepLinking=true&filter=true&tagsSorter=alpha" target="_blank" rel="noopener noreferrer" title="REST API Documentation">API</a>

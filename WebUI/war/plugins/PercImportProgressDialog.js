@@ -149,7 +149,7 @@
             {
                 //Used a random dummy parameter to avoid cache
                 dialogMarkup.append(
-                    $('<img height="0px" width="0px" src="https://help.percussion.com/Assets/Help/header/images/PercussionSwoosh.png?dummy=' + Math.random() + '">')
+                    $('<img height="0px" width="0px" src="https://percussioncmshelp.intsof.com/Assets/Help/header/images/PercussionSwoosh.png?dummy=' + Math.random() + '">')
                         .on("error", handleUnreachableURL)
                         .on("load", showVideoIframe)
                 );

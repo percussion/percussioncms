@@ -45,7 +45,7 @@
                      </td>
 
                      <td align="left" valign="top">
-                        <a href="https://help.percussion.com/rhythmyx/implementation/dce/index.html" target="_blank" rel="noopener noreferrer">Help</a>
+                        <a href="https://percussioncmshelp.intsof.com/rhythmyx/implementation/dce/index.html" target="_blank" rel="noopener noreferrer">Help</a>
                      </td>
                      <td align="left" valign="bottom">
                         <xsl:variable name="userstatusurl" select="document(//userstatusurl)/*/url"/>
