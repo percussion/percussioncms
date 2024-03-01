@@ -127,7 +127,7 @@
        <maven.jxr.plugin.version>3.0.0</maven.jxr.plugin.version>
        <maven.war.plugin.version>3.3.1</maven.war.plugin.version>
        <plexus.component.metadata.version>2.1.0</plexus.component.metadata.version>
-       <jetty.maven.plugin.version>9.4.51.v20230217</jetty.maven.plugin.version>
+       <jetty.maven.plugin.version>9.4.54.v20240208</jetty.maven.plugin.version>
        <lifecycle.mapping.plugin>1.0.0</lifecycle.mapping.plugin>
        <jacoco.maven.plugin.version>0.8.5</jacoco.maven.plugin.version>
        <java.version>1.8.0</java.version>
@@ -173,7 +173,7 @@
         <cactus.version>13-1.7.1</cactus.version>
         <cactus.sysproperties>cactus.contextURL</cactus.sysproperties>
         <cactus.contextURL>http://localhost:9992/Rhythmyx</cactus.contextURL>
-        <jetty.version>9.4.51.v20230217</jetty.version>
+        <jetty.version>9.4.54.v20240208</jetty.version>
         <trinidad.version>1.0.2</trinidad.version>
        <derby.version>10.14.2.0</derby.version>
        <mssql.version>12.4.1.jre8</mssql.version>
