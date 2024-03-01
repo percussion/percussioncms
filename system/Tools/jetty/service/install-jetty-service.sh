@@ -45,17 +45,17 @@ function checkForJbossService() {
     while read -r line; do
         service=$(basename ${line})
         echo "Found JBoss service $service in $line"
-        serviceHome=$(grep "^SERVER_DIR=" /etc/init.d/${service} | cut -d "=" -f 2)
+        serviceHome=$(grep "^SERVER_DIR=" /etc/systemd/${service} | cut -d "=" -f 2)
         echo $serviceHome
         if [ "$serviceHome" == "$rxDir" ]; then
             currentService=$service
         fi
-    done < <(grep -l /etc/init.d/* -e 'RhythmyxD')
+    done < <(grep -l /etc/systemd/* -e 'RhythmyxD')
 
     if [ ! -z "$currentService" ];
     then
         if [ "$cleanupJBoss" != "true" ]; then
-            echo "Warning Jboss startup /etc/init.d/${currentService} for this instance ${rxDir} exists use  to remove"
+            echo "Warning Jboss startup /etc/systemd/${currentService} for this instance ${rxDir} exists use  to remove"
             usage
         fi
         echo "Cleaning up JBoss init scripts"
@@ -96,7 +96,7 @@ function removeServiceScript() {
 
     echo "removing files"
     set -x
-    rm -f "/etc/init.d/${1}"
+    rm -f "/etc/systemd/${1}"
     rm -f "/etc/default/${1}"
     rm -rf "$JETTY_RUN"
     rm -f "$JETTY_BASE/${SERVICE_NAME}.state"
@@ -121,14 +121,14 @@ JETTY_RUN=/var/run/rxjetty/${SERVICE_NAME}
 if [[ $(type -P "service") ]]; then
     serviceCmd="service ${SERVICE_NAME}"
 else
-    serviceCmd="/etc/init.d/${SERVICE_NAME}"
+    serviceCmd="/etc/systemd/${SERVICE_NAME}"
 fi
 echo before uninstall $uninstall
 if [ "$uninstall" != "true" ];then
 echo in uninstall
 
 
-    if [  -f "/etc/init.d/${SERVICE_NAME}" ];then
+    if [  -f "/etc/systemd/${SERVICE_NAME}" ];then
         echo "Service $SERVICE_NAME already installed"
         exit 1
     fi
@@ -176,10 +176,10 @@ echo in uninstall
     chown -R "${RX_USER}:${RX_GROUP}" "${JETTY_RUN}"
     chmod -R ugo+rw /var/run/rxjetty/${SERVICE_NAME}
 
-    echo "copying startup script ${JETTY_DEFAULTS}/bin/jetty.sh /etc/init.d/${SERVICE_NAME}"
+    echo "copying startup script ${JETTY_DEFAULTS}/bin/jetty.sh /etc/systemd/${SERVICE_NAME}"
 
-    sed -e "s/\${rxjetty_service}/$SERVICE_NAME/" ${JETTY_DEFAULTS}/bin/rxjetty.sh > /etc/init.d/${SERVICE_NAME}
-    chmod 755 "/etc/init.d/${SERVICE_NAME}"
+    sed -e "s/\${rxjetty_service}/$SERVICE_NAME/" ${JETTY_DEFAULTS}/bin/rxjetty.sh > /etc/systemd/${SERVICE_NAME}
+    chmod 755 "/etc/systemd/${SERVICE_NAME}"
 
     cat <<-EOF > /etc/default/${SERVICE_NAME}
     JAVA_HOME=${JAVA_HOME}
@@ -199,7 +199,7 @@ echo in uninstall
     chmod -R ugo+rw /var/run/rxjetty/${SERVICE_NAME}
 EOF
 
-    echo "configuration for service ${SERVICE_NAME} in /etc/init.d/${SERVICE_NAME} must reinstall or update if paths change"
+    echo "configuration for service ${SERVICE_NAME} in /etc/systemd/${SERVICE_NAME} must reinstall or update if paths change"
 
     echo "**********"
     cat /etc/default/${SERVICE_NAME}
@@ -220,8 +220,8 @@ EOF
         update-rc.d ${SERVICE_NAME} defaults
     elif [ -d "/etc/rc2.d" ]; then
         echo "Fall back to symbolic linking into /etc/rcx.d folders e.g. Solaris 9"
-        ln /etc/init.d/${SERVICE_NAME} /etc/rc2.d/S99${SERVICE_NAME}
-        ln /etc/init.d/${SERVICE_NAME} /etc/rc0.d/K99${SERVICE_NAME}
+        ln /etc/systemd/${SERVICE_NAME} /etc/rc2.d/S99${SERVICE_NAME}
+        ln /etc/systemd/${SERVICE_NAME} /etc/rc0.d/K99${SERVICE_NAME}
     else
         echo "Cannot find chkconfig or update-rc.d or /etc/rc2.d to run service on startup consult documentation on alternatives for your distro"
         echo ${distVersion}
@@ -237,16 +237,16 @@ else # Uninstall
 echo checking for jetty service
     checkForJettyService
 
-    if [ ! -f "/etc/init.d/${SERVICE_NAME}" ];then
-        echo "Service $SERVICE_NAME not installed in /etc/init.d/${SERVICE_NAME}"
+    if [ ! -f "/etc/systemd/${SERVICE_NAME}" ];then
+        echo "Service $SERVICE_NAME not installed in /etc/systemd/${SERVICE_NAME}"
         exit 1
     fi
 
-    if cat "/etc/init.d/${SERVICE_NAME}" | grep -q "jetty"; then
-        echo "Found service installed to /etc/init.d/${SERVICE_NAME}"
+    if cat "/etc/systemd/${SERVICE_NAME}" | grep -q "jetty"; then
+        echo "Found service installed to /etc/systemd/${SERVICE_NAME}"
     else
-        cat "/etc/init.d/${SERVICE_NAME}" | grep -q "jetty"
-        echo "Service installed to /etc/init.d/${SERVICE_NAME} is not a Rhythmyx Jetty Service"
+        cat "/etc/systemd/${SERVICE_NAME}" | grep -q "jetty"
+        echo "Service installed to /etc/systemd/${SERVICE_NAME} is not a Rhythmyx Jetty Service"
         exit 1
     fi
     if  ${serviceCmd} status | grep "Jetty running" ; then
