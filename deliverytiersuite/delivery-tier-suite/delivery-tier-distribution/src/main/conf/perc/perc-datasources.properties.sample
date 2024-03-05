@@ -9,6 +9,15 @@
 db.username=test
 db.password=ENC(2sU2TZ627xkhnsXip/5mgw\=\=)
 
+
+#############################################################
+# Specify the database name that should be used to own the schema
+# Derby - Should be blank
+# MySQL - Should be the database name
+# MSSQL - Should be the database name
+#############################################################
+db.name=
+
 # For Oracle, the schema should be the same as the db.username property.
 # For MySQL you may use an empty value: db.schema=
 # For MS SQL you may use db.schema=dbo
