@@ -33,5 +33,15 @@ again in database then this changeset will not run until we change the changeset
         </sql>
     </changeSet>
 
+    <changeSet runAlways="true" id="20170503041548-1" author="user" dbms="derby">
+        <preConditions onFail="CONTINUE">
+            <dbms type="derby"/>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM SYS.SYSCONGLOMERATES c JOIN SYS.SYSTABLES t ON c.TABLEID = t.TABLEID WHERE c.CONGLOMERATENAME = 'IX_PRCPGMTDT_DV_NAME_ENTID' AND t.TABLENAME = 'PERC_PAGE_METADATA_PROPERTIES'
+            </sqlCheck>
+        </preConditions>
+        <sql>CREATE INDEX IX_PRCPGMTDT_DV_NAME_ENTID ON PERC_PAGE_METADATA_PROPERTIES (datevalue ASC, name ASC, ENTRY_ID ASC)
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>
 
