@@ -117,10 +117,12 @@
                 spellcheck: true,
                 autocorrect: true,
                 autofocus: true,
-                screenReaderLabel: 'Widget Source Code Editor'});
+				screenReaderLabel: 'Widget Source Code Editor'});
 
-            const innerDiv = document.querySelector('#perc-widget-display-html').querySelector('.CodeMirror');
-            $(innerDiv).children().children().attr({'title':'<i18n:message key = "perc.ui.publishing.history@DisplayHTML"/>'});
+				var innerDiv_new = document.querySelector('#perc-widget-display-html').querySelector('.CodeMirror');
+                $(innerDiv_new).children().children().attr({'title':'<i18n:message key = "perc.ui.publishing.history@DisplayHTML"/>'});
+
+
     </script>
     </div>
 </csrf:form>
