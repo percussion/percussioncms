@@ -17,8 +17,7 @@ again in database then this changeset will not run until we change the changeset
             <sqlCheck expectedResult="0">SELECT count(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'blog_post_visit' AND COLUMN_NAME ='VISIT_ID' AND DATA_TYPE = 'bigint' AND COLUMN_DEFAULT IS NULL AND IS_NULLABLE = 'NO' AND EXTRA like '%auto_increment%'
             </sqlCheck>
         </preConditions>
-        <addAutoIncrement catalogName="dtsdb"
-                          columnDataType="bigint"
+        <addAutoIncrement columnDataType="bigint"
                           columnName="VISIT_ID"
                           tableName="blog_post_visit"/>
     </changeSet>

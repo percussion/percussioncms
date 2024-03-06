@@ -28,7 +28,7 @@ again in database then this changeset will not run until we change the changeset
             <sqlCheck expectedResult="0">SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME='PERC_PAGE_METADATA_PROPERTIES' AND INDEX_NAME='IX_PRCPGMTDT_DATEVAL'
             </sqlCheck>
         </preConditions>
-        <sql>CREATE INDEX IX_PRCPGMTDT_DATEVAL ON dtsdb.PERC_PAGE_METADATA_PROPERTIES (datevalue ASC)
+        <sql>CREATE INDEX IX_PRCPGMTDT_DATEVAL ON PERC_PAGE_METADATA_PROPERTIES (datevalue ASC)
         </sql>
     </changeSet>
 
