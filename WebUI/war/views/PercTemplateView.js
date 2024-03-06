@@ -206,7 +206,7 @@
                     percDropdownCallbacks    : [function(){}, function(){viewImportLog()},
                         function(){openUrl("UIVideo", "https://percussioncmshelp.intsof.com/percussion-cm1/overview/introduction-to-the-ui")},
                         function(){openUrl("ImportFAQs", "https://percussioncmshelp.intsof.com/in-product/import-faqs")},
-                        function(){openUrl("PercussionCommunity", "https://github.com/percussion/percussioncms/discussions")},
+                        function(){openUrl("PercussionCommunity", "https://percussioncmscommunity.intsof.com")},
                         function(){openUrl("MoreHelp", "https://percussioncmshelp.intsof.com")}],
                     percDropdownCallbackData : [I18N.message("perc.ui.template.design.view@Help"),I18N.message("perc.ui.template.design.view@Download Report Log"), I18N.message("perc.ui.template.design.view@Video Tutorials"), I18N.message("perc.ui.template.design.view@Import FAQs"), I18N.message("perc.ui.template.design.view@Percussion Community"), I18N.message("perc.ui.template.design.view@More Help")],
                     percDropdownDisabledFlag : disableActionsHelp

@@ -45,7 +45,7 @@
                         <div class='perc-login-logo'><img src="sys_resources/images/percussion-logo.png" alt="${rxcomp:i18ntext('general@Percussion Logo Alt',locale)}" title="${rxcomp:i18ntext('general@Percussion Logo Title',locale)}"/></div>   
                   		<p class = "perc-warning-message">${rxcomp:i18ntext('jsp_unsupported@warning message part1',locale)}</p><p class = "perc-warning-message">${rxcomp:i18ntext('jsp_unsupported@warning message part2',locale)}<p>
 						<p class="perc-warning-message">
-						${rxcomp:i18ntext('jsp_unsupported@warning message part3',locale)} <a href="mailto:support@percussion.com">${rxcomp:i18ntext('jsp_unsupported@the technical support team',locale)}.</a></p>
+						${rxcomp:i18ntext('jsp_unsupported@warning message part3',locale)} <a href="mailto:percussion.support@intsof.com">${rxcomp:i18ntext('jsp_unsupported@the technical support team',locale)}.</a></p>
 						<p class = "perc-warning-message">${rxcomp:i18ntext('jsp_unsupported@warning message part4',locale)} <a href="${rxcomp:i18ntext('jsp_unsupported@supported browser link',locale)}" target="_blank" rel = "noopener noreferrer" title="${rxcomp:i18ntext('jsp_unsupported@supported browser link title',locale)}">${rxcomp:i18ntext('jsp_unsupported@supported browser link text',locale)}</a>.</p>
                     </div>
                 </td>
