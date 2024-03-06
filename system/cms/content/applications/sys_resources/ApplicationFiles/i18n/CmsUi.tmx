@@ -1300,10 +1300,10 @@
         <tu tuid="perc.ui.publish.errordialog.message@Publish Not Allowed">
             <note xml:lang="en-us">Message for publication stopped for licensing issues.</note>
             <tuv xml:lang="en-us">
-                <seg>You have either exceeded your license limits or have an inactive license and simply need to register. Please return to the License Monitor on the Dashboard to resolve this issue. To upgrade your license contact a sales rep at sales@percussion.com or 800.283.0800. Thank you. </seg>
+                <seg>You have either exceeded your license limits or have an inactive license and simply need to register. Please return to the License Monitor on the Dashboard to resolve this issue. To upgrade your license contact a sales rep at sales@percussion.com or +1-443-535-1889. Thank you. </seg>
             </tuv>
             <tuv xml:lang="es">
-                <seg>Usted ha excedido los límites de su licencia o tiene una licencia inactiva y simplemente necesita registrarse. Vuelva al Monitor de licencia en el panel de control para resolver este problema. Para actualizar su licencia, póngase en contacto con un representante de ventas en sales@percussion.com o 01+800.283.0800. Gracias. </seg>
+                <seg>Usted ha excedido los límites de su licencia o tiene una licencia inactiva y simplemente necesita registrarse. Vuelva al Monitor de licencia en el panel de control para resolver este problema. Para actualizar su licencia, póngase en contacto con un representante de ventas en sales@percussion.com o 01++1-443-535-1889. Gracias. </seg>
             </tuv>
         </tu>
         <tu tuid="perc.ui.publish.errordialog.message@Bad configuration">
@@ -5889,10 +5889,10 @@ Documentación' href='https://percussioncmshelp.intsof.com/'&gt;percussioncmshel
                     <prop type="sectionname" xml:lang="en-us">License Monitor Gadget</prop>
                     <note xml:lang="en-us"></note>
                     <tuv xml:lang="en-us">
-                        <seg>Input the activation code sent to you by Percussion. If you have not received an activation code, please check your email or call us at 800.283.0800 for assistance.</seg>
+                        <seg>Input the activation code sent to you by Percussion. If you have not received an activation code, please check your email or call us at +1-443-535-1889 for assistance.</seg>
                     </tuv>
                     <tuv xml:lang="es">
-                        <seg>Ingrese el código de activación que le envió Percussion. Si no ha recibido un código de activación, revise su correo electrónico o llámenos al 800.283.0800 para obtener ayuda.</seg>
+                        <seg>Ingrese el código de activación que le envió Percussion. Si no ha recibido un código de activación, revise su correo electrónico o llámenos al +1-443-535-1889 para obtener ayuda.</seg>
                     </tuv>
      </tu>
      <tu tuid="perc.ui.gadgets.licenseMonitor@Activation code">
@@ -5929,10 +5929,10 @@ Documentación' href='https://percussioncmshelp.intsof.com/'&gt;percussioncmshel
                     <prop type="sectionname" xml:lang="en-us">License Monitor Gadget</prop>
                     <note xml:lang="en-us"></note>
                     <tuv xml:lang="en-us">
-                        <seg>Below is a list of activated Percussion modules. To activate a module, input the activation code(s) sent to you by Percussion.  If you have not received an activation code, please check your email or call us at 800.283.0800 for assistance. If a module is displayed as inactive you can enter in a new activation code to update that particular module.</seg>
+                        <seg>Below is a list of activated Percussion modules. To activate a module, input the activation code(s) sent to you by Percussion.  If you have not received an activation code, please check your email or call us at +1-443-535-1889 for assistance. If a module is displayed as inactive you can enter in a new activation code to update that particular module.</seg>
                     </tuv>
                     <tuv xml:lang="es">
-                        <seg>A continuación se muestra una lista de módulos de Percussion activados. Para activar un módulo, ingrese los códigos de activación que le envió Percussion. Si no ha recibido un código de activación, revise su correo electrónico o llámenos al 800.283.0800 para obtener ayuda. Si un módulo se muestra como inactivo, puede ingresar un nuevo código de activación para actualizar ese módulo en particular.</seg>
+                        <seg>A continuación se muestra una lista de módulos de Percussion activados. Para activar un módulo, ingrese los códigos de activación que le envió Percussion. Si no ha recibido un código de activación, revise su correo electrónico o llámenos al +1-443-535-1889 para obtener ayuda. Si un módulo se muestra como inactivo, puede ingresar un nuevo código de activación para actualizar ese módulo en particular.</seg>
                     </tuv>
      </tu>
      <tu tuid="perc.ui.gadgets.licenseMonitor@Close">
@@ -6019,10 +6019,10 @@ Documentación' href='https://percussioncmshelp.intsof.com/'&gt;percussioncmshel
                     <prop type="sectionname" xml:lang="en-us">License Monitor Gadget</prop>
                     <note xml:lang="en-us"></note>
                     <tuv xml:lang="en-us">
-                        <seg>You have exceeded your license limits. To get within allowed limits you may delete or archive live pages or sites and refresh. If your license has been suspended, you will not be able to publish. To remove the suspension, contact Percussion at sales@percussion.com or 800.283.0800.</seg>
+                        <seg>You have exceeded your license limits. To get within allowed limits you may delete or archive live pages or sites and refresh. If your license has been suspended, you will not be able to publish. To remove the suspension, contact Percussion at sales@percussion.com or +1-443-535-1889.</seg>
                     </tuv>
                     <tuv xml:lang="es">
-                        <seg>Ha excedido los límites de su licencia. Para estar dentro de los límites permitidos, puede eliminar o archivar páginas o sitios en vivo y actualizar. Si su licencia ha sido suspendida, no podrá publicar. Para eliminar la suspensión, comuníquese con Percussion a sales@percussion.com o al 800.283.0800.</seg>
+                        <seg>Ha excedido los límites de su licencia. Para estar dentro de los límites permitidos, puede eliminar o archivar páginas o sitios en vivo y actualizar. Si su licencia ha sido suspendida, no podrá publicar. Para eliminar la suspensión, comuníquese con Percussion a sales@percussion.com o al +1-443-535-1889.</seg>
                     </tuv>
      </tu>
      <tu tuid="perc.ui.gadgets.licenseMonitor@Refresh">

@@ -104,7 +104,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <a tabindex="0" role="button" href="https://github.com/percussion/percussioncms/discussions/" target="_blank" rel="noopener noreferrer" title="<i18n:message key="perc.ui.common.label@Percussion Community" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
+                    <a tabindex="0" role="button" href="https://percussioncmscommunity.intsof.com/" target="_blank" rel="noopener noreferrer" title="<i18n:message key="perc.ui.common.label@Percussion Community" />" role="button" class="btn btn-block perc-btn-inverse perc-nav-menu-button text-left">
                   <span>
                     <i aria-hidden class="fas fa-hands-helping fa-fw"></i>
                   </span>
