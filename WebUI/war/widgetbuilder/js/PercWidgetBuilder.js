@@ -480,6 +480,10 @@ $(document).ready(function()
 	});
    });
 
+    $( "#perc-tab-widget-display" ).bind( "click", function() {
+        editor.refresh();
+    });
+
    $('.WBTabs').keydown(function(eventHandler){
     if(eventHandler.code == "Enter" || eventHandler.code == "Space"){
 		document.activeElement.click();
