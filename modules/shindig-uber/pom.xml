@@ -3,7 +3,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.1.4-SNAPSHOT</version>
+        <version>8.1.4</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 <packaging>jar</packaging>
@@ -236,7 +236,7 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20230618</version>
+            <version>20240303</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
