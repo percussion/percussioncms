@@ -124,7 +124,6 @@ public class PSThumbnailRunner implements Runnable {
 			activeWorkers.incrementAndGet();
 			return true;
 		}
-		log.debug("Active Thumbnail Runners: {}", activeWorkers);
 		return false;
 	}
 
