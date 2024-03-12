@@ -3,7 +3,7 @@
 	"config_css": "../sys_resources/css/tinymce/content.css",
 	"menubar": "edit insert view format table tools ",
 	"browser_spellcheck": true,
-	"forced_root_block": "",
+	"forced_root_block": "div",
 	"force_br_newlines": true,
 	"table_style_by_css": true,
 	"force_p_newlines": false,
