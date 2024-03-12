@@ -193,7 +193,7 @@
        <swagger.version>2.1.10</swagger.version>
        <swagger.ui.version>3.51.2</swagger.ui.version>
        <commons.compress.version>1.26.0</commons.compress.version>
-       <solr.version>8.11.2</solr.version>
+       <solr.version>8.11.3</solr.version>
         <nettyall.version>4.1.45.Final</nettyall.version>
        <hikari.version>4.0.3</hikari.version>
        <snakeyaml.version>2.0</snakeyaml.version>
