@@ -5,13 +5,13 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.1.4</version>
+        <version>8.1.5-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>perc-thumbnail</artifactId>
-  <version>8.1.4</version>
+  <version>8.1.5-SNAPSHOT</version>
 
     <properties>
         <version.arquillian>1.1.11.Final</version.arquillian>
@@ -98,7 +98,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.1.4</version>
+            <version>8.1.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -218,7 +218,7 @@
         <dependency>
             <groupId>com.percussion</groupId>
             <artifactId>rxutils</artifactId>
-            <version>8.1.4</version>
+            <version>8.1.5-SNAPSHOT</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>

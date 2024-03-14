@@ -1,4 +1,4 @@
-This 8.1.2.1 patch release provides a mix of security updates and bug fixes to the 8.1.2 release version of PercussionCMS.  This update is only applicable to the 8.1.2 release version.  All updates in this "hotfix" will be included in the 8.1.4-SNAPSHOT release version.
+This 8.1.2.1 patch release provides a mix of security updates and bug fixes to the 8.1.2 release version of PercussionCMS.  This update is only applicable to the 8.1.2 release version.  All updates in this "hotfix" will be included in the 8.1.5-SNAPSHOT release version.
 
 -----------------
 Security Updates
