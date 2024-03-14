@@ -9,7 +9,7 @@
     <description>Template used to render the page as XML.</description>
     <global-template/>
     <global-template-usage>None</global-template-usage>
-    <label>perc.pageXml</label>
+    <label>Page - XML Template</label>
     <location-prefix/>
     <location-suffix>.xml</location-suffix>
     <mime-type>text/xml</mime-type>

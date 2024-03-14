@@ -282,7 +282,7 @@
         makeAjaxRequest(args);
     }
     function makeAjaxRequest(args){
-
+		setLastRequestTime();
         if(!csrfSafeMethod(args.method)) {
             var u = csrfGetURLFromServiceCall(args.url);
             if (u != null) {
@@ -915,6 +915,10 @@
         });
         return result;
     }
+
+	function setLastRequestTime(){
+		localStorage.setItem("lastRequestTime", new Date().getTime());
+	}
 
     $.PercServiceUtils = {
         STATUS_ERROR: STATUS_ERROR,

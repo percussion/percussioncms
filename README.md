@@ -12,8 +12,8 @@ Our goal is to empower the developer and the marketer. Smart architecture, smart
 
 * Create and manage one or more web sites - small or large.
 * Re-purpose Website content to database or XML channels.
-* Implement a Java interface and publish content to any channel.
-* Get folks adding content to your site or channels, all controlled by powerful workflows and permissions.
+* Generate static Web site
+* Control content editorial through Workflows and Permissions.
 
 ## How do I get it?
 
@@ -23,8 +23,9 @@ Download links are available on the project [Releases page](https://github.com/p
 * [Percussion](https://www.percussion.com) will offer commercial support for Percussion CMS through June 2023.
 * [Intersoft Data Labs](https://www.intsof.com) will offer commercial support for Percussion CMS starting in July 2023.
 
-## I am a Percussion customer, is this where I download updates?
-Commercial customers should access the release distribution on the [Percussion Support portal](https://support.percussion.com).
+## I was a Percussion customer, is this where I download updates?
+Yes.  The latest release will be featured in the [Releases page](https://github.com/percussion/percussioncms/releases) on this GitHub project.  For Technical Support please see the [Intersoft support portal](https://percussionsupport.intsof.com). The documentation can be found on https://percussioncmshelp.intsof.com and the old Percussion community has beene re-homed to https://percussioncmshelp.intsof.com.
+
 
 ## Interested in Contributing?
 

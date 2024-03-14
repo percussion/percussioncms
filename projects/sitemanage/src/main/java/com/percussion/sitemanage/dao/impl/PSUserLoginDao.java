@@ -28,13 +28,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,7 +139,11 @@ public class PSUserLoginDao implements IPSUserLoginDao
         List<PSUserLogin> results = new ArrayList<>();
         try
         {
-            results = session.createCriteria(PSUserLogin.class).add(Restrictions.ilike("userid", name)).list();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<PSUserLogin> criteria = builder.createQuery(PSUserLogin.class);
+            Root<PSUserLogin> critRoot = criteria.from(PSUserLogin.class);
+            criteria.where(builder.equal(builder.lower(critRoot.get("userid")), name.toLowerCase()));
+            results = entityManager.createQuery(criteria).getResultList();
         }
         catch (HibernateException he)
         {
@@ -163,8 +168,11 @@ public class PSUserLoginDao implements IPSUserLoginDao
         List<PSUserLogin> results = new ArrayList<>();
         try
         {
-            results = session.createCriteria(PSUserLogin.class)
-            .addOrder(Order.asc("userid")).list();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<PSUserLogin> criteria = builder.createQuery(PSUserLogin.class);
+            Root<PSUserLogin> critRoot = criteria.from(PSUserLogin.class);
+            criteria.orderBy(builder.asc(critRoot.get("userid")));
+            results = entityManager.createQuery(criteria).getResultList();
         }
         catch (HibernateException he)
         {

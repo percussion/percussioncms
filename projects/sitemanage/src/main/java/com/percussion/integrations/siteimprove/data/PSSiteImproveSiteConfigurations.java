@@ -28,6 +28,7 @@ public class PSSiteImproveSiteConfigurations {
 	private String siteName;
 	private Boolean doProduction;
 	private Boolean doStaging;
+	private Boolean doAssetsScanExclude;
 	private Boolean doPreview;
 	private Boolean isSiteImproveEnabled;
 
@@ -41,12 +42,14 @@ public class PSSiteImproveSiteConfigurations {
 	 * @param siteName The name of site the settings are associated with.
 	 * @param doProduction True/False to have Siteimprove be used on production sites.
 	 * @param doStaging Siteimprove usage for staging sites.
+	 * @param doAssetsScanExclude Siteimprove usage for excluding scanning of assets.
 	 * @param doPreview Siteimprove usage for preview sites.
 	 */
-	public PSSiteImproveSiteConfigurations(String siteName, Boolean doProduction, Boolean doStaging, Boolean doPreview, Boolean isSiteImproveEnabled) {
+	public PSSiteImproveSiteConfigurations(String siteName, Boolean doProduction, Boolean doStaging, Boolean doAssetsScanExclude, Boolean doPreview, Boolean isSiteImproveEnabled) {
 		this.siteName = siteName;
 		this.doProduction = doProduction;
 		this.doStaging = doStaging;
+		this.doAssetsScanExclude = doAssetsScanExclude;
 		this.doPreview = doPreview;
 		this.isSiteImproveEnabled = isSiteImproveEnabled;
 	}
@@ -73,6 +76,14 @@ public class PSSiteImproveSiteConfigurations {
 
 	public void setDoStaging(Boolean doStaging) {
 		this.doStaging = doStaging;
+	}
+
+	public Boolean getDoAssetsScanExclude() {
+		return doAssetsScanExclude;
+	}
+
+	public void setDoAssetsScanExclude(Boolean doAssetsScanExclude) {
+		this.doAssetsScanExclude = doAssetsScanExclude;
 	}
 
 	public Boolean getDoPreview() {

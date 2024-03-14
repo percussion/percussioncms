@@ -46,6 +46,7 @@ public class PSReplacementFilter
          put("[", DASH);
          put("]", DASH);
          put(" ", DASH);
+         put("=", DASH);
       }
    };
 

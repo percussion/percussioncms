@@ -50,6 +50,21 @@
         <copy file="${install.src}/rxconfig/Installer/data/cmsTableDef.xml" force="true"  overwrite="true" verbose="true" tofile="${install.dir}/rxconfig/Server/sys_cmsTableDef.xml"/>
         <copy file="${install.src}/rxconfig/Installer/data/cmsTableData.xml" force="true"  overwrite="true" verbose="true" tofile="${install.dir}/rxconfig/Server/sys_cmsTableData.xml"/>
 
+        <echo>Updating mimemap.properties</echo>
+        <propertyfile file="${install.dir}/rxconfig/Server/mimemap.properties">
+            <entry key="aspx" default="text/html"/>
+            <entry key="asp" default="text/html"/>
+            <entry key="jsp" default="text/html"/>
+            <entry key="php" default="text/html"/>
+            <entry key="cfm" default="text/html"/>
+            <entry key="cfml" default="text/html"/>
+            <entry key="cfc" default="text/html"/>
+            <entry key="cfr" default="text/html"/>
+            <entry key="cfswf" default="text/html"/>
+            <entry key="dhtml" default="text/html"/>
+            <entry key="acgi" operation="del"/>
+        </propertyfile>
+
         <echo>Updating rxworflow.properties</echo>
         <propertyfile file="${install.dir}/rxconfig/Workflow/rxworkflow.properties">
             <entry key="NOTIFICATION_ENABLE" default="N"/>
@@ -95,7 +110,7 @@
                 <entry key="maxUsersAllowed" default="0"/>
                 <entry key="compressOutput" value="false"/>
                 <entry key="AUTO_MANAGE_LOCAL_PATHS" value="true"/>
-                <entry key="enabledCiphers" value="TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_DH_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384"/>
+                <entry key="enabledCiphers" value="TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384"/>
                 <entry key="isWidgetBuilderActive" value="true"/>
                 <entry key="publishNonPageMetadata" default="true"/>
                 <entry key="requireContentSecurityPolicy" value="true" default="true"/>
@@ -147,6 +162,7 @@
                 <entry key="noCacheTemplates" default=""/>
                 <entry key="compressOutput" default="false"/>
                 <entry key="allowLinksToOrphans" value="true" default="true" operation="="/>
+                <entry key="screenshotCommandLine" default=""/>
 
 
                 <!-- Properties to remove if present -->

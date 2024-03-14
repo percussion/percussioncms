@@ -837,7 +837,11 @@ public class PSAssemblyService implements IPSAssemblyService
          for (IPSAssemblyResult paginatedItem : paginatedItems)
          {
             String message = "Preview of paginated items in context other than 0 " + "is not supported.";
-            paginatedItem.setResultData(message.getBytes());
+            try {
+               paginatedItem.setResultData(message.getBytes());
+            }catch(IOException e){
+               log.error(PSExceptionUtils.getMessageForLog(e));
+            }
             assemblyResultMap.put(paginatedItem, paginatedItem);
          }
          perAssemblerItems.removeAll(paginatedItems);
@@ -2115,6 +2119,10 @@ public class PSAssemblyService implements IPSAssemblyService
          {
             sid = String.valueOf(parentItem.getSiteId().longValue());
          }
+         if (StringUtils.isBlank(fid))
+         {
+            fid = String.valueOf(parentItem.getFolderId());
+         }
          if (StringUtils.isBlank(fid) && StringUtils.isNotBlank(sid))
          {
             IPSSiteManager smgr = PSSiteManagerLocator.getSiteManager();
@@ -2129,7 +2137,7 @@ public class PSAssemblyService implements IPSAssemblyService
 
          List<PSLocator> folders = processor.getParents(PSRelationshipConfig.TYPE_FOLDER_CONTENT, lg.getLocator());
 
-         if (folders == null || folders.isEmpty())
+         if (StringUtils.isBlank(fid) && (folders == null || folders.isEmpty()))
          {
             throw new IllegalStateException("Navon must be contained in a folder: " + lg);
          }

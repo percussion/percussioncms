@@ -17,6 +17,7 @@
 
 $(document).ready(function() {
     initiateSitewideFrameworkGadget();
+    gadgets.window.setTitle(I18N.message("perc.ui.gadgets.sitewideFramework@Sitewide Framework"));
 });
 
 function initiateSitewideFrameworkGadget() {

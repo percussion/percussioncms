@@ -40,12 +40,26 @@
             .on("click", function (event) {
                 openNewPostDialog(event);
             });
+		$("#perc-add-post-button")
+            .on("keydown", function (event) {
+                if(event.code == "Enter" || event.code == "Space"){
+					document.activeElement.click();
+				}
+            });
 
         $("#perc-add-blog-button")
             .on("click", function (event) {
                 $.PercBlogsGadget.showNewBlogDialog(event);
             });
+		$("#perc-add-blog-button")
+            .on("keydown", function (event) {
+                 if(event.code == "Enter" || event.code == "Space"){
+                    document.activeElement.click();
+                 }
+            });
+
         $('#perc-add-blog-button').attr('title', I18N.message("perc.ui.blogs.Gadget.title@text"));
+		$('#perc-add-blog-button').attr('tabindex', '0');
         $.PercBlogsGadget.load(siteName, selectedBlogId);
     };
 
@@ -229,10 +243,10 @@
                 percColumnWidths: ["*", "90"],
                 aoColumns: [{ sType: "string" }, { sType: "date" }],
                 iDisplayLength: itemsPerPage,
-                percHeaders: ["Blog Title", "Published"],
+                percHeaders: [I18N.message("perc.ui.blogs.Gadget@Blog Title"), I18N.message("perc.ui.gadgets.workflowStatus@Published")],
                 percData: percData,
                 percMenus: menus,
-                oLanguage: { sZeroRecords: "No Blogs Found. Click on the button above to create a new blog" }
+                oLanguage: { sZeroRecords: I18N.message("perc.ui.blogs.Gadget@No Blogs Found") }
             };
             miniMsg.dismissMessage(loadingMsg);
 

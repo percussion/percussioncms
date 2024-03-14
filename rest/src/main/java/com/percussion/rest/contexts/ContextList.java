@@ -21,11 +21,13 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.ArrayList;
 import java.util.Collection;
 
 
-@XmlRootElement(name = "Context")
+@XmlRootElement(name = "ContextList")
+@XmlSeeAlso(Context.class)
 @ArraySchema(schema=@Schema(implementation = Context.class))
 public class ContextList extends ArrayList<Context> {
     public ContextList(Collection<? extends Context> c) {

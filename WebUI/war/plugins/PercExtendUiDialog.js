@@ -399,7 +399,8 @@
 
                 $('<button></button>').attr("id", fn.id)
 					.attr("title", name)
-                    .css("type", "button")
+                    .attr("type", "button")
+					.attr("disabled", false)
                     .css("float", "right")
                     .css("margin-right", "10px")
                     .css("margin-top", "13px")

@@ -17,12 +17,6 @@
 
 package com.percussion.sitemanage.importer.helpers.impl;
 
-import static com.percussion.share.dao.PSFolderPathUtils.concatPath;
-import static com.percussion.share.dao.PSFolderPathUtils.pathSeparator;
-import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
-import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.PAGE_CATALOG;
-import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.SECTION_SYSTEM_FOLDER_NAME;
-
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.pagemanagement.dao.IPSPageDao;
 import com.percussion.pagemanagement.data.PSPage;
@@ -53,6 +47,11 @@ import com.percussion.sitemanage.importer.utils.PSHtmlRetriever;
 import com.percussion.sitemanage.importer.utils.PSLinkExtractor;
 import com.percussion.sitesummaryservice.service.IPSSiteImportSummaryService;
 import com.percussion.theme.service.IPSThemeService;
+import org.jsoup.Connection;
+import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -61,11 +60,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jsoup.Connection;
-import org.jsoup.nodes.Document;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import static com.percussion.share.dao.PSFolderPathUtils.concatPath;
+import static com.percussion.share.dao.PSFolderPathUtils.pathSeparator;
+import static com.percussion.share.spring.PSSpringWebApplicationContextUtils.getWebApplicationContext;
+import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.PAGE_CATALOG;
+import static com.percussion.sitemanage.service.IPSSiteSectionMetaDataService.SECTION_SYSTEM_FOLDER_NAME;
 
    
 @Component("linkExtractionHelper")
@@ -191,15 +190,15 @@ public class PSLinkExtractionHelper extends PSImportHelper
         return new PSLinkExtractionHelperConnectivity(url, ignoreContentType, followRedirects, userAgent);
     }
 
-    public PSSiteQueue getSiteQueue(long siteId)
+    public PSSiteQueue getSiteQueue( PSSiteImportCtx context)
+
     {
 
         if (pageImportQueue == null)
         {
             pageImportQueue =  (IPSPageImportQueue) getWebApplicationContext().getBean("pageImportQueue");
         }
-
-        return pageImportQueue.getPageIds(siteId);
+        return pageImportQueue.getPageIds(context);
     }
 
     /**
@@ -215,8 +214,8 @@ public class PSLinkExtractionHelper extends PSImportHelper
         String themeRootDirectory = getThemeRootDirectory(context);
         String themeRootUrl = getThemeRootUrl(context);
         String siteName = context.getSite().getName();
-        PSSiteQueue siteQueue = getSiteQueue(context.getSite().getSiteId());
-        final List<PSLink> links = PSLinkExtractor.getLinksForDocument(pageContent.getSourceDocument(), log, siteQueue, context.getSite().getBaseUrl());
+        PSSiteQueue siteQueue = getSiteQueue(context);
+        final List<PSLink> links = PSLinkExtractor.getLinksForDocument(pageContent.getSourceDocument(), log, siteQueue, context.getSite().getBaseUrl(), context.getImportConfiguration());
         final List<PSLink> imageLinks = PSLinkExtractor.getImagesForDocument(pageContent.getSourceDocument(), log);
         
         
@@ -261,10 +260,12 @@ public class PSLinkExtractionHelper extends PSImportHelper
 
                         link.getElement().attr(HREF, pathToTargetItem);
                         link.getElement().attr(PERC_MANAGED_ATTR, "true");
-
-                        catalogPage(context, log, link, conn.getResponseStatusCode(),
-                                resolvedUrlTarget);
+                        //Don't include external links in catalog Pages
+                        if(link.getAbsoluteLink().startsWith(context.getSiteUrl())) {
+                            catalogPage(context, log, link, conn.getResponseStatusCode(),
+                                    resolvedUrlTarget);
                             catalogedCount++;
+                        }
                     }
                     else
                     {
@@ -461,6 +462,7 @@ public class PSLinkExtractionHelper extends PSImportHelper
                     
                     
                     int id = ((PSLegacyGuid) getIdMapper().getGuid(page.getId())).getContentId();
+                    //TODO: Sitecontext need to be passed as a parameter
                     getImportQueue().addCatalogedPageIds(context.getSite(), context.getUserAgent(),
                             Arrays.asList(id));
                 }

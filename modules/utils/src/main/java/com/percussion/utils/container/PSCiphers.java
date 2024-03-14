@@ -65,7 +65,6 @@ public class PSCiphers
       modern_ciphers.add("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384");
       modern_ciphers.add("TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256");
       modern_ciphers.add("TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256");
-      modern_ciphers.add("TLS_DH_RSA_WITH_AES_128_GCM_SHA256");
       intermediate_ciphers.add("TLS_RSA_WITH_AES_128_GCM_SHA256");
       intermediate_ciphers.add("TLS_RSA_WITH_AES_256_GCM_SHA384");
 

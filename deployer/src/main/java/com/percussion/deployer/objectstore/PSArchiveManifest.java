@@ -183,7 +183,7 @@ public class PSArchiveManifest  implements IPSDeployComponent
       if (dep == null)
          throw new IllegalArgumentException(DEP_NOT_NULL_MSG);
       if (idTypes == null)
-         throw new IllegalArgumentException("idTypes may not be null");
+        return;
 
       DepFilesIdTypes value =  m_depMap.get(dep.getKey());
       if ( value == null )

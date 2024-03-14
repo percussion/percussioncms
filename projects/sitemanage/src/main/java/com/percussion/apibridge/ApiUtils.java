@@ -53,11 +53,13 @@ import com.percussion.rest.preferences.UserPreferenceList;
 import com.percussion.rest.roles.Role;
 import com.percussion.rest.sites.Site;
 import com.percussion.rest.sites.SiteList;
+import com.percussion.rest.templates.TemplateSummary;
 import com.percussion.role.data.PSRole;
 import com.percussion.security.IPSTypedPrincipal;
 import com.percussion.server.PSPersistentProperty;
 import com.percussion.server.PSPersistentPropertyManager;
 import com.percussion.server.PSPersistentPropertyMeta;
+import com.percussion.services.assembly.IPSAssemblyTemplate;
 import com.percussion.services.catalog.IPSCatalogSummary;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.catalog.data.PSObjectSummary;
@@ -755,6 +757,28 @@ public class ApiUtils {
 
             ret.add(newSite);
         }
+        return ret;
+    }
+
+    public static TemplateSummary convertTemplateSummary(IPSCatalogSummary sum){
+        TemplateSummary ret = new TemplateSummary();
+
+        ret.setTemplateDescription(sum.getDescription());
+        ret.setTemplateName(sum.getName());
+        ret.setTemplateId(sum.getGUID().getUUID());
+        ret.setTemplateLabel(sum.getLabel());
+
+        return ret;
+    }
+
+    public static TemplateSummary convertTemplateSummary(IPSAssemblyTemplate t){
+        TemplateSummary ret = new TemplateSummary();
+
+        ret.setTemplateDescription(t.getDescription());
+        ret.setTemplateName(t.getName());
+        ret.setTemplateId(t.getGUID().getUUID());
+        ret.setTemplateLabel(t.getLabel());
+
         return ret;
     }
 }

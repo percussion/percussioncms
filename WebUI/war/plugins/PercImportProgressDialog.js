@@ -142,14 +142,14 @@
 
              dialogMarkup.append(
                 $('<div>')
-                    .append('<p class="hint">Ask questions. Get answers. Visit the <a target="_blank" rel = "noopener noreferrer" href="https://github.com/percussion/percussioncms/discussions" title="Percussion Community">Percussion Community</a> to access Video Tutorials, Forums, and more.</p>')
+                    .append('<p class="hint">Ask questions. Get answers. Visit the <a target="_blank" rel = "noopener noreferrer" href="https://percussioncmscommunity.intsof.com" title="Percussion Community">Percussion Community</a> to access Video Tutorials, Forums, and more.</p>')
             );
 
             if (config.showVideo === true)
             {
                 //Used a random dummy parameter to avoid cache
                 dialogMarkup.append(
-                    $('<img height="0px" width="0px" src="https://help.percussion.com/Assets/Help/header/images/PercussionSwoosh.png?dummy=' + Math.random() + '">')
+                    $('<img height="0px" width="0px" src="https://percussioncmshelp.intsof.com/Assets/Help/header/images/PercussionSwoosh.png?dummy=' + Math.random() + '">')
                         .on("error", handleUnreachableURL)
                         .on("load", showVideoIframe)
                 );

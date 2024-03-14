@@ -1959,10 +1959,10 @@ public class PSAssetService extends PSAbstractFullDataService<PSAsset, PSAssetSu
             PSPurgableTempFile ptf = new PSPurgableTempFile("tmp", extension, null, fileName, fileType, null);
             try(FileOutputStream fos = new FileOutputStream(ptf)) {
 				PSCopyStream.copyStream(request.getFileContents(), fos);
+					fieldsMap.put(fieldBase, ptf);
 
-				fieldsMap.put(fieldBase, ptf);
+					return assetDao.save(asset);
 
-				return assetDao.save(asset);
 			}
         }
         catch(Exception e)

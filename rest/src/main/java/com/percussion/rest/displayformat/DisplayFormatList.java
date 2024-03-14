@@ -21,10 +21,12 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @XmlRootElement(name = "DisplayFormatList")
+@XmlSeeAlso({DisplayFormat.class})
 @ArraySchema(schema=@Schema(implementation = DisplayFormat.class))
 public class DisplayFormatList extends ArrayList<DisplayFormat> {
     public DisplayFormatList(Collection<? extends DisplayFormat> c) {

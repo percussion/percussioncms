@@ -279,7 +279,7 @@
                     if(widgetid in specialWidgets.LockedWidgets)
                     	$(this).addClass("perc-locked");
                     if(widgetid in specialWidgets.TransperantWidgets)
-                        $(this).addClass("perc-widget-transperant");						
+                        $(this).addClass("perc-widget-transparent");
                 });
             return iframe.contents().find(".perc-widget");
         }

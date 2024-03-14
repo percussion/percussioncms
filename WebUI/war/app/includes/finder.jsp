@@ -33,7 +33,7 @@
 <div class='perc-finder-outer <%=className%>' perc-ui-component="perc-ui-component-finder" collapsed="true">
     <table class="perc-finder-header">
         <tr>
-            <td class="perc-finder-view-options" <%if(isLibraryMode){%>style="display:none"<%}%>>
+            <td scope = "row" class="perc-finder-view-options" <%if(isLibraryMode){%>style="display:none"<%}%>>
                 <a tabindex="8" role="button" id='perc-finder-expander' class="perc-font-icon icon-plus-sign ui-state-enabled fas fa-plus"></a>
                 <a tabindex="9" role="button" id="perc-finder-choose-columnview" class="perc-font-icon icon-columns ui-active fas fa-columns" title="<i18n:message key="perc.ui.finder@Column View"/>"></a>
                 <a tabindex="10" role="button" id="perc-finder-choose-listview" class="perc-font-icon icon-list fas fa-list" title="<i18n:message key= "perc.ui.finder@List View"/>"></a>
@@ -43,7 +43,7 @@
                 <div class="perc-wrapper <%if(!isLibraryMode){%>perc-wrapper-bg<%}%>">
                     <table>
                         <tr>
-                            <td class="perc-flex">
+                            <td scope = "row" class="perc-flex">
                                 <input  tabindex="12" id="mcol-path-summary" class="perc-finder-goto-or-search" type="text" aria-label="Enter Path or Search"/>
                             </td>
                             <td class="perc-fixed">

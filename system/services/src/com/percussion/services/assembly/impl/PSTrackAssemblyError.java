@@ -17,6 +17,7 @@
 package com.percussion.services.assembly.impl;
 
 import com.percussion.cms.IPSConstants;
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.services.assembly.IPSAssemblyItem;
 import com.percussion.services.assembly.IPSAssemblyResult.Status;
 import com.percussion.utils.codec.PSXmlEncoder;
@@ -24,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -215,9 +217,11 @@ public class PSTrackAssemblyError
             b.append(HEADER);
             b.append(toHTMLTable());
             b.append("</body></html>");
-
+            try{
             item.setResultData(b.toString().getBytes(StandardCharsets.UTF_8));
-
+            }catch(IOException e){
+               ms_log.error(PSExceptionUtils.getMessageForLog(e));
+            }
             item.setMimeType("text/html;charset=utf8");
          }
       }

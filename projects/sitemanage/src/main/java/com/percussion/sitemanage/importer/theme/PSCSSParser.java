@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -73,7 +74,7 @@ public class PSCSSParser
 
     private List<String> processed = new ArrayList<>();
 
-    private Map<String, String> imagesToDownload = new HashMap<>();
+    private Map<String, String> imagesToDownload = new ConcurrentHashMap<>();
 
     private String siteName;
     
@@ -139,14 +140,14 @@ public class PSCSSParser
                 logger.appendLogMessage(PSLogEntryType.ERROR, PSImportThemeHelper.LogCategory.ParseCSS.getName(),
                         "Error loading " + cssFile + ".");
                 logger.appendLogMessage(PSLogEntryType.STATUS, PSImportThemeHelper.LogCategory.ParseCSS.getName(),
-                        "Error loading " + cssFile + ": " + io.getLocalizedMessage());                
+                        "Error loading " + cssFile + ": " + io.getMessage());
             }
             catch (Exception e)
             {
                 logger.appendLogMessage(PSLogEntryType.ERROR, PSImportThemeHelper.LogCategory.ParseCSS.getName(),
                         "Error processing css file: " + cssFile + ".");
                 logger.appendLogMessage(PSLogEntryType.STATUS, PSImportThemeHelper.LogCategory.ParseCSS.getName(),
-                        "Error processing css file: " + cssFile + ": " + e.getLocalizedMessage());
+                        "Error processing css file: " + cssFile + ": " + e.getMessage());
             }
         }
         return imagesToDownload;

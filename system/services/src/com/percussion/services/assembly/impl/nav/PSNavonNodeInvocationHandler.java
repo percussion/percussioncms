@@ -46,8 +46,7 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.RepositoryException;
 
-import org.apache.commons.collections.MultiHashMap;
-import org.apache.commons.collections.MultiMap;
+import org.apache.commons.collections4.MultiValuedMap;
 
 /**
  * This invocation handler wraps the behavior of the content node, augmenting it
@@ -126,7 +125,7 @@ public class PSNavonNodeInvocationHandler implements InvocationHandler
     * Related children for image and managed nav submenu. Initialized on first
     * access.
     */
-   private MultiMap m_children = null;
+   private MultiValuedMap m_children = null;
 
    /**
     * Navigation configuration, never <code>null</code> after ctor

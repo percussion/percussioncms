@@ -19,6 +19,7 @@ package com.percussion.sitemanage.importer.utils;
 import com.percussion.queue.impl.PSSiteQueue;
 import com.percussion.services.assembly.impl.PSReplacementFilter;
 import com.percussion.sitemanage.dao.impl.PSSiteContentDao;
+import com.percussion.sitemanage.data.PSSiteImportConfiguration;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogEntryType;
 import com.percussion.sitemanage.importer.PSLink;
@@ -29,6 +30,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -105,18 +107,56 @@ public final class PSLinkExtractor
      * @return a list of PSLink objects
      */
     public static List<PSLink> getLinksForDocument(final Document doc, final IPSSiteImportLogger log,
-            PSSiteQueue siteQueue, String siteUrl)
+            PSSiteQueue siteQueue, String siteUrl, PSSiteImportConfiguration config)
     {
 
         final ArrayList<PSLink> outList = new ArrayList<>();
+        String queryParameter= config.getMapQueryParamToPageName();
+        ArrayList<String> uniqueListOfLinks = new ArrayList<>();
 
+        boolean linkCheckPassed = true;
+        String paramValue = null;
         final Elements links = doc.select(A_HREF);
         for (Element link : links)
         {
-            if ((!removeTrailingSlash(link.attr(ABS_HREF)).equals(getRoot(siteUrl))) 
-            		&& getRoot(link.attr(ABS_HREF)).equals(getRoot(siteUrl)) 
-            		&& (!link.attr(HREF).startsWith("#")))
+            if ((!removeTrailingSlash(link.attr(ABS_HREF)).equals(getRoot(siteUrl)))
+            		&& (!link.attr(HREF).startsWith("#"))
+                    && (!link.attr(HREF).startsWith("tel")))
             {
+                String absUrl = link.attr(ABS_HREF);
+                //If query parameter check is required then need to perform new checks
+                if (!StringUtils.isBlank(queryParameter)) {
+                    String queryParameters = absUrl.substring(absUrl.indexOf("?") + 1);
+                    String[] queryParametersArr = queryParameters.split("&");
+
+                    for (String s: queryParametersArr) {
+                        String[] parameterNameAndValueArr = s.split("=");
+                        if(parameterNameAndValueArr[0].equals(queryParameter)){
+                            // If duplicate link then go to next link iteration
+                            paramValue = parameterNameAndValueArr[1];
+                            if(paramValue.indexOf("#") != -1){
+                                paramValue = paramValue.substring(0,paramValue.indexOf("#"));
+                            }
+
+                            if(uniqueListOfLinks.contains(paramValue)){
+                                linkCheckPassed = false;
+                            }else{
+                                linkCheckPassed = true;
+                                uniqueListOfLinks.add(paramValue);
+                            }
+                            break;
+                        }
+                    }
+
+                }else{
+                    //If query parameter check is not required then need to perform old check
+                    linkCheckPassed =  getRoot(link.attr(ABS_HREF)).equals(getRoot(siteUrl));
+                }
+
+                //if check failed then go to next link iteration
+                if(!linkCheckPassed) {
+                    continue;
+                }
                 final String absHref = link.attr(ABS_HREF);
                 final String aHref = link.attr(HREF);
                 if (siteQueue != null && siteQueue.hasLinkBeenProcessed(absHref))
@@ -134,12 +174,12 @@ public final class PSLinkExtractor
                         if (absHref.equals(getRoot(doc.baseUri())) && !absHref.isEmpty())
                         {
                             psLink = createLink(link, absHref, aHref, PSSiteContentDao.HOME_PAGE_NAME,
-                                    getRelativePath(absHref, aHref, log));
+                                    getRelativePath(absHref, aHref, log, config));
                         }
                         else
                         {
-                            psLink = createLink(link, absHref, aHref, getPageName(absHref, log),
-                                    getRelativePath(absHref, aHref, log));
+                            psLink = createLink(link, absHref, aHref, getPageName(absHref, log, config),
+                                    getRelativePath(absHref, aHref, log, config));
                         }
                         link.attr(HREF, PSReplacementFilter.filter(psLink.getRelativePathWithFileName()));
 
@@ -154,6 +194,7 @@ public final class PSLinkExtractor
                                 + " could not be retrieved due to the following error: " + e.getLocalizedMessage());
                     }
                 }
+
             }
         }
         return outList;
@@ -373,7 +414,7 @@ public final class PSLinkExtractor
      * @param absHref the absolute HREF
      * @return the relative path
      */
-    protected static String getRelativePath(final String absHref, String aHref, final IPSSiteImportLogger log)
+    protected static String getRelativePath(final String absHref, String aHref, final IPSSiteImportLogger log, PSSiteImportConfiguration config)
     {
         String relativePath = getBasePath(absHref.replace(BACK_SLASH, SLASH));
         if (relativePath.isEmpty())
@@ -383,7 +424,7 @@ public final class PSLinkExtractor
                 return SLASH;
             }
             String drPath = aHref.replace(BACK_SLASH, SLASH);
-            relativePath = drPath.replace(getPageName(drPath, log), EMPTY);
+            relativePath = drPath.replace(getPageName(drPath, log, config), EMPTY);
         }
         else
         {
@@ -406,32 +447,50 @@ public final class PSLinkExtractor
      * @param absHref
      * @return the page name
      */
-    protected static String getPageName(final String absHref, final IPSSiteImportLogger log)
-    {
-        String endPartString = PSSiteContentDao.HOME_PAGE_NAME;
-        String cleanAbsHref = absHref.replace(BACK_SLASH, SLASH);
-        if (!(cleanAbsHref != null && !cleanAbsHref.isEmpty() && removeTrailingSlash(cleanAbsHref).equals(
-                getRoot(cleanAbsHref))))
-        {
-            final String basePath = getBasePath(cleanAbsHref);
-            if (!hasTrailingSlash(cleanAbsHref) || getLastElementInPath(basePath).contains(PERIOD))
-            {
-                endPartString = getLastElementInPath(basePath);
+    protected static String getPageName(final String absHref, final IPSSiteImportLogger log, PSSiteImportConfiguration config) {
+        String queryParameter = null;
+        if(config !=null){
+            queryParameter = config.getMapQueryParamToPageName();
+        }
+
+        if (!StringUtils.isBlank(queryParameter) && absHref.indexOf("?") != -1) {
+            String queryParameters = absHref.substring(absHref.indexOf("?") + 1);
+            String[] queryParametersArr = queryParameters.split("&");
+            String pageName = null;
+            String paramValue = null;
+            for (String s: queryParametersArr) {
+                String[] parameterNameAndValueArr = s.split("=");
+                if(parameterNameAndValueArr[0].equals(queryParameter)){
+                    paramValue = parameterNameAndValueArr[1];
+                    if(paramValue.indexOf("#") != -1){
+                        paramValue = paramValue.substring(0,paramValue.indexOf("#"));
+                    }
+                    pageName = paramValue+"."+config.getSite().getDefaultFileExtention();
+                    break;
+                }
             }
-        }
-        if (!PSReplacementFilter.filter(endPartString).equals(endPartString))
-        {
-            if (log != null)
-            {
-                log.appendLogMessage(PSLogEntryType.STATUS, "Link Extractor", "Changed Page Name: " + endPartString
-                        + " to " + PSReplacementFilter.filter(endPartString));
+            return pageName;
+        }else{
+            String endPartString = PSSiteContentDao.HOME_PAGE_NAME;
+            String cleanAbsHref = absHref.replace(BACK_SLASH, SLASH);
+            if (!(cleanAbsHref != null && !cleanAbsHref.isEmpty() && removeTrailingSlash(cleanAbsHref).equals(
+                    getRoot(cleanAbsHref)))) {
+                final String basePath = getBasePath(cleanAbsHref);
+                if (!hasTrailingSlash(cleanAbsHref) || getLastElementInPath(basePath).contains(PERIOD)) {
+                    endPartString = getLastElementInPath(basePath);
+                }
             }
+            if (!PSReplacementFilter.filter(endPartString).equals(endPartString)) {
+                if (log != null) {
+                    log.appendLogMessage(PSLogEntryType.STATUS, "Link Extractor", "Changed Page Name: " + endPartString
+                            + " to " + PSReplacementFilter.filter(endPartString));
+                }
+            }
+            if (endPartString.contains(PERIOD) && endPartString.contains(QUESTION_MARK)) {
+                endPartString = endPartString.replace(PERIOD, DASH);
+            }
+            return PSReplacementFilter.filter(endPartString).replace("#", "-");
         }
-        if (endPartString.contains(PERIOD) && endPartString.contains(QUESTION_MARK))
-        {
-            endPartString = endPartString.replace(PERIOD, DASH);
-        }
-        return PSReplacementFilter.filter(endPartString).replace("#", "-");
     }
 
     /**

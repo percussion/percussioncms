@@ -240,18 +240,18 @@
 
     <div id="perc-dashboard-gadget-tray" class="perc-tray perc-dashboard-gadget-tray">
         <div class="perc-dashboard-gadget-toolbar">
-            <div id="perc-dashboard-gadget-tray-expander" class="perc-tray-expander perc-tray-expander-collapsed">
-                <a href="#" class="perc-tray-expander-label" onclick="return false;"> <i class="icon-cogs fas fa-cogs"></i><i18n:message key="perc.ui.dashboard@Add Dashboard Gadgets"/></a>
+            <div id="perc-dashboard-gadget-tray-expander"  class="perc-tray-expander perc-tray-expander-collapsed">
+                <a href="#" class="perc-tray-expander-label" tabindex="0" role="button" onclick="return false;"> <i class="icon-cogs fas fa-cogs"></i><i18n:message key="perc.ui.dashboard@Add Dashboard Gadgets"/></a>
             </div>
             <div class="perc-gadget-filter">
                 <label><i18n:message key = "perc.ui.dashboard@Type"/></label>
-                <select class="perc-gadget-type">
+                <select class="perc-gadget-type" tabindex="0">
                     <option value="all"><i18n:message key = "perc.ui.dashboard@View All"/></option>
                     <option selected="true" value="percussion">Percussion</option>
                     <option value="custom"><i18n:message key = "perc.ui.dashboard@Custom"/></option>
                 </select>
                 <label><i18n:message key = "perc.ui.dashboard@Category"/></label>
-                <select class="perc-gadget-category">
+                <select class="perc-gadget-category" tabindex="0">
                     <option class="perc-gadget-category-default" selected="true" value="all"><i18n:message key = "perc.ui.dashboard@View All"/></option>
                     <option class="perc-gadget-category-predefined" value="analytics"><i18n:message key = "perc.ui.dashboard@Analytics"/></option>
                     <option class="perc-gadget-category-predefined" value="blog"><i18n:message key = "perc.ui.dashboard@Blog"/></option>
@@ -263,7 +263,7 @@
             </div>
             <div id="perc-dashboard-restore-menu" class="perc-dashboard-restore-menu" href="#"
                  title="<i18n:message key="perc.ui.dashboard@Restore Default Dashboard"/>" onclick="return false;">
-                <a href="#" class="perc-dashboard-restore-label"><i class="icon-dashboard fas fa-chart-line"></i><i18n:message key="perc.ui.dashboard@Reset"/></a>
+                <a href="#" role="button" tabindex="0" class="perc-dashboard-restore-label"><i class="icon-dashboard fas fa-chart-line"></i><i18n:message key="perc.ui.dashboard@Reset"/></a>
             </div>
         </div>
         <div class="perc-dashboard-gadget-list-container">
@@ -303,10 +303,10 @@
 
         <div id="perc-gadget-menu" class="box_shadow_with_padding">
             <div class="perc-gadget-menu-items">
-                <div class="perc-gadget-menu-item" id="perc-gadget-menu-config"><i18n:message key = "perc.ui.dashboard@Edit Settings"/></div>
-                <div class="perc-gadget-menu-item" id="perc-gadget-menu-remove"><i18n:message key = "perc.ui.dashboard@Delete"/></div>
-                <div class="perc-gadget-menu-item" id="perc-gadget-menu-minimize"><i18n:message key = "perc.ui.dashboard@Minimize"/></div>
-                <div class="perc-gadget-menu-item" id="perc-gadget-menu-expand"><i18n:message key = "perc.ui.dashboard@Expand"/></div>
+                <div tabindex="0" class="perc-gadget-menu-item" id="perc-gadget-menu-config"><i18n:message key = "perc.ui.dashboard@Edit Settings"/></div>
+                <div tabindex="0" class="perc-gadget-menu-item" id="perc-gadget-menu-remove"><i18n:message key = "perc.ui.dashboard@Delete"/></div>
+                <div tabindex="0" class="perc-gadget-menu-item" id="perc-gadget-menu-minimize"><i18n:message key = "perc.ui.dashboard@Minimize"/></div>
+                <div tabindex="0" class="perc-gadget-menu-item" id="perc-gadget-menu-expand"><i18n:message key = "perc.ui.dashboard@Expand"/></div>
             </div>
         </div>
     </div>

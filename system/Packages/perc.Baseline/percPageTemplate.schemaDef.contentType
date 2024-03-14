@@ -24,8 +24,7 @@
          <defaultvalue/>
       </column>
       <column action="c" limitSizeForIndex="n" name="DESCRIPTION">
-         <jdbctype>VARCHAR</jdbctype>
-         <size>500</size>
+         <jdbctype>CLOB</jdbctype>
          <allowsnull>yes</allowsnull>
          <defaultvalue/>
       </column>

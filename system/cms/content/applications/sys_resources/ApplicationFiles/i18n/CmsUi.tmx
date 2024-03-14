@@ -3,6 +3,7 @@
 <!--
    These i18n resources are used by the CM UI. The Language
    tool will lookup this file when generating the translation keys for newly
+   tool will lookup this file when generating the translation keys for newly
    added language.
 
    All keys in this file should start with the prefix "perc.ui."
@@ -1107,7 +1108,15 @@
 				<seg>Error</seg>
             </tuv>
         </tu>
-
+        <tu tuid="perc.ui.blogs.Gadget@All Sites">
+			<note xml:lang="en-us">All Sites</note>
+			<tuv xml:lang="en-us">
+				<seg>All Sites</seg>
+			</tuv>
+			  <tuv xml:lang="es">
+				<seg>Todos los sitios</seg>
+			</tuv>
+        </tu>
         <tu tuid="perc.ui.blogs.Gadget.title@text">
             <note xml:lang="en-us">Title of the column.</note>
             <tuv xml:lang="en-us">
@@ -1115,6 +1124,159 @@
             </tuv>
               <tuv xml:lang="es">
                 <seg>Haz clic para crear un nuevo blog.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Title">
+            <note xml:lang="en-us">Blog Title</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog Title</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Titulo de Blog</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@No Blogs Found">
+            <note xml:lang="en-us">No Blogs Found</note>
+            <tuv xml:lang="en-us">
+                <seg>No Blogs Found. Click on the button above to create a new blog</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>No se encontraron blogs. Haga clic en el botón de arriba para crear un nuevo blog</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Define your blog">
+            <note xml:lang="en-us">Define your blog</note>
+            <tuv xml:lang="en-us">
+                <seg>Define your blog</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Define tu blog</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Select your templates">
+            <note xml:lang="en-us">Select your templates</note>
+            <tuv xml:lang="en-us">
+                <seg>Select your templates</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Selecciona tus plantillas</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Select a location">
+            <note xml:lang="en-us">Select a location for your blog</note>
+            <tuv xml:lang="en-us">
+                <seg>* Select a location for your blog</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>* Seleccione una ubicación para su blog</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog link text">
+            <note xml:lang="en-us">Blog link text</note>
+            <tuv xml:lang="en-us">
+                <seg>* Blog link text:</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>* Texto del enlace del blog:</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog name">
+            <note xml:lang="en-us">Blog name</note>
+            <tuv xml:lang="en-us">
+                <seg>* Blog name:</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>* Nombre del blog:</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@No Authorization">
+            <note xml:lang="en-us">You are not authorized to create a blog in the selected folder</note>
+            <tuv xml:lang="en-us">
+                <seg>You are not authorized to create a blog in the selected folder.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>No estás autorizado a crear un blog en la carpeta seleccionada.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Location Required">
+            <note xml:lang="en-us">Blog location is a required field</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog location is a required field.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>La ubicación del blog es un campo obligatorio.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Link Text Required">
+            <note xml:lang="en-us">Blog link text is a required field</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog link text is a required field.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>El texto del enlace del blog es un campo obligatorio.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Name Required">
+            <note xml:lang="en-us">Blog name is a required field</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog name is a required field.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>El nombre del blog es un campo obligatorio.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Unique Blog Name">
+            <note xml:lang="en-us">Blog name must be unique</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog name must be unique.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>El nombre del blog debe ser único.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Index Page Template Required">
+            <note xml:lang="en-us">Blog index page template is required</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog index page template is required.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Se requiere plantilla de página de índice del blog.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Post Page Template Required">
+            <note xml:lang="en-us">Blog post page template is required</note>
+            <tuv xml:lang="en-us">
+                <seg>Blog post page template is required.</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>>Se requiere plantilla de página de publicación de blog.</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Index Page Template Select">
+            <note xml:lang="en-us">Select a template for the blog index page</note>
+            <tuv xml:lang="en-us">
+                <seg>Select a template for the blog index page:</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Seleccione una plantilla para la página de índice del blog:</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Blog Post Page Template Select">
+            <note xml:lang="en-us">Select a template for the blog post page</note>
+            <tuv xml:lang="en-us">
+                <seg>Select a template for the blog post page:</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Seleccione una plantilla para la página de publicación del blog:</seg>
+            </tuv>
+        </tu>
+        <tu tuid="perc.ui.blogs.Gadget@Make Copies">
+            <note xml:lang="en-us">Make copies of the blog templates for use by this blog</note>
+            <tuv xml:lang="en-us">
+                <seg>Make copies of the blog templates for use by this blog</seg>
+            </tuv>
+              <tuv xml:lang="es">
+                <seg>Haga copias de las plantillas del blog para usarlas en este blog</seg>
             </tuv>
         </tu>
         <tu tuid="perc.ui.publish.title@Assembly URL">
@@ -1138,10 +1300,10 @@
         <tu tuid="perc.ui.publish.errordialog.message@Publish Not Allowed">
             <note xml:lang="en-us">Message for publication stopped for licensing issues.</note>
             <tuv xml:lang="en-us">
-                <seg>You have either exceeded your license limits or have an inactive license and simply need to register. Please return to the License Monitor on the Dashboard to resolve this issue. To upgrade your license contact a sales rep at sales@percussion.com or 800.283.0800. Thank you. </seg>
+                <seg>You have either exceeded your license limits or have an inactive license and simply need to register. Please return to the License Monitor on the Dashboard to resolve this issue. To upgrade your license contact a sales rep at sales@percussion.com or +1-443-535-1889. Thank you. </seg>
             </tuv>
             <tuv xml:lang="es">
-                <seg>Usted ha excedido los límites de su licencia o tiene una licencia inactiva y simplemente necesita registrarse. Vuelva al Monitor de licencia en el panel de control para resolver este problema. Para actualizar su licencia, póngase en contacto con un representante de ventas en sales@percussion.com o 01+800.283.0800. Gracias. </seg>
+                <seg>Usted ha excedido los límites de su licencia o tiene una licencia inactiva y simplemente necesita registrarse. Vuelva al Monitor de licencia en el panel de control para resolver este problema. Para actualizar su licencia, póngase en contacto con un representante de ventas en sales@percussion.com o 01++1-443-535-1889. Gracias. </seg>
             </tuv>
         </tu>
         <tu tuid="perc.ui.publish.errordialog.message@Bad configuration">
@@ -1565,6 +1727,16 @@
                 <seg>¿Qué te gustaría usar para una plantilla?</seg>
             </tuv>
         </tu>
+        <tu tuid="perc.ui.newsitedialog.text@Extract section names">
+                    <prop type="sectionname" xml:lang="en-us">New Site Dialog</prop>
+                    <note xml:lang="en-us"></note>
+                    <tuv xml:lang="en-us">
+                        <seg>Extract section names by query parameter</seg>
+                    </tuv>
+                    <tuv xml:lang="es">
+                        <seg>Extraer nombres de secciones por parámetro de consulta</seg>
+                    </tuv>
+                </tu>
          <tu tuid="perc.ui.newsitedialog.text@page2 summary">
             <prop type="sectionname" xml:lang="en-us">New Site Dialog</prop>
             <note xml:lang="en-us"></note>
@@ -1652,11 +1824,11 @@
       <prop type="sectionname" xml:lang="en-us">Delete Site</prop>
 	<note xml:lang="en-us"></note>
       <tuv xml:lang="en-us">
-        <seg>&lt;span id = 'perc-delete-dialog-warning'&gt;Warning:&lt;/span&gt; &lt;br\&gt; &lt;span id = 'perc-warning-red'&gt;You are about to delete the site: '{0}' &lt;/span&gt;&lt;br\&gt;&lt;strong&gt;All pages, sections, folders and templates in this site will be deleted.&lt;br\&gt; &lt;br\&gt;&lt;/strong&gt; &lt;span id='perc-delete-warn-msg'&gt; Note: deleting '{0}' from CMS will not remove published site content in '{0}' from your live web server.&lt;br\&gt; &lt;br\&gt; Please check &lt;a title='Percussion Software - Documentation' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a&gt; for instructions on how to remove all live site content first before deleting a site.&lt;/span&gt; </seg>
+        <seg>&lt;span id = 'perc-delete-dialog-warning'&gt;Warning:&lt;/span&gt; &lt;br\&gt; &lt;span id = 'perc-warning-red'&gt;You are about to delete the site: '{0}' &lt;/span&gt;&lt;br\&gt;&lt;strong&gt;All pages, sections, folders and templates in this site will be deleted.&lt;br\&gt; &lt;br\&gt;&lt;/strong&gt; &lt;span id='perc-delete-warn-msg'&gt; Note: deleting '{0}' from CMS will not remove published site content in '{0}' from your live web server.&lt;br\&gt; &lt;br\&gt; Please check &lt;a title='Percussion Software - Documentation' href='https://percussioncmshelp.intsof.com/'&gt;percussioncmshelp.intsof.com&lt;/a&gt; for instructions on how to remove all live site content first before deleting a site.&lt;/span&gt; </seg>
       </tuv>
       <tuv xml:lang="es">
         <seg>&lt;span id = 'perc-delete-dialog-warning'&gt;Advertencia:&lt;/span&gt; &lt;br\&gt; &lt;span id = 'perc-warning-red'&gt;Estás a punto de eliminar el sitio: '{0}' &lt;/span&gt;&lt;br\&gt;&lt;strong&gt;Todas las páginas, secciones, carpetas y plantillas de este sitio se eliminarán.&lt;br\&gt; &lt;br\&gt;&lt;/strong&gt; &lt;span id='perc-delete-warn-msg'&gt; Nota: eliminar '{0}' de CMS no eliminará el contenido del sitio publicado en '{0}' de su servidor web en directo.&lt;br\&gt; &lt;br\&gt; Por favor, compruebe &lt;a title='Software de Percussion -
-Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a&gt; Para obtener instrucciones sobre cómo eliminar todo el contenido del sitio en vivo antes de eliminar un sitio.&lt;/span&gt; </seg>
+Documentación' href='https://percussioncmshelp.intsof.com/'&gt;percussioncmshelp.intsof.com&lt;/a&gt; Para obtener instrucciones sobre cómo eliminar todo el contenido del sitio en vivo antes de eliminar un sitio.&lt;/span&gt; </seg>
       </tuv>
   </tu>
 <tu tuid="perc.ui.deletesitedialog.warning@Processing">
@@ -3447,10 +3619,10 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
     <prop type="sectionname" xml:lang="en-us">Generate Canonical URLs</prop>
     <note xml:lang="en-us"></note>
     <tuv xml:lang="en-us">
-        <seg>Generate Canonical URLs</seg>
+        <seg>Generate Canonical URLs. Use the arrow keys to toggle between options.</seg>
     </tuv>
      <tuv xml:lang="es">
-        <seg>Generar URLs canónicas</seg>
+        <seg>Generar URLs canónicas. Utilice las teclas de flecha para alternar entre las opciones.</seg>
     </tuv>
 </tu>
 
@@ -3692,6 +3864,167 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
         <seg>Vista previa de esta revisión</seg>
     </tuv>
 </tu>
+<tu tuid="perc.ui.revisionDialog.compare@compareRevisions">
+    <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Compare Revisions</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Comparar revisiones</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.highContrast@High Contrast">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>High Contrast</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Alto contraste</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.selectTemplate@Select Template">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+   <tuv xml:lang="en-us">
+       <seg>Select Template</seg>
+   </tuv>
+   <tuv xml:lang="es">
+       <seg>Seleccionar plantilla</seg>
+   </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.notComparable@Not compareable">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+   <tuv xml:lang="en-us">
+       <seg>Page is not comparable. Please select different template.</seg>
+   </tuv>
+   <tuv xml:lang="es">
+       <seg>La página no es comparable. Por favor seleccione una plantilla diferente</seg>
+   </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.failedPageLoad@Failed Page Load">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+   <tuv xml:lang="en-us">
+       <seg>Failed to load page.</seg>
+   </tuv>
+   <tuv xml:lang="es">
+       <seg>No se pudo cargar la página.</seg>
+   </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.failedCompare@Failed Compare">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+   <tuv xml:lang="en-us">
+       <seg>Failed to compare pages.</seg>
+   </tuv>
+   <tuv xml:lang="es">
+       <seg>No se pudieron comparar páginas.</seg>
+   </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.revision@Revision">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Revision</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Revisión</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.compare@Compare">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Compare</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Comparar</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.legends@Legends">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Legends</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Leyendas</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.addedText@Added Text">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Added Text</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Texto agregado</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.addedTextHighContrast@Added Text High Contrast">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Added Text High Contrast</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Texto agregado de alto contraste</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.removedText@Removed Text">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Removed Text</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Texto eliminado</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.removedTextHighContrast@Removed Text High Contrast">
+    <prop type="sectionname" xml:lang="en-us">Compare Screen</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Removed Text High Contrast</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Texto eliminado de alto contraste</seg>
+    </tuv>
+</tu>
+
+<tu tuid="perc.ui.revisionDialog.selectRevToCompare@selectRevToCompare">
+    <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Select Revisions To Compare</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Seleccione revisiones para comparar</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.selectRev@selectRev">
+    <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Select Revision</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Seleccione revisione</seg>
+    </tuv>
+</tu>
+<tu tuid="perc.ui.revisionDialog.itemTitle@ItemTitle">
+    <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
+    <note xml:lang="en-us"></note>
+    <tuv xml:lang="en-us">
+        <seg>Title</seg>
+    </tuv>
+      <tuv xml:lang="es">
+        <seg>Título</seg>
+    </tuv>
+</tu>
 <tu tuid="perc.ui.revisionDialog.label@Latest">
     <prop type="sectionname" xml:lang="en-us">WebMgt</prop>
     <note xml:lang="en-us"></note>
@@ -3928,10 +4261,10 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
         <prop type="sectionname" xml:lang="en-us">User Management</prop>
         <note xml:lang="en-us">Message listing users that were not imported from LDAP</note>
         <tuv xml:lang="en-us">
-            <seg>Some of the users were not imported due to a server side error. Refer to the documentation on configuring LDAP/Active Directory: https://help.percussion.com/</seg>
+            <seg>Some of the users were not imported due to a server side error. Refer to the documentation on configuring LDAP/Active Directory: https://percussioncmshelp.intsof.com/</seg>
         </tuv>
         <tuv xml:lang="es">
-            <seg>Algunos de los usuarios no se importaron debido a un error del lado del servidor. Consulte la documentación sobre la configuración de LDAP / Active Directory: https://help.percussion.com/</seg>
+            <seg>Algunos de los usuarios no se importaron debido a un error del lado del servidor. Consulte la documentación sobre la configuración de LDAP / Active Directory: https://percussioncmshelp.intsof.com/</seg>
         </tuv>
     </tu>
 
@@ -4722,6 +5055,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>Filtros</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.gadgets.seo@SEO AUDIT">
+        <prop type="sectionname" xml:lang="en-us">SEO AUDIT</prop>
+        <note xml:lang="en-us"></note>
+        <tuv xml:lang="en-us">
+            <seg>SEO AUDIT</seg>
+        </tuv>
+          <tuv xml:lang="es">
+            <seg>AUDITORÍA SEO</seg>
+        </tuv>
+     </tu>
    <tu tuid="perc.ui.gadgets.seo@Default Title">
 	    <prop type="sectionname" xml:lang="en-us">SEO</prop>
 	    <note xml:lang="en-us"></note>
@@ -4942,6 +5285,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                         <seg>Proceso</seg>
                     </tuv>
      </tu>
+     <tu tuid="perc.ui.gadgets.processmonitor@ProcessMonitor">
+                     <prop type="sectionname" xml:lang="en-us">Process Monitor</prop>
+                     <note xml:lang="en-us"></note>
+                     <tuv xml:lang="en-us">
+                         <seg>Process Monitor</seg>
+                     </tuv>
+                     <tuv xml:lang="es">
+                         <seg>Monitor de proceso</seg>
+                     </tuv>
+      </tu>
      <tu tuid="perc.ui.gadgets.processmonitor@Status">
                     <prop type="sectionname" xml:lang="en-us">Process Monitor</prop>
                     <note xml:lang="en-us"></note>
@@ -4982,6 +5335,26 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                         <seg>Última actualización</seg>
                     </tuv>
      </tu>
+     <tu tuid="perc.ui.gadgets.processmonitor@Process Monitor">
+                     <prop type="sectionname" xml:lang="en-us">Process Monitor</prop>
+                     <note xml:lang="en-us"></note>
+                     <tuv xml:lang="en-us">
+                         <seg>PROCESS MONITOR</seg>
+                     </tuv>
+                     <tuv xml:lang="es">
+                         <seg>MONITOREO DE PROCESO</seg>
+                     </tuv>
+     </tu>
+     <tu tuid="perc.ui.gadgets.welcome@WELCOME">
+                     <prop type="sectionname" xml:lang="en-us">WELCOME</prop>
+                     <note xml:lang="en-us"></note>
+                     <tuv xml:lang="en-us">
+                         <seg>WELCOME</seg>
+                     </tuv>
+                     <tuv xml:lang="es">
+                         <seg>BIENVENIDO</seg>
+                     </tuv>
+      </tu>
      <tu tuid="perc.ui.gadgets.welcome@Linkback Not Supported">
                     <prop type="sectionname" xml:lang="en-us">Welcome</prop>
                     <note xml:lang="en-us"></note>
@@ -5001,6 +5374,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                     <tuv xml:lang="es">
                         <seg>Añadir Bookmarklet</seg>
                     </tuv>
+     </tu>
+     <tu tuid="perc.ui.gadgets.sitewideFramework@Sitewide Framework">
+                     <prop type="sectionname" xml:lang="en-us">Sitewide Framework Gadget</prop>
+                     <note xml:lang="en-us"></note>
+                     <tuv xml:lang="en-us">
+                         <seg>SITEWIDE FRAMEWORK</seg>
+                     </tuv>
+                     <tuv xml:lang="es">
+                         <seg>MARCO PARA TODO EL SITIO</seg>
+                     </tuv>
      </tu>
      <tu tuid="perc.ui.gadgets.sitewideFramework@Override Percussion Foundation">
                     <prop type="sectionname" xml:lang="en-us">Sitewide Framework Gadget</prop>
@@ -5302,6 +5685,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                         <seg>Todos los estados</seg>
                     </tuv>
      </tu>
+     <tu tuid="perc.ui.gadgets.membership@MEMBERSHIP">
+                     <prop type="sectionname" xml:lang="en-us">Membership Gadget</prop>
+                     <note xml:lang="en-us"></note>
+                     <tuv xml:lang="en-us">
+                         <seg>MEMBERSHIP</seg>
+                     </tuv>
+                     <tuv xml:lang="es">
+                         <seg>AFILIACIÓN</seg>
+                     </tuv>
+     </tu>
      <tu tuid="perc.ui.gadgets.membership@No Accounts Found Long">
                     <prop type="sectionname" xml:lang="en-us">Membership Gadget</prop>
                     <note xml:lang="en-us"></note>
@@ -5496,10 +5889,10 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                     <prop type="sectionname" xml:lang="en-us">License Monitor Gadget</prop>
                     <note xml:lang="en-us"></note>
                     <tuv xml:lang="en-us">
-                        <seg>Input the activation code sent to you by Percussion. If you have not received an activation code, please check your email or call us at 800.283.0800 for assistance.</seg>
+                        <seg>Input the activation code sent to you by Percussion. If you have not received an activation code, please check your email or call us at +1-443-535-1889 for assistance.</seg>
                     </tuv>
                     <tuv xml:lang="es">
-                        <seg>Ingrese el código de activación que le envió Percussion. Si no ha recibido un código de activación, revise su correo electrónico o llámenos al 800.283.0800 para obtener ayuda.</seg>
+                        <seg>Ingrese el código de activación que le envió Percussion. Si no ha recibido un código de activación, revise su correo electrónico o llámenos al +1-443-535-1889 para obtener ayuda.</seg>
                     </tuv>
      </tu>
      <tu tuid="perc.ui.gadgets.licenseMonitor@Activation code">
@@ -5536,10 +5929,10 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                     <prop type="sectionname" xml:lang="en-us">License Monitor Gadget</prop>
                     <note xml:lang="en-us"></note>
                     <tuv xml:lang="en-us">
-                        <seg>Below is a list of activated Percussion modules. To activate a module, input the activation code(s) sent to you by Percussion.  If you have not received an activation code, please check your email or call us at 800.283.0800 for assistance. If a module is displayed as inactive you can enter in a new activation code to update that particular module.</seg>
+                        <seg>Below is a list of activated Percussion modules. To activate a module, input the activation code(s) sent to you by Percussion.  If you have not received an activation code, please check your email or call us at +1-443-535-1889 for assistance. If a module is displayed as inactive you can enter in a new activation code to update that particular module.</seg>
                     </tuv>
                     <tuv xml:lang="es">
-                        <seg>A continuación se muestra una lista de módulos de Percussion activados. Para activar un módulo, ingrese los códigos de activación que le envió Percussion. Si no ha recibido un código de activación, revise su correo electrónico o llámenos al 800.283.0800 para obtener ayuda. Si un módulo se muestra como inactivo, puede ingresar un nuevo código de activación para actualizar ese módulo en particular.</seg>
+                        <seg>A continuación se muestra una lista de módulos de Percussion activados. Para activar un módulo, ingrese los códigos de activación que le envió Percussion. Si no ha recibido un código de activación, revise su correo electrónico o llámenos al +1-443-535-1889 para obtener ayuda. Si un módulo se muestra como inactivo, puede ingresar un nuevo código de activación para actualizar ese módulo en particular.</seg>
                     </tuv>
      </tu>
      <tu tuid="perc.ui.gadgets.licenseMonitor@Close">
@@ -5626,10 +6019,10 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                     <prop type="sectionname" xml:lang="en-us">License Monitor Gadget</prop>
                     <note xml:lang="en-us"></note>
                     <tuv xml:lang="en-us">
-                        <seg>You have exceeded your license limits. To get within allowed limits you may delete or archive live pages or sites and refresh. If your license has been suspended, you will not be able to publish. To remove the suspension, contact Percussion at sales@percussion.com or 800.283.0800.</seg>
+                        <seg>You have exceeded your license limits. To get within allowed limits you may delete or archive live pages or sites and refresh. If your license has been suspended, you will not be able to publish. To remove the suspension, contact Percussion at sales@percussion.com or +1-443-535-1889.</seg>
                     </tuv>
                     <tuv xml:lang="es">
-                        <seg>Ha excedido los límites de su licencia. Para estar dentro de los límites permitidos, puede eliminar o archivar páginas o sitios en vivo y actualizar. Si su licencia ha sido suspendida, no podrá publicar. Para eliminar la suspensión, comuníquese con Percussion a sales@percussion.com o al 800.283.0800.</seg>
+                        <seg>Ha excedido los límites de su licencia. Para estar dentro de los límites permitidos, puede eliminar o archivar páginas o sitios en vivo y actualizar. Si su licencia ha sido suspendida, no podrá publicar. Para eliminar la suspensión, comuníquese con Percussion a sales@percussion.com o al +1-443-535-1889.</seg>
                     </tuv>
      </tu>
      <tu tuid="perc.ui.gadgets.licenseMonitor@Refresh">
@@ -5892,6 +6285,36 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                         <seg>MODERACIÓN</seg>
                     </tuv>
      </tu>
+     <tu tuid="perc.ui.gadgets.comments@Select Site">
+                     <prop type="sectionname" xml:lang="en-us">Comments Gadget</prop>
+                     <note xml:lang="en-us"></note>
+                     <tuv xml:lang="en-us">
+                         <seg>Please select a site in the settings</seg>
+                     </tuv>
+                     <tuv xml:lang="es">
+                         <seg>Por favor seleccione un sitio en la configuración</seg>
+                     </tuv>
+      </tu>
+      <tu tuid="perc.ui.gadgets.comments@COMMENTS">
+                   <prop type="sectionname" xml:lang="en-us">COMMENTS</prop>
+                   <note xml:lang="en-us"></note>
+                   <tuv xml:lang="en-us">
+                       <seg>COMMENTS</seg>
+                   </tuv>
+                   <tuv xml:lang="es">
+                       <seg>COMENTARIOS</seg>
+                   </tuv>
+      </tu>
+      <tu tuid="perc.ui.gadgets.comments@COMMENTS MODERATION">
+                   <prop type="sectionname" xml:lang="en-us">COMMENTS</prop>
+                   <note xml:lang="en-us"></note>
+                   <tuv xml:lang="en-us">
+                       <seg>COMMENTS MODERATION:</seg>
+                   </tuv>
+                   <tuv xml:lang="es">
+                       <seg>MODERACIÓN DE COMENTARIOS:</seg>
+                   </tuv>
+     </tu>
      <tu tuid="perc.ui.gadgets.cookieConsent@Error">
                     <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
                     <note xml:lang="en-us"></note>
@@ -5902,6 +6325,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                         <seg>Error</seg>
                     </tuv>
      </tu>
+     <tu tuid="perc.ui.gadgets.cookieConsent@COOKIE CONSENT">
+                     <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                     <note xml:lang="en-us"></note>
+                     <tuv xml:lang="en-us">
+                         <seg>COOKIE CONSENT</seg>
+                     </tuv>
+                     <tuv xml:lang="es">
+                         <seg>CONSENTIMIENTO DE COOKIES</seg>
+                     </tuv>
+      </tu>
      <tu tuid="perc.ui.gadgets.cookieConsent@Loading">
                     <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
                     <note xml:lang="en-us"></note>
@@ -6032,6 +6465,116 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
                         <seg>No se encontraron entradas de consentimiento de cookies. El servicio de entrega puede no estar disponible.</seg>
                     </tuv>
      </tu>
+     <tu tuid="perc.ui.gadgets.cookieConsent@Total cookie consents">
+                         <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                         <note xml:lang="en-us"></note>
+                         <tuv xml:lang="en-us">
+                             <seg>Total cookie consents</seg>
+                         </tuv>
+                         <tuv xml:lang="es">
+                             <seg>Consentimientos totales de cookies</seg>
+                         </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Export Cookie Entries">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Export All Cookie Consent Entries</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Exportar todas las entradas de consentimiento de cookies</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Service Cookie">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Service/Cookie</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Servicio/Cookie</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Total consents">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Total consents</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Consentimientos totales</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Export Link">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Export Link</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Enlace de exportación</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Advanced">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Advanced</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Avanzado</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Advanced Settings">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Advanced Settings</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Ajustes avanzados</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Delete All">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Delete all cookie consent entries.</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Elimine todas las entradas de consentimiento de cookies.</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Delete entry">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Delete entries</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Eliminar entradas</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Delete Selected">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Delete cookie consent entries for selected site.</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Eliminar entradas de consentimiento de cookies para el sitio:</seg>
+                 </tuv>
+    </tu>
+    <tu tuid="perc.ui.gadgets.cookieConsent@Delete entries for site">
+                 <prop type="sectionname" xml:lang="en-us">Cookie Consent</prop>
+                 <note xml:lang="en-us"></note>
+                 <tuv xml:lang="en-us">
+                     <seg>Delete entries for site</seg>
+                 </tuv>
+                 <tuv xml:lang="es">
+                     <seg>Eliminar entradas para el sitio</seg>
+                 </tuv>
+    </tu>
      <tu tuid="perc.ui.widgets.commentsForm@This Field Is Required">
                     <prop type="sectionname" xml:lang="en-us">Comments Form</prop>
                     <note xml:lang="en-us"></note>
@@ -8243,6 +8786,16 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
 	        <seg>No se puede cargar la lista de gadgets.</seg>
 	    </tuv>
 	 </tu>
+	 <tu tuid="perc.ui.dashboard@Show Gadget Menu">
+        <prop type="sectionname" xml:lang="en-us">Click to show the Gadget Menu</prop>
+        <note xml:lang="en-us"></note>
+        <tuv xml:lang="en-us">
+            <seg>Click to show the Gadget Menu</seg>
+        </tuv>
+          <tuv xml:lang="es">
+            <seg>Haga clic para mostrar el menú de gadgets</seg>
+        </tuv>
+     </tu>
 	 <tu tuid="perc.ui.edit.region.properties.dialog@Enter Width">
 	    <prop type="sectionname" xml:lang="en-us">General</prop>
 	    <note xml:lang="en-us"></note>
@@ -13938,6 +14491,220 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
         </tuv>
      </tu>
 
+     <tu tuid="perc.ui.gadget.bulkUpload@Expand Target Folder">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Expand target folder path</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Expandir la ruta de la carpeta de destino</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Target folder">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Target folder:</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Carpeta de destino:</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Select target folder">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Select target folder</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Seleccionar carpeta de destino</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Approves Uploads">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>When checked, approves all uploaded assets automatically.</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Cuando está marcado, aprueba todos los recursos cargados automáticamente.</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Approve assets">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Approve assets</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Aprobar activos</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Asset type">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Asset type:</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Tipo de activo:</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Extract HTML">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Extract HTML from element:</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Extraer HTML del elemento:</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Valid Css">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Enter any valid CSS3 Selector to specify the element.</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Ingrese cualquier selector CSS3 válido para especificar el elemento.</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Outer Html">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Select HTML to include the specified element as well as the inner HTML</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Seleccione HTML para incluir el elemento especificado así como el HTML interno</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Inner Html">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Select Inner HTML to extract only the HTML inside the specified element</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Seleccione HTML interno para extraer solo el HTML dentro del elemento especificado</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Add files for upload">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Add files for upload</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Agregar archivos para cargar</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Start upload">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Start upload</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Iniciar la subida</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Cancel upload">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Cancel upload</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Cancelar carga</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Clear uploads">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Clear uploads</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Borrar cargas</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Clear All">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Clear All</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Limpiar todo</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Expand upload details">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Expand upload details</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Ampliar detalles de carga</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Zero Files Queued">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>0 file(s) queued for upload</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>0 archivos en cola para carga</seg>
+         </tuv>
+      </tu>
+     <tu tuid="perc.ui.gadget.bulkUpload@Name">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Name</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Nombre</seg>
+         </tuv>
+      </tu>
+
+     <tu tuid="perc.ui.gadget.bulkUpload@Size">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Size</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Tamaño</seg>
+         </tuv>
+      </tu>
+
+     <tu tuid="perc.ui.gadget.bulkUpload@Type">
+         <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+         <note xml:lang="en-us"></note>
+         <tuv xml:lang="en-us">
+             <seg>Type</seg>
+         </tuv>
+          <tuv xml:lang="es">
+             <seg>Tipo</seg>
+         </tuv>
+      </tu>
+
+      <tu tuid="perc.ui.gadget.bulkUpload@Bulk Upload">
+            <prop type="sectionname" xml:lang="en-us">Gadget Dialog</prop>
+            <note xml:lang="en-us"></note>
+            <tuv xml:lang="en-us">
+                <seg>BULK UPLOAD</seg>
+            </tuv>
+            <tuv xml:lang="es">
+                <seg>CARGA MASIVA</seg>
+            </tuv>
+     </tu>
+
      <tu tuid="perc.ui.utils@Please fill all required fields">
      	    <prop type="sectionname" xml:lang="en-us">Settings</prop>
      	    <note xml:lang="en-us"></note>
@@ -14324,6 +15091,795 @@ Documentación' href='https://help.percussion.com/'&gt;help.percussion.com&lt;/a
         <seg>Mostrar HTML</seg>
     </tuv>
 </tu>
-
+<tu tuid="perc.ui.workflow.status.gadget@Approve">
+	<prop type="sectionname" xml:lang="en-us">Approve</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Approve</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Aprobar</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.workflow.status.gadget@Pending">
+	<prop type="sectionname" xml:lang="en-us">Pending</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Pending</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Pendiente</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.workflow.status.gadget@Default Workflow">
+	<prop type="sectionname" xml:lang="en-us">Default Workflow</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Default Workflow</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Flujo de trabajo predeterminado</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.workflow.status.gadget@Select Filters">
+	<prop type="sectionname" xml:lang="en-us">Select Filters</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Select Filters</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Seleccionar filtros</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.workflow.status.gadget@No Pages Found">
+	<prop type="sectionname" xml:lang="en-us">No Pages Found</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>No Pages Found</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>No se encontraron páginas</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@ASSETS BY STATUS">
+	<prop type="sectionname" xml:lang="en-us">ASSETS BY STATUS</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>ASSETS BY STATUS:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>BIENES POR ESTADO:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@Default Workflow">
+	<prop type="sectionname" xml:lang="en-us">Default Workflow</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Default Workflow</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Flujo de trabajo predeterminado</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@All States">
+	<prop type="sectionname" xml:lang="en-us">All States</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>All States</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Todos los Estados</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@All Assets">
+	<prop type="sectionname" xml:lang="en-us">All Assets</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>(All Assets)</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>(Todos los activos)</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@All Workflows">
+	<prop type="sectionname" xml:lang="en-us">All Workflows</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>All Workflows</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>All Workflows</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@No Assets Found">
+	<prop type="sectionname" xml:lang="en-us">No Assets Found</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>No Assets Found</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>No se encontraron activos</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@Last Edited by">
+	<prop type="sectionname" xml:lang="en-us">Last Edited by</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Last Edited by</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Última edición por</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.asset.status.gadget@Asset Type">
+	<prop type="sectionname" xml:lang="en-us">Asset Type</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Asset Type</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Tipo de activo</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Add Variable">
+	<prop type="sectionname" xml:lang="en-us">Add Variable</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Add Variable</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Agregar variable</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Global Variables">
+	<prop type="sectionname" xml:lang="en-us">Global Variables</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>GLOBAL VARIABLES</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>VARIABLES GLOBALES</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Create Global Variable">
+	<prop type="sectionname" xml:lang="en-us">Click to create global variable</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Click to create global variable</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Haga clic para crear una variable global</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Not Found">
+	<prop type="sectionname" xml:lang="en-us">No Global Variables Found</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>No Global Variables Found</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>No se encontraron variables globales</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Variable name">
+	<prop type="sectionname" xml:lang="en-us">Variable name</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Variable name</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Nombre de la variable</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Variable value">
+	<prop type="sectionname" xml:lang="en-us">Variable value</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Variable value</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Valor variable</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Variable error">
+	<prop type="sectionname" xml:lang="en-us">Error saving the variable</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Error saving the variable.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Error al guardar la variable.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@No Blank Name">
+	<prop type="sectionname" xml:lang="en-us">Name must not be blank</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Name must not be blank.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>El nombre no debe estar en blanco.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@No Blank Value">
+	<prop type="sectionname" xml:lang="en-us">Value must not be blank</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Value must not be blank.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>El valor no debe estar en blanco.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Select Different Name">
+	<prop type="sectionname" xml:lang="en-us">A variable already exists with this name, please select a different name</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>A variable already exists with this name, please select a different name.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Ya existe una variable con este nombre; seleccione un nombre diferente.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Delete Global Variable">
+	<prop type="sectionname" xml:lang="en-us">Delete Global Variable</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Delete Global Variable</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Eliminar variable global</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.global.variables.gadget@Error Delete Variable">
+	<prop type="sectionname" xml:lang="en-us">Error deleting the variable</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Error deleting the variable.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Error al eliminar la variable.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.forms.tracker.gadget@New">
+	<prop type="sectionname" xml:lang="en-us">New</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>New</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Nuevo</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.forms.tracker.gadget@Total">
+	<prop type="sectionname" xml:lang="en-us">Total</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Total</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Total</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.forms.tracker.gadget@FORMS TRACKER">
+	<prop type="sectionname" xml:lang="en-us">FORMS TRACKER</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>FORMS TRACKER</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>SEGUIMIENTO DE FORMAS</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.seo.gadget@Title Tag">
+	<prop type="sectionname" xml:lang="en-us">Title Tag</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Title Tag</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Etiqueta de título</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.seo.gadget@Issues">
+	<prop type="sectionname" xml:lang="en-us">Issues</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Issues</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Asuntos</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.seo.gadget@Severity">
+	<prop type="sectionname" xml:lang="en-us">Severity</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Severity</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Gravedad</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.welcome.gadget@Documentation">
+	<prop type="sectionname" xml:lang="en-us">Documentation</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Documentation</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Documentación</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.welcome.gadget@Creation">
+	<prop type="sectionname" xml:lang="en-us">All the basics on creating and maintaining your website(s) with Percussion CMS</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>All the basics on creating and maintaining your website(s) with Percussion CMS.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Todos los conceptos básicos para crear y mantener su(s) sitio(s) web con Percussion CMS.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.welcome.gadget@Percussion Community">
+	<prop type="sectionname" xml:lang="en-us">Percussion Community</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Percussion Community</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Comunidad de percusión</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.welcome.gadget@Ask Questions">
+	<prop type="sectionname" xml:lang="en-us">Ask questions and discuss ideas with fellow Percussion CMS users</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Ask questions and discuss ideas with fellow Percussion CMS users.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Haga preguntas y discuta ideas con otros usuarios de Percussion CMS.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.welcome.gadget@Add Percussion Linkback">
+	<prop type="sectionname" xml:lang="en-us">Add Percussion Linkback</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Add Percussion Linkback</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Agregar enlace de percusión</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.welcome.gadget@Percussion Linkback Explanation">
+	<prop type="sectionname" xml:lang="en-us">Percussion Linkback provides quick access from your website back to Percussion CMS to facilitate quick edits and easy navigation. When viewing a page on your website, click the Percussion Linkback bookmark, and you will be brought to the corresponding page in CMS for you to edit</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Percussion Linkback provides quick access from your website back to Percussion CMS to facilitate quick edits and easy navigation. When viewing a page on your website, click the Percussion Linkback bookmark, and you will be brought to the corresponding page in CMS for you to edit.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Percussion Linkback proporciona acceso rápido desde su sitio web a Percussion CMS para facilitar ediciones rápidas y una navegación sencilla. Cuando vea una página en su sitio web, haga clic en el marcador Percussion Linkback y accederá a la página correspondiente en CMS para que pueda editarla.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.site.improve.gadget@SITEIMPROVE">
+	<prop type="sectionname" xml:lang="en-us">SITEIMPROVE</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>SITEIMPROVE</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>MEJORAR EL SITIO</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.site.improve.gadget@Welcome Text">
+	<prop type="sectionname" xml:lang="en-us">Welcome to the Siteimprove gadget</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Welcome to the Siteimprove gadget.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Bienvenido al gadget de Siteimprove.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.site.improve.gadget@Explanation">
+	<prop type="sectionname" xml:lang="en-us">Explanation</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Using this gadget, you will be able to integrate Siteimprove with CMS.The integration will alert Siteimprove to page changes whenever pages are published from CMS.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Con este gadget, podrá integrar Siteimprove con CMS.La integración alertará a Siteimprove sobre los cambios en las páginas cada vez que se publiquen desde CMS.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.site.improve.gadget@Existing Site Improve">
+	<prop type="sectionname" xml:lang="en-us">I already have Siteimprove</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>I already have Siteimprove</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Ya tengo Siteimprove</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.site.improve.gadget@Try Site Improve">
+	<prop type="sectionname" xml:lang="en-us">I want to try out Siteimprove</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>I want to try out Siteimprove</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Quiero probar Siteimprove</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.reports.gadget@Reports">
+	<prop type="sectionname" xml:lang="en-us">Reports</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>REPORTS</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>INFORMES</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.reports.gadget@All Files">
+	<prop type="sectionname" xml:lang="en-us">All Files</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>All Files</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Todos los archivos</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.reports.gadget@All Images">
+	<prop type="sectionname" xml:lang="en-us">All Images</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>All Images</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Todas las imágenes</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.reports.gadget@Non-ADA Compliant Files">
+	<prop type="sectionname" xml:lang="en-us">Non-ADA Compliant Files</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Non-ADA Compliant Files</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Archivos que no cumplen con ADA</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.reports.gadget@Non-ADA Compliant Images">
+	<prop type="sectionname" xml:lang="en-us">Non-ADA Compliant Images</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Non-ADA Compliant Images</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Imágenes que no cumplen con ADA</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.reports.gadget@Report Problem">
+	<prop type="sectionname" xml:lang="en-us">There was an problem creating the report</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>There was an problem creating the report</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Hubo un problema al crear el informe.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.reports.gadget@Report Successful">
+	<prop type="sectionname" xml:lang="en-us">Create report request generated Successfully</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Create report request generated Successfully</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Crear solicitud de informe generada con éxito</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Connect Google">
+	<prop type="sectionname" xml:lang="en-us">Connect to Google</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Connect to Google:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Conéctate a Google:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Google Email">
+	<prop type="sectionname" xml:lang="en-us">Google Service Account email</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Google Service Account email:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Correo electrónico de la cuenta de servicio de Google:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Google Json File">
+	<prop type="sectionname" xml:lang="en-us">Google Service Account .json credentials file</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Google Service Account .json credentials file:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Archivo de credenciales .json de la cuenta de servicio de Google:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Credential Test">
+	<prop type="sectionname" xml:lang="en-us">Credential Test</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Test the credentials by attempting to connect to Google Analytics.If successful the profile lists will be updated.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Pruebe las credenciales intentando conectarse a Google Analytics.Si tiene éxito, las listas de perfiles se actualizarán.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Clear Credentials">
+	<prop type="sectionname" xml:lang="en-us">Clear credentials</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Clear credentials</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Borrar credenciales</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Select Google Profile">
+	<prop type="sectionname" xml:lang="en-us">Select Google Profile</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Select a Google profile for each site:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Seleccione un perfil de Google para cada sitio:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Save Analytics">
+	<prop type="sectionname" xml:lang="en-us">Save Analytics</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Save analytics settings to the server.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Guarde la configuración de análisis en el servidor.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Revert Changes">
+	<prop type="sectionname" xml:lang="en-us">Revert Changes</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Revert any unsaved changes.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Revierta los cambios no guardados.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Confirm Remove">
+	<prop type="sectionname" xml:lang="en-us">Confirm Remove</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Please confirm that you wish to remove your Google Analytics credentials from Percussion. Upon next publish, the Google Analytics script code will be removed from all published pages.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Confirme que desea eliminar sus credenciales de Google Analytics de Percussion. En la próxima publicación, el código de secuencia de comandos de Google Analytics se eliminará de todas las páginas publicadas.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@No Sites Found">
+	<prop type="sectionname" xml:lang="en-us">No Sites Found</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>No Sites Found</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>No se encontraron sitios</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Select Google Analytics Profile">
+	<prop type="sectionname" xml:lang="en-us">Select Google Analytics Profile</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Select Google Analytics Profile</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Seleccione el perfil de Google Analytics</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@Enter API Key">
+	<prop type="sectionname" xml:lang="en-us">Enter API Key for this Google Analytics Profile</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Enter API Key for this Google Analytics Profile</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Ingrese la clave API para este perfil de Google Analytics</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.google.setup.gadget@GOOGLE SETUP">
+	<prop type="sectionname" xml:lang="en-us">GOOGLE SETUP</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>GOOGLE SETUP</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>CONFIGURACIÓN DE GOOGLE</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.widget.config.gadget@Widget Configuration">
+	<prop type="sectionname" xml:lang="en-us">Widget Configuration</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>WIDGET CONFIGURATION</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>CONFIGURACIÓN DE WIDGETS</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.widget.config.gadget@Uncheck Widgets">
+	<prop type="sectionname" xml:lang="en-us">Uncheck Widgets</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Uncheck widgets in the list below to prevent them from being added to pages or templates. Existing pages or templates using these widgets will not be affected.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Desmarque los widgets en la lista siguiente para evitar que se agreguen a páginas o plantillas. Las páginas o plantillas existentes que utilicen estos widgets no se verán afectadas.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.widget.config.gadget@Percussion Widgets">
+	<prop type="sectionname" xml:lang="en-us">Percussion widgets</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Percussion widgets:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Widgets de percusión:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.widget.config.gadget@Custom Widgets">
+	<prop type="sectionname" xml:lang="en-us">Custom widgets</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Custom widgets:</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Widgets personalizados:</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.traffic.gadget@Select Site">
+	<prop type="sectionname" xml:lang="en-us">Please select a site in the settings</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Please select a site in the settings</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Por favor seleccione un sitio en la configuración</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.traffic.gadget@Activity">
+	<prop type="sectionname" xml:lang="en-us">Activity</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Activity</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Actividad</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.traffic.gadget@Visits">
+	<prop type="sectionname" xml:lang="en-us">Visits</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Visits</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Visitas</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.traffic.gadget@Show Details">
+	<prop type="sectionname" xml:lang="en-us">Show details</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Show details</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Mostrar detalles</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.traffic.gadget@Select Date Range">
+	<prop type="sectionname" xml:lang="en-us">Select a date range that includes at least one data point</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Select a date range that includes at least one data point</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Seleccione un rango de fechas que incluya al menos un punto de datos</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.traffic.gadget@TRAFFIC">
+	<prop type="sectionname" xml:lang="en-us">TRAFFIC</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>TRAFFIC</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>TRÁFICO</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.activity.gadget@How Many">
+	<prop type="sectionname" xml:lang="en-us">Activity Gadget</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>How many: You can only put a number greater than zero in this field.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Cuántos: Sólo puedes poner un número mayor que cero en este campo.</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.activity.gadget@Activity During Last">
+	<prop type="sectionname" xml:lang="en-us">Activity</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>ACTIVITY: During Last</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>ACTIVIDAD: Durante el último</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.activity.gadget@Changes">
+	<prop type="sectionname" xml:lang="en-us">Changes</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Changes</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Cambios</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.activity.gadget@Updates">
+	<prop type="sectionname" xml:lang="en-us">Updates</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Updates</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Actualizaciones</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.activity.gadget@Take Downs">
+	<prop type="sectionname" xml:lang="en-us">Take Downs</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Take Downs</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Derribar</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.iframe.gadget@EXTERNAL APPLICATION">
+	<prop type="sectionname" xml:lang="en-us">EXTERNAL APPLICATION</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>EXTERNAL APPLICATION</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>APLICACIÓN EXTERNA</seg>
+	</tuv>
+</tu>
+<tu tuid="perc.ui.iframe.gadget@Iframes Not Supported">
+	<prop type="sectionname" xml:lang="en-us">Iframes Not Supported</prop>
+	<note xml:lang="en-us"></note>
+	<tuv xml:lang="en-us">
+		<seg>Your browser doesn't support iframes.</seg>
+	</tuv>
+	  <tuv xml:lang="es">
+		<seg>Su navegador no soporta iframes.</seg>
+	</tuv>
+</tu>
     </body>
 </tmx>

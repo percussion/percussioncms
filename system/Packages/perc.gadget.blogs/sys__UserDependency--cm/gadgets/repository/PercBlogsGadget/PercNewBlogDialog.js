@@ -26,8 +26,8 @@
                 width : 820,
                 height: 580,
                 steps : [
-                    {title : "Define your blog",      content : defineYourBlogWizardStep, cache : true, showRequiredFieldLabel : true},
-                    {title : "Select your templates", content : selectYourTemplatesStep,  cache : false}
+                    {title : I18N.message("perc.ui.blogs.Gadget@Define your blog"),      content : defineYourBlogWizardStep, cache : true, showRequiredFieldLabel : true},
+                    {title : I18N.message("perc.ui.blogs.Gadget@Select your templates"), content : selectYourTemplatesStep,  cache : false}
                 ],
                 id : "perc-new-blog-dialog",
                 style : "/cm/gadgets/repository/PercBlogsGadget/PercNewBlogDialog.css",
@@ -159,7 +159,7 @@
 	            }
 	            else if(status == percJQuery.PercServiceUtils.STATUS_SUCCESS && (result == percJQuery.PercUserService.ACCESS_READ || result == percJQuery.PercUserService.ACCESS_NONE))
 	            {
-	               percJQuery.perc_utils.alert_dialog({title: 'Warning', content: "You are not authorized to create a blog in the selected folder."});
+	               percJQuery.perc_utils.alert_dialog({title: 'Warning', content: I18N.message("perc.ui.blogs.Gadget@No Authorization")});
 	               hasWritePermission = false;
 	               return;
 	            }
@@ -214,20 +214,20 @@
             });
             
         var selectLocationDom = percJQuery("<div class='perc-select-blog-location'>")
-            .append("<div class='perc-select-blog-location-label perc-label'>* Select a location for your blog.</div>")
+            .append("<div class='perc-select-blog-location-label perc-label'>" + I18N.message("perc.ui.blogs.Gadget@Select a location") + "</div>")
             .append(tree)
-            .append("<div class='perc-blog-location-error-message perc-error-message'>Blog location is a required field.</div>");
+            .append("<div class='perc-blog-location-error-message perc-error-message'>"+I18N.message("perc.ui.blogs.Gadget@Blog Location Required")+"</div>");
 
         var selectTextLinkDom = percJQuery("<div class='perc-select-blog-text-link-ui'>")
-            .append("<div class='perc-select-blog-text-link-label perc-label'>* Blog link text:</div>")
+            .append("<div class='perc-select-blog-text-link-label perc-label'>" + I18N.message("perc.ui.blogs.Gadget@Blog link text") + "</div>")
             .append("<div class='perc-select-blog-text-link-input perc-new-blog-input'><input type='text' aria-required='true' id='perc-blog-text-link'/>")
-            .append("<div class='perc-blog-text-link-error-message perc-error-message'>Blog link text is a required field.</div>");
+            .append("<div class='perc-blog-text-link-error-message perc-error-message'>"+I18N.message("perc.ui.blogs.Gadget@Blog Link Text Required")+"</div>");
             
         var selectPageNameDom = percJQuery("<div class='perc-select-page-name-ui'>")
-            .append("<div class='perc-select-page-name-label perc-label'>* Blog name:</div>")
+            .append("<div class='perc-select-page-name-label perc-label'>" + I18N.message("perc.ui.blogs.Gadget@Blog name") + "</div>")
             .append("<div class='perc-select-page-name-input perc-new-blog-input'><input type='text' aria-required='true' id='perc-page-name' maxlength='50'/>")
-            .append("<div class='perc-blog-page-name-error-message perc-error-message'>Blog name is a required field.</div>")
-            .append("<div class='perc-blog-page-name-unique-error-message perc-error-message'>Blog name must be unique.</div>");
+            .append("<div class='perc-blog-page-name-error-message perc-error-message'>"+I18N.message("perc.ui.blogs.Gadget@Blog Name Required")+"</div>")
+            .append("<div class='perc-blog-page-name-unique-error-message perc-error-message'>"+I18N.message("perc.ui.blogs.Gadget@Unique Blog Name")+"</div>");
         
         var selectTitleNameAndLinkDom = percJQuery("<div class='perc-select-title-name-and-link'>")
             .append(selectTextLinkDom)
@@ -279,16 +279,16 @@
         var clearBoth = $("<div style='clear:both'>&nbsp;</div>");
         var blogIndexPageTemplate = $("<div class='perc-blog-index-page-template-browser'>").PercScrollingTemplateBrowser({siteName:siteName,width:660, widgetDefId: "percBlogIndexPage"}); 
         var blogPostPageTemplate  = $("<div class='perc-blog-post-page-template-browser'>").PercScrollingTemplateBrowser({siteName:siteName,width:660, widgetDefId: "percBlogPost"});
-        var blogIndexPageTemplateErrorMessage = $("<div class='perc-blog-index-page-template-error-message perc-error-message'>Blog index page template is required.</div>");
-        var blogPostPageTemplateErrorMessage  = $("<div class='perc-blog-post-page-template-error-message perc-error-message'>Blog post page template is required.</div>");
+        var blogIndexPageTemplateErrorMessage = $("<div class='perc-blog-index-page-template-error-message perc-error-message'>"+I18N.message("perc.ui.blogs.Gadget@Blog Index Page Template Required")+"</div>");
+        var blogPostPageTemplateErrorMessage  = $("<div class='perc-blog-post-page-template-error-message perc-error-message'>"+I18N.message("perc.ui.blogs.Gadget@Blog Post Page Template Required")+"</div>");
         step2Dom = $("<div class='perc-select-blog-templates'>")
-            .append("<div class='perc-blog-index-page-template-label perc-label'>Select a template for the blog index page:</div>")
+            .append("<div class='perc-blog-index-page-template-label perc-label'>"+I18N.message("perc.ui.blogs.Gadget@Blog Index Page Template Select")+"</div>")
             .append(blogIndexPageTemplate)
             .append(blogIndexPageTemplateErrorMessage)
-            .append("<div class='perc-blog-post-page-template-label perc-label'>Select a template for the blog post page:</div>")
+            .append("<div class='perc-blog-post-page-template-label perc-label'>"+I18N.message("perc.ui.blogs.Gadget@Blog Post Page Template Select")+"</div>")
             .append(blogPostPageTemplate)
             .append(blogPostPageTemplateErrorMessage)
-            .append("<div style='margin-top:10px'><input id='perc_copy_templates' type='checkbox' style='width:15px;margin:5px 5px 5px 40px;top:0'/> <label for='perc_copy_templates'>Make copies of the blog templates for use by this blog</label></div>");
+            .append("<div style='margin-top:10px'><input id='perc_copy_templates' type='checkbox' style='width:15px;margin:5px 5px 5px 40px;top:0'/> <label for='perc_copy_templates'>"+I18N.message("perc.ui.blogs.Gadget@Make Copies")+"</label></div>");
             
         return step2Dom;
     }

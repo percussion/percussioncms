@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * This class creates a simple PSFUDJTreeTable component, by using a JTree as a
  * renderer (and editor) for the cells in a particular column in the JTable.
  *<p>
- * PSFUDJTreeTable is a combination of JTable and JTree. Acually derived from
+ * PSFUDJTreeTable is a combination of JTable and JTree. Actually derived from
  * JTable and uses JTree as cell renderer. This way we get a kind of tree list
  * view
  *
@@ -42,7 +42,7 @@ public class PSFUDJTreeTable extends JTable
    /**
     * Constructor.
     *
-    * @param tree table model as PSFUDTreeTableModel
+    * @param treeTableModel table model as PSFUDTreeTableModel
     *
     */
    public PSFUDJTreeTable(PSFUDTreeTableModel treeTableModel)
@@ -97,6 +97,7 @@ public class PSFUDJTreeTable extends JTable
     * is not the right thing to do for an editor. Returning -1 for the
     * editing row in this case, ensures the editor is never painted.
     */
+   @Override
    public int getEditingRow()
    {
       return (getColumnClass(editingColumn) == PSFUDTreeTableModel.class) ? 
@@ -163,11 +164,13 @@ public class PSFUDJTreeTable extends JTable
          setCellRenderer(renderer);
       }
 
+      @Override
       public void setBounds(int x, int y, int w, int h)
       {
          super.setBounds(x, 0, w, PSFUDJTreeTable.this.getHeight());
       }
 
+      @Override
       public void paint(Graphics g)
       {
          g.translate(0, -visibleRow * getRowHeight());

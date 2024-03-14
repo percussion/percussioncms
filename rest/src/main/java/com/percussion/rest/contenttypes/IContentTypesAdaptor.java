@@ -41,4 +41,12 @@ public interface IContentTypesAdaptor {
      */
     public List<ContentType> listContentTypes(URI baseUri, int siteId);
 
+    /***
+     * List ContentTypes available for the specified Site
+     * @param baseUri Originating URI
+     * @param filter A ContentTypeFilter that can be used to filter content types.
+     * @return An array of ContentTypes
+     */
+    public List<ContentType> listContentTypesByFilter(URI baseUri, ContentTypeFilter filter);
+
 }

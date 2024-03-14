@@ -137,16 +137,19 @@ public class PSHTMLHeaderImporter
                 String fullThemePath = "";
                 String convertedLink = "";
 
-                // only append ".css" for stylesheets
-                if (isValidCssLinkElement(link))
-                {
-                    fullThemePath = urlConverter.getFileSystemPathForCss(remoteUrl);
-                    convertedLink = urlConverter.convertToThemeLinkForCss(remoteUrl);
-                }
-                else
-                {
-					fullThemePath = urlConverter.getFileSystemPath(remoteUrl);
-					convertedLink = urlConverter.convertToThemeLink(remoteUrl);
+                //While Importing external sites/Templates, don't convert external links
+                if(!remoteUrl.startsWith(this.siteUrl)){
+                    fullThemePath = remoteUrl;
+                    convertedLink = remoteUrl;
+                }else {
+                    // only append ".css" for stylesheets
+                    if (isValidCssLinkElement(link)) {
+                        fullThemePath = urlConverter.getFileSystemPathForCss(remoteUrl);
+                        convertedLink = urlConverter.convertToThemeLinkForCss(remoteUrl);
+                    } else {
+                        fullThemePath = urlConverter.getFileSystemPath(remoteUrl);
+                        convertedLink = urlConverter.convertToThemeLink(remoteUrl);
+                    }
                 }
                 // Add the link path into the map
                 linkPaths.put(remoteUrl, fullThemePath);
@@ -195,13 +198,20 @@ public class PSHTMLHeaderImporter
                 
                 if(isNotBlank(remoteUrl))
                 {
-                    String fullThemePath = urlConverter.getFileSystemPath(remoteUrl);
+                    String fullThemePath;
+                    String convertedLink;
+                    //Don't change external Links while importing sites and templates
+                    if(!remoteUrl.startsWith(this.siteUrl) && remoteUrl.toLowerCase().startsWith("http")) {
+                        fullThemePath = remoteUrl;
+                        convertedLink = remoteUrl;
+                    }else {
+                        fullThemePath = urlConverter.getFileSystemPath(remoteUrl);
+                        convertedLink = urlConverter.convertToThemeLink(remoteUrl);
+                    }
                     scriptPaths.put(remoteUrl, fullThemePath);
-                    String convertedLink = urlConverter.convertToThemeLink(remoteUrl);
-                    
                     // Log the information related to the processed element
                     appendHeaderImporterMessage(MessageFormat.format(CONVERTED_SCRIPT_URL, script.attr("src"), convertedLink));
-                    
+
                     // Set the new path for the script being processed
                     script.attr("src", convertedLink);
                 }

@@ -25,6 +25,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -67,7 +68,9 @@ public class CommunityResource implements  ICommunityResource{
     @Context
     private UriInfo uriInfo;
 
-    public CommunityResource(){}
+    public CommunityResource(){
+        //NOOP
+    }
 
     @Override
     @POST
@@ -95,7 +98,25 @@ public class CommunityResource implements  ICommunityResource{
             {MediaType.APPLICATION_JSON})
     @Operation(summary = "Get a community by name or pattern.  Get a community by name or pattern.  * is the wildcard.", responses = { @ApiResponse(
             responseCode = "200", description = "OK",
-            content = @Content(schema=@Schema(implementation = CommunityList.class)))})
+            content = @Content(schema=@Schema(implementation = CommunityList.class),
+            examples = @ExampleObject(value = "{\n" +
+                    "  \"CommunityList\": [\n" +
+                    "    {\n" +
+                    "      \"description\": \"Default Community\",\n" +
+                    "      \"guid\": {\n" +
+                    "        \"hostId\": 0,\n" +
+                    "        \"longValue\": 10,\n" +
+                    "        \"stringValue\": \"0-13-10\",\n" +
+                    "        \"type\": 13,\n" +
+                    "        \"untypedString\": \"0-10\",\n" +
+                    "        \"uuid\": 10\n" +
+                    "      },\n" +
+                    "      \"id\": 10,\n" +
+                    "      \"label\": \"Default\",\n" +
+                    "      \"name\": \"Default\"\n" +
+                    "    }\n" +
+                    "  ]\n" +
+                    "}")))})
     @ApiResponses(value = {
             @ApiResponse(responseCode="200", description="OK"),
             @ApiResponse(responseCode="500", description="ERROR")

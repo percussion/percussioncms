@@ -521,7 +521,7 @@ public class PSSharedGroupDependencyHandler
          throw new IllegalArgumentException("object may not be null");
 
       if (idTypes == null)
-         throw new IllegalArgumentException("idTypes may not be null");
+        return;
 
       if (idMap == null)
          throw new IllegalArgumentException("idMap may not be null");

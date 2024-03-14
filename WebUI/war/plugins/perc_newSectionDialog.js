@@ -27,7 +27,7 @@
 
 $.perc_newSectionDialog = function() {
    function openDialog(site, parentId, callback) {
-    var taborder = 30;
+    var taborder = 0;
     var v;
 
     var dialog;
@@ -45,26 +45,26 @@ $.perc_newSectionDialog = function() {
                 "</select> <br>" +
                 "<div id='perc-section-container'>" +
                 "<label for='perc-select-template'>"+ I18N.message( "perc.ui.newSectionDialog.label@Select a template" ) + ": </label><br/>" +
-                "<a class='prevPage browse left'></a>" +
+                "<a tabindex='0' class='prevPage browse left'></a>" +
                 "<div class='perc-scrollable'><input type='hidden' id='perc-select-template' name='template'/>" +
                 "<div class='perc-items'>" +
               "</div></div>" +
-                "<a class='nextPage browse right' ></a>" +
+                "<a tabindex='0' class='nextPage browse right' ></a>" +
                 "<div style='float:left;'>" +
                 "<fieldset>" +
                 "<label for='perc-section-name' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@Section name" ) + ":</label> <br/> " +
-                "<input type='text' class='required' tabindex='" + taborder + "' id='perc-section-name' name='section_name' maxlength='512'/> <br/>" +
+                "<input type='text' class='required' tabindex='0' id='perc-section-name' name='section_name' maxlength='512'/> <br/>" +
                 "<label for='perc-section-url' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@URL" ) + ":</label> <br/> " +
-                "<input type='text' class='required' tabindex='" + taborder + "' id='perc-section-url' name='page_url' maxlength='100'/><br/> " +
+                "<input type='text' class='required' tabindex='0' id='perc-section-url' name='page_url' maxlength='100'/><br/> " +
                 "</fieldset>" +
                 "</div>" +
                 "</div>" +
                 "<div id='perc-external-link-container' style='display:none'>" +
                 "<fieldset>" +
                 "<label for='perc-external-link-text' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@External link text" ) + ":</label> <br/> " +
-                "<input type='text' class='required' tabindex='" + taborder + "' id='perc-external-link-text' name='perc-external-link-text' maxlength='100'/> <br/>" +
+                "<input type='text' class='required' tabindex='0' id='perc-external-link-text' name='perc-external-link-text' maxlength='100'/> <br/>" +
                 "<label class='perc-required-field' for='perc-external-link-url'>" + I18N.message( "perc.ui.newSectionDialog.label@External link URL" ) + ":</label> <br/> " +
-                "<input type='text' class='required' tabindex='" + taborder + "' id='perc-external-link-url' name='perc-external-link-url' maxlength='512'/><br/> " +
+                "<input type='text' class='required' tabindex='0' id='perc-external-link-url' name='perc-external-link-url' maxlength='512'/><br/> " +
                 "</fieldset>" +
                 "</div>" +
                 "<div id='perc-section-link-container' style='display:none'>" +
@@ -257,6 +257,11 @@ $.perc_newSectionDialog = function() {
                 $(".perc-items .item").removeClass("perc-selected-item");
                 $(this).addClass("perc-selected-item");
             });
+			$(".perc-items .item").on('keydown', function(event){
+               if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+				}
+            });
             // select first item by default
             $firstItem = $(".perc-items .item:first");
             $("#perc-select-template").val($firstItem.find(".item-id").text());
@@ -285,7 +290,7 @@ $.perc_newSectionDialog = function() {
     }
     
     function createTemplateEntry(data){
-        var temp = "<div class=\"item\">" +
+        var temp = "<div tabindex='0' class=\"item\">" +
              "<div class=\"item-id\">@ITEM_ID@</div>" +
              "     <table>" +
              "         <tr><td align='left'>" +

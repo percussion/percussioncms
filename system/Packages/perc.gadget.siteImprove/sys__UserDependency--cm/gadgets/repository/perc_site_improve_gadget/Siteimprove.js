@@ -35,6 +35,14 @@ var SITEIMPROVE_COOKIE_NAME = 'siteimprove_credentials';
 
 $(function () {
 
+    $(document).ready(function() {
+        document.getElementById('perc-site-improve-welcome-text').innerText=I18N.message("perc.ui.site.improve.gadget@Welcome Text");
+        document.getElementById('perc-site-improve-explanation').innerText=I18N.message("perc.ui.site.improve.gadget@Explanation");
+        document.getElementById('perc-existing-site-improve-btn').innerText=I18N.message("perc.ui.site.improve.gadget@Existing Site Improve");
+        document.getElementById('perc-try-site-improve-btn').innerText=I18N.message("perc.ui.site.improve.gadget@Try Site Improve");
+        gadgets.window.setTitle(I18N.message("perc.ui.site.improve.gadget@SITEIMPROVE"));
+    });
+
     //Hold onto our site configuration.
     var siteInfos = {};
 
@@ -56,7 +64,7 @@ $(function () {
     }
 
     function validateSiteConfig(parsedMetadata) {
-        return parsedMetadata.hasOwnProperty('doPreview') && parsedMetadata.hasOwnProperty('doProduction') && parsedMetadata.hasOwnProperty('doStaging');
+        return parsedMetadata.hasOwnProperty('doPreview') && parsedMetadata.hasOwnProperty('doProduction') && parsedMetadata.hasOwnProperty('doStaging') && parsedMetadata.hasOwnProperty('doAssetsScanExclude');
     }
 
     function retrieveSiteConfig() {
@@ -86,12 +94,14 @@ $(function () {
                         siteInfos[sitename].siteSettings.doPreview = parsedMetadata.doPreview;
                         siteInfos[sitename].siteSettings.doProduction = parsedMetadata.doProduction;
                         siteInfos[sitename].siteSettings.doStaging = parsedMetadata.doStaging;
+                        siteInfos[sitename].siteSettings.doAssetsScanExclude = parsedMetadata.doAssetsScanExclude;
                         siteInfos[sitename].siteSettings.isSiteImproveEnabled = parsedMetadata.isSiteImproveEnabled;
 
                         //If our current selected item in the drop down box matches our results, then set the values accordingly.
                         if (selectedSite === sitename) {
                             $("#perc-si-preview").prop('checked', parsedMetadata.doPreview);
                             $("#perc-si-staging").prop('checked', parsedMetadata.doStaging);
+                            $("#perc-si-exclude-assets").prop('checked', parsedMetadata.doAssetsScanExclude);
                             $("#perc-si-production").prop('checked', parsedMetadata.doProduction);
                             $("#enableSiteimprove").prop('checked', parsedMetadata.isSiteImproveEnabled);
                         }
@@ -107,6 +117,7 @@ $(function () {
 
         var isPreviewEnabled = $("#perc-si-preview").is(':checked');
         var isStagingEnabled = $("#perc-si-staging").is(':checked');
+        var isExcludeAssetsEnabled = $("#perc-si-exclude-assets").is(':checked');
         var isProductionEnabled = $("#perc-si-production").is(':checked');
         var isSiteImproveEnabled = $("#enableSiteimprove").is(':checked');
         var metadataName = "perc.siteimprove.site." + siteName;
@@ -116,10 +127,11 @@ $(function () {
                 siteName: siteName,
                 doPreview: isPreviewEnabled,
                 doStaging: isStagingEnabled,
+                doAssetsScanExclude: isExcludeAssetsEnabled,
                 doProduction: isProductionEnabled,
                 isSiteImproveEnabled: isSiteImproveEnabled
             }
-        }
+        };
 
         saveSISiteConfig(metadataName, siteSettings, function (status, results) {
             if (status === PercSIServiceUtils.STATUS_ERROR) {
@@ -229,19 +241,20 @@ $(function () {
                         canonicalDist: results.SiteSummary[result].canonicalDist,
                         defaultDocument: results.SiteSummary[result].defaultDocument,
                         siteProtocol: results.SiteSummary[result].siteProtocol
-                    }
+                    };
 
                     var siteSettings = {
                         doProduction: true,
                         doStaging: "",
+                        doAssetsScanExclude: "",
                         doPreview: "",
                         isSiteImproveEnabled: false
-                    }
+                    };
 
                     var siteInfo = {
                         siteCredentials: siteCredentials,
                         siteSettings: siteSettings
-                    }
+                    };
 
                     siteInfos[results.SiteSummary[result].name] = siteInfo;
                     $("#mySites").append("<option id='perc-si-" + results.SiteSummary[result].name + "'>" + results.SiteSummary[result].name + "</option>");
@@ -273,7 +286,7 @@ $(function () {
                 defaultDocument: siteInfos[siteName].siteCredentials.defaultDocument,
                 canonicalDist: siteInfos[siteName].siteCredentials.canonicalDist
             }
-        }
+        };
 
         //Validate and save credentials on the backend.
         saveSICredentials("perc.siteimprove.credentials." + siteName, credentials, function (status, results) {
@@ -330,6 +343,7 @@ $(function () {
             } else {
                 if(siteInfos && typeof siteInfos !== 'undefined' && siteInfos.length > 0) {
                     siteInfos[siteName].siteSettings.doStaging = false;
+                    siteInfos[siteName].siteSettings.doAssetsScanExclude = false;
                     siteInfos[siteName].siteSettings.doProduction = true;
                     siteInfos[siteName].siteSettings.doPreview = false;
                     siteInfos[siteName].siteSettings.isSiteImproveEnabled = false;
@@ -475,7 +489,7 @@ $(function () {
                 defaultDocument: siteProperties.defaultDocument,
                 canonicalDist: siteProperties.canonicalDist
             }
-        }
+        };
 
         saveSICredentials("perc.siteimprove.credentials." + siteName, credentials, function (status, results) {
             if (status === PercSIServiceUtils.STATUS_ERROR) {
@@ -518,6 +532,7 @@ $(function () {
                 // change the checkbox values and autofill the input fields.
                 $("#perc-si-preview").prop('checked', siteInfos[key].siteSettings.doPreview);
                 $("#perc-si-staging").prop('checked', siteInfos[key].siteSettings.doStaging);
+                $("#perc-si-staging").prop('checked', siteInfos[key].siteSettings.doAssetsScanExclude);
                 $("#perc-si-production").prop('checked', siteInfos[key].siteSettings.doProduction);
                 $("#enableSiteimprove").prop('checked', siteInfos[key].siteSettings.isSiteImproveEnabled);
             } else {
@@ -531,6 +546,7 @@ $(function () {
     function restoreDefaults() {
         $("#perc-si-preview").prop('checked', false);
         $("#perc-si-staging").prop('checked', false);
+        $("#perc-si-exclude-assets").prop('checked', false);
         $("#perc-si-production").prop('checked', true);
         $("#enableSiteimprove").prop('checked', false);
     }

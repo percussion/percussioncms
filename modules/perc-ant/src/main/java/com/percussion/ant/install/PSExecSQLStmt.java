@@ -40,14 +40,12 @@ import java.util.StringTokenizer;
 /**
  * PSExecSQLStmt is an Installshield wizard bean which executes specified
  * sql statement during install.
- *
  * It has a general sql statement <code>sql</code> and a sql statement for
  * each database that is supported, <code>sqlSqlServer</code>,
  * <code>sqlOracle</code>, and
  * <code>sqlUDB</code>. Database specific sql statement takes preference over
  * the general sql statement. However if the database specific sql statement
  * is <code>null</code> or empty, then general sql statement is used.
- *
  * The <code>objectNames</code> contains the names of tables or views which
  * should be replaced by fully qualified table or view name before executing
  * the sql statement. For example, if the sql statement is CREATE VIEW
@@ -138,10 +136,10 @@ public class PSExecSQLStmt extends PSAction
             else if (driver.startsWith(PSJdbcUtils.ORACLE_PRIMARY))
                dbStrStmt = sqlOracle;
 
-            if (dbStrStmt.trim().length() > 0)
+            if (!dbStrStmt.trim().isEmpty())
                strStmt = dbStrStmt;
 
-            if (strStmt.trim().length() < 1)
+            if (strStmt.trim().isEmpty())
                return;
 
             // replace the table names with fully qualified names
@@ -170,7 +168,7 @@ public class PSExecSQLStmt extends PSAction
       }
    }
 
-   private void handleException(Exception ex){
+   public void handleException(Exception ex){
       //ERROR Code for specified View Not Exist, ignore it
       if( ex.getMessage().contains("ORA-00942") || ex.getMessage().contains("does not exist")){
          PSLogger.logWarn(ex.getMessage());
@@ -215,7 +213,7 @@ public class PSExecSQLStmt extends PSAction
     */
    public String[] getQualifyTableNames()
    {
-      return m_qualifyTableNames;
+      return mQualifyTableNames;
    }
 
    /**
@@ -229,7 +227,7 @@ public class PSExecSQLStmt extends PSAction
     */
    public void setQualifyTableNames(String objectNames)
    {
-      m_qualifyTableNames= convertToArray(objectNames);
+      mQualifyTableNames= convertToArray(objectNames);
    }
 
    /**
@@ -242,7 +240,7 @@ public class PSExecSQLStmt extends PSAction
     */
    public String[] getQualifyViewNames()
    {
-      return m_qualifyViewNames;
+      return mQualifyViewNames;
    }
 
    /**
@@ -256,7 +254,7 @@ public class PSExecSQLStmt extends PSAction
     */
    public void setQualifyViewNames(String objectNames)
    {
-      m_qualifyViewNames= convertToArray(objectNames);
+      mQualifyViewNames= convertToArray(objectNames);
    }
 
 
@@ -438,7 +436,7 @@ public class PSExecSQLStmt extends PSAction
     */
    public boolean getPrintExceptionStackTrace()
    {
-      return m_printExceptionStackTrace;
+      return mPrintExceptionStackTrace;
    }
 
    /**
@@ -450,7 +448,7 @@ public class PSExecSQLStmt extends PSAction
     */
    public void setPrintExceptionStackTrace(boolean print)
    {
-      m_printExceptionStackTrace = print;
+      mPrintExceptionStackTrace = print;
    }
 
    /**
@@ -462,7 +460,7 @@ public class PSExecSQLStmt extends PSAction
     * assumed not <code>null</code>
     * @return the qualified sql statement, never <code>null</code>, may be empty.
     */
-   private String qualifyTableNames(String strStmt, PSJdbcDbmsDef dbmsDef)
+   public String qualifyTableNames(String strStmt, PSJdbcDbmsDef dbmsDef)
    {
       StringBuilder strBuffer = new StringBuilder();
       StringTokenizer stok = new StringTokenizer(strStmt);
@@ -471,17 +469,15 @@ public class PSExecSQLStmt extends PSAction
       {
          String token = stok.nextToken();
 
-         for (int i = 0; i < m_qualifyTableNames.length; i++)
-         {
-            String name = m_qualifyTableNames[i].trim();
+          for (String mQualifyTableName : mQualifyTableNames) {
+              String name = mQualifyTableName.trim();
 
-            if (token.compareTo(name) == 0)
-            {
-               token = PSSqlHelper.qualifyTableName(name, dbmsDef.getDataBase(),
-                       dbmsDef.getSchema(), dbmsDef.getDriver());
-               break;
-            }
-         }
+              if (token.compareTo(name) == 0) {
+                  token = PSSqlHelper.qualifyTableName(name, dbmsDef.getDataBase(),
+                          dbmsDef.getSchema(), dbmsDef.getDriver());
+                  break;
+              }
+          }
 
          strBuffer.append(token);
 
@@ -510,9 +506,9 @@ public class PSExecSQLStmt extends PSAction
       {
          String token = stok.nextToken();
 
-         for (int i = 0; i < m_qualifyViewNames.length; i++)
+         for (int i = 0; i < mQualifyViewNames.length; i++)
          {
-            String name = m_qualifyViewNames[i].trim();
+            String name = mQualifyViewNames[i].trim();
 
             if (token.compareTo(name) == 0)
             {
@@ -540,14 +536,14 @@ public class PSExecSQLStmt extends PSAction
     * name before executing the sql statement, never <code>null</code>,
     * may be empty.
     */
-   private String[] m_qualifyTableNames = new String[0];
+   private String[] mQualifyTableNames = new String[0];
 
    /**
     * names of views, which should be replaced by fully qualified view
     * name before executing the sql statement, never <code>null</code>,
     * may be empty.
     */
-   private String[] m_qualifyViewNames = new String[0];
+   private String[] mQualifyViewNames = new String[0];
 
 
    /**
@@ -592,7 +588,7 @@ public class PSExecSQLStmt extends PSAction
     * defaults to <code>true</code>, modified using
     * <code>setPrintExceptionStackTrace()</code> method.
     */
-   private boolean m_printExceptionStackTrace = true;
+   private boolean mPrintExceptionStackTrace = true;
 
    /*******************************************************************
     * Member variables

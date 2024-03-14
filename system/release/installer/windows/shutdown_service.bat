@@ -2,7 +2,6 @@
 rem This script will invoke the JBoss shutdown script
 set JAVA_HOME=.\JRE
 set NOPAUSE=true
-taskkill /im phantomjs.exe /f
 START /B .\AppServer\bin\jboss_shutdown.bat -s localhost:{{NAMING_PORT}}
 
 REM Shutdown Tomcat if the Shutdown Script is installed.

@@ -50,4 +50,5 @@
 <script src="/cm/plugins/PercPathSelectionDialog.js"></script>
 <script src="/cm/views/PercCreateNewAssetDialog.js"></script>
 <script src="/cm/plugins/PercFolderPropertiesDialog.js"></script>
+<script src="/cm/widgets/htmldiff.js"></script>
 <!-- End Common JS -->

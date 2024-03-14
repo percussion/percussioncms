@@ -8,6 +8,7 @@
         <div class="perc-widget-field-entry"><@- type.toLowerCase().replace("_", " ") @></div>
         <div class="perc-widget-field-entry"><div class="perc-widget-field-actions" for="<@- name @>" ><span role="button" tabindex="128" title='<i18n:message key="perc.ui.widget.builder@Edit"/>' class="perc-widget-field-action-edit" style="cursor:pointer"><i18n:message key="perc.ui.widget.builder@Edit"/></span> | <span role="button" tabindex="129" title='<i18n:message key="perc.ui.widget.builder@Delete"/>' class="perc-widget-field-action-delete" style="cursor:pointer"><i18n:message key="perc.ui.widget.builder@Delete"/></span></div>
         </div>
+    </div>
 </script>
 
 <!-- Template for General tab of widget builder -->
@@ -98,7 +99,7 @@
 <!-- Template for display tab of widget builder -->
 <script type="text/template" id="perc-widget-display-editor-template">
 <csrf:form name="perc-widget-display-tab-form" action="templates.jsp" method="post">
-    <div type="sys_normal">
+    <div type="sys_normal" id="perc-widget-display-html">
 	    <textarea id="widgetHtml" title='<i18n:message key = "perc.ui.publishing.history@DisplayHTML"/>' name="widgetHtml" wrap="soft" class="datadisplay" rows="25" cols="110"><@- widgetHtml @></textarea>
         <br/>
         <script>
@@ -116,7 +117,12 @@
                 spellcheck: true,
                 autocorrect: true,
                 autofocus: true,
-                screenReaderLabel: 'Widget Source Code Editor'});
+				screenReaderLabel: 'Widget Source Code Editor'});
+
+				var innerDiv_new = document.querySelector('#perc-widget-display-html').querySelector('.CodeMirror');
+                $(innerDiv_new).children().children().attr({'title':'<i18n:message key = "perc.ui.publishing.history@DisplayHTML"/>'});
+
+
     </script>
     </div>
 </csrf:form>

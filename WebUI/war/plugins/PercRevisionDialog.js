@@ -128,6 +128,9 @@
             var restorableIcon = isRestorable?"restore.png":"restoreInactive.png";
             var restorableTitle = isRestorable?I18N.message("perc.ui.revisionDialog.tooltip@Restorable"):I18N.message("perc.ui.revisionDialog.tooltip@NotRestorable",[itemType]);
             var $tbody = $("#revisionsTable").find("tbody");
+            var latestRevision;
+            var allRevisions = new Map([]);
+
             for(var i in revisions)
             {
                 var revdata = revisions[i];
@@ -136,22 +139,34 @@
                 var lastModifiedDateParts = $.perc_utils.splitDateTime(revdata.lastModifiedDate);
                 var lastModifiedDateDate = lastModifiedDateParts.date;
                 var lastModifiedDateTime = lastModifiedDateParts.time;
+                var revObj={};
+
+                revObj.revId = revdata.revId;
+                revObj.status = revdata.status;
+                revObj.lastModified = lastModifiedDateDate + " " + lastModifiedDateTime;
+                revObj.modifier = revdata.lastModifier;
+                allRevisions.set(revObj.revId, revObj);
 
                 var lastCol = "";
-                if(itemCount === revdata.revId)
+                if(itemCount === revdata.revId){
+                    latestRevision =  revObj;
                     lastCol = "<span title='" + I18N.message("perc.ui.revisionDialog.tooltip@LatestRevision") + "'>"+ I18N.message("perc.ui.revisionDialog.label@Latest") +"</span>";
-                else
+                }else
                 {
                     lastCol = "<img title= '" + I18N.message("perc.ui.revisionDialog.tooltip@PreviewRevision") +
                         "' alt='" + I18N.message("perc.ui.revisionDialog.tooltip@PreviewRevision") +
                         "' revId='"+ revdata.revId + "' class='perc-revisions-preview-img' style='vertical-align:middle;margin-right:1px;' src='/cm/images/icons/editor/preview.png' />" +
-                        "<img title= '" + I18N.message("perc.ui.revisionDialog.tooltip@Restorable") + "' alt='"+ restorableTitle +"' revId='"+ revdata.revId + "' class='perc-revisions-restore-img' style='vertical-align:middle;' src='/cm/images/icons/editor/" + restorableIcon + "' />";
+
+                        "<img title= '"  + I18N.message("perc.ui.revisionDialog.compare@compareRevisions") +
+                        "' 'id='compare'  alt='Compare this revision to latest revision' " +
+                        "' revId='"+ revdata.revId + "' class='perc-revisions-compare-img' style='vertical-align:middle;margin-right:1px;' src='/cm/images/icons/editor/revision-compare.png' />" +
+                        "<img title= '" + I18N.message("perc.ui.revisionDialog.tooltip@Restorable") + "' alt='restorableTitle' revId='" + revdata.revId + "' class='perc-revisions-restore-img' style='vertical-align:middle;margin-right:1px;' src='/cm/images/icons/editor/" + restorableIcon + "'  />";
                 }
                 var $rowHTML = $(
                     "<tr>" +
                     "<td style='vertical-align: middle'><div class='data-cell perc-ellipsis'>" + revdata.revId + "</div></td>" +
                     "<td style='vertical-align: middle'><div for='" + revdata.status + "' class='data-cell perc-ellipsis'>" + revdata.status + "</div></td>" +
-                    "<td data-order ='"+timeStamp+"' style='vertical-align: middle''><div class='data-cell perc-ellipsis'>" + lastModifiedDateDate + " " + lastModifiedDateTime + "</div></td>" +
+                    "<td data-order ='"+timeStamp+"' style='vertical-align: middle''><div class='data-cell perc-ellipsis'>" +  revObj.lastModified + "</div></td>" +
                     "<td style='vertical-align: middle'><div class='data-cell perc-ellipsis'>" + revdata.lastModifier + "</div></td>" +
                     "<td style='vertical-align: middle'><div class='data-cell perc-ellipsis'>" + lastCol + "</div></td>" +
                     "</tr>");
@@ -159,6 +174,15 @@
                 $tbody.append($rowHTML);
             }
             var iType = itemType;
+
+            $("#revisionsTable").find(".perc-revisions-compare-img").on("click",function(){
+                var revId = $(this).attr("revId");
+                var currRev = $(this).attr("currRevData");
+                if(iType === $.PercRevisionDialog.ITEM_TYPE_PAGE)
+                {
+                    $.perc_finder().launchPageCompareView(itemId,itemName,Number(revId),Number(latestRevision.revId),allRevisions);
+                }
+            });
             $("#revisionsTable").find(".perc-revisions-preview-img").on("click",function(){
                 var revId = $(this).attr("revId");
                 if(iType === $.PercRevisionDialog.ITEM_TYPE_PAGE)
@@ -174,27 +198,38 @@
                     var eMsg = "Cannot preview unknown type.";
                     $.perc_utils.alert_dialog({title: 'Error', content: eMsg});
                 }
-            })
+            });
+
+
             $("#revisionsTable").find(".perc-revisions-preview-img").on("mouseenter", function(){
                 $(this).attr("src", "/cm/images/icons/editor/previewOver.png");
-            })
+            });
             $("#revisionsTable").find(".perc-revisions-preview-img").on("mouseleave", function(){
-                    $(this).attr("src", "/cm/images/icons/editor/preview.png");
-                });
+                $(this).attr("src", "/cm/images/icons/editor/preview.png");
+            });
 
             //Hanlde restore click events and icon hover events if the item is restorable
             if(isRestorable)
             {
                 $("#revisionsTable").find(".perc-revisions-restore-img").on("click",function(){
-                    var revId = $(this).attr("revId");
-                    $.PercRevisionService.restoreRevision(itemId,revId,afterRestore);
-                })
-                $("#revisionsTable").find(".perc-revisions-restore-img").on("mouseenter", function(){
-                        $(this).attr("src", "/cm/images/icons/editor/restoreOver.png");
-                    })
-                $("#revisionsTable").find(".perc-revisions-restore-img").on("mouseleave", function(){
-                        $(this).attr("src", "/cm/images/icons/editor/restore.png");
+					var revId = $(this).attr("revId");
+                    $.perc_utils.confirm_dialog({
+                        title: 'Restore Revision',
+                        question: 'Want to Restore Revision (' + revId + ') as current revision?',
+                        success: function()
+                        {
+                        $.blockUI();
+                        $.PercRevisionService.restoreRevision(itemId,revId,afterRestore);
+                        },
+                        cancel: function () {}
                     });
+                });
+                $("#revisionsTable").find(".perc-revisions-restore-img").on("mouseenter", function(){
+                    $(this).attr("src", "/cm/images/icons/editor/restoreOver.png");
+                });
+                $("#revisionsTable").find(".perc-revisions-restore-img").on("mouseleave", function(){
+                    $(this).attr("src", "/cm/images/icons/editor/restore.png");
+                });
             }
 
             var table = $("#revisionsTable").dataTable({
@@ -248,6 +283,9 @@
          */
         function afterRestore(status,result)
         {
+            if ( $.blockUI ) {
+                $.unblockUI();
+            }
             var self = this;
 
             if(status === $.PercServiceUtils.STATUS_ERROR)
@@ -278,6 +316,6 @@
                 $.perc_utils.alert_dialog({title: I18N.message("perc.ui.publish.title@Error"), content: eMsg});
             }
         }
-    }// End open dialog      
+    }// End open dialog
 
 })(jQuery);

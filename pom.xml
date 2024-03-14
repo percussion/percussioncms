@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.percussion</groupId>
     <artifactId>core</artifactId>
-    <version>8.1.3</version>
+    <version>8.1.4</version>
     <packaging>pom</packaging>
     <url>https://www.github.com/percussion/percussioncms</url>
 
@@ -76,7 +76,7 @@
    <properties>
        <build.profile.id>dev</build.profile.id>
        <versionString>INTERNAL</versionString>
-        <jenkins.buildNumber>2022</jenkins.buildNumber>
+        <jenkins.buildNumber>2024</jenkins.buildNumber>
        <maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
        <buildNumber>${maven.build.timestamp}</buildNumber>
        <jacoco.it.execution.data.file>${project.build.directory}/coverage-reports/jacoco-it.exec</jacoco.it.execution.data.file>
@@ -127,7 +127,7 @@
        <maven.jxr.plugin.version>3.0.0</maven.jxr.plugin.version>
        <maven.war.plugin.version>3.3.1</maven.war.plugin.version>
        <plexus.component.metadata.version>2.1.0</plexus.component.metadata.version>
-       <jetty.maven.plugin.version>9.4.51.v20230217</jetty.maven.plugin.version>
+       <jetty.maven.plugin.version>9.4.54.v20240208</jetty.maven.plugin.version>
        <lifecycle.mapping.plugin>1.0.0</lifecycle.mapping.plugin>
        <jacoco.maven.plugin.version>0.8.5</jacoco.maven.plugin.version>
        <java.version>1.8.0</java.version>
@@ -137,7 +137,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <activemq.version>5.16.6</activemq.version><!-- 5.17.x and up require Java 11 -->
+        <activemq.version>5.16.7</activemq.version><!-- 5.17.x and up require Java 11 -->
        <spring.version>5.3.27</spring.version>
        <hibernate.version>5.6.10.Final</hibernate.version>
        <hibernate.validator.version>6.2.3.Final</hibernate.validator.version>
@@ -157,7 +157,7 @@
        <simplexml.version>2.7.1</simplexml.version>
        <stax.version>1.0.1</stax.version>
         <poi.version>5.2.2</poi.version>
-        <esapi.version>2.3.0.0</esapi.version>
+        <esapi.version>2.5.2.0</esapi.version>
         <esapi.encoder.version>1.2.3</esapi.encoder.version>
         <ant.version>1.10.14</ant.version>
         <ant.contrib.version>1.0b3</ant.contrib.version>
@@ -168,15 +168,15 @@
         <bc.version>1.74</bc.version>
         <jackson.version>2.14.2</jackson.version>
         <jsoup.version>1.15.3</jsoup.version>
-        <json.version>20230227</json.version>
+        <json.version>20240303</json.version>
         <junit.version>4.13.1</junit.version>
         <cactus.version>13-1.7.1</cactus.version>
         <cactus.sysproperties>cactus.contextURL</cactus.sysproperties>
         <cactus.contextURL>http://localhost:9992/Rhythmyx</cactus.contextURL>
-        <jetty.version>9.4.51.v20230217</jetty.version>
+        <jetty.version>9.4.54.v20240208</jetty.version>
         <trinidad.version>1.0.2</trinidad.version>
        <derby.version>10.14.2.0</derby.version>
-       <mssql.version>9.2.1.jre8</mssql.version>
+       <mssql.version>12.4.1.jre8</mssql.version>
        <oracle.version>12.1.0.1</oracle.version>
        <jtds.version>1.3.1</jtds.version>
        <install.jre.version>8.222.10.1</install.jre.version>
@@ -192,8 +192,8 @@
        <sqlite.version>3.41.2.2</sqlite.version>
        <swagger.version>2.1.10</swagger.version>
        <swagger.ui.version>3.51.2</swagger.ui.version>
-       <commons.compress.version>1.21</commons.compress.version>
-       <solr.version>8.11.2</solr.version>
+       <commons.compress.version>1.26.0</commons.compress.version>
+       <solr.version>8.11.3</solr.version>
         <nettyall.version>4.1.45.Final</nettyall.version>
        <hikari.version>4.0.3</hikari.version>
        <snakeyaml.version>2.0</snakeyaml.version>
@@ -201,7 +201,7 @@
        <commons.codec.version>1.15</commons.codec.version>
        <tinymce.version>5.10.3</tinymce.version>
        <jfx.version>11.0.2</jfx.version>
-       <twelvemonkeys.version>3.7.1</twelvemonkeys.version>
+       <twelvemonkeys.version>3.9.4</twelvemonkeys.version>
        <commons.beanutils.version>1.9.4</commons.beanutils.version>
        <xstream.version>1.4.20</xstream.version>
        <log4j2.version>2.18.0</log4j2.version>
@@ -417,7 +417,7 @@
                                 </property>
                             </systemProperties>
                             <skipTests>${skip.unit.tests}</skipTests>
-                            <testFailureIgnore>true</testFailureIgnore>
+                            <testFailureIgnore>false</testFailureIgnore>
                             <groups>com.percussion.utils.testing.UnitTest</groups>
                             <includes>
                                 <include>**/*.java</include>
@@ -437,7 +437,7 @@
                      </systemPropertyVariables>
 
                      <excludedGroups>com.percussion.utils.testing.IntegrationTest,com.percussion.utils.testing.BackloggedTest</excludedGroups>
-                    <testFailureIgnore>true</testFailureIgnore>
+                    <testFailureIgnore>false</testFailureIgnore>
                 </configuration>
               </plugin>
             <!-- Used for integration tests -->
@@ -484,7 +484,7 @@
                                 is true
                             -->
                             <skipTests>${skip.integration.tests}</skipTests>
-                            <testFailureIgnore>true</testFailureIgnore>
+                            <testFailureIgnore>false</testFailureIgnore>
                             <groups>com.percussion.utils.testing.IntegrationTest</groups>
                             <includes>
                                 <include>**/*.java</include>
@@ -688,7 +688,7 @@
 						<dependency>
 							<groupId>com.percussion</groupId>
 							<artifactId>rxutils</artifactId>
-							<version>8.1.3</version>
+							<version>8.1.4</version>
 						</dependency>
 						<dependency>
 							<groupId>xerces</groupId>
@@ -782,7 +782,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>8.1.3</version>
+                            <version>8.1.4</version>
                         </dependency>
                     </dependencies>
                     <executions>
@@ -812,7 +812,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>build-tools</artifactId>
-                            <version>8.1.3</version>
+                            <version>8.1.4</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -829,7 +829,7 @@
                         <dependency>
                             <groupId>com.percussion</groupId>
                             <artifactId>perc-security-utils</artifactId>
-                            <version>8.1.3</version>
+                            <version>8.1.4</version>
                         </dependency>
                         <dependency>
                             <groupId>com.h3xstream.findsecbugs</groupId>
@@ -1396,7 +1396,7 @@
 
             <!-- Commons -->
             <dependency>
-                <groupId>commons-collections</groupId>
+                <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
                 <version>${commons.collections4.version}</version>
             </dependency>

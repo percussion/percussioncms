@@ -16,7 +16,7 @@
  */
 package com.percussion.utils.jsr170;
 
-import org.apache.commons.collections.Predicate;
+import org.apache.commons.collections4.Predicate;
 import org.apache.commons.lang.StringUtils;
 
 import javax.jcr.Item;

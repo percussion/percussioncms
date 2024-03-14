@@ -16,6 +16,7 @@
  */
 package com.percussion.pagemanagement.assembler.impl;
 
+import com.percussion.error.PSExceptionUtils;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.pagemanagement.data.PSResourceDefinitionGroup.PSAssetResource;
@@ -31,6 +32,7 @@ import com.percussion.services.assembly.impl.plugin.PSAssemblerBase;
 import com.percussion.share.spring.PSSpringWebApplicationContextUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +42,11 @@ import static com.percussion.services.assembly.PSAssemblyException.UNEXPECTED_AS
 /**
  * A dispatch like assembler that assembles resources.
  * <p>
- * Currently the assembler delegates to the assembly template
+ * Currently, the assembler delegates to the assembly template
  * that is registered to the resource definition 
  * ({@link PSAssetResource#getLegacyTemplate()}).
  * <p>
- * However in the future the resource assembler will use the template code from
+ * However, in the future the resource assembler will use the template code from
  * the resource itself.
  *  
  * @author adamgent
@@ -74,7 +76,7 @@ public class PSResourceAssembler extends PSAssemblerBase implements IPSAssembler
             
             
             String templateName = r.getResourceDefinition().getLegacyTemplate();
-            IPSAssemblyTemplate template = getAssemblyService().findTemplateByName((String) templateName);
+            IPSAssemblyTemplate template = getAssemblyService().findTemplateByName(templateName);
             if (template == null)
             {
                return getFailureResult(assemblyItem, "could not find template information");
@@ -105,8 +107,12 @@ public class PSResourceAssembler extends PSAssemblerBase implements IPSAssembler
         String message = "The assembly item did not have a resource definition id.";
         work.setStatus(Status.SUCCESS);
         work.setMimeType("text/plain");
-
+        try{
         work.setResultData(message.getBytes(StandardCharsets.UTF_8));
+        }catch(
+            IOException e){
+            ms_log.error(PSExceptionUtils.getMessageForLog(e));
+        }
         return (IPSAssemblyResult) work;
     }
 

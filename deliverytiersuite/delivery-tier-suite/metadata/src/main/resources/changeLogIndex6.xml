@@ -11,7 +11,7 @@ again in database then this changeset will not run until we change the changeset
 
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.0.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <changeSet runAlways="true" id="20170503041530-1" author="user">
+    <changeSet runAlways="true" id="20170503041530-1" author="user" dbms="mssql">
         <preConditions onFail="CONTINUE">
             <dbms type="mssql"/>
             <sqlCheck expectedResult="0">SELECT count(*) FROM sys.indexes WHERE name='IX_PRCPGMTDT_LNKTXT_INCLNKTXT' AND object_id = OBJECT_ID('PERC_PAGE_METADATA_PROPERTIES')
@@ -20,6 +20,26 @@ again in database then this changeset will not run until we change the changeset
         <sql>CREATE NONCLUSTERED INDEX [IX_PRCPGMTDT_LNKTXT_INCLNKTXT] ON [dbo].[PERC_PAGE_METADATA]
             ([linktext_lower] ASC) INCLUDE([linktext])
             WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = OFF, ALLOW_PAGE_LOCKS = OFF) ON [PRIMARY]
+        </sql>
+    </changeSet>
+
+    <changeSet runAlways="true" id="20170503041540-1" author="user" dbms="mysql">
+        <preConditions onFail="CONTINUE">
+            <dbms type="mysql"/>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME='PERC_PAGE_METADATA' AND INDEX_NAME='IX_PRCPGMTDT_LNKTXT_INCLNKTXT'
+            </sqlCheck>
+        </preConditions>
+        <sql>CREATE INDEX IX_PRCPGMTDT_LNKTXT_INCLNKTXT ON PERC_PAGE_METADATA (linktext_lower ASC)
+        </sql>
+    </changeSet>
+
+    <changeSet runAlways="true" id="20170503041550-1" author="user" dbms="derby">
+        <preConditions onFail="CONTINUE">
+            <dbms type="derby"/>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM SYS.SYSCONGLOMERATES c JOIN SYS.SYSTABLES t ON c.TABLEID = t.TABLEID WHERE c.CONGLOMERATENAME = 'IX_PRCPGMTDT_LNKTXT_INCLNKTXT' AND t.TABLENAME = 'PERC_PAGE_METADATA'
+            </sqlCheck>
+        </preConditions>
+        <sql>CREATE INDEX IX_PRCPGMTDT_LNKTXT_INCLNKTXT ON PERC_PAGE_METADATA (linktext_lower ASC)
         </sql>
     </changeSet>
 

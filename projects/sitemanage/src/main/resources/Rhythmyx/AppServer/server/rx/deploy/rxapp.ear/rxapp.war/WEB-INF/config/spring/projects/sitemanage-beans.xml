@@ -66,13 +66,13 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <bean id="openApiFeature" class="org.apache.cxf.jaxrs.openapi.OpenApiFeature">
         <property name="title" value="Percussion CMS REST API"/>
         <property name="version" value="${project.parent.version}"/>
-        <property name="description" value="Public REST API"/>
-        <property name="contactEmail" value="support@percussion.com"/>
-        <property name="contactName" value="Percussion Software" />
-        <property name="contactUrl" value="https://support.percussion.com" />
+        <property name="description" value="Public CMS REST API"/>
+        <property name="contactEmail" value="percussion.support@intsof.com"/>
+        <property name="contactName" value="Intersoft Data Labs - Percussion CMS Support" />
+        <property name="contactUrl" value="https://percussionsupport.intsof.com/" />
         <property name="runAsFilter" value="false" />
-        <property name="license" value="Percussion Standard Agreement"/>
-        <property name="licenseUrl" value="https://www.percussion.com/legal/"/>
+        <property name="license" value="Apache License, Version 2.0"/>
+        <property name="licenseUrl" value="https://www.apache.org/licenses/LICENSE-2.0"/>
         <property name="supportSwaggerUi" value="true"/>
         <property name="swaggerUiVersion" value="${swagger.ui.version}"/>
         <property name="swaggerUiMavenGroupAndArtifact" value="org.webjars.swagger-ui"/>
@@ -1552,7 +1552,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
         </constructor-arg>
 
         <property name="systemProps">
-            <ref bean="systemProperties"/>
+            <ref bean="psSystemProperties"/>
         </property>
     </bean>
     <bean id="pathService" class="com.percussion.pathmanagement.service.impl.PSPathService" lazy-init="true">
@@ -1640,7 +1640,7 @@ http://cxf.apache.org/schemas/jaxrs.xsd">
     <!-- Utility Service -->
     <bean id="utilityService" class="com.percussion.utils.service.impl.PSUtilityService" autowire="constructor">
         <property name="systemProps">
-            <ref bean="systemProperties"/>
+            <ref bean="psSystemProperties"/>
         </property>
     </bean>
     <!--

@@ -47,10 +47,14 @@
 
 				<br/>
 
-				<div class="perc-site-improve-text perc-site-improve-text-center perc-site-improve-text-main">
+				<div id="perc-site-improve-welcome-text" class="perc-site-improve-text perc-site-improve-text-center perc-site-improve-text-main">
 					<p>
 						Welcome to the Siteimprove gadget.
-						<br/><br/>
+					</p>
+				</div>
+				<br/>
+				<div id="perc-site-improve-explanation" class="perc-site-improve-text perc-site-improve-text-center perc-site-improve-text-main">
+					<p>
 						Using this gadget, you will be able to integrate Siteimprove with CMS.
 						The integration will alert Siteimprove to page changes whenever pages are published from CMS.
 					</p>
@@ -145,6 +149,13 @@
 						<label aria-label="Checkbox to enable for staging sites">
 							<input type="checkbox" id="perc-si-staging" value="">
 							Staging Sites
+						</label>
+
+						<br/>
+
+						<label aria-label="Checkbox to enable for excluding assets from scan for sites">
+							<input type="checkbox" id="perc-si-exclude-assets" value="">
+							Exclude scanning Assets
 						</label>
 
 						<br/><br/>

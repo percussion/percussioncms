@@ -106,8 +106,13 @@ public class PSImportThemeHelper extends PSImportHelper
         try
         {
             Document sourceDoc = pageContent.getSourceDocument();
-            
-            String baseUrl = getBaseUrl(context, sourceDoc);
+            String baseUrl = null;
+            String statusMessagePrefix = context.getStatusMessagePrefix();
+            if(statusMessagePrefix!=null && statusMessagePrefix.contains("template")){ // Importing template
+                baseUrl = getBaseUrl(context, sourceDoc);
+            }else{ // importing site
+                baseUrl = context.getSite().getBaseUrl();
+            }
             if (baseUrl.equals(""))
                 baseUrl = context.getSiteUrl();
             

@@ -3,6 +3,7 @@
 <Module>
     <ModulePrefs title="Google Setup" category="analytics" description="This gadget allows an administrator to configure Google Analytics to use the correct account and profile for each site managed by CMS." thumbnail="images/gadgetConfigGoogle.png" height="465" adminOnly="true">
         <Require feature="perc_core"/>
+        <Require feature="settitle" />
         <Require feature="perc_jquery_ui"/>
     </ModulePrefs>
     <Content type="html">
@@ -169,6 +170,7 @@
 <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/tools.scrollable.mousewheel-1.0.1.js" ></script>
 <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-perc-retiredjs/jquery.text-overflow.js" ></script>
 <script src="/cm/jslib/profiles/3x/jquery/plugins/jquery-dynatree/jquery.dynatree.js" ></script>
+<script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
         <script  src="/cm/plugins/perc_utils.js"></script>
         <script  src="/cm/plugins/perc_path_constants.js"></script>
         <script  src="/cm/services/PercServiceUtils.js"></script>
@@ -525,8 +527,8 @@
                         '<div class="perc-ga-site-container" style="' + oddEvenBorder + 'padding: 10px 10px 14px 10px">' +
                         '    <div class="perc-ga-site" title="' + _sites[i] + '" style="font-size: 11px; margin-bottom: 10px;">' + _sites[i] + '</div>' +
                         '    <div style="width:100%; vertical-align: middle;">' +
-                        '        <select id="perc-ga-site-profile-' + _sites[i] + '" class="perc-ga-profile-list"><option value="none">Select Google Analytics Profile</option></select>' +
-                        '        <input type="text" disabled="disabled" style="color: #CCCCCC" id="perc_ga_apikey_' + _sites[i] + '" class="perc-ga-apikey-field" value="Enter API Key for this Google Analytics Profile">' +
+                        '        <select id="perc-ga-site-profile-' + _sites[i] + '" class="perc-ga-profile-list"><option value="none">'+I18N.message("perc.ui.google.setup.gadget@Select Google Analytics Profile")+'</option></select>' +
+                        '        <input type="text" disabled="disabled" style="color: #808484" id="perc_ga_apikey_' + _sites[i] + '" class="perc-ga-apikey-field" value="'+I18N.message("perc.ui.google.setup.gadget@Enter API Key")+'">' +
                         '    </div>' +
                         '</div>');
 
@@ -549,7 +551,7 @@
                           {
                              self.addClass("perc-selected");
                              if(self.val() == "none")
-                                $("input[id='perc_ga_apikey_" + site + "']").css("color", "#CCCCCC").val("Enter API Key for this Google Analytics Profile").attr("disabled", "disabled");
+                                $("input[id='perc_ga_apikey_" + site + "']").css("color", "#808484").val("Enter API Key for this Google Analytics Profile").attr("disabled", "disabled");
                              else
                                  $("input[id='perc_ga_apikey_" + site + "']").prop("disabled",false);
                           }
@@ -569,7 +571,7 @@
               }
               else
               {
-                 sitesContainer.append("<table width='100%' cellspacing='0' cellpadding='3'><tr class='odd'><td align='center'>No Sites Found</td></tr></tbody></table>");
+                 sitesContainer.append("<table width='100%' cellspacing='0' cellpadding='3'><tr class='odd'><td align='center'>"+I18N.message("perc.ui.google.setup.gadget@No Sites Found")+"</td></tr></tbody></table>");
               }
            }
 
@@ -656,6 +658,28 @@
                 });
               $delete.off('click').on('click', function(e){
                 _onDelete(e,$delete);
+                });
+
+
+			$connect.off('keydown').on('keydown', function(e){
+               if(e.code == "Enter" || e.code == "Space"){
+					document.activeElement.click();
+				}
+              });
+              $cancel.off('keydown').on('keydown', function(e){
+                if(e.code == "Enter" || e.code == "Space"){
+					document.activeElement.click();
+				}
+                });
+              $save.off('keydown').on('keydown', function(e){
+                if(e.code == "Enter" || e.code == "Space"){
+					document.activeElement.click();
+				}
+                });
+              $delete.off('keydown').on('keydown', function(e){
+				if(e.code == "Enter" || e.code == "Space"){
+					document.activeElement.click();
+				}
                 });
 
 
@@ -774,8 +798,8 @@
               {
                     percJQuery.perc_utils.confirm_dialog({
                        id: "confirmDelete",
-                       title: 'Warning',
-                       question: 'Please confirm that you wish to remove your Google Analytics credentials from Percussion. Upon next publish, the Google Analytics script code will be removed from all published pages.',
+                       title: I18N.message("perc.ui.role.controller@Warning Title"),
+                       question: I18N.message("perc.ui.google.setup.gadget@Confirm Remove"),
                        width: 500,
                        cancel:
                            function(){},
@@ -830,6 +854,18 @@
               }
            }
            $(document).ready(function(){
+
+               document.getElementById('perc-ga-top-label').innerText=I18N.message("perc.ui.google.setup.gadget@Connect Google");
+               document.getElementById('perc-email-label').innerText=I18N.message("perc.ui.google.setup.gadget@Google Email");
+               document.getElementById('perc-credentials-label').innerText=I18N.message("perc.ui.google.setup.gadget@Google Json File");
+               document.getElementById('perc-ga-connect').title=I18N.message("perc.ui.google.setup.gadget@Credential Test");
+               document.getElementById('perc-ga-delete').title=I18N.message("perc.ui.google.setup.gadget@Clear Credentials");
+               document.getElementById('perc-ga-delete').innerText=I18N.message("perc.ui.google.setup.gadget@Clear Credentials");
+               document.getElementById('perc-ga-site-profile-label').innerText=I18N.message("perc.ui.google.setup.gadget@Select Google Profile");
+               document.getElementById('perc-ga-save').title=I18N.message("perc.ui.google.setup.gadget@Save Analytics");
+               document.getElementById('perc-ga-cancel').title=I18N.message("perc.ui.google.setup.gadget@Revert Changes");
+               gadgets.window.setTitle(I18N.message("perc.ui.google.setup.gadget@GOOGLE SETUP"));
+
               // Preload the over images
               $.perc_utils.preLoadImages(
                  "/cm/gadgets/repository/perc_google_setup_gadget/images/buttonSaveOver.png",
@@ -864,14 +900,14 @@
            <div id="perc-ga-provider-creds">
            <div id="perc-ga-top-label"><label>Connect to Google:</label></div>
 
-           <label>Google Service Account email:</label><br/><input class="perc-ga-textfield" id="perc-ga-user" type="text"/>
+           <label id="perc-email-label">Google Service Account email:</label><br/><input class="perc-ga-textfield" id="perc-ga-user" type="text"/>
            <form class="testConnectionForm" enctype="multipart/form-data">
-		<label>Google Service Account .json credentials file:</label>
+		<label id="perc-credentials-label">Google Service Account .json credentials file:</label>
 		<br/>
 		<input name="file" class="perc-ga-textfield" id="perc-ga-pwd" type="file" accept=".json"/>
            </form>
-              <a href="javascript:void(0);" id="perc-ga-connect" class="perc-inactive" title="Test the credentials by attempting to connect to Google Analytics. If successful the profile lists will be updated."></a>
-              <a href="javascript:void(0);" id="perc-ga-delete" class="perc-inactive" title="Clear the credentials.">Clear credentials</a>
+              <a role="button" tabindex="0" href="javascript:void(0);" id="perc-ga-connect" class="perc-inactive" title="Test the credentials by attempting to connect to Google Analytics. If successful the profile lists will be updated."></a>
+              <a role="button" tabindex="0" href="javascript:void(0);" id="perc-ga-delete" class="perc-inactive" title="Clear the credentials.">Clear credentials</a>
               <div style="clear: both;"></div>
            </div>
            <div id="perc-ga-site-profile-mappings">
@@ -880,8 +916,8 @@
             </div>
            </div>
            <div id="perc-ga-command-panel">
-             <a href="javascript:void(0);" id="perc-ga-save" aria-disabled="true" class="perc-inactive" title="Save analytics settings to the server."></a>
-             <a href="javascript:void(0);" id="perc-ga-cancel" title="Revert any unsaved changes."></a>
+             <a role="button" tabindex="0" href="javascript:void(0);" id="perc-ga-save" aria-disabled="true" class="perc-inactive" title="Save analytics settings to the server."></a>
+             <a role="button" tabindex="0" href="javascript:void(0);" id="perc-ga-cancel" title="Revert any unsaved changes."></a>
            </div>
            <div style="clear: both;"></div>
         </div>

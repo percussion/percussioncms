@@ -67,12 +67,22 @@ $(function () {
 
         var $advancedAllSitesButton = $('#advanced-all-sites-btn');
         $advancedAllSitesButton.off('click').on('click', addAdvancedHeight);
+		$advancedAllSitesButton.off('keydown').on('keydown',
+				if(event.code == "Enter" || event.code == "Space"){
+					document.activeElement.click();
+				}
+		);
 
         var $advancedSiteButton = $('#advanced-site-btn');
         $advancedSiteButton.off('click').on('click', addAdvancedHeight);
 
         var $deleteButton = $('#cookie-consent-delete-btn');
         $deleteButton.off('click').on('click', confirmDelete);
+		$deleteButton.off('keydown').on('keydown',
+				if(event.code == "Enter" || event.code == "Space"){
+					document.activeElement.click();
+				}
+		);
     }
 
     /**

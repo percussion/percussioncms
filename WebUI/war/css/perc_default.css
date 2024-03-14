@@ -166,3 +166,9 @@ A {
     border-color: #d22f12 !important;
     color: #ffffff !important;
 }
+.btn-primary.disabled,.btn-primary:disabled {
+    color: #222f3e !important;
+    background-color: #f0f0f0 !important;
+    border-color: #f0f0f0 !important;
+    cursor:default !important;
+}

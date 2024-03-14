@@ -33,14 +33,17 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Properties;
@@ -67,8 +70,9 @@ public class Main {
     public static final String VERSION_PROPERTIES = "Version.properties";
     private static final String INSTALLATION_PROPS_PATH = "/jetty/base/etc/installation.properties";
     private static final String SERVER_PROPS_PATH = "/rxconfig/Server/server.properties";
+    private static final String JETTY_JDBC_PATH = "/jetty/base/lib/jdbc/";
+    private static final String OLD_JDBC_LIST_PATH = "/rxconfig/Installer/oldJdbcJarsList.txt";
     public static File tmpFolder;
-
     public static String developmentFlag = "false";
     public static String percVersion;
     public static AtomicInteger currentLineNo = new AtomicInteger(0);
@@ -174,11 +178,48 @@ public class Main {
             Path execPath = installSrc.resolve(Paths.get("rxconfig", "Installer"));
             Path installAntJarPath = execPath.resolve(PathUtils.getVersionLessJarFilePath(execPath,PERC_ANT_JAR + "-*.jar"));
             execJar(installAntJarPath, execPath, installPath);
+            deleteOldJDBCJars(installPath);
 
         } catch (Exception e) {
             System.out.println("An error occurred while executing the installation, installation has likely failed. " + e.getMessage());
         }
         System.out.println("Done extracting");
+    }
+
+    private static void deleteOldJDBCJars(Path installPath){
+        String oldJarsFileName = installPath + OLD_JDBC_LIST_PATH;
+        log.info("Old JDBC File List File..... " + oldJarsFileName );
+        File oldJarNamesFile = new File(oldJarsFileName );
+        List<String> listOfStrings = new ArrayList<String>();
+        if(oldJarNamesFile.exists()){
+            log.info("Old JDBC File List File Found..... ");
+            BufferedReader bf = null;
+            try {
+                bf = new BufferedReader(
+                        new FileReader(oldJarsFileName));
+                String line = bf.readLine();
+                while (line != null) {
+                  listOfStrings.add(line);
+                    line = bf.readLine();
+                }
+                bf.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+        log.info("Old JDBC Files Found..... " + listOfStrings.toString());
+
+        for(int i=0;i<listOfStrings.size();i++){
+            String fileName = installPath + JETTY_JDBC_PATH + listOfStrings.get(i);
+            log.info("Deleting Old JDBC File..... " + fileName );
+            File oldFile = new File(fileName );
+            if (oldFile.exists()){
+                log.info("JDBC File Exists : " + fileName );
+                oldFile.delete();
+                log.info("Delete Old JDBC File Succeded" );
+            }
+        }
     }
 
 

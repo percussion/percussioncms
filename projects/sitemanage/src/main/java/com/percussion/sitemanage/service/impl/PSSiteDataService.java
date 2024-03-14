@@ -81,21 +81,7 @@ import com.percussion.share.validation.PSValidationErrors;
 import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.sitemanage.dao.IPSSitePublishDao;
 import com.percussion.sitemanage.dao.IPSiteDao;
-import com.percussion.sitemanage.data.PSPubInfo;
-import com.percussion.sitemanage.data.PSSaasSiteConfig;
-import com.percussion.sitemanage.data.PSSite;
-import com.percussion.sitemanage.data.PSSiteCopyRequest;
-import com.percussion.sitemanage.data.PSSiteImportCtx;
-import com.percussion.sitemanage.data.PSSiteInfo;
-import com.percussion.sitemanage.data.PSSiteIssueSummary;
-import com.percussion.sitemanage.data.PSSiteProperties;
-import com.percussion.sitemanage.data.PSSitePublishProperties;
-import com.percussion.sitemanage.data.PSSiteSection;
-import com.percussion.sitemanage.data.PSSiteSectionProperties;
-import com.percussion.sitemanage.data.PSSiteStatistics;
-import com.percussion.sitemanage.data.PSSiteStatisticsSummary;
-import com.percussion.sitemanage.data.PSSiteSummary;
-import com.percussion.sitemanage.data.PSValidateCopyFoldersRequest;
+import com.percussion.sitemanage.data.*;
 import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.importer.IPSSiteImportLogger.PSLogObjectType;
 import com.percussion.sitemanage.importer.dao.IPSImportLogDao;
@@ -890,7 +876,8 @@ import static org.apache.commons.lang.Validate.notNull;
     }
 
   
-    public Long createSiteFromUrlAsync(HttpServletRequest request, PSSite site) throws PSValidationException, IPSFolderService.PSWorkflowNotFoundException {
+    public Long createSiteFromUrlAsync(HttpServletRequest request, PSSiteImportConfiguration config) throws PSValidationException, IPSFolderService.PSWorkflowNotFoundException {
+        PSSite site = config.getSite();
         validateNewSite(site);
 
         // Get the user agent
@@ -902,6 +889,7 @@ import static org.apache.commons.lang.Validate.notNull;
         importContext.setSiteUrl(site.getBaseUrl());
         importContext.setStatusMessagePrefix(IMPORT_STATUS_MESSAGE_PREFIX);
         importContext.setUserAgent(userAgent);
+        importContext.setImportConfiguration(config);
 
         // Execute import job
         return asyncJobService.startJob(SITE_IMPORT_JOB_BEAN, importContext);

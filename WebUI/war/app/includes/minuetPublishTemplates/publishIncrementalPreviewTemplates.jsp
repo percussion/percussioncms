@@ -1,5 +1,3 @@
-
-
 <script id="templateIncrementalPublishPreviewOverlay" type="text/x-handlebars-template">
   <div id="percIncrementalPublishPreviewOverlay" role="dialog" aria-modal="true" tabindex="-1">
       <div class="container" role="document">
@@ -16,12 +14,21 @@
                 {{/if}}
             </div>
         </div>
+		<div class="row">
+			<div class="col">
+				<hr>
+			</div>
+		</div>
         <div class="row">
-            <div class="col mt-3 mb-3">
-                {{#if PagedItemList.childrenInPage}}
-                <i18n:message key="perc.ui.publish.incrementalPreview@Items queued for incremental"/>: {{PagedItemList.childrenCount}}
-                {{/if}}
-            </div>
+			<div class="col">
+				<div class="float-left">
+					{{#if PagedItemList.childrenInPage}}
+					<i18n:message key="perc.ui.publish.incrementalPreview@Items queued for incremental"/>: {{PagedItemList.childrenCount}}
+					{{/if}}
+				</div>
+				<div class="float-right" id="perc-paging-buttons">
+                </div>
+			</div>
         </div>
         <div class="row">
             <div class="col">
@@ -34,7 +41,6 @@
                             <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Title"/></th>
                             <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Modified"/></th>
                             <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Modified By"/></th>
-                            <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Published"/></th>
                         </tr>
                       </thead>
                       <tbody id="percIncrementalPublishQueueList">
@@ -46,7 +52,6 @@
                             <td>{{name}}</td>
                           <td>{{#stringToDate (filterByValue columnData.column 'name' 'sys_contentlastmodifieddate')}}{{/stringToDate}}</td>
                           <td>{{#filterByValue columnData.column 'name' 'sys_contentlastmodifier'}}{{/filterByValue}}</td>
-                          <td>{{#filterByValue columnData.column 'name' 'sys_contentpublicationdate'}}{{/filterByValue}}</td>
                         </tr>
                         {{/each}}
                         {{else}}
@@ -95,7 +100,6 @@
                   <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Title"/></th>
                   <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Modified"/></th>
                   <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Modified By"/></th>
-                  <th role="button" tabindex="0" scope="col"><i18n:message key="perc.ui.publish.title@Last Published"/></th>
               </tr>
             </thead>
             <tbody id="percIncrementalPublishRelatedItemsList">
@@ -112,7 +116,6 @@
                   <td>{{name}}</td>
                 <td>{{#stringToDate (filterByValue columnData.column 'name' 'sys_contentlastmodifieddate')}}{{/stringToDate}}</td>
                 <td>{{#filterByValue columnData.column 'name' 'sys_contentlastmodifier'}}{{/filterByValue}}</td>
-                <td>{{#filterByValue columnData.column 'name' 'sys_contentpublicationdate'}}{{/filterByValue}}</td>
               </tr>
               {{/each}}
               {{else}}

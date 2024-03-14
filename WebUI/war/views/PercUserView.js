@@ -520,34 +520,16 @@
             $("#perc-users-password-confirm-label").addClass("perc-required-field");
             $("#perc-users-password-field")
                 .val(dummyPassword)
-                .off("click")
-                .on("click",function() {
-                    $(this)
-                        .off("change")
-                        .on("change",function() {
-                            dirtyController.setDirty(true, "user");
-                        });
-                    $("#perc-users-password-confirm-field")
-                        .off("change")
-                        .on("change",function() {
-                            dirtyController.setDirty(true, "user");
-                        });
+                .off("change")
+                .on("change",function() {
+                  dirtyController.setDirty(true, "user");
                 });
             $("#perc-users-password-confirm-field")
-                .val(dummyPassword)
-                .off("click")
-                .on("click",function() {
-                    $(this)
-                        .off("change")
-                        .on("change",function() {
-                            dirtyController.setDirty(true, "user");
-                        });
-                    $("#perc-users-password-field")
-                        .off("change")
-                        .on("change",function() {
-                            dirtyController.setDirty(true, "user");
-                        });
-                });
+                .off("change")
+                .on("change",function() {
+                    dirtyController.setDirty(true, "user");
+            });
+
         }
 
         function updateUserNameField(username) {

@@ -6,6 +6,7 @@
                  thumbnail="images/gadgetConfigSitewiseFrmw.png" height="250" adminOnly="true">
         <Require feature="perc_core"/>
         <Require feature="perc_jquery_ui"/>
+        <Require feature="settitle" />
     </ModulePrefs>
     <Content type="html">
         <![CDATA[

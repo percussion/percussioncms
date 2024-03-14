@@ -5,7 +5,7 @@
     <parent>
         <artifactId>core</artifactId>
         <groupId>com.percussion</groupId>
-        <version>8.1.3</version>
+        <version>8.1.4</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -26,7 +26,7 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
                 <jdkToolchain>
-                    <version>8.1.3</version>
+                    <version>8.1.4-SNAPSHOT</version>
                     <vendor>oracle</vendor>
                 </jdkToolchain>
                 <verbose>true</verbose>
@@ -56,7 +56,7 @@
                             <Caller-Allowable-Codebase>*</Caller-Allowable-Codebase>
                             <Codebase>*</Codebase>
                             <Permissions>all-permissions</Permissions>
-                            <Application-Name>Percussion Content Explorer Applet</Application-Name>
+                            <Application-Name>Percussion CMS Content Explorer App</Application-Name>
                         </manifestEntries>
                         <mainClass>com.percussion.cx.PSContentExplorerApplication</mainClass>
                     </transformer>

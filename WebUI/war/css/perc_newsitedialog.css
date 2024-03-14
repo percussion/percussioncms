@@ -9,6 +9,15 @@
     width: auto;
 }
 
+#perc_newSiteDialog input[type=checkbox]
+{
+    height: auto;
+    margin: 205px 0 5px -1px;
+    padding: 0;
+    position: absolute;
+    width: auto;
+}
+
 #perc_newSiteDialog input[type=text]
 {
     margin-bottom: 2px;

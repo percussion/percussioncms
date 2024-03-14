@@ -13,4 +13,7 @@
 			<Arg type="String">[<Property name="perc.ssl.protocols" default="TLSv1.2" />]</Arg>
 		</Call>
 	</Set>
+	<Set name="KeyStoreType">
+		<Property name="jetty.sslContext.keystoreType" default="JKS"/>
+	</Set>
 </Configure>

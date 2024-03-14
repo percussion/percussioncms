@@ -59,8 +59,8 @@ import com.percussion.utils.jexl.IPSScript;
 import com.percussion.utils.jexl.PSJexlEvaluator;
 import com.percussion.utils.jsr170.PSProperty;
 import com.percussion.utils.timing.PSStopwatchStack;
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.net.nntp.NNTPConnectionClosedException;
@@ -952,7 +952,7 @@ public class PSNavHelper
     * @throws PSFilterException
     */
    @SuppressWarnings("unchecked")
-   public MultiMap findNavChildren(PSNavAxisEnum axis, IPSNode parentNode)
+   public MultiValuedMap findNavChildren(PSNavAxisEnum axis, IPSNode parentNode)
          throws PSCmsException, RepositoryException, PSFilterException
    {
       if (axis == null) 
@@ -1008,8 +1008,8 @@ public class PSNavHelper
                  curLocator.getId(),
                  guids);
       }
-      
-      MultiMap rval = new MultiValueMap();
+
+      MultiValuedMap rval = new ArrayListValuedHashMap<>();
       if (guids.isEmpty())
          return rval;
 

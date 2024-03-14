@@ -39,6 +39,7 @@ var assetPagination = null;
         }
     };
 
+
     if(assetPagination == null) {
         var url =  $.perc_paths.GET_ASSET_PAGINATION_CONFIG ;
         $.ajax( {
@@ -83,6 +84,7 @@ var assetPagination = null;
         actionListeners = [],
             openListeners = [],
             _finderPathIdArray = {},
+            _percCompareService = $.PercCompareService();
             path_changed = function(p){ current_path = p; },
             finderOpenInProgress = false,
             lastClickPath = null,
@@ -91,7 +93,7 @@ var assetPagination = null;
                 DELETE: 'delete',
                 FINDER_OPEN_START : 'open_start',
                 FINDER_OPEN_END: 'open_end'},
-            isLibMode = ((typeof gInitialScreen !== 'undefined') && (gInitialScreen === "library"));
+                isLibMode = ((typeof gInitialScreen !== 'undefined') && (gInitialScreen === "library"));
         //Preload images
         $.perc_utils.preLoadImages(
             "/cm/images/images/loading.gif"
@@ -104,7 +106,7 @@ var assetPagination = null;
             $input = $control.find('input.perc-finder-goto-or-search:first');
             val = $input.val();
             isGoto = /^\//.test(val);
-            isNotAllowed=/\[/.test(val) || /\]/.test(val);//check if bracket is there in url[]
+            isNotAllowed=/\[/.test(val) || /]/.test(val);//check if bracket is there in url[]
             if(isNotAllowed) {
                 return false;
             }
@@ -161,23 +163,6 @@ var assetPagination = null;
             var viaGoButton = true;
             goToNewPath(viaGoButton);
         });
-
-        // dim the ui when the user is not in the finder
-		/*
-        $('.perc-finder-outer').on("mouseenter",function highligh_actions () {
-            $(this).removeClass('ui-disabled');
-			$(this).find('a').each(function() {
-				$(this).attr('aria-disabled',"false");
-			});
-
-        })
-            .on("mouseleave",function dim_actions () {
-                $(this).addClass('ui-disabled');
-				$(this).find('a').each(function() {
-					$(this).attr('aria-disabled',"true");
-				});
-            });
-			*/
 
         function absPath(strPath){
             var path = strPath.split("/");
@@ -320,9 +305,9 @@ var assetPagination = null;
             // refresh Architecture view
             if( $("#perc_site_map").length > 0 )   {
                 try {
-                     $("#perc_site_map").perc_site_map('layoutAll');
+                    $("#perc_site_map").perc_site_map('layoutAll');
                 }catch(error){
-                    //Gettign Initialization error in case site not selected... needs to be ignored
+                    //Getting Initialization error in case site not selected... needs to be ignored
                 }
             }
         }
@@ -522,6 +507,8 @@ var assetPagination = null;
 
             launchAssetPreview: launchAssetPreview,
 
+            launchPageCompareView: launchPageCompareView,
+
             insertAfter: insert_after,
 
             maxResults: MAX_RESULTS,
@@ -538,9 +525,14 @@ var assetPagination = null;
 
             getCurrentItem : getCurrentItem,
 
-            setCurrentItem : setCurrentItem
+            setCurrentItem : setCurrentItem,
+			getCompareService : getCompareService
 
         };
+
+		function getCompareService(){
+			return _percCompareService;
+		}
 
         function getCurrentItem(){
             return currentItem;
@@ -680,6 +672,7 @@ var assetPagination = null;
             dir_container(dir).append('<div class="perc-finder-panel-loading"><span class="icon-spinner icon-spin icon-2x"></span>&nbsp;Loading...</div>');
             loader( onLoad, dir );
             function onLoad( children, content) {
+                var fwrapper;
                 if( content ) {
                     //If the contents are given directly, add them.
                     dir.find('.mcol-direc-wrapper').empty().addClass('mcol-direc-wrapper-last').append(content);
@@ -695,7 +688,7 @@ var assetPagination = null;
                     $("#mcol-path-summary").val( new_path.join('/') );
                     // here we are injecting the siteimprove plugin
                     var searchPath = $("#mcol-path-summary").val();
-                    if((searchPath.indexOf('/Sites') >= 0) && searchPath !== '/Sites') {
+                    if((typeof searchPath !== 'undefined') && (searchPath.indexOf('/Sites') >= 0) && searchPath !== '/Sites') {
                         var siteName = getSiteNameByPath(searchPath);
                         injectSiteImprove(siteName, getCurrentPath());
                     }
@@ -709,7 +702,7 @@ var assetPagination = null;
                     close_after( dir );
                     dir_children( dir ).filter( '.mcol-opened' ).removeClass( 'mcol-opened' );
 
-                    var fwrapper = $.PercViewReadyManager.getWrapper('perc-ui-component-finder');
+                    fwrapper = $.PercViewReadyManager.getWrapper('perc-ui-component-finder');
                     if(fwrapper != null)
                         fwrapper.handleComponentProgress('perc-ui-component-finder', "complete");
                     //Call the continuation.
@@ -730,7 +723,7 @@ var assetPagination = null;
                     });
                 }
                 update_finder_height();
-                var fwrapper = $.PercViewReadyManager.getWrapper('perc-ui-component-finder');
+                fwrapper = $.PercViewReadyManager.getWrapper('perc-ui-component-finder');
                 if(fwrapper != null)
                     fwrapper.handleComponentProgress('perc-ui-component-finder', "processing");
 
@@ -756,7 +749,7 @@ var assetPagination = null;
             //Generate the url with startIndex and maxResult.
             var path = dir.data('path');
             if(typeof path === 'undefined'){
-                    return;
+                return;
             }
             var startIndex = dir.data('startIndex');
             var str_path = $.perc_utils.encodeURL(path.join("/")) + "/?startIndex=" + startIndex + "&maxResults=" + MAX_RESULTS;
@@ -877,10 +870,10 @@ var assetPagination = null;
                 }
             });
 
-			 var tabIndex = 20;
-			$( "#perc-finder-table-top" ).find('a').each(function (i, el) {
-					this.setAttribute("tabindex", tabIndex++);
-			});
+            var tabIndex = 20;
+            $( "#perc-finder-table-top" ).find('a').each(function (i, el) {
+                this.setAttribute("tabindex", tabIndex++);
+            });
 
 
 
@@ -902,16 +895,16 @@ var assetPagination = null;
                 //our open operation at the next directory.
                 new_path.push( path.shift() );
                 scroll_into_view(next);
-				//adding aria disabled
-				var viewMenuAnchor_child = next.children();
-				for(var i=0; i<viewMenuAnchor_child.length; i++){
-					var child = viewMenuAnchor_child[i];
-					if(child.nodeName=="IMG"){
-						child.tabIndex="0";
-						child.setAttribute("aria-disabled", "true");
-						break;
-					}
-				}
+                //adding aria disabled
+                var viewMenuAnchor_child = next.children();
+                for(var i=0; i<viewMenuAnchor_child.length; i++){
+                    var child = viewMenuAnchor_child[i];
+                    if(child.nodeName=="IMG"){
+                        child.tabIndex="0";
+                        child.setAttribute("aria-disabled", "true");
+                        break;
+                    }
+                }
                 //Expose the data item for multiple purposes.
                 if (typeof(next.data('spec')) != "undefined"){
                     currentItem = next.data('spec');
@@ -993,26 +986,26 @@ var assetPagination = null;
                     load_folder_path( ut.acop( item_path ) ) );
             }
 
-			var clickCount = 0;
-			listing.on("click", function(evt){
-				 clickCount++;
-				if (clickCount === 1) {
-					singleClickTimer = setTimeout(function() {
-						clickCount = 0;
-						onClick(evt);
-					}, 400);
-				} else if (clickCount === 2) {
-					clearTimeout(singleClickTimer);
-					clickCount = 0;
-					doubleClick(evt);
-				}
+            var clickCount = 0;
+            listing.on("click", function(evt){
+                clickCount++;
+                if (clickCount === 1) {
+                    singleClickTimer = setTimeout(function() {
+                        clickCount = 0;
+                        onClick(evt);
+                    }, 400);
+                } else if (clickCount === 2) {
+                    clearTimeout(singleClickTimer);
+                    clickCount = 0;
+                    doubleClick(evt);
+                }
 
             });
 
-			listing.on("keydown", function(evt){
-				if(evt.code == "Enter" || evt.code == "Space"){
-					document.activeElement.click();
-				}
+            listing.on("keydown", function(evt){
+                if(evt.code == "Enter" || evt.code == "Space"){
+                    document.activeElement.click();
+                }
 
             });
 
@@ -1080,7 +1073,7 @@ var assetPagination = null;
                 hoverCount++;
             }
 
-			function doubleClick(evt){
+            function doubleClick(evt){
                 validatePath(evt, item_path, function(){
                     if(spec.type==="Folder" || item_path[1] === $.perc_paths.RECYCLING_ROOT_NO_SLASH)
                     {
@@ -1094,7 +1087,7 @@ var assetPagination = null;
             }
 
             /**
-             * onDrop action called when dropping an item on a eligable drop zone.
+             * onDrop action called when dropping an item on a eligible drop zone.
              * @param event {object} the event object passed by the fired event handler.
              * @param ui {object} the special ui object passed by the jQuery drop event.
              */
@@ -1166,9 +1159,7 @@ var assetPagination = null;
                 {
                     return false;
                 }
-                var tPath = (targetPath.match("\/$") === "/")
-                    ? targetPath.substr(0, targetPath.length - 1)
-                    : targetPath;
+                var tPath = (targetPath.match("\/$") === "/")?targetPath.substr(0, targetPath.length - 1): targetPath;
                 if(tPath === (itemPath.substring(0, itemPath.lastIndexOf("/"))))
                     return false;
                 if(itemtype === 'Folder')
@@ -1176,7 +1167,7 @@ var assetPagination = null;
                     var sPath = itemPath.substr(1).split("/");
                     if(sPath[sPath.length - 1] === "")
                         sPath.pop();
-                    var tPath = targetPath.substr(1).split("/");
+                    tPath = targetPath.substr(1).split("/");
                     if(tPath[tPath.length - 1] === "")
                         tPath.pop();
                     var isSame = true;
@@ -1485,7 +1476,7 @@ var assetPagination = null;
             $.PercAssetService.getAssetViewForAssetId(id, function(status, result){
                 if(status == $.PercServiceUtils.STATUS_SUCCESS)
                 {
-                    var nRef = window.open(result, "percAssetPreviewWindow" + id.replace(/\-/g, ""));
+                    var nRef = window.open(result, "percAssetPreviewWindow" + id.replace(/-/g, ""));
                     $(nRef.document).ready(function(){
                         if(revId)
                         {
@@ -1532,7 +1523,7 @@ var assetPagination = null;
                     // any bars when null. Both IE and FF show the same header in the new
                     // window as the original by passing "" and follow the user's preference
                     // as whether to open in a tab or window.
-                    var nRef = window.open(href, "percPagePreviewWindow" + id.replace(/\-/g, ""));
+                    var nRef = window.open(href, "percPagePreviewWindow" + id.replace(/-/g, ""));
                     $(nRef.document).ready(function() {
                         if(revId) {
                             window.setTimeout(function() {
@@ -1560,6 +1551,17 @@ var assetPagination = null;
                 }
             });
         }
+
+        function launchPageCompareView(itemId,itemName,selectedRev,latestRev,allRevisions){
+            _percCompareService = $.PercCompareService();
+			_percCompareService.params.itemId = itemId;
+            _percCompareService.params.title = itemName;
+            _percCompareService.params.revision1 = Number(selectedRev);
+            _percCompareService.params.revision2= Number(latestRev);
+            _percCompareService.params.allRevisions=allRevisions;
+            _percCompareService.openComparisonWindow();
+        }
+
 
         /**
          * Launch the page preview for the specified page.
@@ -1594,7 +1596,7 @@ var assetPagination = null;
                     // any bars when null. Both IE and FF show the same header in the new
                     // window as the original by passing "" and follow the user's preference
                     // as whether to open in a tab or window.
-                    var nRef = window.open(href, "percPagePreviewWindow" + id.replace(/\-/g, ""));
+                    var nRef = window.open(href, "percPagePreviewWindow" + id.replace(/-/g, ""));
                     $(nRef.document).ready(function() {
                         if(revId) {
                             window.setTimeout(function() {

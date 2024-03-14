@@ -349,6 +349,7 @@ public class PSRxFix
          // Instantiate
          IPSFix f = null;
          f = (IPSFix) e.getFix().newInstance();
+         log.info("Executing update {} in Preview mode: {}", f.toString(),Boolean.toString(preview));
          f.fix(preview);
 
          if(startupProcessManager instanceof PSStartupProcessManager && f.removeStartupOnSuccess()){
