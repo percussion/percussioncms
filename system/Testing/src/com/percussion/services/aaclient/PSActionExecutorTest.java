@@ -18,6 +18,8 @@ package com.percussion.services.aaclient;
 
 import com.percussion.services.assembly.IPSAssemblyResult;
 import com.percussion.services.assembly.data.PSAssemblyWorkItem;
+
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import junit.framework.TestCase;
 
@@ -29,8 +31,7 @@ public class PSActionExecutorTest extends TestCase
    /**
     * Tests {@link PSActionExecutor#getSnippetBody(IPSAssemblyResult)}.
     */
-   public void testGetSnippetBody() throws UnsupportedEncodingException
-   {
+   public void testGetSnippetBody() throws IOException {
       final PSActionExecutor executor = new PSActionExecutor();
       final PSAssemblyWorkItem result = new PSAssemblyWorkItem();
 

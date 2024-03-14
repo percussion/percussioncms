@@ -29,7 +29,12 @@ $(function () {
     $('#perc-html-selector').val('');
     $('#perc-upload-start').prop('disabled', true).
         on("click",function() {
-            triggerSubmit();
+			triggerSubmit();
+        })
+		.on("keydown",function(event) {
+			if(event.code == "Enter" || event.code == "Space"){
+				document.activeElement.click();
+			}
         });
     $('#perc-upload-clear').prop('disabled', true);
     $('#perc-upload-cancel').prop('disabled', true);
@@ -70,6 +75,11 @@ $(function () {
                     $('#perc-upload-clear').prop('disabled', true);
                     $(this).empty();
                 });
+            });
+			$('#perc-upload-clear').on("keydown", function(event) {
+                 if(event.code == "Enter" || event.code == "Space"){
+					document.activeElement.click();
+				}
             });
         },
         done: function (e, data) {
@@ -125,6 +135,22 @@ $(function () {
 
     $('#perc-upload-cancel').on("click", function() {
         cancelAllRequests();
+    });
+	$('#perc-upload-cancel').on("keydown", function(event) {
+        if(event.code == "Enter" || event.code == "Space"){
+			document.activeElement.click();
+		}
+    });
+	$('#perc-files-upload').on("keydown", function(event) {
+        if(event.code == "Enter" || event.code == "Space"){
+			document.activeElement.click();
+		}
+    });
+
+    $('#perc-upload-cancel').on("keydown", function(event) {
+        if(event.code == "Enter" || event.code == "Space"){
+			document.activeElement.click();
+		}
     });
 
 });

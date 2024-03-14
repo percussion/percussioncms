@@ -30,14 +30,7 @@ import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSParametersValidationException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.share.validation.PSValidationErrors;
-import com.percussion.sitemanage.data.PSSite;
-import com.percussion.sitemanage.data.PSSiteCopyRequest;
-import com.percussion.sitemanage.data.PSSiteProperties;
-import com.percussion.sitemanage.data.PSSitePublishProperties;
-import com.percussion.sitemanage.data.PSSiteStatisticsSummary;
-import com.percussion.sitemanage.data.PSSiteSummary;
-import com.percussion.sitemanage.data.PSSiteSummaryList;
-import com.percussion.sitemanage.data.PSValidateCopyFoldersRequest;
+import com.percussion.sitemanage.data.*;
 import com.percussion.sitemanage.error.PSSiteImportException;
 import com.percussion.sitemanage.service.IPSSiteSectionService;
 import com.percussion.util.PSSiteManageBean;
@@ -172,7 +165,7 @@ public class PSSiteDataRestService
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public long createSiteFromUrlAsync(@Context
-    HttpServletRequest request, PSSite site)
+    HttpServletRequest request, PSSiteImportConfiguration site)
     {
         try {
             return siteDataService.createSiteFromUrlAsync(request, site);

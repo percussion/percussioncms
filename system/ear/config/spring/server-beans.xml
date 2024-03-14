@@ -101,10 +101,11 @@ http://www.springframework.org/schema/util/spring-util.xsd">
 		     content before deliver/commit to target location.
 		     The default temporary directory is "temp/publish" under the
 		     Rhythmyx installation directory.
+		    -->
 		<property name="tempDir">
-		   <value>/Rhythmyx/temp/publish</value>
+			<value>#{ systemProperties['java.io.tmpdir'] }/cms-temp/publish</value>
 		</property>
-		-->
+
 	</bean>	
 	
 	

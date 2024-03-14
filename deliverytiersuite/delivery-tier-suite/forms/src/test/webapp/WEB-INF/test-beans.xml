@@ -59,7 +59,7 @@
                 <prop key="recaptcha.secret">testsecret</prop>
                 <prop key="recaptcha.url">https://www.google.com/recaptcha/api/siteverify</prop>
                 <prop key="recaptcha.userAgent">Mozilla/5.0</prop>
-                <prop key="enabledCiphers">TLS_DH_RSA_WITH_AES_128_GCM_SHA256,TLS_EMPTY_RENEGOTIATION_INFO_SCSV</prop>
+                <prop key="enabledCiphers">TLS_EMPTY_RENEGOTIATION_INFO_SCSV</prop>
                 <prop key="encryption.type">ENC</prop>
             </props>
         </property>

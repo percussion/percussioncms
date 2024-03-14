@@ -10,7 +10,7 @@ This project, and everyone participating in it, is governed by the [Percussion C
 
 ## I just have a quick question...
 
-Questions can be posted on the [Community](https://github.com/percussion/percussioncms/discussions) discussion board.
+Questions can be posted on the [Community](https://percussioncmscommunity.intsof.com) discussion board.
 
 ## Getting Started
 

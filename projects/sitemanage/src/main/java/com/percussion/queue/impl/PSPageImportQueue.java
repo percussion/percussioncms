@@ -196,6 +196,10 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 		return sq.getImportingIds();
 	}
 
+	public PSSiteQueue getPageIds(PSSiteImportCtx context) {
+		return getSiteQueue(context);
+	}
+
 	public PSSiteQueue getPageIds(Long siteId) {
 		return getSiteQueue(siteId);
 	}
@@ -307,6 +311,7 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 		String pageId = m_idMapper.getString(new PSLegacyGuid(id, -1));
 		PSSiteImportCtx siteImportContext = new PSSiteImportCtx();
 		siteImportContext.setCanceled(this.m_importContext.isCanceled());
+		siteImportContext.setImportConfiguration(this.m_importContext.getImportConfiguration());
 		m_importService.importCatalogedPage(site, pageId, userAgent,
 				siteImportContext);
 	}
@@ -377,15 +382,32 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 
 		return null;
 	}
-
 	private PSSiteQueue getSiteQueue(Long siteId) {
+		PSSiteQueue siteQueue = m_siteCache.get(siteId);
+		if (siteQueue == null) {
+			synchronized(siteQueueLock)
+			{
+				if (m_siteCache.get(siteId)==null)
+				{
+					siteQueue = createSiteQueue(siteId);
+					siteQueue.setMaxImportCount(getMaxImportPage());
+					m_siteCache.put(siteId, siteQueue);
+				}
+			}
+		}
+		return siteQueue;
+	}
+
+	private PSSiteQueue getSiteQueue(PSSiteImportCtx context) {
+		Long siteId = context.getSite().getSiteId();
 		PSSiteQueue siteQueue = m_siteCache.get(siteId);
 		if (siteQueue == null) {
 		    synchronized(siteQueueLock)
 		    {
 		        if (m_siteCache.get(siteId)==null)
 		        {
-        			siteQueue = createSiteQueue(siteId);
+        			siteQueue = createSiteQueue(context);
+					m_importContext.setImportConfiguration(context.getImportConfiguration());
         			siteQueue.setMaxImportCount(getMaxImportPage());
         			m_siteCache.put(siteId, siteQueue);
 		        }
@@ -398,6 +420,7 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 		m_siteCache.remove(siteId);
 	}
 
+
 	private PSSiteQueue createSiteQueue(Long siteId) {
 		String siteName = getSiteName(siteId);
 		try {
@@ -406,7 +429,6 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 			}
 
 			PSSiteQueue siteQueue = new PSSiteQueue();
-
 			List<String> importedPages = m_pageCatalogService
 					.findImportedPageIds(siteName);
 			siteQueue.addImportedIds(getContentIds(importedPages));
@@ -419,10 +441,16 @@ public class PSPageImportQueue extends PSAbstractEventQueue<PSSiteQueue>
 		} catch (Exception e) {
 			log.error(
 					"An error occurred when getting the imported and cataloged pages for site name: {}, Error: {}"
-							, siteName,PSExceptionUtils.getMessageForLog(e));
+					, siteName,PSExceptionUtils.getMessageForLog(e));
 			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
 			return new PSSiteQueue();
 		}
+	}
+
+	private PSSiteQueue createSiteQueue(PSSiteImportCtx context) {
+		Long siteId = context.getSite().getSiteId();
+		PSSiteQueue siteQueue = getSiteQueue(siteId);
+		return siteQueue;
 	}
 
 	private String getSiteName(Long siteId) {

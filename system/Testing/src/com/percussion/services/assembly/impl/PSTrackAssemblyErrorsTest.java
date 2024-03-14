@@ -25,6 +25,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
@@ -73,8 +74,7 @@ public class PSTrackAssemblyErrorsTest extends TestCase
     * ignored.
     */
    @Test
-   public void test10NonAssemblyCase()
-   {
+   public void test10NonAssemblyCase() throws IOException {
       PSTrackAssemblyError.addProblem("Problem");
       PSAssemblyWorkItem test = createItem();
       PSTrackAssemblyError.handleItem(test);
@@ -85,8 +85,7 @@ public class PSTrackAssemblyErrorsTest extends TestCase
     * Test single problem case.
     */
    @Test
-   public void test20OneAssemblyCase()
-   {
+   public void test20OneAssemblyCase() throws IOException {
       PSTrackAssemblyError.init();
       PSTrackAssemblyError.addProblem("Problem");
       PSAssemblyWorkItem test = createItem();
@@ -98,8 +97,7 @@ public class PSTrackAssemblyErrorsTest extends TestCase
     * Test two problem case.
     */
    @Test
-   public void test30TwoAssemblyCase()
-   {
+   public void test30TwoAssemblyCase() throws IOException {
       PSTrackAssemblyError.init();
       PSTrackAssemblyError.addProblem("Problem 1");
       PSTrackAssemblyError.addProblem("Problem 2", 
@@ -135,8 +133,7 @@ public class PSTrackAssemblyErrorsTest extends TestCase
     * Create a dummy item with a known result
     * @return item
     */
-   private PSAssemblyWorkItem createItem()
-   {
+   private PSAssemblyWorkItem createItem() throws IOException {
       PSAssemblyWorkItem work = new PSAssemblyWorkItem();
       work.setResultData(RESULT.getBytes(StandardCharsets.UTF_8));
       work.setMimeType("text/xhtml;charset=utf8");

@@ -57,7 +57,7 @@ public class PSUiService implements IPSUiService
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see IPSUiService#createHierarchyNode(String, IPSGuid,
     * PSHierarchyNode.NodeType)
     */
@@ -84,7 +84,7 @@ public class PSUiService implements IPSUiService
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see IPSUiService#deleteHierarchyNode(IPSGuid)
     */
    @Transactional
@@ -151,7 +151,7 @@ public class PSUiService implements IPSUiService
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see IPSUiService#findHierarchyNodes(String, PSHierarchyNode.NodeType)
     */
    @SuppressWarnings("unchecked")
@@ -159,29 +159,29 @@ public class PSUiService implements IPSUiService
    {
       Session session = getSession();
 
-         if (StringUtils.isBlank(name))
-            name = "%";
+      if (StringUtils.isBlank(name))
+         name = "%";
 
-         Criteria criteria = session.createCriteria(PSHierarchyNode.class);
-         if (!name.equals("%")) criteria.add(Restrictions.like("name", name));
-         if (type != null)
-            criteria.add(Restrictions.eq("type", type.getOrdinal()));
-         criteria.addOrder(Order.asc("name"));
+      Criteria criteria = session.createCriteria(PSHierarchyNode.class);
+      if (!name.equals("%")) criteria.add(Restrictions.like("name", name));
+      if (type != null)
+         criteria.add(Restrictions.eq("type", type.getOrdinal()));
+      criteria.addOrder(Order.asc("name"));
 
-         // find nodes first
-         List<PSHierarchyNode> nodes = criteria.list();
+      // find nodes first
+      List<PSHierarchyNode> nodes = criteria.list();
 
-         // then load all node properties
-         for (PSHierarchyNode node : nodes)
-            loadHierarchyNodeProperties(node);
+      // then load all node properties
+      for (PSHierarchyNode node : nodes)
+         loadHierarchyNodeProperties(node);
 
-         return nodes;
+      return nodes;
 
-      }
+   }
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see IPSUiService#findHierarchyNodes(String, IPSGuid,
     * PSHierarchyNode.NodeType)
     */
@@ -190,43 +190,43 @@ public class PSUiService implements IPSUiService
    {
       Session session = getSession();
 
-         if (StringUtils.isBlank(name))
-            name = "%";
+      if (StringUtils.isBlank(name))
+         name = "%";
 
-         Criteria criteria = session.createCriteria(PSHierarchyNode.class);
-         if (!name.equals("%")) criteria.add(Restrictions.like("name", name));
-         if (parentId != null)
-            criteria.add(Restrictions.eq("parentId", parentId.longValue()));
-         if (type != null)
-            criteria.add(Restrictions.eq("type", type.getOrdinal()));
-         criteria.addOrder(Order.asc("name"));
+      Criteria criteria = session.createCriteria(PSHierarchyNode.class);
+      if (!name.equals("%")) criteria.add(Restrictions.like("name", name));
+      if (parentId != null)
+         criteria.add(Restrictions.eq("parentId", parentId.longValue()));
+      if (type != null)
+         criteria.add(Restrictions.eq("type", type.getOrdinal()));
+      criteria.addOrder(Order.asc("name"));
 
-         // find nodes first
-         List<PSHierarchyNode> nodes = (List<PSHierarchyNode>) criteria.setCacheable(true).list();
+      // find nodes first
+      List<PSHierarchyNode> nodes = (List<PSHierarchyNode>) criteria.setCacheable(true).list();
 
-         // then filter out root nodes if requested
-         List<PSHierarchyNode> resultNodes = null;
-         if (parentId == null)
-         {
-            resultNodes = new ArrayList<>();
-            for (PSHierarchyNode node : nodes)
-               if (node.getParentId() == null)
-                  resultNodes.add(node);
-         }
-         else
-            resultNodes = nodes;
-
-         // finally load all node properties
-         for (PSHierarchyNode node : resultNodes)
-            loadHierarchyNodeProperties(node);
-
-         return resultNodes;
-
+      // then filter out root nodes if requested
+      List<PSHierarchyNode> resultNodes = null;
+      if (parentId == null)
+      {
+         resultNodes = new ArrayList<>();
+         for (PSHierarchyNode node : nodes)
+            if (node.getParentId() == null)
+               resultNodes.add(node);
       }
+      else
+         resultNodes = nodes;
+
+      // finally load all node properties
+      for (PSHierarchyNode node : resultNodes)
+         loadHierarchyNodeProperties(node);
+
+      return resultNodes;
+
+   }
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see IPSUiService#loadHierarchyNode(IPSGuid)
     */
    public PSHierarchyNode loadHierarchyNode(IPSGuid id) throws PSUiException
@@ -236,18 +236,18 @@ public class PSUiService implements IPSUiService
 
       Session session = getSession();
 
-         PSHierarchyNode node = session.get(PSHierarchyNode.class, id.longValue());
-         if (node == null)
-            throw new PSUiException(IPSUiErrors.MISSING_HIERARCHY_NODE, id);
+      PSHierarchyNode node = session.get(PSHierarchyNode.class, id.longValue());
+      if (node == null)
+         throw new PSUiException(IPSUiErrors.MISSING_HIERARCHY_NODE, id);
 
-         loadHierarchyNodeProperties(node);
-         return node;
+      loadHierarchyNodeProperties(node);
+      return node;
 
-      }
+   }
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see IPSUiService#saveHierarchyNode(PSHierarchyNode)
     */
    @Transactional
@@ -269,7 +269,7 @@ public class PSUiService implements IPSUiService
             {
                String propertyValue = node.getProperty(propertyName);
                PSHierarchyNodeProperty property = new PSHierarchyNodeProperty(propertyName, propertyValue,
-                     node.getGUID());
+                       node.getGUID());
                saveHierarchyNodeProperty(property);
             }
          }
@@ -303,7 +303,7 @@ public class PSUiService implements IPSUiService
                {
                   // create new propery
                   PSHierarchyNodeProperty property = new PSHierarchyNodeProperty(propertyName, propertyValue,
-                        node.getGUID());
+                          node.getGUID());
                   saveHierarchyNodeProperty(property);
                }
             }
@@ -322,7 +322,7 @@ public class PSUiService implements IPSUiService
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see IPSUiService#removeChildren(IPSGuid, List)
     */
    @Transactional
@@ -345,7 +345,7 @@ public class PSUiService implements IPSUiService
 
    /*
     * (non-Javadoc)
-    * 
+    *
     * @see IPSUiService#moveChildren(IPSGuid, IPSGuid, List)
     */
    @Transactional
@@ -374,7 +374,7 @@ public class PSUiService implements IPSUiService
 
    /**
     * Finds and returns the node in the supplied list for the specified id.
-    * 
+    *
     * @param nodes the list of nodes to search for the node with the specified
     *           id, assumed not <code>null</code>, may be empty.
     * @param id the id of the node to find, assumed not <code>null</code>.
@@ -393,7 +393,7 @@ public class PSUiService implements IPSUiService
 
    /**
     * Load all hierarchy node properties for the supplied node id.
-    * 
+    *
     * @param nodeId the id of the node for which to load all hierarchy node
     *           properties, not <code>null</code>.
     * @return a list with all hierarchy node properties found for the supplied
@@ -407,15 +407,15 @@ public class PSUiService implements IPSUiService
 
       Session session = getSession();
 
-         Criteria criteria = session.createCriteria(PSHierarchyNodeProperty.class);
-         criteria.add(Restrictions.eq("nodeId", nodeId.longValue())).setCacheable(true);
-         return  criteria.list();
+      Criteria criteria = session.createCriteria(PSHierarchyNodeProperty.class);
+      criteria.add(Restrictions.eq("nodeId", nodeId.longValue())).setCacheable(true);
+      return  criteria.list();
 
-      }
+   }
 
    /**
     * Load all hierarchy node properties into the supplied node.
-    * 
+    *
     * @param node the node for which to load all hierarchy node properties, not
     *           <code>null</code>.
     */
@@ -432,7 +432,7 @@ public class PSUiService implements IPSUiService
 
    /**
     * Save the supplied hierarchy node property.
-    * 
+    *
     * @param property the property to be saved, not <code>null</code>.
     */
    private void saveHierarchyNodeProperty(PSHierarchyNodeProperty property)
@@ -442,16 +442,16 @@ public class PSUiService implements IPSUiService
 
       Session session = getSession();
 
-         if (property.getVersion() == null)
-            session.persist(property);
-         else
-            session.update(property);
+      if (property.getVersion() == null)
+         session.persist(property);
+      else
+         session.update(property);
 
-      }
+   }
 
    /**
     * Delete the suppliedd hierarchy node property.
-    * 
+    *
     * @param property the property to delete, not <code>null</code>.
     */
    private void deleteHierarchyNodeProperty(PSHierarchyNodeProperty property)

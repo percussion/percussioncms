@@ -86,7 +86,7 @@ public class PSFileDownloader implements IPSFileDownloader
             boolean createAsset)
     {
         List<PSPair<Boolean, String>> downloaded = new ArrayList<>();
-        if (urlToPathMap.size() > 0)
+        if (!urlToPathMap.isEmpty())
         {
             notNull(urlToPathMap);
 

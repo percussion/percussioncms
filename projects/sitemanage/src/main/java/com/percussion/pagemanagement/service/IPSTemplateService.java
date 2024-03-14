@@ -16,10 +16,6 @@
  */
 package com.percussion.pagemanagement.service;
 
-import java.util.Collection;
-import java.util.List;
-
-import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
 import com.percussion.pagemanagement.data.PSHtmlMetadata;
 import com.percussion.pagemanagement.data.PSTemplate;
 import com.percussion.pagemanagement.data.PSTemplate.PSTemplateTypeEnum;
@@ -33,6 +29,9 @@ import com.percussion.share.service.exception.PSBeanValidationException;
 import com.percussion.share.service.exception.PSDataServiceException;
 import com.percussion.share.service.exception.PSValidationException;
 import com.percussion.utils.guid.IPSGuid;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Provides various CRUD operations for template objects.
@@ -58,7 +57,8 @@ public interface IPSTemplateService extends IPSDataService<PSTemplate, PSTemplat
     * @return the templates, never <code>null</code>, but may be empty.
     */
    public List<PSTemplateSummary> findAll() throws IPSGenericDao.LoadException, PSTemplateException;
-   
+
+    String getTemplateEditUrl(String id);
     /**
     * Finds all templates from selected site, which includes base and user created templates.
     * 

@@ -627,7 +627,7 @@ public interface IPSAssemblyItem extends Cloneable, Serializable
     * modified. Conversely, there is no guarantee that modifications would
     * be propagated given the possible storage of the data in the file system.
     */
-   public void setResultData(byte[] resultData);
+   public void setResultData(byte[] resultData)throws IOException;
 
    /**
     * Get the delivery context ID of the item.

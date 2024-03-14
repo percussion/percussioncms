@@ -265,7 +265,7 @@ var layoutModel;
             var newAssets = [];
             iframe.contents().find(".perc-widget[widgetdefid='percRawHtml'][assetid='']").each(function(){
                 var curWidget = $(this);
-                if(curWidget.hasClass('perc-widget-transperant') && curWidget.find(".html-sample-content").length < 1) {
+                if(curWidget.hasClass('perc-widget-transparent') && curWidget.find(".html-sample-content").length < 1) {
                     requireMigration = true;
                 }
                 if(curWidget.find(".html-sample-content").length < 1)
@@ -1325,17 +1325,17 @@ var layoutModel;
                 iframe.contents().find('.perc-widget').each(function() {
                     var self = $(this);
                     var widgetid = self.attr("widgetid");
-                    var isTransparent = self.hasClass('perc-widget-transperant');
+                    var isTransparent = self.hasClass('perc-widget-transparent');
                     var assetid = self.attr("assetid");
                     if(widgetid in specialWidgets.LockedWidgets)
                         self.addClass("perc-locked");
                     if (widgetid in specialWidgets.TransperantWidgets)
                     {
-                        self.addClass("perc-widget-transperant");
+                        self.addClass("perc-widget-transparent");
                     }
                     else if (layoutModel.isTemplate() && assetid !== "" && !(widgetid in specialWidgets.ContentWidgets))
                     {
-                        self.addClass("perc-widget-transperant");
+                        self.addClass("perc-widget-transparent");
                     }
                 });
             return iframe.contents().find(".perc-widget");

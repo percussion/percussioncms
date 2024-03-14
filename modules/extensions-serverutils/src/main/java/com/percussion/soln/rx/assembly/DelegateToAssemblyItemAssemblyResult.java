@@ -319,7 +319,7 @@ public abstract class DelegateToAssemblyItemAssemblyResult implements IPSAssembl
         assemblyItem.setPaginated(paginate);
     }
 
-    public void setResultData(byte[] data) {
+    public void setResultData(byte[] data) throws IOException {
         assemblyItem.setResultData(data);
     }
 

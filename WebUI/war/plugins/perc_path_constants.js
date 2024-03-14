@@ -92,6 +92,7 @@
         TEMPLATE_IMPORT            : SERVICES.PAGEMGT + "/template/import",
         TEMPLATES_USER             : SERVICES.PAGEMGT + "/template/summary/all/user",
         TEMPLATE_LOAD_SAVE         : SERVICES.PAGEMGT + "/template",
+		TEMPLATE_EDITURL          : SERVICES.PAGEMGT + "/template/templateEditUrl",
         TEMPLATE_LOAD_METADATA     : SERVICES.PAGEMGT + "/template/loadTemplateMetadata",
         TEMPLATE_SAVE_METADATA     : SERVICES.PAGEMGT + "/template/saveTemplateMetadata",
         TEMPLATE_CREATE_FROM_URL        : SERVICES.SITEMGT + "/sitetemplates/createFromUrl",

@@ -23,10 +23,13 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -49,9 +52,9 @@ public class PSURLConverter
     
     private static final String ASSET_FOLDER = "/Assets/uploads/";
     
-    private static int indexOfFiles;
+    private int indexOfFiles;
     
-    private static final String CSS_EXTENTION = ".css";
+    private static final String CSS_EXTENSION = ".css";
     
     private String baseUrl;
     
@@ -84,7 +87,13 @@ public class PSURLConverter
 
         this.baseUrl = baseUrl;
         this.siteName = siteName;
-        this.themeRootDirectory = themeRootDirectory;
+
+        Path p = Paths.get(themeRootDirectory);
+        try {
+            this.themeRootDirectory = p.toFile().getCanonicalPath();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         this.themeRootUrl = themeRootUrl;
         this.logger = logger;
         this.indexOfFiles = initializeIndex();
@@ -176,7 +185,7 @@ public class PSURLConverter
      * {@link #getFileSystemPath(String)}), and adds the {@link FileSuffixes Css
      * suffix} if needed.
      * 
-     * @param resourceUrl Original resource Url. Cannot be <code>null</code> or
+     * @param remoteUrl Original resource Url. Cannot be <code>null</code> or
      *            empty.
      * @return {@link String} never <code>null</code>, may be empty.
      */
@@ -193,11 +202,10 @@ public class PSURLConverter
     }
     
     /**
-     * Convenience method to convert the remote url into file system path (See
-     * {@link #getFileSystemPath(String)}).
+     * Convenience method to convert the remote url into file system path. See
+     * {@link #getFileSystemPath(String)}.
      * 
-     * @param resourceUrl Original resource Url. Cannot be <code>null</code> or
-     *            empty.
+     * @param resourceUrl Original resource Url. Cannot be <code>null</code> or empty.
      * @return {@link String} never <code>null</code>, may be empty.
      */
     public String getCmsFolderPathForImageAsset(String resourceUrl, String siteName)
@@ -281,15 +289,22 @@ public class PSURLConverter
         try
         {
             URL url = new URL(resourceUrl);
-            String savePath = this.themeRootDirectory + IMPORT_FOLDER;
-                       
+            Path savePath = Paths.get(this.themeRootDirectory + IMPORT_FOLDER);
+            String t;
             if (url.getQuery() != null && getPathFromQuery)
             {
-                return savePath + "/" + url.getHost() + "/" + validatePath(getPathFromQuery(true));
+                t = validatePath(getPathFromQuery(true));
+                if(t.startsWith("/"))
+                    t = t.substring(1);
+
+                return savePath.resolve(url.getHost()).resolve(t).toFile().getCanonicalPath();
             }
             else
             {
-                return savePath + "/" + url.getHost() + validatePath(PSReplacementFilter.filter(url.getFile()));
+                t = validatePath(PSReplacementFilter.filter(url.getFile()));
+                if(t.startsWith("/"))
+                    t = t.substring(1);
+                return savePath.resolve( url.getHost()).resolve(t).toFile().getCanonicalPath();
             }
         }
         catch (Exception e)
@@ -306,7 +321,7 @@ public class PSURLConverter
      * 
      * @param path {@link String} with the path to modify, assumed not
      *            <code>null</code>.
-     * @param suffix {@link Set} with the suffix to add, assumed not
+     * @param suffixes {@link Set} with the suffix to add, assumed not
      *            <code>null</code>.
      * @return {@link String} with the processed path, may be blank.
      */
@@ -358,11 +373,11 @@ public class PSURLConverter
     {
         if (incrementIndex)
         {
-            return this.siteName + "_" + ++indexOfFiles + CSS_EXTENTION;
+            return this.siteName + "_" + ++indexOfFiles + CSS_EXTENSION;
         }
         else
         {
-            return this.siteName + "_" + indexOfFiles + CSS_EXTENTION;
+            return this.siteName + "_" + indexOfFiles + CSS_EXTENSION;
         }
     }
     
@@ -446,7 +461,7 @@ public class PSURLConverter
      */
     private int getCurrentIndex(File folderPath)
     {
-        String regex = this.siteName + "[0-9]+" + CSS_EXTENTION;
+        String regex = this.siteName + "[0-9]+" + CSS_EXTENSION;
         int numberOfMatches = 0;
         
         String[] files = folderPath.list();
@@ -462,8 +477,8 @@ public class PSURLConverter
                 else if (Pattern.matches(regex, file))
                 {
                     // get the integer value and see if it is the greatest
-                    Integer extentionIndex = file.lastIndexOf(CSS_EXTENTION);
-                    Integer number = Integer.valueOf(file.substring(this.siteName.length(), extentionIndex));
+                    int extensionIndex = file.lastIndexOf(CSS_EXTENSION);
+                    int number = Integer.parseInt(file.substring(this.siteName.length(), extensionIndex));
                     if(number > numberOfMatches)
                     {
                         numberOfMatches = number;

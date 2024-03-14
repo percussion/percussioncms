@@ -48,6 +48,9 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.apache.commons.lang.Validate.isTrue;
+
 
 @Path("/template")
 @Component("templateRestService")
@@ -180,6 +183,17 @@ public class PSTemplateRestService {
             throw new WebApplicationException(e);
         }
     }
+
+    @GET
+    @Path("/templateEditUrl/{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getPageEditUrl(@PathParam("id") String id)
+    {
+        isTrue(isNotBlank(id), "id may not be blank");
+
+        return templateService.getTemplateEditUrl(id);
+    }
+
     
     @GET
     @Path("/{id}")

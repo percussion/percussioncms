@@ -227,7 +227,7 @@
                     if(widgetid in specialWidgets.LockedWidgets)
                         $(this).addClass("perc-locked");
                     if(widgetid in specialWidgets.TransperantWidgets)
-                        $(this).addClass("perc-widget-transperant");
+                        $(this).addClass("perc-widget-transparent");
                 });
             return root.contents().find('.perc-widget');
         }
@@ -285,7 +285,7 @@
                         overlapContentWidgets++;
 
                         document.body.style.cursor="default";
-                        if(parentRegionId === currentRegionId || overlapContentWidgets === 1) {
+                        if(parentRegionId === currentRegionId || overlapContentWidgets >= 1) {
                             // clear background of all other widgets
                             widgets.each(function(){
                                 $(this).css("background-color", "");
@@ -371,7 +371,7 @@
                     overlap++;
                     if(accepts(ui.draggable)) {
                         document.body.style.cursor="default";
-                        if(parentRegionId === currentRegionId || overlap === 1 ) {
+                        if(parentRegionId === currentRegionId || overlap >= 1 ) {
                             // clear background of all other widgets
                             widgets.each(function(){
                                 $(this).css("background-color", "");
@@ -527,6 +527,7 @@
                 widgetDecorator.unselectAll();
             });
             overlap = 0;
+			overlapContentWidgets=0;
             iframe = $("#frame");
             // grab all the regions and widgets
             regions = iframe.contents().find(".perc-region");

@@ -4,7 +4,7 @@
 
 Percussion offers the following support channels:
 
-- For general problems, questions, how to, and other general issues use the [community site](https://github.com/percussion/percussioncms/discussions)
+- For general problems, questions, how to, and other general issues use the [community site](https://percussioncmscommunity.intsof.com)
 - To report bugs, defects, feature requests, or issues, please use this repository's
   [issue tracker](https://github.com/percussion/percussioncms/issues/new)
 

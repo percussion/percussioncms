@@ -255,14 +255,14 @@
             var bgimage = $(this).css('background-image');
             var fieldClass = $(this).attr('class');
             if (fieldClass.indexOf('disable') !== -1) {
-                bgimage = bgimage.replace(".png", ".png");
+                bgimage = bgimage.replace("-icon.png", "-over.png");
                 $(this).css({'background-color': '#133C55',
                     'color':'#CCCCCC',
                     'background-image':bgimage,
                     'border-bottom':'1px solid #99C4D8'});
                 return;
             } else {
-                bgimage = bgimage.replace(".png", "-over.png");
+                bgimage = bgimage.replace("-icon.png", "-over.png");
             }
 
 
@@ -272,7 +272,7 @@
                 'border-bottom':'1px solid #99C4D8'});
         }).on("mouseleave",function(){
             var bgimage = $(this).css('background-image');
-            bgimage = bgimage.replace(".png", ".png");
+            bgimage = bgimage.replace("-over.png", "-icon.png");
             var fieldClass = $(this).attr('class');
             if(fieldClass.indexOf('disable') !== -1) {
                 $(this).css({'background-color': '#133C55',
@@ -282,7 +282,7 @@
                 return;
             }
             else {
-                bgimage = bgimage.replace("-over.png", ".png");
+                bgimage = bgimage.replace("-over.png", "-icon.png");
                 $(this).css({'background-color': '#133C55',
                     'color':'#ffffff',
                     'cursor': 'pointer',

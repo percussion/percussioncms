@@ -30,33 +30,35 @@ public class PSSiteImportCtx
 {
 
     String siteUrl;
-    
+
     PSSite site;
-    
+
     IPSSiteImportLogger logger;
-    
+
     IPSSiteImportSummaryService summaryService;
-    
+
     Map<IPSSiteImportSummaryService.SiteImportSummaryTypeEnum, Integer> summaryStats;
 
     PSThemeSummary themeSummary;
-    
+
     String themesRootDirectory;
-    
+
     String templateId = null;
-    
+
     String pageName;
-    
+
     String catalogedPageId;
 
     String templateName;
-	
-	String statusMessagePrefix;
-	 
+
+    String statusMessagePrefix;
+
     String userAgent;
 
     boolean isCanceled = false;
-    
+
+    PSSiteImportConfiguration importConfiguration;
+
     /**
      * @return the siteUrl
      */
@@ -88,20 +90,20 @@ public class PSSiteImportCtx
     {
         this.site = site;
     }
-    
+
     /**
      * Set logger on the context.
-     * 
+     *
      * @param logger The logger, never <code>null</code>
      */
     public void setLogger(IPSSiteImportLogger logger)
     {
-        this.logger = logger;        
+        this.logger = logger;
     }
-    
+
     /**
      * Get the current logger.
-     * 
+     *
      * @return The logger, never <code>null</code>.
      * @throws IllegalStateException if no logger has been set.
      */
@@ -109,8 +111,16 @@ public class PSSiteImportCtx
     {
         if (logger == null)
             throw new IllegalStateException("logger has not been set");
-        
+
         return logger;
+    }
+
+    public PSSiteImportConfiguration getImportConfiguration() {
+        return importConfiguration;
+    }
+
+    public void setImportConfiguration(PSSiteImportConfiguration importConfiguration) {
+        this.importConfiguration = importConfiguration;
     }
 
     public IPSSiteImportSummaryService getSummaryService()
@@ -123,7 +133,7 @@ public class PSSiteImportCtx
         this.summaryService = summaryService;
     }
 
-    
+
     /**
      * @return the theme summary
      */
@@ -131,7 +141,7 @@ public class PSSiteImportCtx
     {
         return themeSummary;
     }
-    
+
     /**
      * @param themeSummary the new summary to assign
      */
@@ -139,7 +149,7 @@ public class PSSiteImportCtx
     {
         this.themeSummary = themeSummary;
     }
-    
+
     /**
      * @return the themes root directory absolute path
      */
@@ -158,7 +168,7 @@ public class PSSiteImportCtx
 
     /**
      * Get the id of the template if one was created during the import process.
-     * 
+     *
      * @return The id, or <code>null</code> if a template was not created.
      */
     public String getTemplateId()
@@ -169,7 +179,7 @@ public class PSSiteImportCtx
     /**
      * Set the id of the template if one was created during the import process, must
      * be called in order for an import log to be saved.
-     * 
+     *
      * @param templateId The template id.
      */
     public void setTemplateId(String templateId)
@@ -207,8 +217,8 @@ public class PSSiteImportCtx
     public void setTemplateName(String templateName)
     {
         this.templateName = templateName;
-    }   
-    
+    }
+
     /**
      * @return the statusMessagePrefix
      */
@@ -223,8 +233,8 @@ public class PSSiteImportCtx
     public void setStatusMessagePrefix(String statusMessagePrefix)
     {
         this.statusMessagePrefix = statusMessagePrefix;
-    }  
-    
+    }
+
     /**
      * @return the userAgent
      */
@@ -244,7 +254,7 @@ public class PSSiteImportCtx
     /**
      * Used when importing cataloged pages. Is the id of the page being
      * imported.
-     * 
+     *
      * @return {@link String} may be <code>null</code>.
      */
     public String getCatalogedPageId()
@@ -256,16 +266,16 @@ public class PSSiteImportCtx
     {
         this.catalogedPageId = catalogedPageId;
     }
-    
+
     public void setCanceled(boolean cancelFlag)
     {
         isCanceled = cancelFlag;
     }
-    
+
     /**
      * Determines if the current import process has been canceled.
-     * 
-     * @return <code>true</code> if the import process has been canceled. 
+     *
+     * @return <code>true</code> if the import process has been canceled.
      */
     public boolean isCanceled()
     {
@@ -283,6 +293,8 @@ public class PSSiteImportCtx
     {
         this.summaryStats = summaryStats;
     }
+
+
 
 
 }

@@ -25,8 +25,8 @@
         var items = $("<div class='perc-items'>");
         scrollable.append(items);
         
-        var prev = $("<a style = 'margin:50px 0px' class='prevPage browse left' ></a>");
-        var next = $("<a style = 'margin:50px 0px' class='nextPage browse right'></a>");
+        var prev = $("<a tabindex='0' style = 'margin:50px 0px' class='prevPage browse left' ></a>");
+        var next = $("<a tabindex='0' style = 'margin:50px 0px' class='nextPage browse right'></a>");
         var clearboth = $("<div style='clear:both'>");
         
         $(this)
@@ -69,7 +69,12 @@
                         items.find(".item").removeClass("perc-selected-item");
                         $(this).addClass("perc-selected-item");
                     });
-                    
+					items.find(".item").on('keydown', function(event){
+                        if(event.code == "Enter" || event.code == "Space"){
+							document.activeElement.click();
+						}
+                    });
+
                     // select first item by default
                     $firstItem = items.find(".item:first");
                     $("#" + config.hiddenFieldId).val($firstItem.find(".item-id").text());

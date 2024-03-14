@@ -83,7 +83,7 @@
                             }
                             
                             var site_title = site == "" ? "No Site Selected" : site; // Something went wrong when trying to get the site in the first place.
-                            var title = "COMMENTS MODERATION: (" + site_title + ")";
+                            var title = I18N.message("perc.ui.gadgets.comments@COMMENTS MODERATION") +" (" + site_title + ")";
                             gadgets.window.setTitle(title);
                             
                             var rows = parseInt(prefs.getString("zrows"));
@@ -94,7 +94,9 @@
                     } else {
                         miniMsg.dismissMessage(loadingMsg);
                         $("#perc-comments-gadget")
-                            .html("<div class='dataTables_empty perc-gadget-errormessage'>Please select a site in the settings</div>");
+                            .html("<div id='perc-comment-select-site' class='dataTables_empty perc-gadget-errormessage'>Please select a site in the settings</div>");
+							document.getElementById('perc-comment-select-site').innerText=I18N.message("perc.ui.gadgets.comments@Select Site");
+							gadgets.window.setTitle(I18N.message("perc.ui.gadgets.comments@COMMENTS"));
                     }
                     $("body").css("overflow","hidden");
                 });

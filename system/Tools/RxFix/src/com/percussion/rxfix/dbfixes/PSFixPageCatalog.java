@@ -18,10 +18,14 @@
 package com.percussion.rxfix.dbfixes;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingException;
 
+import com.percussion.services.catalog.PSTypeEnum;
+import com.percussion.services.guidmgr.PSGuidUtils;
+import com.percussion.utils.guid.IPSGuid;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -72,10 +76,10 @@ public class PSFixPageCatalog extends PSFixDBBase implements IPSFix
             }
             catch (PSErrorException e)
             {
-               log.error("Error encountered when finding items with folderRoot: " + folderRoot, e);
+               log.error("Error encountered when finding items with folderRoot: {} Message: {}" , folderRoot, e);
                continue;
             }
-            if (ids == null || ids.size() <= 0)
+            if (ids == null || ids.isEmpty())
             {
                logInfo(null, "There are no items in the page catalog that need to be removed for site: " + folderRoot);
                continue;
@@ -93,16 +97,18 @@ public class PSFixPageCatalog extends PSFixDBBase implements IPSFix
             {
                try
                {
-                  contentWs.removeFolderChildren(folderRoot + "/" + ".system/PageCatalog", null, true);
+                  List<IPSGuid> guids = new ArrayList<>();
+                  for(Integer id : ids){
+                     guids.add(PSGuidUtils.makeGuid(id.longValue(),PSTypeEnum.LEGACY_CONTENT));
+                  }
+                  log.info("Deleting {} items from Page Catalog cache...",guids.size());
+                  contentWs.deleteItems(guids);
                }
-               catch (PSErrorsException e)
+               catch (PSErrorsException | PSErrorException e)
                {
-                  log.error("Error removing child folders from page catalog for site: " + folderRoot, e);
+                  log.error("Error removing items from page catalog for site: {} Message: {}" , folderRoot, e);
                }
-               catch (PSErrorException e)
-               {
-                  log.error("Error removing child folders from page catalog for site: " + folderRoot, e);
-               }
+
             }
          }
       }

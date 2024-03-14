@@ -420,6 +420,13 @@
                         {
                             restore();
                         });
+						$("#perc-dashboard-restore-menu").on('keydown',function(event)
+                        {
+							if(event.code == "Enter" || event.code == "Space"){
+								restore();
+							}
+
+                        });
 
                         disableTextSelectionInIE();
                         if (typeof(callback) == 'function') callback();
@@ -571,10 +578,15 @@
         var title = $gadget.find(".gadgets-gadget-title");
         var titleButtons = $gadget.find(".gadgets-gadget-title-button-bar");
         titleButtons.css("float", "right");
-        var gadgetMenuButton = $("<img src='../images/images/gadgetMenuButton.png' class='perc-gadget-menu-button' style='cursor:pointer' title='Click to show the Gadget Menu' alt='Gadget menu icon'/>").on('click',function(event)
+        var gadgetMenuButton = $("<img tabindex='0' src='../images/images/gadgetMenuButton.png' class='perc-gadget-menu-button' style='cursor:pointer' title='" + I18N.message("perc.ui.dashboard@Show Gadget Menu") + "' alt='Gadget menu icon'/>").on('click',function(event)
         {
             event.stopPropagation();
             showMenu(self, titleBar,event);
+        }).on('keydown',function(event)
+        {
+             if(event.code == "Enter" || event.code == "Space"){
+				document.activeElement.click();
+			}
         });
 
 
@@ -611,7 +623,7 @@
         menu.on({
             mouseenter: function() { },
             mouseleave: function() {  menu.hide(); }
-        })
+        });
 
         menu.css("top", menuY).css("left", menuX).css("display", "block");
         // update the menu items based on the current state of the gadget
@@ -622,6 +634,14 @@
             minimizeGadget(gadget);
             menu.hide();
         });
+		menuMinimize.on('keydown',function(evt)
+        {
+            if(evt.code == "Enter" || evt.code == "Space"){
+				document.activeElement.click();
+			}
+        });
+
+		menuMinimize.attr("tabindex", "0");
 
         // handle remove menu item
         menuRemove.off().on('click',function(evt)
@@ -629,6 +649,13 @@
             var instanceId = gadget.attr("instanceId");
             removeGadget(instanceId);
         });
+		menuRemove.on('keydown',function(evt)
+        {
+            if(evt.code == "Enter" || evt.code == "Space"){
+				document.activeElement.click();
+			}
+        });
+		menuRemove.attr("tabindex", "0");
 
         // handle expand menu item
         menuExpand.off().on('click',function(evt)
@@ -636,11 +663,24 @@
             expandGadget(gadget);
             menu.hide();
         });
+		menuExpand.on('keydown',function(evt)
+        {
+            if(evt.code == "Enter" || evt.code == "Space"){
+				document.activeElement.click();
+			}
+        });
+		menuExpand.attr("tabindex", "0");
 
         // handle edit settings
         menuConfig.off().on('click',function(evt)
         {
             handlePrefs(instanceId);
+        });
+		menuConfig.on('keydown',function(evt)
+        {
+           if(evt.code == "Enter" || evt.code == "Space"){
+				document.activeElement.click();
+			}
         });
         if (hasPrefs)
         {
@@ -650,12 +690,13 @@
         {
             menuConfig.hide();
         }
+		menuConfig.attr("tabindex", "0");
 
         // hide the menu if you are about to resize the finder
         $(".ui-resizable-handle").on({
             mouseenter: function() { },
             mouseleave: function() {  menu.hide(); }
-        })
+        });
 
 
     }
@@ -1177,7 +1218,6 @@
             return false;
         }
         var category = $(gadget).data('gadget').category.split(",");
-        var predefinedCategories = [];
         $('.perc-gadget-category-predefined').text(function(i, text)
         {
             predefinedCategories[i] = text.toLowerCase();
@@ -1207,7 +1247,7 @@
         //Include the current protocol into the background URL as a workaround for IE 8, see detail at http://support.microsoft.com/kb/925014/en-us?fr=1
         var location = window.location;
         iconUrl = location.protocol + "//" + location.host + iconUrl;
-        gadgetTrayItem.attr("id", id).attr("name", name).attr("title", title).attr("url", url).data('gadget', trayGadgetJson).css("display", "inline-block").find(".perc-tray-item-icon").css("background", "url(" + iconUrl + ")");
+        gadgetTrayItem.attr("id", id).attr("name", name).attr("tabindex","0").attr("title", title).attr("url", url).data('gadget', trayGadgetJson).css("display", "inline-block").find(".perc-tray-item-icon").css("background", "url(" + iconUrl + ")");
 
         gadgetTrayItem.find(".perc-tray-item-label div").attr("name", trayGadgetJson.name).html(name);
 
@@ -1572,8 +1612,8 @@
     function getWidthOfCol()
     {
         var tableWidth = $(window).width() - 27;
-        $("#col-0").css("width", tableWidth * .33);
-        $("#col-1").css("width", tableWidth * .67);
+        $("#col-0").css("width", tableWidth * 0.33);
+        $("#col-1").css("width", tableWidth * 0.67);
     }
 
     /**

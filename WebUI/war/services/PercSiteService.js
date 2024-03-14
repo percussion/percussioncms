@@ -283,7 +283,7 @@
     function createSiteFromUrlAsync(siteProps, callback)
     {
         // Before sending the data to the server-side service, we have to adapt it
-        var serviceParam = {Site: siteProps};
+        var serviceParam = {SiteImportConfiguration: siteProps};
 
         $.PercServiceUtils.makeJsonRequest(
             $.perc_paths.SITE_CREATE_FROM_URL_ASYNC,

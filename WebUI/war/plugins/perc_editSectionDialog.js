@@ -31,7 +31,7 @@
             var url = $.perc_paths.SECTION_GET_PROPERTIES + "/" + sectionId;
             $.PercServiceUtils.makeJsonRequest(url,$.PercServiceUtils.TYPE_GET,false,createDialog);
 
-            var taborder = 30;
+            var taborder = 0;
             var v;
             var dialog;
 
@@ -53,9 +53,9 @@
                     "<div class='fieldGroup'>" +
                     "<div id='perc-section-general-container'>" +
                     "<label for='perc-section-name' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@Section name" ) + ":</label> <br/> " +
-                    "<input type='text' aria-required='true' class='required' tabindex='" + taborder + "' id='perc-section-name' name='section_name' maxlength='512'/> <br/>" +
+                    "<input type='text' aria-required='true' class='required' tabindex='0' id='perc-section-name' name='section_name' maxlength='512'/> <br/>" +
                     "<label for='perc-section-url' class='perc-required-field'>" + I18N.message( "perc.ui.newSectionDialog.label@URL" ) + ":</label> <br/> " +
-                    "<input type='text' class='required' aria-required='true' tabindex='" + taborder + "' id='perc-section-url' name='page_url' maxlength='100'/> <br/>" +
+                    "<input type='text' class='required' aria-required='true' tabindex='0' id='perc-section-url' name='page_url' maxlength='100'/> <br/>" +
                     "<label for='perc-external-link-target'>" + I18N.message( "perc.ui.editSectionDialog.label@Target window" ) + ":</label> <br/>" +
                     "<select id='perc-section-target' name='perc-section-target'>" +
                     "<option value='_self' selected>" + I18N.message( "perc.ui.editSectionDialog.label@Same window" ) + "</option>" +
@@ -64,7 +64,7 @@
                     "<option value='_parent'>" + I18N.message( "perc.ui.editSectionDialog.label@Parent window" ) + "</option>" +
                     "</select> <br/>" +
                     "<label for='perc-section-navigation-cssclassnames'>" + I18N.message( "perc.ui.editSectionDialog.label@Navigation class names") + ":</label> <br/> " +
-                    "<input type='text' tabindex='" + taborder + "' id='perc-section-navigation-cssclassnames' maxlength='255' name='perc-section-navigation-cssclassnames'/> <br/>" +
+                    "<input type='text' tabindex='0' id='perc-section-navigation-cssclassnames' maxlength='255' name='perc-section-navigation-cssclassnames'/> <br/>" +
                     "</div>" +
                     "</div>" +
 
@@ -244,7 +244,7 @@
                     var groupHtml =
                         "<div class='perc-section-header'>" +
                         "<div class='perc-section-label' groupName='" + this.groupName + "'>" +
-                        "<span  class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
+                        "<span tabindex='0' class='perc-min-max " + minmaxClass + "' ></span>" + this.groupLabel +
                         "</div>" +
                         "</div>";
                     dialog.find('#' + this.groupName).before(groupHtml);
@@ -259,6 +259,11 @@
                         .toggleClass('perc-items-minimizer')
                         .toggleClass('perc-items-maximizer');
                     dialog.find('#' + self.attr('groupName')).toggle();
+                });
+				dialog.find(".perc-section-label").on("keydown",function() {
+                   if(event.code == "Enter" || event.code == "Space"){
+						document.activeElement.click();
+					}
                 });
             }
 
@@ -297,7 +302,7 @@
                 // if(!gIsSaaSEnvironment) {
                 fieldGroups = "<div class='fieldGroup'>" +
                     '<div id="perc-section-security-container">' +
-                    "<input type='checkbox' id='perc-requires-login' name='perc-requires-login' style='width:20px' tabindex='" + taborder + "'/>" +
+                    "<input type='checkbox' id='perc-requires-login' name='perc-requires-login' style='width:20px' tabindex='0'/>" +
                     "<label for='perc-requires-login'>" + I18N.message("perc.ui.editSectionDialog.label@Requires Log in") + "</label> <br/>" +
                     "<label for='perc-group-name-allowed' style='margin-left:5px'>" + I18N.message("perc.ui.editSectionDialog.label@Allow access to: (enter group names)") + "</label> <br/>" +
                     "<input type='text' id='perc-group-name-allowed' name='perc-group-name-allowed' >" +

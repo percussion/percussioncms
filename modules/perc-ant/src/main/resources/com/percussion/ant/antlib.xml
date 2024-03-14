@@ -9,6 +9,7 @@
     <taskdef name="PSBrandProduct" classname="com.percussion.ant.install.PSBrandProduct"/>
     <taskdef name="PSConfigureDatasource" classname="com.percussion.ant.install.PSConfigureDatasource"/>
     <taskdef name="PSExecSQLStmt" classname="com.percussion.ant.install.PSExecSQLStmt"/>
+    <taskdef name="PSExecSQLRemoveDupes" classname="com.percussion.ant.install.PSExecSQLRemoveDupes"/>
     <taskdef name="PSUpdatePropFileWizAction" classname="com.percussion.ant.install.PSUpdatePropFileWizAction"/>
     <taskdef name="PSCheckRunningServer" classname="com.percussion.ant.install.PSCheckRunningServer"/>
     <taskdef name="PSUpgradeRepository" classname="com.percussion.ant.install.PSUpgradeRepository"/>

@@ -172,7 +172,7 @@
         });
         var chkBoxContent = "<input class = 'perc-header-checkbox' type = 'checkbox' />";
 
-        var headers = [chkBoxContent, "Title", "&nbsp;", "Status", "Last Modified By", "Asset Type","Modified","Published"];
+        var headers = [chkBoxContent, I18N.message("perc.ui.publish.title@Title"), "&nbsp;", I18N.message("perc.ui.publish.title@Status"), I18N.message("perc.ui.publish.title@Last Modified By"), I18N.message("perc.ui.asset.status.gadget@Asset Type"),I18N.message("perc.ui.gadgets.workflowStatus@Modified"),I18N.message("perc.ui.publish.title@Published")];
         var headerClasses = ["CheckBox", "Title", "Preview", "Status", "Last Modified By", "AssetType","Modified","Published"];
 
         var aoColumns = [
@@ -193,7 +193,7 @@
         var percColumnWidths = ["30", "*", "30","110","110","80","135","135"];
         if($.browser.chrome || $.browser.safari)
             percColumnWidths = ["10", "*", "10","90","90","60","115","115"];
-        var oLanguage = {sZeroRecords: "No Assets Found", oPaginate : {sFirst : "&lt;&lt;", sPrevious : "&lt;", sNext : "&gt;", sLast : "&gt;&gt;"}, sInfo : " ", sInfoEmpty : " "};
+        var oLanguage = {sZeroRecords: I18N.message("perc.ui.asset.status.gadget@No Assets Found"), oPaginate : {sFirst : "&lt;&lt;", sPrevious : "&lt;", sNext : "&gt;", sLast : "&gt;&gt;"}, sInfo : " ", sInfoEmpty : " "};
 
         var showPreviewBtnOnHover = true;
         var config = {percColumnWidths : percColumnWidths, percVisibleColumns : percVisibleColumns, iDisplayLength : itemsPerPage, percData : percData, percHeaders : headers, percHeaderClasses: headerClasses, aoColumns : aoColumns, showPreviewBtnOnHover:showPreviewBtnOnHover, additionalIframeHeight : 45, oLanguage : oLanguage};
@@ -485,14 +485,15 @@
     //Search filter code
     $(document).ready(function() {
         var searchConfig;
-        var labels = {"assetType":"Asset Type", "workflow": "Workflow", "state": "Status", "modifiedby": "Last Edited by"};
+        var labels = {"assetType":I18N.message("perc.ui.asset.status.gadget@Asset Type"), "workflow": I18N.message("perc.ui.gadgets.workflowStatus@Workflow"), "state": I18N.message("perc.ui.gadgets.workflowStatus@Status"), "modifiedby": I18N.message("perc.ui.asset.status.gadget@Last Edited by")};
         var defaultWorkflow;
+        document.getElementById('perc-bulk-approve-button').innerText=I18N.message("perc.ui.workflow.status.gadget@Approve");
         function getDefaultConfig()
         {
             var searchConfig = {
                 "assetType": {"name": "All", "value":"@all"},
-                "workflow": (defaultWorkflow != null ? defaultWorkflow : {"name": "Default Workflow", "value":"6"}),
-                "state": {"name": "Pending", "value":"4"},
+                "workflow": (defaultWorkflow != null ? defaultWorkflow : {"name": I18N.message("perc.ui.asset.status.gadget@Default Workflow"), "value":"6"}),
+                "state": {"name": I18N.message("perc.ui.workflow.status.gadget@Pending"), "value":"4"},
                 "modifiedby":{"name": "All", "value":"@all"}};
             return searchConfig;
         }
@@ -666,9 +667,9 @@
             var state = searchConfig.state.value;
             var lasteditedby = searchConfig.modifiedby.value;
 
-            var assetName = assetType === "" || assetType === "@all"? "(All Assets)" : WidgetLabelByContentTypeId[assetType]?"(" + WidgetLabelByContentTypeId[assetType] + ")":"";
-            var workflowName = searchConfig.workflow.name === "" || searchConfig.workflow.name === "All" ? "All Workflows" : searchConfig.workflow.name;
-            var stateName = searchConfig.state.name === "" || searchConfig.state.name === "All" ? "All States" : searchConfig.state.name;
+            var assetName = assetType === "" || assetType === "@all"? I18N.message("perc.ui.asset.status.gadget@All Assets") : WidgetLabelByContentTypeId[assetType]?"(" + WidgetLabelByContentTypeId[assetType] + ")":"";
+            var workflowName = searchConfig.workflow.name === "" || searchConfig.workflow.name === "All" ? I18N.message("perc.ui.asset.status.gadget@All Workflows") : searchConfig.workflow.name;
+            var stateName = searchConfig.state.name === "" || searchConfig.state.name === "All" ? I18N.message("perc.ui.asset.status.gadget@All States") : searchConfig.state.name;
 
             var title = "ASSETS BY STATUS: " + workflowName + " - " + stateName + " " + assetName;
             gadgets.window.setTitle(title);

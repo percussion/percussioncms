@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PSXApplication active="no" appType="USER" enabled="yes" hidden="no" id="1115" startPriority="0" version="2.0">
    <name>percDirectorySupport</name>
-   <description>Support applications for Percussion Directories funcionality.</description>
+   <description>Support applications for Percussion Directories functionality.</description>
    <requestRoot>percDirectorySupport</requestRoot>
    <defaultRequestPage/>
    <appExtensionContext>application/_cs_pbutkiewicz2_1465856925056/</appExtensionContext>

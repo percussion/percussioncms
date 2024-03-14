@@ -162,6 +162,28 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
         return baseUrl;
     }
 
+    /**
+     *
+     * @param adminUrlParam
+     * @return
+     */
+    public String findBaseByServerName(String adminUrlParam)
+    {
+        String baseUrl = "";
+
+        for (PSDeliveryInfo inf : servers)
+        {
+            String adminUrl = inf.getAdminUrl();
+           //If the servertype is blank then treats it as PRODUCTION type
+            if (adminUrl.equalsIgnoreCase(adminUrlParam))
+            {
+                baseUrl = inf.getUrl();
+                break;
+            }
+        }
+        return baseUrl;
+    }
+
     private PSDeliveryInfo findServerByType(String type)
     {
         PSDeliveryInfo delInfo = null;

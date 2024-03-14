@@ -81,6 +81,41 @@
 	z-index:1000;
 }
 
+/* show diff of Comparison tool for inserted and deleted data */
+        ins {
+            text-decoration: none;
+            background-color: #d4fcbc;
+        }
+
+        .ins-reg {
+            text-decoration: none;
+            background-color: #d4fcbc;
+        }
+
+        .ins-contrast {
+            color: #FFFFFF;
+            text-decoration: none;
+            background-color: #000000;
+        }
+
+        del {
+            text-decoration: line-through;
+            background-color: #fbb6c2;
+            color: #555;
+        }
+
+        .del-reg {
+            text-decoration: line-through;
+            background-color: #fbb6c2;
+            color: #555;
+        }
+
+        .del-contrast {
+            text-decoration: line-through;
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+
 /* show feedback for the region-tool */
 .perc-show-feedback { background: #CAF589 }
     
@@ -506,13 +541,13 @@
     opacity: .50;
 }
 
-.perc-widget-transperant > *
+.perc-widget-transparent > *
 {
 	opacity:0.3;
 	filter:alpha(opacity=30);
 }
 
-.perc-widget-transperant  .perc-ui-menu {
+.perc-widget-transparent  .perc-ui-menu {
     opacity:1;
 	filter:alpha(opacity=100);
 }
@@ -521,7 +556,7 @@
 
 }
 
-.perc-widget-transperant .perc-itool-selected-elem > *, .perc-widget-transperant .perc-itool-selected-elem-off > * {
+.perc-widget-transparent .perc-itool-selected-elem > *, .perc-widget-transparent .perc-itool-selected-elem-off > * {
      opacity:0.3;
      filter:alpha(opacity=30);
 }

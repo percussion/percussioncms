@@ -80,6 +80,7 @@
     $(document).ready(function() {
         miniMsg = new gadgets.MiniMessage(__MODULE_ID__);
         loadingMsg = miniMsg.createStaticMessage("Loading...");
+        gadgets.window.setTitle(I18N.message("perc.ui.forms.tracker.gadget@FORMS TRACKER"));
     });
 </script>    
     

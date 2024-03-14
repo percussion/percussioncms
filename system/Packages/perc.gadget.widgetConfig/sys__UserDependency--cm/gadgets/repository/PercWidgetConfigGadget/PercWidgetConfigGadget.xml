@@ -13,6 +13,7 @@
 <!DOCTYPE html>
     <link rel="stylesheet" type="text/css" href="/cm/themes/smoothness/jquery-ui-1.8.9.custom.css" />
     <link href="/cm/gadgets/repository/common/perc_common_gadget.css" rel="stylesheet" type="text/css" />
+    <script src="/Rhythmyx/tmx/tmx.jsp?mode=js&amp;prefix=perc.ui.&amp;"></script>
     <style>
         body{
             overflow-y:auto;
@@ -152,10 +153,16 @@
         function _expandNotify(){
             self.location.reload();
         }
+        $(document).ready(function(){
+            document.getElementById('perc-widget-config-label').innerText=I18N.message("perc.ui.widget.config.gadget@Uncheck Widgets");
+            document.getElementById('perc-widget-config-label-pw').innerText=I18N.message("perc.ui.widget.config.gadget@Percussion Widgets");
+            document.getElementById('perc-widget-config-label-cw').innerText=I18N.message("perc.ui.widget.config.gadget@Custom Widgets");
+            gadgets.window.setTitle(I18N.message("perc.ui.widget.config.gadget@Widget Configuration"));
+        });
     </script>
     <div id="perc-widget-config-container">
-        <div class="perc-widget-config-label perc-widget-config-first">Uncheck widgets in the list below to prevent them from being added to pages or templates. Existing pages or templates using these widgets will not be affected.:</div>
-        <div class="perc-widget-config-label">Percussion widgets:</div>
+        <div id="perc-widget-config-label" class="perc-widget-config-label perc-widget-config-first">Uncheck widgets in the list below to prevent them from being added to pages or templates. Existing pages or templates using these widgets will not be affected.:</div>
+        <div id="perc-widget-config-label-pw" class="perc-widget-config-label">Percussion widgets:</div>
         <table id="perc-widget-config-table-perc" class="perc-widget-config-table">
             <tr>
                 <td class="perc-widget-config-col1"></td>
@@ -163,7 +170,7 @@
                 <td class="perc-widget-config-col3"></td>
             </tr>
         </table>
-        <div class="perc-widget-config-label">Custom widgets:</div>
+        <div id="perc-widget-config-label-cw" class="perc-widget-config-label">Custom widgets:</div>
         <table id="perc-widget-config-table-cust" class="perc-widget-config-table">
             <tr>
                 <td class="perc-widget-config-col1"></td>

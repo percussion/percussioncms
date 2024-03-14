@@ -18,8 +18,8 @@ package com.percussion.utils;
 
 import com.percussion.utils.jsr170.PSItemIterator;
 import junit.framework.TestCase;
-import org.apache.commons.collections.MultiMap;
-import org.apache.commons.collections.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.InvalidItemStateException;
@@ -152,7 +152,7 @@ public class PSItemIteratorTest extends TestCase
    /**
     * Test data for multi map testing
     */
-   static MultiMap ms_mm = new MultiValueMap();
+   static MultiValuedMap ms_mm = new ArrayListValuedHashMap<>();
    
    static {
       ms_mm.put("aa", "1");
@@ -212,7 +212,7 @@ public class PSItemIteratorTest extends TestCase
    @SuppressWarnings("unchecked")
    public void testMultiMap()
    {
-      TestItemIterator ti = new TestItemIterator(ms_mm, "a*");
+      TestItemIterator ti = new TestItemIterator(ms_mm.asMap(), "a*");
       
       assertEquals(0, ti.getPosition());
       assertEquals(9, ti.getSize());
@@ -225,7 +225,7 @@ public class PSItemIteratorTest extends TestCase
       }
       assertEquals(ms_result1, allAStar);
       
-      ti = new TestItemIterator(ms_mm, "ba");
+      ti = new TestItemIterator(ms_mm.asMap(), "ba");
       
       assertEquals(0, ti.getPosition());
       assertEquals(3, ti.getSize());
@@ -239,7 +239,7 @@ public class PSItemIteratorTest extends TestCase
       assertEquals(ms_result2, allBA);
       
       // Test unfiltered case
-      ti = new TestItemIterator(ms_mm, null);
+      ti = new TestItemIterator(ms_mm.asMap(), null);
       
       int count = 0;
       Iterator<Object> v = ms_mm.values().iterator();

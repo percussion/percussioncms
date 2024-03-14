@@ -30,6 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
@@ -107,8 +110,12 @@ public class PSIdNameService
    @SuppressWarnings("unchecked")
    private Collection<PSIdName> loadAll()
    {
+
       Session session = getSession();
-      return session.createCriteria(PSIdName.class).list();
+      CriteriaBuilder builder = session.getCriteriaBuilder();
+      CriteriaQuery<PSIdName> criteria = builder.createQuery(PSIdName.class);
+      Root<PSIdName> critRoot = criteria.from(PSIdName.class);
+      return entityManager.createQuery(criteria).getResultList();
 
    }
    

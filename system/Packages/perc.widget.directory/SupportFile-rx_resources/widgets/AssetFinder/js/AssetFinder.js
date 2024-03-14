@@ -143,7 +143,7 @@
                                         $thisElem.closest("div[type='sys_normal']").find('#perc-content-value-' + opts.paramName).val(contentTypeId);
                                     }
                                 } else {
-                                    console.warn("Error retreiving data for Asset: " + foundContentType);
+                                    console.warn("Error retrieving data for Asset: " + foundContentType);
                                     $thisElem.find(".perc-asset-finder-error").append('<label class="perc-asset-finder-warning" for="personEmail" generated="true" style="display: block; padding-left: 15px">No value found for this field.</label>');
                                 }
                             });

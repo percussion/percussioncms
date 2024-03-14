@@ -73,46 +73,46 @@ public class TestPSLinkExtractor {
     public void testGetRelativePath() {
         assertTrue(
                 "Failed to evaluate http://foo.org properly",
-                PSLinkExtractor.getRelativePath("http://foo.org", "/", null).equals(
+                PSLinkExtractor.getRelativePath("http://foo.org", "/", null, null).equals(
                         "/"));
         assertTrue("Failed to evaluate http://foo.org/ properly",
-                PSLinkExtractor.getRelativePath("http://foo.org/", "/", null)
+                PSLinkExtractor.getRelativePath("http://foo.org/", "/", null, null)
                         .equals("/"));
         assertTrue("Failed to evaluate http://foo.org/Product properly",
-                PSLinkExtractor.getRelativePath("http://foo.org/Product", "/Product", null)
+                PSLinkExtractor.getRelativePath("http://foo.org/Product", "/Product", null, null)
                         .equals("/"));
         assertTrue("Failed to evaluate http://foo.org/Product/ properly",
                 PSLinkExtractor
-                        .getRelativePath("http://foo.org/Product/", "/Product/", null)
+                        .getRelativePath("http://foo.org/Product/", "/Product/", null, null)
                         .equals("/Product/"));
         assertTrue(
                 "Failed to evaluate https://www.foo.org/Product.asp properly",
                 PSLinkExtractor.getRelativePath(
-                        "http://www.foo.org/Product.asp", "/Product.asp", null).equals("/"));
+                        "http://www.foo.org/Product.asp", "/Product.asp", null, null).equals("/"));
         assertTrue(
                 "Failed to evaluate http://foo.org/Product/test/item.asp properly",
                 PSLinkExtractor.getRelativePath(
-                        "http://foo.org/Product/test/item.asp", "/Product/test/item.asp", null).equals(
+                        "http://foo.org/Product/test/item.asp", "/Product/test/item.asp", null, null).equals(
                         "/Product/test/"));
         assertTrue(
                 "Failed to evaluate smb://foo.org/Product/test/item.asp?foo=1&bar=2 properly",
                 PSLinkExtractor.getRelativePath(
                         "http://foo.org/Product/test/item.asp?foo=1&bar=2", "/Product/test/item.asp?foo=1&bar=2",
-                        null).equals("/Product/test/"));
+                        null, null).equals("/Product/test/"));
         assertTrue(
                 "Failed to evaluate https://www.foo.org\\Product.asp properly",
                 PSLinkExtractor.getRelativePath("http://www.foo.org\\Product.asp", "\\Product.asp",
-                        null).equals("/"));
+                        null, null).equals("/"));
         assertTrue(
                 "Failed to evaluate https://www.foo.org/Produc Space.asp properly",
                 PSLinkExtractor.getRelativePath(
-                        "http://www.foo.org/Product Space.asp", "Product Space.asp", null).equals(
+                        "http://www.foo.org/Product Space.asp", "Product Space.asp", null, null).equals(
                         "/"));
         assertTrue(
                 "Failed to evaluate smb://foo.org/Product/test/item.asp?foo=1&bar=2 properly",
                 PSLinkExtractor.getRelativePath(
                         "http://foo.org/Product/test it/item.asp?foo=1&bar=2", "Product/test it/item.asp?foo=1&bar=2",
-                        null).equals("/Product/test-it/"));
+                        null, null).equals("/Product/test-it/"));
     }
 
     @Ignore
@@ -121,43 +121,43 @@ public class TestPSLinkExtractor {
         assertEquals(
                 "Failed to evaluate https://www.percussion.com properly",
                 "index.html",
-                PSLinkExtractor.getPageName("https://www.percussion.com", null));
+                PSLinkExtractor.getPageName("https://www.percussion.com", null, null));
         assertEquals(
                 "Failed to evaluate https://www.percussion.com/ properly","index.html",
-                PSLinkExtractor.getPageName("https://www.percussion.com/", null));
+                PSLinkExtractor.getPageName("https://www.percussion.com/", null, null));
         assertTrue("Failed to evaluate http://foo.org/Product properly",
-                PSLinkExtractor.getPageName("http://foo.org/Product", null)
+                PSLinkExtractor.getPageName("http://foo.org/Product", null, null)
                         .equals("Product"));
         assertTrue("Failed to evaluate http://foo.org/Product/ properly",
-                PSLinkExtractor.getPageName("http://foo.org/Product/", null)
+                PSLinkExtractor.getPageName("http://foo.org/Product/", null, null)
                         .equals("index"));
         assertTrue(
                 "Failed to evaluate https://www.foo.org/Product.asp properly",
                 PSLinkExtractor.getPageName("http://www.foo.org/Product.asp",
-                        null).equals("Product.asp"));
+                        null, null).equals("Product.asp"));
         assertTrue(
                 "Failed to evaluate http://foo.org/Product/test/item.asp properly",
                 PSLinkExtractor.getPageName(
-                        "http://foo.org/Product/test/item.asp", null).equals(
+                        "http://foo.org/Product/test/item.asp", null, null).equals(
                         "item.asp"));
         assertTrue(
                 "Failed to evaluate smb://foo.org/Product/test/item.asp?foo=1&bar=2 properly",
                 PSLinkExtractor.getPageName(
                         "http://foo.org/Product/test/item.asp?foo=1&bar=2",
-                        null).equals("item-asp-foo-1-bar-2"));
+                        null, null).equals("item-asp-foo-1-bar-2"));
         assertTrue(
                 "Failed to evaluate https://www.foo.org\\Product.asp properly",
                 PSLinkExtractor.getPageName("http://www.foo.org\\Product.asp",
-                        null).equals("Product.asp"));
+                        null, null).equals("Product.asp"));
         assertTrue(
                 "Failed to evaluate https://www.foo.org/Produc Space.asp properly",
                 PSLinkExtractor.getPageName(
-                        "http://www.foo.org/Product Space.asp", null).equals(
+                        "http://www.foo.org/Product Space.asp", null, null).equals(
                         "Product-Space.asp"));
         assertTrue(
                 "Failed to evaluate https://www.foo.org/?p=69 wordpress case",
                 PSLinkExtractor.getPageName(
-                        "https://www.foo.org/?p=69", null).equals(
+                        "https://www.foo.org/?p=69", null, null).equals(
                         "item-p-69"));
     }
 }

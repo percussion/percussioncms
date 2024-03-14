@@ -124,7 +124,6 @@ public class PSThumbnailRunner implements Runnable {
 			activeWorkers.incrementAndGet();
 			return true;
 		}
-		log.debug("Active Thumbnail Runners: {}", activeWorkers);
 		return false;
 	}
 
@@ -242,11 +241,11 @@ public class PSThumbnailRunner implements Runnable {
 			File root = new File(
 					(PSSiteConfigUtils.getRootDirectory() + "/" + TPL_IMAGES_DIR)
 							.replace("\\", "/"));
-			Iterator iterator = FileUtils.listFiles(root, null, true)
+			Iterator<File> iterator = FileUtils.listFiles(root, null, true)
 					.iterator();
 
 			while (iterator.hasNext()) {
-				File file = (File) iterator.next();
+				File file = iterator.next();
 				if (file.getName().contains(
 						workPackage.getId() + TEMPLATE_STRING)
 						|| file.getName().contains(
@@ -261,7 +260,6 @@ public class PSThumbnailRunner implements Runnable {
 	}
 
 	private void checkForPageThumbnail(PSWorkPackage workPackage) {
-		String folderPath = workPackage.getPage().getFolderPath();
 		String imgPath = (PSSiteConfigUtils.getRootDirectory() + "/"
 				+ TPL_IMAGES_DIR + '/' + workPackage.getSite().getName() + '/'
 				+ workPackage.getId() + PAGE_STRING).replace("\\", "/")
@@ -284,7 +282,7 @@ public class PSThumbnailRunner implements Runnable {
 			try {
 				
 				if (isTemplateFunction(workPackage.getFunction())) {
-					if (workPackage.getTemplate().getName() != "Unassigned") {
+					if (!"Unassigned".equalsIgnoreCase(workPackage.getTemplate().getName() )) {
 						buildThumbnailsForTemplatesPages(workPackage);
 						handleThumbnailGeneration(workPackage.getId(),
 								workPackage.getFunction(),
@@ -316,15 +314,15 @@ public class PSThumbnailRunner implements Runnable {
 			String fileSuffix, String siteFolder, PSPage page) throws MalformedURLException {
 		if (page != null) {
 			String thumbnailFilePath = siteFolder + id + fileSuffix;
+			//To fix the path separator for file path.
+			thumbnailFilePath = (new File(thumbnailFilePath)).getAbsolutePath();
 			String path = (page.getFolderPath() + "/" + page.getName()).replace(
 					"//", "/");
 			URL url = PSUrlUtils.createUrl("127.0.0.1", null, path,
 					sessionParameterMap.iterator(), null, requestContext, true);
 			try
 			{
-
-				PSScreenCapture.takeCapture(url.toString(), thumbnailFilePath,
-						1180, 860);
+				PSScreenCapture.takeCapture(url.toString(), thumbnailFilePath);
 				PSThumbnailImageUtils.resizeThumbnail(thumbnailFilePath);
 					
 
@@ -342,20 +340,6 @@ public class PSThumbnailRunner implements Runnable {
 				}
 			}
 		}
-	}
-
-	private boolean validateConnect(String url) {
-		boolean valid = false;
-		try {
-			if (!url.contains("/.system/")) {
-				valid = true;
-			}
-		}
-
-		catch (Exception e) {
-			log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-		}
-		return valid;
 	}
 
 	private void buildThumbnailsForTemplatesPages(PSWorkPackage workPackage) throws PSDataServiceException {
@@ -490,7 +474,7 @@ public class PSThumbnailRunner implements Runnable {
 		if (workPackage.getPage() == null) {
 			if (isPageFunction(workPackage.getFunction())) {
 				if (page == null) {
-					page = pageService.find(workPackage.getId());
+				page = pageService.find(workPackage.getId());
 				}
 			} else if (isTemplateFunction(workPackage.getFunction())) {
 				PSTemplateSummary template = templateService.find(workPackage.getId());

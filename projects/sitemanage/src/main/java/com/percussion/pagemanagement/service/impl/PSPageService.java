@@ -25,6 +25,7 @@ import com.percussion.auditlog.PSContentEvent;
 import com.percussion.cms.IPSConstants;
 import com.percussion.cms.objectstore.PSCoreItem;
 import com.percussion.cms.objectstore.server.PSItemDefManager;
+import com.percussion.content.PSContentFactory;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.design.objectstore.PSRelationshipConfig;
 import com.percussion.error.PSExceptionUtils;
@@ -56,7 +57,6 @@ import com.percussion.queue.IPSPageImportQueue;
 import com.percussion.queue.impl.PSSiteQueue;
 import com.percussion.recent.service.rest.IPSRecentService;
 import com.percussion.recycle.service.IPSRecycleService;
-import com.percussion.recycle.service.impl.PSRecycleService;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.error.PSNotFoundException;
 import com.percussion.services.guidmgr.IPSGuidManager;
@@ -94,7 +94,7 @@ import com.percussion.share.validation.PSValidationErrorsBuilder;
 import com.percussion.sitemanage.dao.IPSiteDao;
 import com.percussion.sitemanage.data.PSSiteSummary;
 import com.percussion.utils.guid.IPSGuid;
-import com.percussion.utils.request.PSRequestInfo;
+import com.percussion.utils.request.PSRequestInfoBase;
 import com.percussion.webservices.content.IPSContentDesignWs;
 import com.percussion.webservices.content.IPSContentWs;
 import com.percussion.webservices.publishing.IPSPublishingWs;
@@ -209,16 +209,10 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
     private PSUnassignedPagesDataHelper unassignedPagesHelper = new PSUnassignedPagesDataHelper();
 
     private IPSRecycleService recycleService;
-    
-    private final String PATH_SEPARATOR = "/";
 
     private static final String RECYCLED_TYPE = PSRelationshipConfig.TYPE_RECYCLED_CONTENT;
 
-    private static final String FOLDER_TYPE = PSRelationshipConfig.TYPE_FOLDER_CONTENT;
-
-    private static final String RECYCLING_ROOT = PSRecycleService.RECYCLING_ROOT;
     private PSAuditLogService psAuditLogService=PSAuditLogService.getInstance();
-    private PSContentEvent psContentEvent;
 
     @Autowired
     public PSPageService(IPSFolderHelper folderHelperWs, IPSContentDesignWs contentDesignWs, IPSContentWs contentWs,
@@ -257,7 +251,6 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
      */
     @Override
     public void delete(String id) throws PSValidationException {
-       // List<IPSSite> sites = folderHelper.getItemSites(id);  
         List<IPSSite> sites = publishingWs.getItemSites(idMapper.getGuid(id));
         if((sites != null) && (sites.size() > 1))
         { 
@@ -275,7 +268,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
      *    Copies a page given its ID. Returns ID of copied page
      */
     public String copy(String id, String targetFolder, boolean addToRecent) throws PSDataServiceException, IPSPathService.PSPathNotFoundServiceException {
-        PSPage page = null;
+        PSPage page;
         page = load(id);
         String path = page.getFolderPath();
 
@@ -336,7 +329,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         pagePath += "/" + newName;
         
         //second parameter is a list of widgets not to remove.
-        widgetAssetRelationshipService.removeAssetWidgetRelationships(newPageId, Collections.EMPTY_LIST);
+        widgetAssetRelationshipService.removeAssetWidgetRelationships(newPageId, Collections.emptyList());
         widgetAssetRelationshipService.copyAssetWidgetRelationships(id, newPageId);
         
         PSTemplate pageTemplate = templateDao.find(page.getTemplateId());
@@ -373,12 +366,12 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         }
         try
         {
-            String currentUser = (String) PSRequestInfo.getRequestInfo(PSRequestInfo.KEY_USER);
+            String currentUser = (String) PSRequestInfoBase.getRequestInfo(PSRequestInfoBase.KEY_USER);
             StringBuilder purgeItemPaths = new StringBuilder();
             if (purgeItem) {
                 IPSItemSummary summ = dataItemSummaryService.find(id, RECYCLED_TYPE);
                 //CMS-9013 : if the site has been deleted and the page is still in recycle bin somehow (might be bad data due to copy site).
-                //folder path is empty so do not process the folderpath. Also the purgeItemPaths variable is only used for logging purpose.
+                //folder path is empty so do not process the folder-path. Also, the purgeItemPaths variable is only used for logging purpose.
                 if(summ.getFolderPaths() != null && !summ.getFolderPaths().isEmpty()){
                     purgeItemPaths.append(summ.getFolderPaths().get(0).replaceFirst("//Folders/\\$System\\$", ""));
                     purgeItemPaths.append("/");
@@ -475,7 +468,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         List<Integer> pageIds = pageTemplateService.findPageIdsByTemplate(templateId);       
         
         // Result list sorter.
-        CompareItemEntry compare = null;
+        CompareItemEntry compare;
         // Set the default values for the sorter in case parammeters are null.
         String sortingColumn = sortColumn;
         String sortingOrder = sortOrder;
@@ -489,12 +482,11 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         }
         compare = new CompareItemEntry(sortingColumn, sortingOrder);
 
-        // PSPathUtils.sort(items, sortColumn, sortOrder);
         // Get all the pages (sorted) using the template from the object cache.
         IPSCmsObjectMgr cmsObjectMgr = PSCmsObjectMgrLocator.getObjectManager();
         List<IPSItemEntry> allPageEntries = cmsObjectMgr.findItemEntries(pageIds, compare);
         
-        PSPagedObjectList<IPSItemEntry> pageGroup = null;
+        PSPagedObjectList<IPSItemEntry> pageGroup ;
         Integer itemStartIndex = null;
         if (pageId != null)
         {
@@ -523,7 +515,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         for (IPSItemEntry pageEntry : pagedItemEntries)
         {
             // Get path for each page entry.
-            IPSGuid myGuid = PSGuidUtils.makeGuid(Long.valueOf(pageEntry.getContentId()), PSTypeEnum.LEGACY_CONTENT);
+            IPSGuid myGuid = PSGuidUtils.makeGuid(pageEntry.getContentId(), PSTypeEnum.LEGACY_CONTENT);
             String[] pagePaths = contentWs.findFolderPaths(myGuid);
             String path = "";
             if (pagePaths != null && pagePaths.length > 0)
@@ -548,9 +540,9 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         PSPagedItemList pagesByTemplatePagedList = new PSPagedItemList(itemsInPage, allPageEntries.size(),
                 resultingStartIndex);
         
-        if (allPageEntries.size() > 0)
+        if (!allPageEntries.isEmpty())
         {
-            IPSGuid myGuid = PSGuidUtils.makeGuid(Long.valueOf(allPageEntries.get(0).getContentId()), PSTypeEnum.LEGACY_CONTENT);
+            IPSGuid myGuid = PSGuidUtils.makeGuid(allPageEntries.get(0).getContentId(), PSTypeEnum.LEGACY_CONTENT);
                     
             pagesByTemplatePagedList.setFirstItemId(myGuid.toString());
         }
@@ -595,10 +587,6 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         return new PSNoContent("Successfully cleared migration flag");
     }
     
-    public Boolean getMigrationEmptyFlag(String pageid) throws DataServiceLoadException, DataServiceNotFoundException, PSValidationException {
-        return getMigrationEmptyWidgetFlag(pageid);
-    }
-    
     /**
      * Finds the startIndex (first index of the paging group) that contains the page
      * with the id sent
@@ -624,10 +612,8 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
         // Didn't find the item, return null
         if (childIndex == null)
             return null;
-        
-        Integer startIndex = childIndex - (childIndex % maxResults) + 1;
-        
-        return startIndex;
+
+        return childIndex - (childIndex % maxResults) + 1;
     }
 
     /**
@@ -644,7 +630,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
     private Integer getChildIndex(int childPageId, List<IPSItemEntry> list)
     {
         IPSItemEntry item;
-        int index = 0;
+        int index;
         
         for (index=0; index<list.size(); index++)
         {
@@ -662,19 +648,18 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
     }
     
     @Override
-    public PSPage save(PSPage page) throws PSDataServiceException, PSBeanValidationException {
+    public PSPage save(PSPage page) throws PSDataServiceException {
         validate(page);
         
         boolean isExistingPage = page.getId() != null;
-        PSPage previousPage = null;
-        PSTemplate previousTemplate = null;
+        PSPage previousPage ;
         
         PSTemplate template = templateDao.find(page.getTemplateId());
         if (template == null)
         	throw new RuntimeException("The template you have selected doesn't exist in the system. Please refresh and try again.");
         
         //Set the summary if exists
-        String currentSummary = null;
+        String currentSummary ;
         if (isExistingPage)
         {
            previousPage = load(page.getId());
@@ -683,8 +668,7 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
            {
               page.setSummary(currentSummary);
            }
-           
-           previousTemplate = templateDao.find(previousPage.getTemplateId());
+
         }
         
         // Set the parent folder workflow only if it's a new page.
@@ -704,13 +688,13 @@ public class PSPageService extends PSAbstractDataService<PSPage, PSPage, String>
                 recentService.addRecentTemplate(siteName, page.getTemplateId());
         }
 
-        //Set the page Id and the Event type 
+        //Set the page-Id and the Event type
         PSPageChangeEvent pageChangeEvent = new PSPageChangeEvent();
         pageChangeEvent.setPageId(page.getId());
         pageChangeEvent.setType(PSPageChangeEventType.PAGE_SAVED);
         notifyPageChange(pageChangeEvent);
 try {
-    psContentEvent = new PSContentEvent(page.getId(), page.getId().substring(page.getId().lastIndexOf("-") + 1, page.getId().length()), page.getFolderPath(), PSContentEvent.ContentEventActions.create, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
+    PSContentEvent psContentEvent = new PSContentEvent(page.getId(), page.getId().substring(page.getId().lastIndexOf("-") + 1, page.getId().length()), page.getFolderPath(), PSContentEvent.ContentEventActions.create, PSSecurityFilter.getCurrentRequest().getServletRequest(), PSActionOutcome.SUCCESS);
     psAuditLogService.logContentEvent(psContentEvent);
 }catch (Exception e){
     //Handling exception
@@ -793,14 +777,12 @@ try {
             com.percussion.share.service.IPSDataService.DataServiceNotFoundException
     {
         // TODO Auto-generated method stub
-        // return null;
         throw new UnsupportedOperationException("findAll is not yet supported");
     }
     
     public List<PSSEOStatistics> findNonSEOPages(PSNonSEOPagesRequest request) throws PSDataServiceException {
         List<PSSEOStatistics> nonSEOStats = new ArrayList<>();
-        List<PSPageSummary> sums = new ArrayList<>();
-        
+
         // find the workflow, state id's
         int workflowId = -1;
         int stateId = -1;
@@ -819,7 +801,7 @@ try {
         {
             keyword = trimKeyword(keyword);
         }
-        sums = pageDao.findPagesBySiteAndWf(PSPathUtils.getFolderPath(request.getPath()), workflowId, stateId);
+        List<PSPageSummary> sums = pageDao.findPagesBySiteAndWf(PSPathUtils.getFolderPath(request.getPath()), workflowId, stateId);
         for (PSPageSummary sum : sums)
         {
             PSSEOStatistics stats = new PSSEOStatistics(sum, 
@@ -888,7 +870,7 @@ try {
         {
             if (reservedPageNames.contains(name.toLowerCase()))
             {
-                log.info("Page name uses a reserved word of the system: " + name);
+                log.info("Page name uses a reserved word of the system: {}" , name);
                 return false;
             }
             
@@ -901,14 +883,27 @@ try {
             {
                 if(invalidName.equalsIgnoreCase(name))
                 {
-                    log.info("Page name uses an invalid word: " + name);
+                    log.info("Page name uses an invalid word: {}" , name);
                     return false;
                 }
             }    
             
             return true;
         }
-        
+
+        /**
+         * This method returns true if ext of a page is of type "text/html"
+         */
+        private boolean validateMimeType(String name)
+        {
+            if(name.contains(".")){
+                int lastIndexDot = name.lastIndexOf(".");
+                String ext = name.substring(lastIndexDot+1);
+                String mimeTypePresent = PSContentFactory.guessMimeType(ext);
+                return mimeTypePresent != null && mimeTypePresent.equals("text/html");
+            }
+            return true;
+        }
 
         @Override
         protected void doValidation(PSPage obj, PSBeanValidationException e)
@@ -953,6 +948,14 @@ try {
                 log.debug(msg);
                 e.rejectValue("folderPath", "page.alreadyExists", msg);
             }
+
+            if (!validateMimeType(name))
+            {
+                String msg = "Cannot create a page with name \"" + name + "\" because it has an unknown mime type as file extension.";
+                log.debug(msg);
+                e.rejectValue("name", "page.unknownMimeType", msg);
+            }
+
         }
         
     }
@@ -1108,7 +1111,8 @@ try {
        @Override
        public int compare(IPSItemEntry o1, IPSItemEntry o2)
        {
-          Object prop1 = null, prop2 = null;
+          Object prop1 ;
+          Object prop2 ;
 
           if (StringUtils.equals(sortColumn, "name"))
           {
@@ -1177,11 +1181,11 @@ try {
             PSSiteSummary site = siteDao.findSummary(siteName);
             if (site == null)
             {
-                log.warn("Unable to locate Site: " + siteName);
+                log.warn("Unable to locate Site: {}" , siteName);
                 return new PSUnassignedResults();
             }
             PSSiteQueue siteQueue =  getPageImportQueue().getPageIds(site.getSiteId());
-//TODO Fix null pointer here
+
             List<Integer> catalogedIds = siteQueue.getCatalogedIds();
             List<Integer> importedIds = siteQueue.getImportedIds();
             List<Integer> importingIds = siteQueue.getImportingIds();
@@ -1227,7 +1231,7 @@ try {
             pageIds.addAll(importingIds);
             Collections.sort(pageIds);
            
-            int catalogCount = importingIds.size() != 0 ? catalogedIds.size() + 1 : catalogedIds.size();
+            int catalogCount = !importingIds.isEmpty() ? catalogedIds.size() + 1 : catalogedIds.size();
             
             // Build import status
             ImportStatus importStatus = new ImportStatus(catalogCount, importedIds.size());
@@ -1313,7 +1317,6 @@ try {
         }
         else
         {
-            pagePath = PSPathUtils.stripSitesRoot(path);
             return PSFolderPathUtils.getName(path);
         }
     }
@@ -1333,7 +1336,7 @@ try {
     {
         ItemStatus currentStatus = ItemStatus.Cataloged;
         
-        if(importingIds.size() != 0 && importingIds.contains(id))
+        if(!importingIds.isEmpty() && importingIds.contains(id))
             return ItemStatus.Importing;
         
         if(isImported)
@@ -1361,7 +1364,8 @@ try {
     public String generateNewPageName(String pageName, String folderPath) throws PSPageException {
         int count = 0;
 
-        String fullPath = folderPath + PATH_SEPARATOR + pageName;
+        String pathSeparator = "/";
+        String fullPath = folderPath + pathSeparator + pageName;
 
         String generatedPageName = pageName;
 
@@ -1369,7 +1373,7 @@ try {
         {
             count++;
             generatedPageName = PSPageManagementUtils.getNameForCount(pageName, count);
-            fullPath = folderPath + PATH_SEPARATOR + generatedPageName;
+            fullPath = folderPath + pathSeparator + generatedPageName;
         }
 
         return generatedPageName;

@@ -107,27 +107,22 @@
             "&sys_workflowid=" + contentEditCriteria.workflowId;
         
         var dlgHtml = "<div id='edit-widget-content'>" + 
-        "<iframe name='edit-widget-content-frame' id='edit-widget-content-frame' height='100%' title='Edit Content' frameborder='0' width='100%' src='" +
+        "<iframe name='edit-widget-content-frame' id='edit-widget-content-frame' title='Edit Content' frameborder='0' marginwidth='0' marginheight='0' allowfullscreen src='" +
         url + "'></iframe>" + "</div>";
         //Create dialog and set the preferred height and width from the criteria
         dialog = $(dlgHtml).perc_dialog({
             title:I18N.message("perc.ui.asset.edit.dialog@Edit Widget Content"), 
             resizable:true, modal:true, 
-            height:contentEditCriteria.preferredEditorHeight, 
-            width:contentEditCriteria.preferredEditorWidth, 
+            height:$(this).height(),
+            width:"auto",
              open: function() { 
-           $('#edit-widget-content').height($(this).parent().height()-120); 
+           $('#edit-widget-content').height($(this).parent().height()-120);
                            $('#edit-widget-content').width($(this).parent().width()); 
                            $('#edit-widget-content-frame').height($(this).parent().height()-120); 
                            $('#edit-widget-content-frame').width($(this).parent().width()-3); 
                            maximize = $( '<a id="ui-dialog-titlebar-resize" class="ui-dialog-titlebar-resize ui-corner-all" role="button" aria-label="full screen" href="#"><i class="fas fa-expand"/></a>');
                            maximized=false;
                            $(this).parent().find('.ui-dialog-title').after(maximize);
-                           
-                      
-
-                           
-
               }, 
         resize: function() {
     
@@ -138,7 +133,7 @@
       
           $('#edit-widget-content-frame').show(); 
 
-           $('#edit-widget-content').height($(this).parent().height()-120); 
+           $('#edit-widget-content').height($(this).parent().height()-120);
                            $('#edit-widget-content').width($(this).parent().width()); 
                            $('#edit-widget-content-frame').height($(this).parent().height()-120); 
                            $('#edit-widget-content-frame').width($(this).parent().width()-5); 
@@ -177,37 +172,16 @@
             id:'perc-asset-edit-dialog'
         });
 
-        function resizer(){
-          console.log("Resized");
-           clearTimeout($.data(this, 'resizeTimer'));
-        $.data(this, 'resizeTimer', setTimeout(function() {
-           console.log("Resize timer");
-             offset = $('#edit-widget-content').parent().offset();
-          
-             console.log("left="+offset.left+" top=",offset.top);
-             if (offset.left==0 && offset.top==0 && maximized)
-             {
-             dialog.dialog("option","draggable", false );
-             dialog.dialog("option","resizable", false );
-             
-             $('#edit-widget-content').parent().height($( window ).height());  
-             $('#edit-widget-content').height($( window ).height()-120);  
-                 $('#edit-widget-content').parent().width($( window ).width()-5); 
-                 $('#edit-widget-content-frame').height($( window ).height()-120); 
-                 $('#edit-widget-content-frame').width($( window ).width()-10); 
-              } else 
-              {
-                 clearTimeout($.data(this, 'resizeTimer'));
-              }
-        }, 200));
-            
-        }
+        $(window).resize(function() {
+            console.log("Resized");
+             $('#edit-widget-content').height($( window ).height()-120);
+             $('#edit-widget-content-frame').height($( window ).height()-120);
+             $('#edit-widget-content').width($(this).parent().width());
+        });
 
-          dialog.parent().find( '.ui-dialog-titlebar-resize' ).on("click", 
-         
+          dialog.parent().find( '.ui-dialog-titlebar-resize' ).on("click",
           function(){
             dialog_frame = dialog.parent();
-            
             if (maximized)
             {
                 dialog_frame.animate({
@@ -216,46 +190,38 @@
                           height: saved_height,
                           width: saved_width,
                    }, 200, function() {
-                            $('#edit-widget-content').height(saved_height-120); 
+                           $('#edit-widget-content').height(saved_height-120);
                            $('#edit-widget-content').width(saved_width); 
                            $('#edit-widget-content-frame').height(saved_height-120); 
                            $('#edit-widget-content-frame').width(saved_width-3); 
-                             $(this).find(".fa-compress").addClass("fas fa-expand").removeClass('fa-compress');
-                            $(this).find(".ui-dialog-titlebar-resize").attr('aria-label',"exit full screen");
-                            dialog.dialog("option","draggable", true );
-                             dialog.dialog("option","resizable", true );
-                            $(window).off('resize',resizer);
-                            maximized=false;
+                           $(this).find(".fa-compress").addClass("fas fa-expand").removeClass('fa-compress');
+                           $(this).find(".ui-dialog-titlebar-resize").attr('aria-label',"exit full screen");
+                           dialog.dialog("option","draggable", true );
+                           dialog.dialog("option","resizable", true );
+                           maximized=false;
                           });
-
-             
             } else {
               var o = dialog_frame.offset();
               saved_top=o.top;
               saved_left=o.left;
               saved_width=dialog_frame.width();
               saved_height=dialog_frame.height();
-
               dialog_frame.animate({
                           top:0,
                           left:0,
                           height: $(window).height(),
                           width: $(window).width()-15,
-                          
                    }, 200,  function() {
                            $('#edit-widget-content').height($(this).height()-120);
                            $('#edit-widget-content').width($(this).parent().width()); 
                            $('#edit-widget-content-frame').height($(this).height()-120);
                            $('#edit-widget-content-frame').width($(this).parent().width()-5); 
-                             $(this).find(".fa-expand").addClass("fas fa-compress").removeClass('fa-expand');
-                         
+                           $(this).find(".fa-expand").addClass("fas fa-compress").removeClass('fa-expand');
                             $(this).find(".ui-dialog-titlebar-resize").attr('aria-label',"full screen");
                             dialog.dialog("option","draggable", false );
                             dialog.dialog("option","resizable", false );
                             maximized=true;
                           });
-       
-              $(window).trigger("resize",resizer);
             }
           });
 

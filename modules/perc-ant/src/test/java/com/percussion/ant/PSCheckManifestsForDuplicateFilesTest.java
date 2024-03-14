@@ -192,7 +192,8 @@ public class PSCheckManifestsForDuplicateFilesTest
       }
       
       // specify duplicated jar as exclude
-      task.createExclude().setName("..\\..\\system\\Tools\\Spring\\" + DUP_JAR);
+      task.createExclude().setName(DUP_JAR);
+
       task.execute();
    }
 

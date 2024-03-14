@@ -17,6 +17,8 @@
 
 $(document).ready(function() {
     var percDisplayFullDir;
+    var DirectoryList;
+
     if ($('#percDirectoryList').data("directory-results-size") > 0) {
         var percDirectorySearchAllOrgs = ($('#percDirectoryList').data("search-all-orgs") === true);
         var percDirectorySearchAllDepts = ($('#percDirectoryList').data("show-dpt-filter") === true);
@@ -35,7 +37,7 @@ $(document).ready(function() {
             ],
             plugins: []
         };
-        var DirectoryList = new List('percDirectoryList', percSortOptions);
+        DirectoryList = new List('percDirectoryList', percSortOptions);
 
         var alphaFilterLetters = getFilterLetters(DirectoryList.items, "perc-person-last-name");
         populateAlphaFilters(alphaFilterLetters);
@@ -231,8 +233,10 @@ $(document).ready(function() {
         $(this).attr("href", url);
     });
 
-    if(percDisplayFullDir) {
-        $('#perc-clear-alpha-filter').trigger("click");
+    if(percDisplayFullDir){
+        if (DirectoryList) {
+            DirectoryList.filter();
+        }
     }
 
 });  // End Document Ready Function

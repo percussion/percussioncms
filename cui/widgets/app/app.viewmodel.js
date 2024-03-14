@@ -56,6 +56,12 @@ define(['knockout','pubsub', 'utils'], function(ko,PubSub, utils) {
 			var type = "Add Content";
             PubSub.publish("OpenDialog", type);
         };
+
+		self.myRecentOnKeydown = function(data, event){
+			if(event.code == "Enter" || event.code == "Space"){
+				document.activeElement.click();
+			}
+		};
         self.search = function(){
             var type = "Search";
             PubSub.publish("OpenDialog", type);

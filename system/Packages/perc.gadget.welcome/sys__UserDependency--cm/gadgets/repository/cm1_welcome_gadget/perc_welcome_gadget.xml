@@ -3,6 +3,7 @@
 <Module>
     <ModulePrefs title="Welcome" category="content" description="This gadget provides an introduction to Percussion CMS with links to documentation, the forum, and support." thumbnail="images/gadgetIconWelcome.png" height="320">
         <Require feature="perc_core"/>
+        <Require feature="settitle" />
         <Require feature="perc_jquery_ui"/>
     </ModulePrefs>
     <Content type="html">
@@ -37,17 +38,17 @@
 	   <script src="/cm/gadgets/repository/cm1_welcome_gadget/PercWelcomeGadget.js"></script>
 
 	   <div class="perc-gadget perc-welcome-gadget">
-          <a href="https://www.percussion.com/products/cm1/overview" target="_blank" rel="noopener noreferrer" title="Product Overview"><img src="/cm/gadgets/repository/cm1_welcome_gadget/Welcome-Image.jpg" role="img" aria-label="Percussion Logo" style="border: none"/></a><br/>
+          <a href="https://percussioncmshelp.intsof.com" target="_blank" rel="noopener noreferrer" title="Product Overview"><img src="/cm/gadgets/repository/cm1_welcome_gadget/Welcome-Image.jpg" role="img" aria-label="Percussion Logo" style="border: none"/></a><br/>
           <div class="perc-gadget-separator"><div class="perc-gadget-separator-inner"></div></div>
-          <a class="perc-gadget-welcome-link" href="https://help.percussion.com" target="_blank" rel="noopener noreferrer" title="Documentation">Documentation</a><br/>
-          <span class="perc-gadget-welcome-link-desc">All the basics on creating and maintaining your website(s) with Percussion CMS.</span><br/>
+          <a class="perc-gadget-welcome-link" id="perc-gadget-welcome-link-1" href="https://percussioncmshelp.intsof.com" target="_blank" rel="noopener noreferrer" title="Documentation">Documentation</a><br/>
+          <span class="perc-gadget-welcome-link-desc" id="perc-gadget-welcome-link-2">All the basics on creating and maintaining your website(s) with Percussion CMS.</span><br/>
           <div class="perc-gadget-separator"><div class="perc-gadget-separator-inner"></div></div>
-          <a class="perc-gadget-welcome-link" href="https://github.com/percussion/percussioncms/discussions" target="_blank" rel="noopener noreferrer" title="Percussion Community">Percussion Community</a><br/>
-          <span class="perc-gadget-welcome-link-desc">Ask questions and discuss ideas with fellow Percussion CMS users.</span><br/>
+          <a class="perc-gadget-welcome-link" id="perc-gadget-welcome-link-3" href="https://percussioncmscommunity.intsof.com" target="_blank" rel="noopener noreferrer" title="Percussion Community">Percussion Community</a><br/>
+          <span class="perc-gadget-welcome-link-desc" id="perc-gadget-welcome-link-4">Ask questions and discuss ideas with fellow Percussion CMS users.</span><br/>
           <div class="perc-gadget-separator"><div class="perc-gadget-separator-inner"></div></div>
 		  <div id="perc-bookmark-container">
-			  <div class="perc-gadget-welcome-link">Add Percussion Linkback</div>
-			  <span class="perc-gadget-welcome-link-desc">Percussion Linkback provides quick access from your website back to Percussion CMS to facilitate quick edits and easy navigation. When viewing a page on your website, click the Percussion Linkback bookmark, and you will be brought to the corresponding page in CMS for you to edit.</span><br/><br/>
+			  <div class="perc-gadget-welcome-link" id="perc-gadget-welcome-link-5">Add Percussion Linkback</div>
+			  <span class="perc-gadget-welcome-link-desc" id="perc-gadget-welcome-link-6">Percussion Linkback provides quick access from your website back to Percussion CMS to facilitate quick edits and easy navigation. When viewing a page on your website, click the Percussion Linkback bookmark, and you will be brought to the corresponding page in CMS for you to edit.</span><br/><br/>
 			  <!-- Leave the styles on book mark link inline as the same code gets invoked from main window also.-->
 			  <span class="perc-gadget-welcome-link-desc">Drag this button <a id="perc_linkback_anchor" style="appearance: button;-moz-appearance: button;-webkit-appearance: button;text-decoration: none; font: menu; color: ButtonText;display: inline-block; padding: 2px 8px; background: ButtonFace; color: ButtonText;border-style: solid; border-width: 2px; border-color: ButtonHighlight ButtonShadow ButtonShadow ButtonHighlight;" href="javascript:alert('Please wait for the bookmarklet to be generated before adding to your bookmarks bar.')">PercussionCMS</a> to your bookmarks bar.</span><br/>
 			  <div id="perc_linkback_moreinfo_text" style="display:none; margin-top:10px;">

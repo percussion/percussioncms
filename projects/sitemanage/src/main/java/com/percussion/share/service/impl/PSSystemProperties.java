@@ -29,7 +29,7 @@ import javax.ws.rs.ext.Provider;
  *
  */
 @Provider
-@PSSiteManageBean("systemProperties")
+@PSSiteManageBean("psSystemProperties")
 public class PSSystemProperties implements IPSSystemProperties
 {
 

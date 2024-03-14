@@ -15,17 +15,20 @@ tinymce.PluginManager.add('codemirror', function(editor, url) {
         editor.focus();
         editor.selection.collapse(true);
 
+		//Disable Parent Dialog Buttons
+		toggleParentDialogButton(true);
+
         // Insert caret marker
         if (editor.settings.codemirror.saveCursorPosition) {
             editor.selection.setContent('<span style="display: none;" class="CmCaReT">&#x0;</span>');
         }
 
-        var codemirrorWidth = 800;
+        var codemirrorWidth = window.innerWidth;
         if (editor.settings.codemirror.width) {
             codemirrorWidth = editor.settings.codemirror.width;
         }
 
-        var codemirrorHeight = 550;
+        var codemirrorHeight = window.innerHeight;
         if (editor.settings.codemirror.height) {
             codemirrorHeight = editor.settings.codemirror.height;
         }
@@ -42,7 +45,9 @@ tinymce.PluginManager.add('codemirror', function(editor, url) {
                 },
                 {
                     text: 'Cancel',
-                    onclick: 'close'
+                    onclick: function(){
+						win.close();
+					}
                 }
             ]
             : [
@@ -68,7 +73,9 @@ tinymce.PluginManager.add('codemirror', function(editor, url) {
             maximizable: true,
             fullScreen: editor.settings.codemirror.fullscreen,
             saveCursorPosition: false,
-            buttons: buttonsConfig
+			inline: 'bottom',
+            buttons: buttonsConfig,
+			onClose: closeDialog
         };
 
         if (tinymce.majorVersion >= 5) {
@@ -77,6 +84,8 @@ tinymce.PluginManager.add('codemirror', function(editor, url) {
                     var doc = document.querySelectorAll('.tox-dialog__body-iframe iframe')[0];
                     doc.contentWindow.submit();
                     editor.undoManager.add();
+                    win.close();
+                }else{
                     win.close();
                 }
             };
@@ -89,7 +98,36 @@ tinymce.PluginManager.add('codemirror', function(editor, url) {
         if (editor.settings.codemirror.fullscreen) {
             win.fullscreen(true);
         }
+
     }
+
+    //Enable Parent Dialog Buttons
+	function closeDialog(){
+		toggleParentDialogButton(false);
+	}
+
+    //Enable/Disable Parent Dialog buttons based on passed in flag
+	function toggleParentDialogButton(disable){
+       let saveBtn = window.top.$("#perc-content-edit-save-button")[0];
+	   if(saveBtn){
+		   saveBtn.disabled = disable;
+		   if(disable){
+               saveBtn.classList.add('disabled');
+		   }else{
+               saveBtn.classList.remove('disabled');
+		   }
+
+	   }
+		var cancelBtn = window.top.$('#perc-content-edit-cancel-button')[0];
+		if(cancelBtn){
+			cancelBtn.disabled = disable;
+			if(disable){
+				cancelBtn.classList.add('disabled');
+		   }else{
+			   cancelBtn.classList.remove('disabled');
+            }
+		}
+	}
 
     if (tinymce.majorVersion < 5) {
         // Add a button to the button bar

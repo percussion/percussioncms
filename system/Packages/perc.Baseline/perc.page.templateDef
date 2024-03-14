@@ -9,7 +9,7 @@
     <description>The master page template. This template may referenced by the base template (perc.base....).</description>
     <global-template/>
     <global-template-usage>None</global-template-usage>
-    <label>page template</label>
+    <label>Page Template</label>
     <location-prefix/>
     <location-suffix/>
     <mime-type>text/html</mime-type>

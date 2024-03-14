@@ -63,8 +63,10 @@
     
     <script>
         $(document).ready(function() {
-            
-            var prefs = new gadgets.Prefs(); 
+            document.getElementById('perc-add-variable-button').title=I18N.message("perc.ui.global.variables.gadget@Create Global Variable");
+			document.getElementById('perc-add-variable-button').innerText=I18N.message("perc.ui.global.variables.gadget@Add Variable");
+            gadgets.window.setTitle(I18N.message("perc.ui.global.variables.gadget@Global Variables"));
+            var prefs = new gadgets.Prefs();
             var PercServiceUtils = percJQuery.PercServiceUtils;
             var mdService         = percJQuery.PercMetadataService;
             var percUtils           = percJQuery.perc_utils;

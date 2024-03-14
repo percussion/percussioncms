@@ -527,7 +527,7 @@ gadgets.IfrGadget.prototype.getTitleBarContent = function(continuation) {
       this.getIframeId() + '_title" class="' +
       this.cssClassTitle + ' perc-ellipsis" title = " '  + (this.title ? this.title : 'Title') + ' ">' + (this.title ? this.title : 'Title') + '</div> | <div class="' +
       this.cssClassTitleButtonBar + '">' + settingsButton +
-      '<a href="#" onclick="gadgets.container.getGadget(' + this.id +
+      '<a href="#" tabindex="0" onclick="gadgets.container.getGadget(' + this.id +
       ').handleToggle();return false;" class="' + this.cssClassTitleButton +
       '">toggle</a></div></div>');
 };

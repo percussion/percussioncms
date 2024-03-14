@@ -65,7 +65,7 @@
 				longname : 'Insert more link',
 				author : 'Percussion Software Inc.',
 				authorurl : 'https://www.percussion.com',
-				infourl : 'https://help.percussion.com/cms',
+				infourl : 'https://percussioncmshelp.intsof.com/cms',
 				version : tinymce.majorVersion + "." + tinymce.minorVersion
 			};
 		},

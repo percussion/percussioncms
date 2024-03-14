@@ -483,13 +483,14 @@
         var searchConfig;
         var labels = {"site": I18N.message("perc.ui.gadgets.workflowStatus@Site"), "template": I18N.message("perc.ui.gadgets.workflowStatus@Template"), "workflow": I18N.message("perc.ui.gadgets.workflowStatus@Workflow"), "state": I18N.message("perc.ui.gadgets.workflowStatus@Status"), "modifiedby": I18N.message("perc.ui.gadgets.workflowStatus@Last Modified By")};
         var defaultWorkflow;
+        document.getElementById('perc-bulk-approve-button').innerText=I18N.message("perc.ui.workflow.status.gadget@Approve");
         function getDefaultConfig()
         {
             var searchConfig = {
                 "site": {"name": "All", "value":"@all"},
                 "template": {"name": "All", "value":"@all"},
-                "workflow": (defaultWorkflow != null ? defaultWorkflow : {"name": "Default Workflow", "value":"6"}),
-                "state": {"name": "Pending", "value":"4"},
+                "workflow": (defaultWorkflow != null ? defaultWorkflow : {"name": I18N.message("perc.ui.workflow.status.gadget@Default Workflow"), "value":"6"}),
+                "state": {"name": I18N.message("perc.ui.workflow.status.gadget@Pending"), "value":"4"},
                 "modifiedby":{"name": "All", "value":"@all"}};
             return searchConfig;
         }
