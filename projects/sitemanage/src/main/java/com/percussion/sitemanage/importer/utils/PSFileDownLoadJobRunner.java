@@ -144,6 +144,12 @@ public class PSFileDownLoadJobRunner implements Runnable
             URI uri = new URI(url);
             URL fileUrl = uri.toURL();
 
+            if(url.equals(destinationPath)){
+                File destFile = new File(destinationPath);
+                PSPair<Boolean, String> result = new PSPair<>(false, getErrorMessage(url, destFile.getName()));
+                localResults.add(result);
+                return localResults;
+            }
             File file = new File(destinationPath);
 
             if (doesFileExist(file))
