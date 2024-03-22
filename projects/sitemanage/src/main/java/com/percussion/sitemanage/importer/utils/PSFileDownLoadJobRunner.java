@@ -144,9 +144,9 @@ public class PSFileDownLoadJobRunner implements Runnable
             URI uri = new URI(url);
             URL fileUrl = uri.toURL();
 
+            //If the destination and the source are the same then skipping file creation as they are external resources.
             if(url.equals(destinationPath)){
-                File destFile = new File(destinationPath);
-                PSPair<Boolean, String> result = new PSPair<>(false, getErrorMessage(url, destFile.getName()));
+                PSPair<Boolean, String> result = new PSPair<>(false, "Skipping creation of external resource : "+destinationPath);
                 localResults.add(result);
                 return localResults;
             }
