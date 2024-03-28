@@ -6,7 +6,7 @@
     "start": "node app"
   },
   "dependencies": {
-    "express": "~4.17.1",
+    "express": "~4.19.2",
     "extend": "*",
     "jquery-ui": "^1.13.2",
     "lodash": ">=4.17.21",
