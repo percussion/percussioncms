@@ -36,6 +36,8 @@ import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldTranslation;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.install.InstallUtil;
+import com.percussion.install.PSLogger;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSItemWorkflowService;
 import com.percussion.linkmanagement.service.IPSManagedLinkService;
@@ -56,10 +58,12 @@ import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.share.dao.impl.PSIdMapper;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.PSJsoupPreserver;
 import com.percussion.utils.io.PathUtils;
+import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.timing.PSTimer;
 import com.percussion.utils.types.PSPair;
@@ -75,6 +79,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -87,6 +92,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+
 
 
 /**
@@ -848,6 +854,10 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             IPSSystemWs sysSvc = PSSystemWsLocator.getSystemWebservice();
             sysSvc.switchCommunity("Default");
             log.info("Started processing pages and assets - this may take a while depending on your content. We suggest a relaxing cup of tea while you wait.");
+
+            //Fix for issue 1249( Files uploaded as File assets are inaccessible after 8.1.2 upgrade)
+            checkDuplicateColumn();
+
             processAssets();
             processPages();
             
@@ -1097,6 +1107,85 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             thread.start();
         }
             
+    }
+
+    public void checkDuplicateColumn(){
+
+        String qualifyingTableName = "CT_PERCFILEASSET";
+        String columnNew = "ITEM_FILE_ATTACHMENT";
+        String columnOld = "ITEM_FILE_ATTACHMENTX";
+        //Here baseConfigDir folder is the "rootDir\jetty\..\rxconfig" folder
+        String baseConfigDir = PSServer.getBaseConfigDir();
+        log.info(baseConfigDir);
+        // Here rootDir is the main cms folder where project installation happens.
+        String rootDir = baseConfigDir.substring(0, baseConfigDir.lastIndexOf("jetty")-1);
+        String propFile = rootDir + File.separator + "rxconfig/Installer/rxrepository.properties";
+        log.info(propFile);
+        File f = new File(propFile);
+        if (!(f.exists() && f.isFile())) {
+            log.error("Unable to connect to the repository datasource file: {}", propFile);
+            return;
+        }
+        try (FileInputStream in = new FileInputStream(f)) {
+            Properties props = new Properties();
+            props.load(in);
+            PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
+            if (!"".equals(rootDir)) {
+                InstallUtil.setRootDir(rootDir);
+            }
+            String pw = dbmsDef.getPassword();
+            String driver = dbmsDef.getDriver();
+            String server = dbmsDef.getServer();
+            String database = dbmsDef.getDataBase();
+            String uid = dbmsDef.getUserId();
+            PSLogger.logInfo("Driver : " + driver + " Server : " + server + " Database : " + database + " uid : " + uid);
+            try (Connection conn = InstallUtil.createConnection(driver, server, database, uid, pw)) {
+                //get the fully qualified table name from normal table name.
+                String finalTableName = PSSqlHelper.qualifyTableName(qualifyingTableName.trim(), dbmsDef.getDataBase(), dbmsDef.getSchema(), dbmsDef.getDriver());
+                //Create the select query to check whether there is data in rows for a particular column or not.
+                String sqlSelect = String.format("SELECT COUNT(*) FROM %s WHERE %s IS NOT NULL ",finalTableName, columnNew);
+                PSLogger.logInfo("Executing select statement : " + sqlSelect);
+                try (Statement stmtSelect = conn.createStatement();
+                     Statement stmtAlterDropColumn = conn.createStatement();
+                     Statement stmtAlterChangeName = conn.createStatement()) {
+                    ResultSet rs = stmtSelect.executeQuery(sqlSelect);
+                    int count = -1;
+                    while (rs.next()) {
+                        count = rs.getInt(1);
+                    }
+                    rs.close();
+                    // If there is no data in rows corresponding to selected column then first delete this column and then rename the existing column to this column name.
+                    if (count==0) {
+                        String sqlAlterDropColumn = String.format("ALTER TABLE %s DROP COLUMN %s ",finalTableName, columnNew);
+                        String sqlAlterChangeName = String.format("ALTER TABLE %s RENAME COLUMN %s TO %s ",finalTableName, columnOld, columnNew);
+                        stmtAlterDropColumn.executeUpdate(sqlAlterDropColumn);
+                        if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL_DRIVER)){
+                            sqlAlterChangeName = String.format("ALTER TABLE %s CHANGE %s %s LONGBLOB NULL",finalTableName, columnOld, columnNew);
+                        }else if (driver.equalsIgnoreCase(PSJdbcUtils.JTDS_DRIVER) || driver.equalsIgnoreCase(PSJdbcUtils.MICROSOFT_DRIVER) ||
+                                driver.equalsIgnoreCase(PSJdbcUtils.SPRINTA)){
+                            sqlAlterChangeName = String.format("sp_rename '%s.%s', '%s', 'COLUMN' ",finalTableName, columnOld, columnNew);
+                        }else if (driver.equalsIgnoreCase(PSJdbcUtils.DERBY_DRIVER)){
+                            sqlAlterChangeName = String.format("RENAME COLUMN %s.%s TO %s ",finalTableName, columnOld, columnNew);
+                        }
+                        stmtAlterChangeName.executeUpdate(sqlAlterChangeName);
+                    }
+                } catch (Exception e) {
+                    handleException(e);
+                }
+            } catch (Exception ex) {
+                handleException(ex);
+            }
+        } catch (PSJdbcTableFactoryException | IOException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        }
+    }
+
+    public void handleException(Exception ex) {
+        //ERROR Code for specified View Not Exist, ignore it
+        if (ex.getMessage().contains("ORA-00942") || ex.getMessage().contains("does not exist")) {
+            PSLogger.logWarn(ex.getMessage());
+        }
     }
 
 }
