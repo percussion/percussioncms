@@ -122,19 +122,21 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
         return servers;
     }
 
-    public List<String> getAdminUrls(String publishServer){
-        List<PSDeliveryInfo> servers = findAll();
+    public List<String> getAdminUrls(String publishServerType){
+        List<PSDeliveryInfo> allServers = findAll();
 
         List<String> serverList = new ArrayList<>();
 
-        for (PSDeliveryInfo deliveryInfo : servers) {
-            if (deliveryInfo.getServerType()!=null && !deliveryInfo.getServerType().equalsIgnoreCase("license")) {
-
-                if (deliveryInfo.getServerType()!=null && deliveryInfo.getServerType().equalsIgnoreCase(publishServer)) {
+        for (PSDeliveryInfo deliveryInfo : allServers) {
+            if(publishServerType!=null) {
+                if (deliveryInfo.getServerType() != null
+                        && !deliveryInfo.getServerType().equalsIgnoreCase("license")
+                        && deliveryInfo.getServerType().equalsIgnoreCase(publishServerType)) {
                     serverList.add(deliveryInfo.getAdminUrl());
-
                 }
-
+            }else{
+                //If type is null we really shouldn't filter any.
+                serverList.add(deliveryInfo.getAdminUrl());
             }
         }
         return serverList;
@@ -360,7 +362,7 @@ public class PSDeliveryInfoService implements IPSDeliveryInfoService
     {
         PSDeliveryInfo psdeliveryinfo = null;
         URL url = new URL(s);
-        String as[] = url.getPath().split("/");
+        String[] as = url.getPath().split("/");
         if(as.length > 0)
             psdeliveryinfo = findByService(as[0]);
         return psdeliveryinfo;
