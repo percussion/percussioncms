@@ -150,7 +150,11 @@ public class PSAppServlet extends HttpServlet
          outputHeaders(res, psresp.getResponseHeaders());
          if(filename != null && filename != "" ){
             Map headers = new HashMap();
-            String contentType = (String) psresp.getEntityHeaders().get("Content-Type");
+            String contentType=null;
+            if(psresp.getEntityHeaders()!=null){
+               contentType = (String) psresp.getEntityHeaders().get("Content-Type");
+            }
+
              if(contentType != null && contentType != "null" && !contentType.contains("image") && !contentType.contains("pdf")){
                 headers.put("Content-Disposition", "attachment; filename="+filename);
                 outputHeaders(res, headers);
