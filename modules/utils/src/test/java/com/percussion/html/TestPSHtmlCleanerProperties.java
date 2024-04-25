@@ -96,6 +96,15 @@ public class TestPSHtmlCleanerProperties {
         String parsed = doc.body().toString();
         assertEquals(text,parsed);
     }
+    @Test
+    public void testMoreLink() throws PSHtmlParsingException, TransformerException {
+
+        String text = new Scanner(Objects.requireNonNull(TestPSHtmlCleanerProperties.class.getResourceAsStream("/com/percussion/html/morelink.html")), "UTF-8").useDelimiter("\\Z").next();
+        Document doc = PSHtmlUtils.createHTMLDocument(text, StandardCharsets.UTF_8, true, null);
+        String parsed = doc.body().toString();
+        assertTrue(parsed.contains("<span class=\"perc-blog-more-link\" id=\"perc-blog-more-link\"></span>"));
+    }
+
 
     @Test
     public void testRemoveDataPathItem() throws PSHtmlParsingException {
