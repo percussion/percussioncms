@@ -17,9 +17,12 @@
 
 package com.percussion.sitemanage.task.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.percussion.cms.IPSConstants;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
+import com.percussion.pathmanagement.data.PSGenerateSiteMapOptions;
 import com.percussion.pubserver.IPSPubServerService;
 import com.percussion.rx.delivery.impl.PSLocalDeliveryManager;
 import com.percussion.rx.publisher.IPSEditionTask;
@@ -116,6 +119,17 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
     public void perform(IPSEdition edition, IPSSite site, Date startTime, Date endTime, long jobId, long duration, boolean success, Map<String, String> params, IPSEditionTaskStatusCallback status) throws Exception {
 
         if(site.isGenerateSitemap()) {
+
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString = site.getGenerateSiteMapOptions();
+            PSGenerateSiteMapOptions psGenerateSiteMapOptions = null;
+            try {
+                psGenerateSiteMapOptions = mapper.readValue(jsonString, PSGenerateSiteMapOptions.class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+
+
             long count = 0;
             List<IPSEditionContentList> contentLists = publisherService.loadEditionContentLists(edition.getGUID());
 
@@ -142,7 +156,19 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
             WebSitemapGenerator wsg = WebSitemapGenerator.builder(site.getBaseUrl(),
                     siteMapDir).build();
 
+            String excludeImage = null;
+            if (psGenerateSiteMapOptions !=null){
+                excludeImage=  psGenerateSiteMapOptions.getGenerateSitemapExcludeImage();
+            }
+
             for (IPSPubItemStatus s : status.getIterableJobStatus()) {
+                //bypassing assets bases on user preference (set in site navigation -> site preference)
+                if(s.getLocation().startsWith("/Assets")){
+                    if (excludeImage!=null && excludeImage.equals("true")  ) {
+                        continue;
+                    }
+                }
+
                 if (s.getStatus().equals(IPSSiteItem.Status.SUCCESS) &&
                         s.getOperation().equals(IPSSiteItem.Operation.PUBLISH)) {
                     addToSiteMap(wsg, site, s);
