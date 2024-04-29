@@ -18,8 +18,10 @@
 package com.percussion.sitemanage.service.impl;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.percussion.assetmanagement.dao.IPSAssetDao;
 import com.percussion.assetmanagement.data.PSAsset;
 import com.percussion.assetmanagement.service.IPSWidgetAssetRelationshipService;
@@ -40,6 +42,7 @@ import com.percussion.pagemanagement.service.IPSTemplateService;
 import com.percussion.pagemanagement.service.impl.PSPageService;
 import com.percussion.pathmanagement.data.PSDeleteFolderCriteria;
 import com.percussion.pathmanagement.data.PSFolderPermission;
+import com.percussion.pathmanagement.data.PSGenerateSiteMapOptions;
 import com.percussion.pathmanagement.data.PSPathItem;
 import com.percussion.pathmanagement.service.impl.PSAssetPathItemService;
 import com.percussion.pathmanagement.service.impl.PSPathService;
@@ -346,6 +349,16 @@ import static org.apache.commons.lang.Validate.notNull;
         props.setSiteBeforeBodyCloseContent(site.getSiteBeforeBodyCloseContent());
         props.setMobilePreviewEnabled(site.isMobilePreviewEnabled());
         props.setGenerateSiteMap(site.isGenerateSitemap());
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = site.getGenerateSiteMapOptions();
+        PSGenerateSiteMapOptions psGenerateSiteMapOptions = null;
+        try {
+            psGenerateSiteMapOptions = mapper.readValue(jsonString, PSGenerateSiteMapOptions.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        props.setGenerateSiteMapOptions(psGenerateSiteMapOptions);
     }
 
     public PSSitePublishProperties getSitePublishProperties(String siteName) throws PSValidationException, PSNotFoundException {
@@ -470,6 +483,15 @@ import static org.apache.commons.lang.Validate.notNull;
         site.setSiteBeforeBodyCloseContent(props.getSiteBeforeBodyCloseContent());
         site.setMobilePreviewEnabled(props.isMobilePreviewEnabled());
         site.setGenerateSitemap(props.isGenerateSiteMap());
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = null;
+        try {
+            json = ow.writeValueAsString(props.getGenerateSiteMapOptions());
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        site.setGenerateSiteMapOptions(json);
         site.setBaseUrl(props.getSiteProtocol() + "://" + site.getName());
     }
 

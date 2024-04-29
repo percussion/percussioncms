@@ -66,6 +66,9 @@
                 "<input type='checkbox' style=\"width:20px\" tabindex='0' id='perc-site-gen-sitemap' name='perc-site-gen-sitemap'/>" +
                 "<label for='perc-site-gen-sitemap' id='perc-site-gen-sitemap-label'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Generate sitemap") + "</label> <br/> " +
 
+                "<input type='checkbox' style=\"width:20px\" tabindex='0' id='perc-site-gen-sitemap-exclude-image' name='perc-site-gen-sitemap-exclude-image'/>" +
+                "<label for='perc-site-gen-sitemap-exclude-image' id='perc-site-gen-sitemap-label-exclude-image'>" + "Exclude Image" + "</label> <br/> " +
+
                 "<label id='perc-site-protocol-label' for='perc-site-protocol'>" + I18N.message( "perc.ui.editSiteSectionDialog.label@Protocol" ) + ":</label> <br/> " +
                 // refactored from radio buttons to drop downs
                 "<select tabindex='0' name='perc-site-protocol' id='perc-site-protocol'>" +
@@ -463,6 +466,14 @@
                     }else{
                         $("#perc-site-gen-sitemap").prop("checked", false);
                     }
+
+                    //Generate sitemap exclude images
+					if(props.generateSiteMapOptions.generateSitemapExcludeImage == true){
+                        $("#perc-site-gen-sitemap-exclude-image").prop("checked", true);
+                    }else{
+                        $("#perc-site-gen-sitemap-exclude-image").prop("checked", false);
+                    }
+
                     // Set Canonical dist option
                     if (props.canonicalDist) $("[name='perc-canonical-url-dist'][value='" + props.canonicalDist + "']").prop("checked",true);
 

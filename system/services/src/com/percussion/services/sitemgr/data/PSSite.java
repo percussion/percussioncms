@@ -119,6 +119,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
       canonicalDist = site.canonicalDist;
       is_canonical_replace = site.is_canonical_replace;
       generateSiteMap = site.generateSiteMap;
+      generateSiteMapOptions = site.generateSiteMapOptions;
 
       //deal w/ collections
       templates = new HashSet<>();
@@ -318,6 +319,11 @@ public class PSSite implements IPSSite, IPSCatalogItem
    @Basic
    @Column(name="GENERATE_SITEMAP", nullable = true)
    String generateSiteMap;
+
+
+   @Basic
+   @Column(name="GENERATE_SITEMAP_OPTIONS", nullable = true)
+   String generateSiteMapOptions;
 
    @Basic
    @Column(name="IS_PAGE_BASED", nullable = false)
@@ -930,12 +936,12 @@ public class PSSite implements IPSSite, IPSCatalogItem
       if (this == o) return true;
       if (!(o instanceof PSSite)) return false;
       PSSite psSite = (PSSite) o;
-      return Objects.equals(getSiteId(), psSite.getSiteId()) && Objects.equals(getVersion(), psSite.getVersion()) && getName().equals(psSite.getName()) && Objects.equals(getPreviousName(), psSite.getPreviousName()) && Objects.equals(getDescription(), psSite.getDescription()) && Objects.equals(getBaseUrl(), psSite.getBaseUrl()) && Objects.equals(getRoot(), psSite.getRoot()) && Objects.equals(getIpAddress(), psSite.getIpAddress()) && Objects.equals(getPort(), psSite.getPort()) && Objects.equals(getUserId(), psSite.getUserId()) && Objects.equals(getPassword(), psSite.getPassword()) && Objects.equals(getPrivateKey(), psSite.getPrivateKey()) && Objects.equals(getState(), psSite.getState()) && Objects.equals(getFolderRoot(), psSite.getFolderRoot()) && Objects.equals(getNavTheme(), psSite.getNavTheme()) && Objects.equals(getGlobalTemplate(), psSite.getGlobalTemplate()) && Objects.equals(getAllowedNamespaces(), psSite.getAllowedNamespaces()) && Objects.equals(getUnpublishFlags(), psSite.getUnpublishFlags()) && Objects.equals(getLoginPage(), psSite.getLoginPage()) && Objects.equals(getRegistrationPage(), psSite.getRegistrationPage()) && Objects.equals(getRegistrationConfirmationPage(), psSite.getRegistrationConfirmationPage()) && Objects.equals(getResetPage(), psSite.getResetPage()) && Objects.equals(getResetRequestPasswordPage(), psSite.getResetRequestPasswordPage()) && Objects.equals(getDefaultPubServer(), psSite.getDefaultPubServer()) && Objects.equals(defaultFileExtention, psSite.defaultFileExtention) && Objects.equals(is_secure, psSite.is_secure) && Objects.equals(is_canonical, psSite.is_canonical) && Objects.equals(getSiteProtocol(), psSite.getSiteProtocol()) && Objects.equals(getDefaultDocument(), psSite.getDefaultDocument()) && Objects.equals(getCanonicalDist(), psSite.getCanonicalDist()) && Objects.equals(is_canonical_replace, psSite.is_canonical_replace) && Objects.equals(overrideJQuery, psSite.overrideJQuery) && Objects.equals(overrideJQueryUI, psSite.overrideJQueryUI) && Objects.equals(overrideFoundation, psSite.overrideFoundation) && Objects.equals(enableMobilePreview, psSite.enableMobilePreview) && Objects.equals(additionalHeadContent, psSite.additionalHeadContent) && Objects.equals(afterBodyStartContent, psSite.afterBodyStartContent) && Objects.equals(beforeBodyCloseContent, psSite.beforeBodyCloseContent) && Objects.equals(generateSiteMap, psSite.generateSiteMap) && Objects.equals(isPageBased, psSite.isPageBased) && Objects.equals(getProperties(), psSite.getProperties()) && Objects.equals(templates, psSite.templates);
+      return Objects.equals(getSiteId(), psSite.getSiteId()) && Objects.equals(getVersion(), psSite.getVersion()) && getName().equals(psSite.getName()) && Objects.equals(getPreviousName(), psSite.getPreviousName()) && Objects.equals(getDescription(), psSite.getDescription()) && Objects.equals(getBaseUrl(), psSite.getBaseUrl()) && Objects.equals(getRoot(), psSite.getRoot()) && Objects.equals(getIpAddress(), psSite.getIpAddress()) && Objects.equals(getPort(), psSite.getPort()) && Objects.equals(getUserId(), psSite.getUserId()) && Objects.equals(getPassword(), psSite.getPassword()) && Objects.equals(getPrivateKey(), psSite.getPrivateKey()) && Objects.equals(getState(), psSite.getState()) && Objects.equals(getFolderRoot(), psSite.getFolderRoot()) && Objects.equals(getNavTheme(), psSite.getNavTheme()) && Objects.equals(getGlobalTemplate(), psSite.getGlobalTemplate()) && Objects.equals(getAllowedNamespaces(), psSite.getAllowedNamespaces()) && Objects.equals(getUnpublishFlags(), psSite.getUnpublishFlags()) && Objects.equals(getLoginPage(), psSite.getLoginPage()) && Objects.equals(getRegistrationPage(), psSite.getRegistrationPage()) && Objects.equals(getRegistrationConfirmationPage(), psSite.getRegistrationConfirmationPage()) && Objects.equals(getResetPage(), psSite.getResetPage()) && Objects.equals(getResetRequestPasswordPage(), psSite.getResetRequestPasswordPage()) && Objects.equals(getDefaultPubServer(), psSite.getDefaultPubServer()) && Objects.equals(defaultFileExtention, psSite.defaultFileExtention) && Objects.equals(is_secure, psSite.is_secure) && Objects.equals(is_canonical, psSite.is_canonical) && Objects.equals(getSiteProtocol(), psSite.getSiteProtocol()) && Objects.equals(getDefaultDocument(), psSite.getDefaultDocument()) && Objects.equals(getCanonicalDist(), psSite.getCanonicalDist()) && Objects.equals(is_canonical_replace, psSite.is_canonical_replace) && Objects.equals(overrideJQuery, psSite.overrideJQuery) && Objects.equals(overrideJQueryUI, psSite.overrideJQueryUI) && Objects.equals(overrideFoundation, psSite.overrideFoundation) && Objects.equals(enableMobilePreview, psSite.enableMobilePreview) && Objects.equals(additionalHeadContent, psSite.additionalHeadContent) && Objects.equals(afterBodyStartContent, psSite.afterBodyStartContent) && Objects.equals(beforeBodyCloseContent, psSite.beforeBodyCloseContent) && Objects.equals(generateSiteMap, psSite.generateSiteMap) && Objects.equals(generateSiteMapOptions, psSite.generateSiteMapOptions) && Objects.equals(isPageBased, psSite.isPageBased) && Objects.equals(getProperties(), psSite.getProperties()) && Objects.equals(templates, psSite.templates);
    }
 
    @Override
    public int hashCode() {
-      return Objects.hash(getSiteId(), getVersion(), getName(), getPreviousName(), getDescription(), getBaseUrl(), getRoot(), getIpAddress(), getPort(), getUserId(), getPassword(), getPrivateKey(), getState(), getFolderRoot(), getNavTheme(), getGlobalTemplate(), getAllowedNamespaces(), getUnpublishFlags(), getLoginPage(), getRegistrationPage(), getRegistrationConfirmationPage(), getResetPage(), getResetRequestPasswordPage(), getDefaultPubServer(), defaultFileExtention, is_secure, is_canonical, getSiteProtocol(), getDefaultDocument(), getCanonicalDist(), is_canonical_replace, overrideJQuery, overrideJQueryUI, overrideFoundation, enableMobilePreview, additionalHeadContent, afterBodyStartContent, beforeBodyCloseContent, generateSiteMap, isPageBased, getProperties(), templates);
+      return Objects.hash(getSiteId(), getVersion(), getName(), getPreviousName(), getDescription(), getBaseUrl(), getRoot(), getIpAddress(), getPort(), getUserId(), getPassword(), getPrivateKey(), getState(), getFolderRoot(), getNavTheme(), getGlobalTemplate(), getAllowedNamespaces(), getUnpublishFlags(), getLoginPage(), getRegistrationPage(), getRegistrationConfirmationPage(), getResetPage(), getResetRequestPasswordPage(), getDefaultPubServer(), defaultFileExtention, is_secure, is_canonical, getSiteProtocol(), getDefaultDocument(), getCanonicalDist(), is_canonical_replace, overrideJQuery, overrideJQueryUI, overrideFoundation, enableMobilePreview, additionalHeadContent, afterBodyStartContent, beforeBodyCloseContent, generateSiteMap, generateSiteMapOptions, isPageBased, getProperties(), templates);
    }
 
    @Override
@@ -980,6 +986,7 @@ public class PSSite implements IPSSite, IPSCatalogItem
       sb.append(", afterBodyStartContent='").append(afterBodyStartContent).append('\'');
       sb.append(", beforeBodyCloseContent='").append(beforeBodyCloseContent).append('\'');
       sb.append(", generateSiteMap='").append(generateSiteMap).append('\'');
+      sb.append(", generateSiteMapOptions='").append(generateSiteMapOptions).append('\'');
       sb.append(", isPageBased='").append(isPageBased).append('\'');
       sb.append(", properties=").append(properties);
       sb.append(", templates=").append(templates);
@@ -1244,6 +1251,15 @@ public class PSSite implements IPSSite, IPSCatalogItem
    public boolean isGenerateSitemap() {
 
       return "T".equalsIgnoreCase(this.generateSiteMap);
+   }
+
+
+   public String getGenerateSiteMapOptions() {
+      return generateSiteMapOptions;
+   }
+
+   public void setGenerateSiteMapOptions(String generateSiteMapOptions) {
+      this.generateSiteMapOptions = generateSiteMapOptions;
    }
 
    /**

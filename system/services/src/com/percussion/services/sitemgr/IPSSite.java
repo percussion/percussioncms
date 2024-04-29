@@ -553,6 +553,10 @@ public interface IPSSite extends IPSCatalogSummary
      */
    public boolean isGenerateSitemap();
 
+   public void setGenerateSiteMapOptions(String generateSiteMapOptions);
+   public String getGenerateSiteMapOptions();
+
+
    /**
     * Gets the site's default document (like "index.html").
     * 
