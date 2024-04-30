@@ -6,7 +6,7 @@
 		init : function(ed,url) {
             var ml = '<img src="' + url + '/img/ReadMoreInsert-1.png" class="perc-blog-more-link mceItemNoResize" />';
             var cls = 'perc-blog-more-link';
-            var sep = '<!-- morelink -->';
+            var sep = '<span class="perc-blog-more-link" id="perc-blog-more-link"></span>';
             var mlRE = new RegExp(sep.replace(/[\?\.\*\[\]\(\)\{\}\+\^\$\:]/g, function(a) {return '\\' + a;}), 'g');
 
             // Register commands
