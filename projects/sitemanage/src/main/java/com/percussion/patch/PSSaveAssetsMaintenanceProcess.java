@@ -36,6 +36,8 @@ import com.percussion.design.objectstore.PSField;
 import com.percussion.design.objectstore.PSFieldTranslation;
 import com.percussion.design.objectstore.PSLocator;
 import com.percussion.error.PSExceptionUtils;
+import com.percussion.install.InstallUtil;
+import com.percussion.install.PSLogger;
 import com.percussion.itemmanagement.service.IPSItemWorkflowService;
 import com.percussion.itemmanagement.service.impl.PSItemWorkflowService;
 import com.percussion.linkmanagement.service.IPSManagedLinkService;
@@ -56,10 +58,12 @@ import com.percussion.services.notification.PSNotificationEvent.EventType;
 import com.percussion.share.dao.impl.PSIdMapper;
 import com.percussion.share.service.IPSIdMapper;
 import com.percussion.tablefactory.PSJdbcDbmsDef;
+import com.percussion.tablefactory.PSJdbcTableFactoryException;
 import com.percussion.tablefactory.install.RxLogTables;
 import com.percussion.util.PSSqlHelper;
 import com.percussion.utils.PSJsoupPreserver;
 import com.percussion.utils.io.PathUtils;
+import com.percussion.utils.jdbc.PSJdbcUtils;
 import com.percussion.utils.request.PSRequestInfo;
 import com.percussion.utils.timing.PSTimer;
 import com.percussion.utils.types.PSPair;
@@ -75,6 +79,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -87,6 +92,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+
 
 
 /**
@@ -112,7 +118,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
     private PSJdbcDbmsDef dbmsDef;
     private String processLinksBase = "upgrade" + File.separator + "processedlinks" + File.separator;
     private String savedLinksBase = processLinksBase + "savedlinks"  + File.separator;
-    
+
     private String assetsLogFilePath = processLinksBase + "Assets.json";
     private String pagesLogFilePath = processLinksBase + "Pages.json";
     private String assetsReadFilePath = savedLinksBase + "Assets.json";
@@ -124,10 +130,10 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
     private volatile boolean hasRun = false;
 
 
-    public PSSaveAssetsMaintenanceProcess(PSMaintenanceManager maintenanceManager, 
-            PSAssetService assetService, PSItemWorkflowService itemWorkflowService, 
-            PSManagedLinkService managedLinkService, PSIdMapper idMapper,
-            PSPageService pageService)
+    public PSSaveAssetsMaintenanceProcess(PSMaintenanceManager maintenanceManager,
+                                          PSAssetService assetService, PSItemWorkflowService itemWorkflowService,
+                                          PSManagedLinkService managedLinkService, PSIdMapper idMapper,
+                                          PSPageService pageService)
     {
         this.maintenanceManager = maintenanceManager;
         this.assetService = assetService;
@@ -147,7 +153,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         this.maintenanceManager = maintenanceManager;
         assetListSet = new HashSet<>();
     }
-    
+
     /**
      * Notify the Maintenance process chain that this fix is completed.
      */
@@ -157,7 +163,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             notificationService.notifyEvent(new PSNotificationEvent(EventType.SAVE_ASSETS_PROCESS_COMPLETE, null));
         }
     }
-    
+
     /**
      * notify the manager that work has completed
      */
@@ -190,7 +196,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             maintenanceManager.startingWork(this);
         }
     }
-  
+
     /**
      * Create a connection to the database
      * @return Connection Object may be null
@@ -212,7 +218,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         return connection;
     }
-    
+
     /**
      * Close the connection to the database
      * @return boolean true if connection is closed, false if close fails
@@ -232,7 +238,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                 log.warn(PSExceptionUtils.getMessageForLog(e));
                 return false;
             }
-            conn = null; 
+            conn = null;
         }
         else {
             log.warn("Connection already closed");
@@ -253,17 +259,17 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             log.warn("Connection Object not available to execute against");
             return result;
         }
-       
+
         try {
             result = stat.executeQuery(sqlStat);
         } catch (Exception e) {
 
             log.error("executeSqlStatement : {}" ,PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
-        } 
+        }
         return result;
     }
-    
+
     /**
      * if logs/Assets.json exists do nothing.
      * Load Assets from database if logs/Assets.json does not exist
@@ -282,14 +288,14 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         {
             log.info("Found previous assets file not processing assets.");
             assetListSet = new HashSet<>();
-        }   
+        }
         return assetListSet;
     }
-    
+
     /**
      * load content Ids from database for Types that have managed link fields
      * into the asset list.
-     * 
+     *
      */
     public void loadAssetsFromDB()
     {
@@ -313,11 +319,11 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                 {
                     log.error("Cannot load content type with name " +contentType);
                 }
-              
+
             }
         }
     }
-    
+
     private void addTypeAssets(long contentTypeId, String typeName)
     {
         conn = getConnection();
@@ -327,7 +333,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         {
             String CONTENTSTATUS = PSSqlHelper.qualifyTableName("CONTENTSTATUS");
             String typeIdSelect = "SELECT CONTENTID FROM " + CONTENTSTATUS +" WHERE CONTENTTYPEID = "+ contentTypeId;
-           
+
             rawSelectStat = conn.createStatement();
             idresult = executeSqlStatement(rawSelectStat,typeIdSelect);
             if (idresult != null) {
@@ -345,9 +351,9 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             try{conn.close();} catch(Exception e){}
         }
         log.info("Finished Loading Assets for type {}", typeName);
-        
+
     }
-    
+
     /**
      * Read the assets from the asset log and remove the success assets
      * so that we are left with only unprocessed and failed assets to try them again
@@ -355,11 +361,11 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      */
     @SuppressWarnings("unchecked")
     public void loadFailedAssetsFromFile(File f)
-    {   
+    {
         assetListSet = new HashSet<>();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            addAssets((Set<ItemWrapper>) objectMapper.readValue(f, 
+            addAssets((Set<ItemWrapper>) objectMapper.readValue(f,
                     objectMapper.getTypeFactory().constructCollectionType(Set.class, ItemWrapper.class)));
 
             assetListSet.removeIf(asset -> asset.getStatus() == ItemWrapper.STATUS.SUCCESS ||
@@ -369,9 +375,9 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
     }
-    
+
     /**
-     * Gets the pages from CT_PAGE table grouped by contentid and gets the max revision for each page 
+     * Gets the pages from CT_PAGE table grouped by contentid and gets the max revision for each page
      * whose summary is not null. From the result set builds the item wrappers for the qualified pages.
      * @throws SQLException
      */
@@ -382,7 +388,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         ResultSet resultSet = null;
         try
         {
-            String TABLE = PSSqlHelper.qualifyTableName("CT_PAGE", getDBDef().getDataBase(), 
+            String TABLE = PSSqlHelper.qualifyTableName("CT_PAGE", getDBDef().getDataBase(),
                     getDBDef().getSchema(), getDBDef().getDriver());
             String stmt = "SELECT C.CONTENTID, C.PAGE_SUMMARY FROM "
                     + "(SELECT MAX(A.REVISIONID) AS REVISIONID, A.CONTENTID FROM " + TABLE
@@ -410,7 +416,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             closeConnection();
         }
     }
-    
+
 
     /**
      * Returns qualified pages, means searches the page summary for anchors or images that are non managed internal links
@@ -436,7 +442,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                     ItemWrapper page = new ItemWrapper(id,ItemWrapper.STATUS.UNPROCESSED);
                     list.add(page);
                 }
-            } 
+            }
         }
         catch(Exception e)
         {
@@ -445,17 +451,17 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         return list;
     }
-    
+
     /**
      * generic load Assets from table.colname into asset list
      * @param tableName
      * @param colName
      * @return List<Integer> asset list never null but may be empty
-     * @throws SQLException 
+     * @throws SQLException
      */
     public Set<ItemWrapper> loadAssets(String tableName,String colName) throws SQLException
     {
-        String TABLE = PSSqlHelper.qualifyTableName(tableName, getDBDef().getDataBase(), 
+        String TABLE = PSSqlHelper.qualifyTableName(tableName, getDBDef().getDataBase(),
                 getDBDef().getSchema(), getDBDef().getDriver());
         String statement = "SELECT " + TABLE + "." + colName + " FROM " + TABLE;
         Statement stat = conn.createStatement();
@@ -463,27 +469,34 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         addAssets(getAssetFromResult(result,colName));
         return assetListSet;
     }
-    
+
     /**
      * Pull the asset's content that could contain a link and pass it through jsoup
      * @return boolean True if asset needs to be managed, false otherwise
      */
     public boolean qualifyAsset(PSAsset asset)
-    {   
+    {
         boolean qualified = false;
         PSPair<Boolean, String> prResult;
-        
+
         List<String> managedFields = getManagedLinkFields(asset.getType());
-        
+
         for (String field : managedFields)
         {
             if(asset.getFields().get(field)!=null)
             {
-                prResult = processLinks(asset.getFields().get(field).toString());
+                String assetText = asset.getFields().get(field).toString();
+                String newAssetText = assetText.replace("<!-- morelink -->","<span class=\"perc-blog-more-link\" id=\"perc-blog-more-link\"></span>");
+                if(!assetText.equals(newAssetText)){
+                    qualified = true;
+                }
+                prResult = processLinks(assetText);
                 if (prResult.getFirst()) {
                     asset.getFields().put(field, prResult.getSecond());
                 }
-                qualified |= prResult.getFirst();
+                if(!qualified) {
+                    qualified = prResult.getFirst();
+                }
             }
         }
         return qualified;
@@ -501,7 +514,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         try
         {
             PSItemDefinition itemDef = defMgr.getItemDef(type, -1);
-           
+
             for (PSField field : itemDef.getFieldSet().getAllFields())
             {
                 if (isManagedLinkField(field))
@@ -512,15 +525,15 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         catch (PSInvalidContentTypeException e)
         {
-           throw new IllegalArgumentException("Cannot get type definition "+type,e);
+            throw new IllegalArgumentException("Cannot get type definition "+type,e);
         }
         return managedFields;
     }
-    
+
     /**
-     * Does the field handle managed links.  This is found by checking for the sys_manageLinksConverter 
+     * Does the field handle managed links.  This is found by checking for the sys_manageLinksConverter
      * or sys_manageLinksOnUpdate input translation extensions on the field
-     * 
+     *
      * @param field object
      * @return true if the field handles managed links.
      */
@@ -547,14 +560,14 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         return managedLinkField;
     }
-    
+
     /**
      * Checks the source from the asset to see if it has any links that are not already managed
      * denoted by perc-linkid
      * Uses Jsoup to parse through the content source
      * @param source
      * @return PSPair the first object is a boolean tells whether the source has any unmanaged internal links or not and the
-     * second object is the updated source 
+     * second object is the updated source
      */
     private PSPair<Boolean, String> processLinks(String source)
     {
@@ -578,10 +591,10 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         {
             hasUnmanagedLinks = qualifyLinkPaths(anchors, imgs) || !targetAnchors.isEmpty();
         }
-        
+
         return  new PSPair<>(hasUnmanagedLinks, doc.body().html());
     }
-    
+
     /**
      * qualify the paths in the links start with //Assets,
      * /Assets, //Sites, /Sites
@@ -590,7 +603,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      * @return boolean, true if path refers to CM1 path, otherwise false
      */
     private boolean qualifyLinkPaths(Elements anchors, Elements imgs)
-    {   
+    {
         boolean result = false;
         for(Element anchor : anchors)
         {
@@ -598,37 +611,37 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             if(StringUtils.isEmpty(sysDependant))
             {
                 String path = anchor.attr("href");
-                if((path.startsWith("/Sites/") || path.startsWith("/Assets/") 
+                if((path.startsWith("/Sites/") || path.startsWith("/Assets/")
                         || path.startsWith("//Sites/") || path.startsWith("//Assets/")))
                 {
                     result = true;
                 }
             }
         }
-        
+
         for(Element img : imgs)
         {
             String sysDependant = img.attr("sys_dependentid");
             if(StringUtils.isEmpty(sysDependant))
             {
                 String path = img.attr("src");
-                if((path.startsWith("/Sites/") || path.startsWith("/Assets/") 
+                if((path.startsWith("/Sites/") || path.startsWith("/Assets/")
                         || path.startsWith("//Sites/") || path.startsWith("//Assets/")))
                 {
                     result = true;
                 }
             }
         }
-        
+
         //no qualified paths found therefore nothing to do
         return result;
     }
-    
+
     /**
      * Checkout and load the asset throws exception must be caught when calling this method
      * @param id
      * @return PSAsset from given id can be null
-     * @throws Exception 
+     * @throws Exception
      */
     public PSAsset checkOutAndLoadAsset(int id) throws Exception
     {
@@ -657,7 +670,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         return asset;
     }
-    
+
     /**
      * Save and check-in the Asset
      * always check in the asset so that we do not leave content in a bad state
@@ -671,10 +684,10 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             assetService.save(asset);
         }
         finally {
-            itemWorkflowService.checkIn(asset.getId());   
+            itemWorkflowService.checkIn(asset.getId());
         }
     }
-    
+
     /**
      * get a Set of AssetWrappers from result
      * Assumes result contains content ids
@@ -692,7 +705,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                 int id = result.getInt(colName);
                 ItemWrapper asset = new ItemWrapper(id,ItemWrapper.STATUS.UNPROCESSED);
                 list.add(asset);
-            } 
+            }
         }
         catch(Exception e)
         {
@@ -701,7 +714,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         }
         return list;
     }
-    
+
     /**
      * Get the database definition
      * @return PSJdbcDbmsDef dbmsDef may be null if connection is null
@@ -710,7 +723,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
     {
         return dbmsDef;
     }
-    
+
     /**
      * Add Asset set to the global asset Set
      * @param assets
@@ -721,7 +734,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             assetListSet.add(asset);
         }
     }
-    
+
     /**
      * get the current asset set
      * @return asset set
@@ -729,14 +742,14 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
     public Set<ItemWrapper> getAssetListSet() {
         return assetListSet;
     }
-    
+
     /**
      * write all assets to a log file in json format
      * [{"id":011, "status":"SUCCESS"},{"id":012, "status":"FAIL"},
      * {"id":013, "status":"NOTQUALIFIED"},{"id":014, "status":"UNPROCESSED"}]
-     * @throws IOException 
-     * @throws JsonMappingException 
-     * @throws JsonGenerationException 
+     * @throws IOException
+     * @throws JsonMappingException
+     * @throws JsonGenerationException
      */
     public void logAssets() throws JsonGenerationException, JsonMappingException, IOException
     {
@@ -749,7 +762,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(new File(PathUtils.getRxDir(null),assetsLogFilePath), assetListSet);
     }
-    
+
     private void logPages() throws JsonGenerationException, JsonMappingException, IOException
     {
         File file = new File(PathUtils.getRxDir(null),processLinksBase);
@@ -761,12 +774,12 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writeValue(new File(PathUtils.getRxDir(null),pagesLogFilePath), qualifiedPages);
     }
-    
+
     /**
      * This is the workhorse that opens and saves all the assets
      */
     public void processAssets()
-    {   
+    {
         try
         {
             log.info("Started asset processing.");
@@ -777,7 +790,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             }
             int assetCount =0;
             for(ItemWrapper assetW : assetListSet)
-            { 
+            {
                 try
                 {
                     PSAsset asset = checkOutAndLoadAsset(assetW.getId());
@@ -809,8 +822,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             log.error("Could not run asset fix: {}" ,PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
         }
-        
-        //log state after having run through all ids if anything in the assetList 
+
+        //log state after having run through all ids if anything in the assetList
         if(!assetListSet.isEmpty())
         {
             try
@@ -822,11 +835,11 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                 log.error("Failed to complete logging of ids.", e);
             }
         }
-        
+
         //set the manage all property back to what it was in the server.properties
         log.info("Completed Asset Fix.");
-    }    
-    
+    }
+
     /**
      * Gives the maintenance manager an id to assign to this process
      */
@@ -838,19 +851,23 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
     @Override
     public void run() {
         try
-        { 
+        {
             PSTimer timer = new PSTimer(log);
             PSRequest req = PSRequest.getContextForRequest();
             PSRequestInfo.initRequestInfo((Map<String,Object>) null);
             PSRequestInfo.setRequestInfo(PSRequestInfo.KEY_PSREQUEST, req);
             PSWebserviceUtils.setUserName(PSSecurityProvider.INTERNAL_USER_NAME);
-            
+
             IPSSystemWs sysSvc = PSSystemWsLocator.getSystemWebservice();
             sysSvc.switchCommunity("Default");
             log.info("Started processing pages and assets - this may take a while depending on your content. We suggest a relaxing cup of tea while you wait.");
+
+            //Fix for issue 1249( Files uploaded as File assets are inaccessible after 8.1.2 upgrade)
+            checkDuplicateColumn();
+
             processAssets();
             processPages();
-            
+
             // Move Me should go into separate job somewhere or we abstract out this class so we run all the sitemanage
             // work together.
             // Adding logic to check the category xml is existing or not, if not create one here.
@@ -858,15 +875,15 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             // When categories implementation is modified for 'per site', there can be site name passed here.
             if(PSCategoryUnMarshaller.createCategoryFileIfNotExisting() == null) {
                 PSCategoryMarshaller marshaller = new PSCategoryMarshaller();
-                
+
                 marshaller.setCategory(PSCategoryUnMarshaller.getEmptyCategory());
                 marshaller.marshal();
             }
-            
+
             notifyComplete();
             completeMaintWork();
             log.info("Completed processing of pages and assets. Hope you enjoyed your cup of tea.");
-            
+
             timer.logElapsed("Asset Fix Time elapsed: ");
         }
         catch (Exception e)
@@ -881,10 +898,10 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      * Processes pages, loads the qualified pages first and then if the qualified pages are not empty then
      * force saves the pages and then logs the update pages.
      */
-    private void processPages() 
+    private void processPages()
     {
         log.info("Started pages processing.");
-        try 
+        try
         {
             loadPages();
             if(!qualifiedPages.isEmpty())
@@ -892,18 +909,18 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                 forceSavePages();
                 logPages();
             }
-        } 
-        catch (SQLException e) 
+        }
+        catch (SQLException e)
         {
             log.error("Failed to load pages, processing of pages for fixing the summary links will not be completed",e);
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
             log.error("Failed to load pages, processing of pages for fixing the summary links will not be completed",e);
-        } 
+        }
         log.info("Completed pages processing.");
     }
-    
+
     /**
      * Checks whether Pages.json file exists with the path defined by {@link #pagesReadFilePath} if exists
      * loads the file and processes the previously failed or unprocessed entries from this file.
@@ -911,8 +928,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      * if exists, assumes that the page processing is already done and doesn't load the pages and makes an empty
      * set for {@link #qualifiedPages}.
      * If the log file doesn't exist then loads the pages from database, which sets the {@link #qualifiedPages} to
-     * the qualified pages. 
-     *  
+     * the qualified pages.
+     *
      * @throws SQLException
      * @throws JsonGenerationException
      * @throws JsonMappingException
@@ -935,24 +952,24 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         {
             loadPagesFromDB();
             logPages();
-        }   
+        }
     }
-    
+
     /**
      * Loads the qualified pages from the file
      * @param readFile assumed not <code>null</code>
      */
-    private void loadPagesFromFile(File readFile) 
+    private void loadPagesFromFile(File readFile)
     {
         qualifiedPages = new HashSet<>();
         ObjectMapper objectMapper = new ObjectMapper();
-        try 
+        try
         {
             qualifiedPages.addAll((Set<ItemWrapper>) objectMapper.readValue(
                     readFile, objectMapper.getTypeFactory().constructCollectionType(
                             Set.class, ItemWrapper.class)));
             Iterator<ItemWrapper> it = qualifiedPages.iterator();
-            while (it.hasNext()) 
+            while (it.hasNext())
             {
                 ItemWrapper page = it.next();
                 if (page.getStatus().equals(ItemWrapper.STATUS.SUCCESS)
@@ -960,8 +977,8 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                     it.remove();
                 }
             }
-        } 
-        catch (Exception e) 
+        }
+        catch (Exception e)
         {
             log.error("Error Reading Pages Log File : {}" ,PSExceptionUtils.getMessageForLog(e));
             log.debug(PSExceptionUtils.getDebugMessageForLog(e));
@@ -974,7 +991,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
      */
     private void forceSavePages()
     {
-        for (ItemWrapper qpage : qualifiedPages) 
+        for (ItemWrapper qpage : qualifiedPages)
         {
             PSLocator locator = new PSLocator(qpage.getId(),-1);
             String guid = idMapper.getString(locator);
@@ -991,7 +1008,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                 log.error("Failed to load and save the page with ID {}" , guid);
                 log.debug(PSExceptionUtils.getDebugMessageForLog(e));
             }
-            
+
             //Lets try to check in the page here.
             try
             {
@@ -1007,7 +1024,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             }
         }
     }
-    
+
     /**
      * Wrapper of asset so that we can track status and id and serialize as json objects
      * @author robertjohansen
@@ -1022,14 +1039,14 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             SUCCESS,
             NOTQUALIFIED
         }
-        
+
         @JsonCreator
         public ItemWrapper(@JsonProperty("id") Integer id, @JsonProperty("status") STATUS status)
         {
             this.id = id;
             this.status = status;
         }
-        
+
         public Integer getId() {
             return id;
         }
@@ -1043,7 +1060,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             this.status = status;
         }
     }
-    
+
     /**
      * Adds the listeners for the Maintenance process chain that
      * unfortunately only relies on a chain of notifications to order
@@ -1070,11 +1087,11 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
         if(hasRun) {
             return;
         }
-        
+
         if (EventType.CORE_SERVER_POST_INIT == notification.getType())
         {
             startMaintWork();
-           
+
             coreStarted = true;
         }
         if(EventType.STARTUP_PKG_INSTALL_COMPLETE == notification.getType())
@@ -1088,7 +1105,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
                 indexStarted = true;
             }
         }
-            
+
         if(coreStarted && indexStarted && packageStarted)
         {
             hasRun = true;
@@ -1096,7 +1113,90 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             thread.setDaemon(true);
             thread.start();
         }
-            
+
+    }
+
+    public void checkDuplicateColumn(){
+
+        String qualifyingTableName = "CT_PERCFILEASSET";
+        String columnNew = "ITEM_FILE_ATTACHMENT";
+        String columnOld = "ITEM_FILE_ATTACHMENTX";
+        //Here baseConfigDir folder is the "rootDir\jetty\..\rxconfig" folder
+        String baseConfigDir = PSServer.getBaseConfigDir();
+        log.info(baseConfigDir);
+        // Here rootDir is the main cms folder where project installation happens.
+        String rootDir = PSServer.getRxDir().getAbsolutePath();
+        if(baseConfigDir.contains("jetty")){
+            rootDir = baseConfigDir.substring(0, baseConfigDir.lastIndexOf("jetty")-1);
+        }
+
+        String propFile = rootDir + File.separator + "rxconfig/Installer/rxrepository.properties";
+        log.info(propFile);
+        File f = new File(propFile);
+        if (!(f.exists() && f.isFile())) {
+            log.error("Unable to connect to the repository datasource file: {}", propFile);
+            return;
+        }
+        try (FileInputStream in = new FileInputStream(f)) {
+            Properties props = new Properties();
+            props.load(in);
+            PSJdbcDbmsDef dbmsDef = new PSJdbcDbmsDef(props);
+            if (!"".equals(rootDir)) {
+                InstallUtil.setRootDir(rootDir);
+            }
+            String pw = dbmsDef.getPassword();
+            String driver = dbmsDef.getDriver();
+            String server = dbmsDef.getServer();
+            String database = dbmsDef.getDataBase();
+            String uid = dbmsDef.getUserId();
+            PSLogger.logInfo("Driver : " + driver + " Server : " + server + " Database : " + database + " uid : " + uid);
+            try (Connection conn = InstallUtil.createConnection(driver, server, database, uid, pw)) {
+                //get the fully qualified table name from normal table name.
+                String finalTableName = PSSqlHelper.qualifyTableName(qualifyingTableName.trim(), dbmsDef.getDataBase(), dbmsDef.getSchema(), dbmsDef.getDriver());
+                //Create the select query to check whether there is data in rows for a particular column or not.
+                String sqlSelect = String.format("SELECT COUNT(*) FROM %s WHERE %s IS NOT NULL ",finalTableName, columnNew);
+                PSLogger.logInfo("Executing select statement : " + sqlSelect);
+                try (Statement stmtSelect = conn.createStatement();
+                     Statement stmtAlterDropColumn = conn.createStatement();
+                     Statement stmtAlterChangeName = conn.createStatement()) {
+                    ResultSet rs = stmtSelect.executeQuery(sqlSelect);
+                    int count = -1;
+                    while (rs.next()) {
+                        count = rs.getInt(1);
+                    }
+                    rs.close();
+                    // If there is no data in rows corresponding to selected column then first delete this column and then rename the existing column to this column name.
+                    if (count==0) {
+                        String sqlAlterDropColumn = String.format("ALTER TABLE %s DROP COLUMN %s ",finalTableName, columnNew);
+                        String sqlAlterChangeName = String.format("ALTER TABLE %s RENAME COLUMN %s TO %s ",finalTableName, columnOld, columnNew);
+                        stmtAlterDropColumn.executeUpdate(sqlAlterDropColumn);
+                        if (driver.equalsIgnoreCase(PSJdbcUtils.MYSQL_DRIVER)){
+                            sqlAlterChangeName = String.format("ALTER TABLE %s CHANGE %s %s LONGBLOB NULL",finalTableName, columnOld, columnNew);
+                        }else if (driver.equalsIgnoreCase(PSJdbcUtils.JTDS_DRIVER) || driver.equalsIgnoreCase(PSJdbcUtils.MICROSOFT_DRIVER) ||
+                                driver.equalsIgnoreCase(PSJdbcUtils.SPRINTA)){
+                            sqlAlterChangeName = String.format("sp_rename '%s.%s', '%s', 'COLUMN' ",finalTableName, columnOld, columnNew);
+                        }else if (driver.equalsIgnoreCase(PSJdbcUtils.DERBY_DRIVER)){
+                            sqlAlterChangeName = String.format("RENAME COLUMN %s.%s TO %s ",finalTableName, columnOld, columnNew);
+                        }
+                        stmtAlterChangeName.executeUpdate(sqlAlterChangeName);
+                    }
+                } catch (Exception e) {
+                    handleException(e);
+                }
+            } catch (Exception ex) {
+                handleException(ex);
+            }
+        } catch (PSJdbcTableFactoryException | IOException e) {
+            log.error(PSExceptionUtils.getMessageForLog(e));
+            log.debug(PSExceptionUtils.getDebugMessageForLog(e));
+        }
+    }
+
+    public void handleException(Exception ex) {
+        //ERROR Code for specified View Not Exist, ignore it
+        if (ex.getMessage().contains("ORA-00942") || ex.getMessage().contains("does not exist")) {
+            PSLogger.logWarn(ex.getMessage());
+        }
     }
 
 }
