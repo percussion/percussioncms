@@ -1,5 +1,5 @@
 tinymce.PluginManager.add('percmorelink', function(editor, url) {
-	var cls = 'perc-blog-more-link', sep = '<!-- morelink -->', mlRE;
+	var cls = 'perc-blog-more-link', sep = '<span class="perc-blog-more-link"/>', mlRE;
 	var ml = '<img src="' + url + '/img/ReadMoreInsert-1.png" class="perc-blog-more-link mceItemNoResize" />';
 
     mlRE = new RegExp(sep.replace(/[\?\.\*\[\]\(\)\{\}\+\^\$\:]/g, function(a) {return '\\' + a;}), 'g');

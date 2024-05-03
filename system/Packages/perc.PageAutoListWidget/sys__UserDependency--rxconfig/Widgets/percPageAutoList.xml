@@ -794,7 +794,7 @@ $postDate##
 </div>
 #end##
 #if ($summary)##
-#set($summary_text=$result.node.getProperty('rx:page_summary').getString().replace('<!-- morelink -->', "<a href='$!{pagelink}' aria-label='Read more about  $!{linkTitle}' title='$!{linkTitle}'>...more</a>"))##
+#set($summary_text=$result.node.getProperty('rx:page_summary').getString().replace('<span class="perc-blog-more-link"></span>', "<a href='$!{pagelink}' aria-label='Read more about  $!{linkTitle}' title='$!{linkTitle}'>...more</a>"))##
 #if("$!{summary_text}" != "")##
 <div class="#cleanClass("perc-page-auto-list-summary-container $!{summaryclass}")">
 $!{summary_text}

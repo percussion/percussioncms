@@ -20,6 +20,7 @@ package com.percussion.sitemanage.task.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.percussion.cms.IPSConstants;
+import com.percussion.design.objectstore.PSLocator;
 import com.percussion.extension.IPSExtensionDef;
 import com.percussion.extension.PSExtensionException;
 import com.percussion.pathmanagement.data.PSGenerateSiteMapOptions;
@@ -30,6 +31,8 @@ import com.percussion.rx.publisher.IPSEditionTaskStatusCallback;
 import com.percussion.server.PSServer;
 import com.percussion.services.catalog.PSTypeEnum;
 import com.percussion.services.content.data.PSRevisions;
+import com.percussion.services.contentmgr.IPSContentMgr;
+import com.percussion.services.contentmgr.PSContentMgrLocator;
 import com.percussion.services.guidmgr.IPSGuidManager;
 import com.percussion.services.guidmgr.PSGuidManagerLocator;
 import com.percussion.services.guidmgr.data.PSLegacyGuid;
@@ -161,6 +164,7 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
                 excludeImage=  psGenerateSiteMapOptions.getGenerateSitemapExcludeImage();
             }
 
+
             for (IPSPubItemStatus s : status.getIterableJobStatus()) {
                 //bypassing assets bases on user preference (set in site navigation -> site preference)
                 if(s.getLocation().startsWith("/Assets")){
@@ -168,6 +172,13 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
                         continue;
                     }
                 }
+
+                PSLocator psLocator = new PSLocator(s.getContentId());
+                psLocator.setRevision(s.getRevisionId());
+
+                IPSGuid ipsGuid = ipsGuidManager.makeGuid(psLocator);
+                List<IPSGuid> guids = (List<IPSGuid>) ipsGuid;
+                List<javax.jcr.Node> nodeList =  contentMgr.findItemsByGUID(guids,null);
 
                 if (s.getStatus().equals(IPSSiteItem.Status.SUCCESS) &&
                         s.getOperation().equals(IPSSiteItem.Operation.PUBLISH)) {
