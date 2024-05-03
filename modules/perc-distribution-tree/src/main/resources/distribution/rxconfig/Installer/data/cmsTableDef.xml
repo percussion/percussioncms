@@ -1724,6 +1724,11 @@
                 <allowsnull>yes</allowsnull>
                 <defaultvalue>F</defaultvalue>
             </column>
+            <column action="c" limitSizeForIndex="n" name="GENERATE_SITEMAP_OPTIONS">
+                <jdbctype>CLOB</jdbctype>
+                <allowsnull>yes</allowsnull>
+                <defaultvalue>{}</defaultvalue>
+            </column>
             <column action="c" limitSizeForIndex="n" name="IS_PAGE_BASED">
                 <jdbctype>CHAR</jdbctype>
                 <size>1</size>

@@ -4,35 +4,17 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.1.4</version>
+        <version>8.1.5-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>rxutils</artifactId>
-  <version>8.1.4</version>
+  <version>8.1.5-SNAPSHOT</version>
     <packaging>jar</packaging>
     <properties>
         <skipTests>false</skipTests>
     </properties>
     <build>
         <plugins>
-            <!-- Scan for Java 11 jdkinternal violations -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jdeps-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>jdkinternals</goal> <!-- verify main classes -->
-                            <goal>test-jdkinternals</goal> <!-- verify test classes -->
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <failOnWarning>${jdeps.fail.build}</failOnWarning>
-                    <recursive>false</recursive>
-                    <verbose>false</verbose>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>

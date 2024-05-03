@@ -164,8 +164,6 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
                 excludeImage=  psGenerateSiteMapOptions.getGenerateSitemapExcludeImage();
             }
 
-            IPSContentMgr contentMgr = PSContentMgrLocator.getContentMgr();
-            IPSGuidManager ipsGuidManager = PSGuidManagerLocator.getGuidMgr();
 
             for (IPSPubItemStatus s : status.getIterableJobStatus()) {
                 //bypassing assets bases on user preference (set in site navigation -> site preference)

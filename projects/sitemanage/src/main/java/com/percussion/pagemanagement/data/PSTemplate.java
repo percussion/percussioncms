@@ -64,17 +64,17 @@ public class PSTemplate extends PSTemplateSummary implements IPSHtmlMetadata
     /**
      * The name of the HTML header fragment in the read only Template.
      */
-    public final static String HTML_HEADER = "HTML_HEADER";
+    public static final String HTML_HEADER = "HTML_HEADER";
 
     /**
      * The name of the CSS mark-up fragment in the read only Template.
      */
-    public final static String CSS_MARKUP = "CSS_MARKUP";
+    public static final String CSS_MARKUP = "CSS_MARKUP";
 
     /**
      * The name of the body mark-up fragment in the read only Template.
      */
-    public final static String BODY_MARKUP = "BODY_MARKUP";
+    public static final String BODY_MARKUP = "BODY_MARKUP";
 
     /**
      * The bodyMarkup field value, may be <code>null</code> or empty.
