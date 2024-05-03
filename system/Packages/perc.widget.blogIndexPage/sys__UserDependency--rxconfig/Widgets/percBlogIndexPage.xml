@@ -576,7 +576,7 @@ $!{listAriaLabel}##
 #set($pagelink=$tools.esc.html($rx.pageutils.itemLink($linkContext, $result)))##
 #set($linkTitle=$rx.pageutils.html($result.node,"resource_link_title,sys_title", "-no-title-"))##
 #if($result.node.hasProperty('rx:page_summary'))##
-#set($pageSummary = $result.node.getProperty('rx:page_summary').getString().replace('<span class="perc-blog-more-link" id="perc-blog-more-link"></span>', "<a href='$!{pagelink}' aria-label='Read more about $!{linkTitle}' title='$!{linkTitle}'>$!{blogPostReadMoreText}</a>"))##
+#set($pageSummary = $result.node.getProperty('rx:page_summary').getString().replace('<span class="perc-blog-more-link"></span>', "<a href='$!{pagelink}' aria-label='Read more about $!{linkTitle}' title='$!{linkTitle}'>$!{blogPostReadMoreText}</a>"))##
 #end##
 #set($localLanguageCountry = $rx.pageutils.getLanguageAndCountryFromLocale($locale))##
 #set($locale_lang = $localLanguageCountry.language)##

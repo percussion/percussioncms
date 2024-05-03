@@ -336,7 +336,7 @@ public class PSPageChangeHandler implements IPSPageChangeListener
    //Initialized on the first call to the #pageChanged() method. 
    private PSWidgetAssetRelationshipService widgetAssetRelationshipService;
    
-   private static final String MORE_LINK_TEXT = "<span class=\"perc-blog-more-link\" id=\"perc-blog-more-link\"></span>";
+   private static final String MORE_LINK_TEXT = "<span class=\"perc-blog-more-link\"></span>";
    
    // Constants for page and title widget fields
    private static final String TITLE_WIDGET_SYNC_FIELD_NAME = "sync_link_text";

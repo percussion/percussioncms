@@ -102,7 +102,7 @@ public class TestPSHtmlCleanerProperties {
         String text = new Scanner(Objects.requireNonNull(TestPSHtmlCleanerProperties.class.getResourceAsStream("/com/percussion/html/morelink.html")), "UTF-8").useDelimiter("\\Z").next();
         Document doc = PSHtmlUtils.createHTMLDocument(text, StandardCharsets.UTF_8, true, null);
         String parsed = doc.body().toString();
-        assertTrue(parsed.contains("<span class=\"perc-blog-more-link\" id=\"perc-blog-more-link\"></span>"));
+        assertTrue(parsed.contains("<span class=\"perc-blog-more-link\"></span>"));
     }
 
 

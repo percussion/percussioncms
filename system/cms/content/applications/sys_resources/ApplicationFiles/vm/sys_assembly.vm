@@ -640,7 +640,7 @@ display:none;
 ##
 #if($perc.page.name && $sys.item.getProperty("rx:page_summary").String != "")##
 #set($summaryField=$sys.item.getProperty('rx:page_summary').String)##
-#set($summaryField2=$summaryField.replace('<span class="perc-blog-more-link" id="perc-blog-more-link"></span>','<a class="perc-more-link"></a>'))##
+#set($summaryField2=$summaryField.replace('<span class="perc-blog-more-link"></span>','<a class="perc-more-link"></a>'))##
 <div property='dcterms:abstract' style='display:none' datatype='rdf:XMLLiteral'>$summaryField2</div>
 #end##
 ##

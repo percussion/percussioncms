@@ -486,7 +486,7 @@ public class PSSaveAssetsMaintenanceProcess implements Runnable,
             if(asset.getFields().get(field)!=null)
             {
                 String assetText = asset.getFields().get(field).toString();
-                String newAssetText = assetText.replace("<!-- morelink -->","<span class=\"perc-blog-more-link\" id=\"perc-blog-more-link\"></span>");
+                String newAssetText = assetText.replace("<!-- morelink -->","<span class=\"perc-blog-more-link\"></span>");
                 if(!assetText.equals(newAssetText)){
                     qualified = true;
                 }
