@@ -138,6 +138,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -3048,6 +3049,34 @@ public class PSPageUtils extends PSJexlUtilBase
         }
 
         return psLocaleLanguageCountry;
+    }
+
+    public SimpleDateFormat getDateFormatFromLocale(String blogPostDateTimeFormat,String locale){
+
+        if (locale == null  || "".equalsIgnoreCase(locale)){
+            locale = "en-US";
+        }
+
+        String[] localeSplitArr;
+        String localeLanguage = "" ;
+        String localeCountry = "" ;
+
+        if(locale.contains("-")){
+            localeSplitArr = locale.split("-");
+            localeLanguage = localeSplitArr[0];
+            localeCountry = localeSplitArr[1];
+        }else if(locale.contains("_")){
+            localeSplitArr = locale.split("_");
+            localeLanguage = localeSplitArr[0];
+            localeCountry = localeSplitArr[1];
+        }else{
+            localeLanguage = "en";
+            localeCountry = "US";
+        }
+        Locale locale1 = new Locale(localeLanguage, localeCountry);
+        SimpleDateFormat dateFormattted = new SimpleDateFormat(blogPostDateTimeFormat, locale1);
+
+        return dateFormattted;
     }
 
 }
