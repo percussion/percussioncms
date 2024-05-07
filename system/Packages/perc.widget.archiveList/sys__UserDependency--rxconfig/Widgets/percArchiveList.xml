@@ -312,18 +312,10 @@
 #if("" == "$!{archiveLocale}")##
 #set($archiveLocale="en-US")##
 #end##
-#set($localeSplit = $archiveLocale.split("-"))##
-#set($locale_lang = $localeSplit.get(0))##
-#set($locale_country = $localeSplit.get(1))##
 ##
-## Set locale
-#set($ctor = $sys.getClass().forName('java.util.Locale').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.lang.String')))##
-#set($locale = $ctor.newInstance($locale_lang, $locale_country))##
 ##Setup Date Formatting
-#set($format_ctorOut  = $sys.getClass().forName('java.text.SimpleDateFormat').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.util.Locale')))##
-#set($format_ctorIn  = $sys.getClass().forName('java.text.SimpleDateFormat').getConstructor($sys.getClass().forName('java.lang.String')))##
-#set($formatterIn = $format_ctorIn.newInstance("MMMM d, yyyy"))##
-#set($formatterOut = $format_ctorOut.newInstance("MMMM",$locale))##
+#set($formatterIn = $rx.pageutils.getDateFormatForString("MMMM d, yyyy"))##
+#set($formatterOut = $rx.pageutils.getDateFormatFromLocale("MMMM",$locale))##
 #if($archiveLayout == "perc-list-hierarchical")##
 <ul class="perc-archive-list-wrapper perc-archive-hierarchical">
 #foreach ($blogYear in $blogYears)##
