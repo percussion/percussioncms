@@ -173,14 +173,7 @@ public class PSSiteMapGeneratorTask implements IPSEditionTask {
                     }
                 }
 
-                PSLocator psLocator = new PSLocator(s.getContentId());
-                psLocator.setRevision(s.getRevisionId());
-
-                IPSGuid ipsGuid = ipsGuidManager.makeGuid(psLocator);
-                List<IPSGuid> guids = (List<IPSGuid>) ipsGuid;
-                List<javax.jcr.Node> nodeList =  contentMgr.findItemsByGUID(guids,null);
-
-                if (s.getStatus().equals(IPSSiteItem.Status.SUCCESS) &&
+               if (s.getStatus().equals(IPSSiteItem.Status.SUCCESS) &&
                         s.getOperation().equals(IPSSiteItem.Operation.PUBLISH)) {
                     addToSiteMap(wsg, site, s);
                     count++;
