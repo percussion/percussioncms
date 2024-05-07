@@ -349,14 +349,8 @@ aria-labelledby="$!{headerId}"##
 $!{listAriaLabel}##
 #end##
 #end##
-#set($localLanguageCountry = $rx.pageutils.getLanguageAndCountryFromLocale($locale))##
-#set($locale_lang = $localLanguageCountry.language)##
-#set($locale_country = $localLanguageCountry.country)##
-#set($ctor = $sys.getClass().forName('java.util.Locale').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.lang.String')))##
-#set($locale = $ctor.newInstance($locale_lang, $locale_country))##
 ##Setup Date Formatting
-#set($format_ctorOut  = $sys.getClass().forName('java.text.SimpleDateFormat').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.util.Locale')))##
-#set($formatterOut = $format_ctorOut.newInstance("$!{postDateTimeFormat}",$locale))##
+#set($formatterOut = $rx.pageutils.getDateFormatFromLocale("$!{postDateTimeFormat}",$locale))##
 #set($postDateObject="")##
 #set($postDate="")##
 <div id="$!{autoListDivId}" class="$!{rootclass} $!{layout} perc-image-auto-list" #if($perc_hide_when_empty && $relresults.size() <= 0)hidden #end $!{ariaLabelString} $!{listAriaRole} data-query="$!{dynamicListData}">

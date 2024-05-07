@@ -3079,4 +3079,8 @@ public class PSPageUtils extends PSJexlUtilBase
         return dateFormattted;
     }
 
+    public SimpleDateFormat getDateFormatForString(String blogPostDateTimeFormat){
+        return new SimpleDateFormat(blogPostDateTimeFormat);
+    }
+
 }
