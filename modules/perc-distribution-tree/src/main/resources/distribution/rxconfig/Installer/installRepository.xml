@@ -57,6 +57,17 @@
                        silenceerrors="false"
         />
 
+        <!-- Fix for issue 1053: Post upgrade: Missing application files rffNavImage, rffNavOn, rffNavTree -->
+        <PSExecSQLCheckDupTemplates rootDir="${install.dir}"
+                       printExceptionStackTrace="true"
+                       qualifyingTableName="PSX_OBJECTRELATIONSHIP"
+                       column="SLOT_ID"
+                       qualifyingTableNameDelete="RXSLOTTYPE"
+                       columnDelete="SLOTID"
+                       failonerror="false"
+                       silenceerrors="false"
+        />
+
         <PSExecSQLStmt rootDir="${install.dir}"
                        printExceptionStackTrace="true"
                        qualifyTableNames="PSX_CONTENTCHANGEEVENT,RXSITES"

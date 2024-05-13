@@ -30,3 +30,8 @@ img.perc-brokenlink {
 	margin-left: 1px;
 	background-image: url(/cm/images/images/iconAlert.gif);
 }
+.perc-blog-more-link {
+	display:inline-block;
+	border:0;
+	background:#fff url(/sys_resources/tinymce/plugins/percmorelink/img/ReadMoreInsert-1.png) no-repeat center top;
+}

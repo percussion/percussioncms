@@ -244,7 +244,7 @@ public class PSInlineLinkContentHandler
          inlineType = imgTag.attr(PSSingleValueBuilder.INLINE_TYPE);
          path = PSHtmlUtils.replaceAmpInURL(imgTag.attr(SRC_ATTR));
 
-         if(inlineType.equals("") && (isInlineButAttrMissing(imgTag.attr(SRC_ATTR)))){
+         if(inlineType.isEmpty() && (isInlineButAttrMissing(imgTag.attr(SRC_ATTR)))){
             //Old links might be missing the attributes, if they are missing, extract from query params and add as attributes before processing.
             inlineType = PSInlineLinkContentHandler.RXIMAGE;
          }

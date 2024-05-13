@@ -18,6 +18,7 @@ package com.percussion.sitemanage.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.percussion.pathmanagement.data.PSFolderPermission;
+import com.percussion.pathmanagement.data.PSGenerateSiteMapOptions;
 import com.percussion.share.data.PSAbstractPersistantObject;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -530,6 +531,13 @@ public class PSSiteProperties extends PSAbstractPersistantObject
         this.generateSiteMap = generateSiteMap;
     }
 
+    public PSGenerateSiteMapOptions getGenerateSiteMapOptions() {
+        return generateSiteMapOptions;
+    }
+
+    public void setGenerateSiteMapOptions(PSGenerateSiteMapOptions generateSiteMapOptions) {
+        this.generateSiteMapOptions = generateSiteMapOptions;
+    }
     /**
      * The relative path to the sitewide loggin page information.
      */
@@ -654,6 +662,10 @@ public class PSSiteProperties extends PSAbstractPersistantObject
      * Indicates if a sitemap should be generated on full publish.
      */
     private boolean generateSiteMap;
+
+
+
+    private PSGenerateSiteMapOptions generateSiteMapOptions;
 
     /***
      * Indicates head content that is global to all templates and pages on a site.
