@@ -279,11 +279,7 @@
             </executions>
             <configuration>
                 <toolchains>
-               <!--     <jdk>
-                        <version>8.1.5-SNAPSHOT</version>
-                        <vendor>amazon</vendor>
-                    </jdk>
-                    -->
+           
                 </toolchains>
             </configuration>
         </plugin>

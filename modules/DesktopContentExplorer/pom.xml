@@ -26,7 +26,7 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
                 <jdkToolchain>
-                    <version>8.1.5</version>
+                    <version>1.8</version>
                     <vendor>oracle</vendor>
                 </jdkToolchain>
                 <verbose>true</verbose>
