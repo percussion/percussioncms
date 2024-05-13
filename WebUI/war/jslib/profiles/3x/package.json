@@ -1,6 +1,6 @@
 {
   "name": "perc-jsprofile-3x",
-  "version": "8.1.4",
+  "version": "8.1.5",
   "description": "Package to include Percussion 3rd party dependencies for the jquery 3.x profile",
   "dependencies": {
     "jquery":"3.6.0",

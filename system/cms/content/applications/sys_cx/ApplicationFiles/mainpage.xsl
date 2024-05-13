@@ -52,7 +52,7 @@
     <xsl:variable name="ajaxswingUrl">
         <xsl:value-of disable-output-escaping="yes" select="concat($ajaxSwingRoot,'?')"/>
         <xsl:text disable-output-escaping="yes">CODEBASE=</xsl:text>
-        <xsl:value-of select="url:encode(concat($rxroot,'/dce/perc-content-explorer-8.1.4.jar'))" />
+        <xsl:value-of select="url:encode(concat($rxroot,'/dce/perc-content-explorer-8.1.5.jar'))" />
         <xsl:text disable-output-escaping="yes">&amp;VIEW=CX&amp;MAYSCRIPT=true&amp;NAME=ContentExplorerApplet&amp;ID=ContentExplorerApplet</xsl:text>
         <xsl:text>&amp;DEBUG=</xsl:text>
         <xsl:if test="//@debug = 'true'">

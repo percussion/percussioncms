@@ -635,9 +635,6 @@ $!{listAriaLabel}##
 <ul class="perc-list-main">##
 #end##
 <li class="perc-list-element">$!{listItemFormatStartTag}
-#set($localLanguageCountry = $rx.pageutils.getLanguageAndCountryFromLocale($locale))##
-#set($locale_lang = $localLanguageCountry.language)##
-#set($locale_country = $localLanguageCountry.country)##
 #if("$target" != "")##
 #set($setTarget = 'target=' + '"' + $!{target} + '"')##
 <a href="" $!{setTarget}></a>
@@ -751,11 +748,8 @@ $!{titleFormatStartTag}$!{title}$!{titleFormatEndTag}
 #set($setTarget = 'target=' + '"' + $!{target} + '"')##
 #end##
 <a href="$!{pagelink}" aria-label="$!{linkTitle}" title="$!{linkTitle}" $!{setTarget}>$!{linkTitle}</a>$!{listItemFormatEndTag}
-#set($ctor = $sys.getClass().forName('java.util.Locale').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.lang.String')))##
-#set($locale = $ctor.newInstance($locale_lang, $locale_country))##
 ##Setup Date Formatting
-#set($format_ctorOut  = $sys.getClass().forName('java.text.SimpleDateFormat').getConstructor($sys.getClass().forName('java.lang.String'), $sys.getClass().forName('java.util.Locale')))##
-#set($formatterOut = $format_ctorOut.newInstance("$!{postDateTimeFormat}",$locale))##
+#set($formatterOut = $rx.pageutils.getDateFormatFromLocale("$!{postDateTimeFormat}",$locale))##
 #set($postDateObject="")##
 #set($postDate="")##
 #set($postDateObject=$result.node.getProperty('rx:sys_contentpostdate'))##
@@ -780,21 +774,19 @@ $!{titleFormatStartTag}$!{title}$!{titleFormatEndTag}
 #if($enableCalenderIcon)##
 <div class="perc-page-auto-list-calicon">
 <div class="perc-page-auto-list-calicon-month">
-#set($format_ctorOut2  = $sys.getClass().forName('java.text.SimpleDateFormat').getConstructor($sys.getClass().forName('java.lang.String'), 	$sys.getClass().forName('java.util.Locale')))##
-#set($formatterOut2 = $format_ctorOut2.newInstance("MMM",$locale))##
+#set($formatterOut2 = $rx.pageutils.getDateFormatFromLocale("MMM",$locale))##
 #set($postDate = $formatterOut2.format($postDateObject.getTime()))##
 $postDate##
 </div>
 <div class="perc-page-auto-list-calicon-day">
-#set($format_ctorOut3  = $sys.getClass().forName('java.text.SimpleDateFormat').getConstructor($sys.getClass().forName('java.lang.String'), 	$sys.getClass().forName('java.util.Locale')))##
-#set($formatterOut3 = $format_ctorOut3.newInstance("dd",$locale))##
+#set($formatterOut3 = $rx.pageutils.getDateFormatFromLocale("dd",$locale))##
 #set($postDate = $formatterOut3.format($postDateObject.getTime()))##
 $postDate##
 </div>
 </div>
 #end##
 #if ($summary)##
-#set($summary_text=$result.node.getProperty('rx:page_summary').getString().replace('<!-- morelink -->', "<a href='$!{pagelink}' aria-label='Read more about  $!{linkTitle}' title='$!{linkTitle}'>...more</a>"))##
+#set($summary_text=$result.node.getProperty('rx:page_summary').getString().replace('<span class="perc-blog-more-link"></span>', "<a href='$!{pagelink}' aria-label='Read more about  $!{linkTitle}' title='$!{linkTitle}'>...more</a>"))##
 #if("$!{summary_text}" != "")##
 <div class="#cleanClass("perc-page-auto-list-summary-container $!{summaryclass}")">
 $!{summary_text}

@@ -23,9 +23,9 @@ again in database then this changeset will not run until we change the changeset
         </sql>
     </changeSet>
 
-    <changeSet runAlways="true" id="20170503041539-1" author="user" dbms="mysql">
+    <changeSet runAlways="true" id="20170503041539-1" author="user" dbms="mysql,mariadb">
         <preConditions onFail="CONTINUE">
-            <dbms type="mysql"/>
+            <dbms type="mysql,mariadb"/>
             <sqlCheck expectedResult="0">SELECT COUNT(*) FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_NAME='PERC_PAGE_METADATA_PROPERTIES' AND INDEX_NAME='IX_PRCPGMTDT_ENTID_DATE_INCNAME'
             </sqlCheck>
         </preConditions>

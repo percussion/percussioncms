@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.percussion</groupId>
         <artifactId>core</artifactId>
-        <version>8.1.4</version>
+        <version>8.1.5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>perc-server-ui-content</artifactId>
@@ -35,27 +35,7 @@
                     <!--suppress UnresolvedMavenProperty -->
                     <skipTests>${skipTests}</skipTests>
                 </configuration>
-            </plugin>
-           <!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-toolchains-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>toolchain</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <toolchains>
-                        <jdk>
-                            <version>8.1.4</version>
-                            <vendor>oracle</vendor>
-                        </jdk>
-                    </toolchains>
-                </configuration>
-            </plugin> -->
+          </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
