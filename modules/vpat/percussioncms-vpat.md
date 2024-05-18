@@ -1,7 +1,7 @@
 # Percussion CMS Accessibility Conformance Report International Edition
 (Based on VPAT® Version 2.4Rev)
 
-**Report Date**: 1-19-22 
+**Report Date**: 1-19-22
 **Name of Product/Version**: Percussion CMS 8.1  
 **Product Description**: Percussion CMS  
 **Contact information**: Please contact your Institutional Sales representative.  
@@ -86,18 +86,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Home-supports</li></ul>
-<ul><li>Dashboard-supports</li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/769">Issue 769</a>
-<a href="https://github.com/percussion/percussioncms/issues/773">Issue 773</a>
-</li></ul>
-<ul><li>Editor-supports</li></ul>
-<ul><li>Navigation-supports</li></ul>
-<ul><li>Design-supports</li></ul>
-<ul><li>Publish-supports</li></ul>
-<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/774">Issue 774</a></li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Widget Builder</li></ul>
 </td>
 </tr>
 <tr id="audio-only-and-video-only-prerecorded" valign="top">
@@ -119,9 +117,9 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Not Applicable</td>
+<td>Supports</td>
 <td>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/778">Issue 778</a></li></ul>
+<ul><li>Design</li></ul>
 </td>
 </tr>
 <tr id="captions-prerecorded" valign="top">
@@ -218,16 +216,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td> 
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/779">Issue 779</a></li></ul>
-<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/780">Issue 780</a></li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/781">Issue 781</a></li></ul>
-<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/782">Issue 782</a></li></ul>
-<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/792">Issue 792</a></li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/793">Issue 793</a></li></ul>
-<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/794">Issue 794</a></li></ul>
-<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/795">Issue 795</a></li></ul>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Widget</li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
 </td>
 </tr>
 <tr id="sensory-characteristics" valign="top">
@@ -249,16 +247,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/796">Issue 796</a></li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/797">Issue 797</a></li></ul>
-<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/798">Issue 798</a></li></ul>
-<ul><li>Navigation-supports</li></ul>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/783">Issue 783</a></li></ul>
-<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/784">Issue 784</a></li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/785">Issue 785</a></li></ul>
-<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/786">Issue 786</a></li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Widget Builder</li></ul>
 </td>
 </tr>
 <tr id="use-of-color" valign="top">
@@ -280,16 +278,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/787">Issue 787</a></li></ul>
-<ul><li>Publish</li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/788">Issue 788</a></li></ul>
-<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/789">Issue 789</a></li></ul>
-<ul><li>Home-supports</li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/809">Issue 809</a></li></ul>
-<ul><li>Editor-supports</li></ul>
-<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/810">Issue 810</a></li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard  </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
 </td>
 </tr>
 <tr id="audio-control" valign="top">
@@ -333,16 +331,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/811">Issue 811</a></li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/812">Issue 812</a></li></ul>
-<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/813">Issue 813</a></li></ul>
-<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/814">Issue 814</a></li></ul>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/801">Issue 801</a></li></ul>
-<ul><li>Publish</li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/802">Issue 802</a></li></ul>
-<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/803">Issue 803</a></li></ul>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
 </td>
 </tr>
 <tr id="no-keyboard-trap" valign="top">
@@ -364,16 +362,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Home-supports</li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/812">Issue 812</a></li></ul>
-<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/813">Issue 813</a></li></ul>
-<ul><li>Navigation-supports</li></ul>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/804">Issue 804</a></li></ul>
-<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/805">Issue 805</a></li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/806">Issue 806</a></li></ul>
-<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/807">Issue 807</a></li></ul>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
 </td>
 
 </tr>
@@ -414,16 +412,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/836">Issue 836</a></li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/837">Issue 837</a></li></ul>
-<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/838">Issue 838</a></li></ul>
-<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/839">Issue 839</a></li></ul>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/829">Issue 829</a></li></ul>
-<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/830">Issue 830</a></li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/831">Issue 831</a></li></ul>
-<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/832">Issue 832</a></li></ul>
+<ul><li>Home </li></ul>
+<ul><li>Dashboard </li></ul>
+<ul><li>Editor </li></ul>
+<ul><li>Navigation </li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish </li></ul>
+<ul><li>Admin </li></ul>
+<ul><li>Widget Builder </li></ul>
 </td>
 </tr>
 <tr id="pause-stop-hide" valign="top">
@@ -560,16 +558,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/823">Issue 823</a></li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/824">Issue 824</a></li></ul>
-<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/825">Issue 825</a></li></ul>
-<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/826">Issue 826</a></li></ul>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/819">Issue 819</a></li></ul>
-<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/820">Issue 820</a></li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/821">Issue 821</a></li></ul>
-<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/822">Issue 822</a></li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Widget Builder</li></ul>
 </td>
 </tr>
 <tr id="link-purpose-in-context" valign="top">
@@ -591,16 +589,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Home-supports</li></ul>
-<ul><li>Dashboard-supports</li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/769">Issue 769</a></li></ul>
-<ul><li>Editor-supports</li></ul>
-<ul><li>Design-supports</li></ul>
-<ul><li>Navigation-supports</li></ul>
-<ul><li>Publish-supports</li></ul>
-<ul><li>Widget Builder-supports</li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Design</li></ul>
+<ul><li>Navigation</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Widget Builder</li></ul>
 </td>
 </tr>
 <tr id="pointer-gestures" valign="top">
@@ -805,16 +803,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Home-supports</li></ul>
-<ul><li>Dashboard-supports</li></ul>
-<ul><li>Editor-supports</li></ul>
-<ul><li>Navigation-supports</li></ul>
-<ul><li>Design-supports </li></ul>
-<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/828">Issue 828</a></li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/827">Issue 827</a></li></ul>
-<ul><li>Widget Builder-supports </li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
+<ul><li>Design </li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Widget Builder </li></ul>
 </td>
 </tr>
 <tr id="labels-or-instructions" valign="top">
@@ -867,16 +865,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Home-supports</li></ul>
-<ul><li>Dashboard-supports</li></ul>
-<ul><li>Editor-supports</li></ul>
-<ul><li>Navigation-supports</li></ul>
-<ul><li>Design-supports</li></ul>
-<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/848">Issue 848</a></li></ul>
-<ul><li>Admin-supports</li></ul>
-<ul><li>Widget Builder-supports </li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Widget Builder </li></ul>
 </td>
 </tr>
 <tr id="name-role-value" valign="top">
@@ -898,16 +896,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/840">Issue 840</a></li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/841">Issue 841</a></li></ul>
-<ul><li>Editor-supports</li></ul>
-<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/842">Issue 842</a></li></ul>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/833">Issue 833</a></li></ul>
-<ul><li>Publish-supports </li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/834">Issue 834</a></li></ul>
-<ul><li>Widget Builder-supports </li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Widget Builder</li></ul>
 </td>
 </tr>
 </tbody>
@@ -983,16 +981,16 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Home-supports</li></ul>
-<ul><li>Dashboard-supports</li></ul>
-<ul><li>Editor-supports</li></ul>
-<ul><li>Navigation-supports</li></ul>
-<ul><li>Design-supports</li></ul>
-<ul><li>Publish-supports</li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/847">Issue 847</a></li></ul>
-<ul><li>Widget Builder-supports</li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Widget Builder</li></ul>
 </td>
 </tr>
 <tr id="identify-input-purpose" valign="top">
@@ -1032,16 +1030,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Home-supports</li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/759">Issue 759</a></li></ul>
-<ul><li>Admin-supports</li></ul>
-<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/759">Issue 759</a></li></ul>
-<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/759">Issue 759</a></li></ul>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/759">Issue 759</a></li></ul>
-<ul><li>Publish-supports</li></ul>
-<ul><li>Widget Builder-supports</li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Widget Builder</li></ul>
 </td>
 
 </tr>
@@ -1140,16 +1138,16 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/852">Issue 852</a></li></ul>
+<ul><li>Design</li></ul>
 <ul><li>Publish</li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/853">Issue 853</a></li></ul>
+<ul><li>Admin</li></ul>
 <ul><li>Widget Builder </li></ul>
-<ul><li>Home-supports</li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/857">Issue 857</a></li></ul>
-<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/856">Issue 856</a></li></ul>
-<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/855">Issue 855</a></li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
 </td>
 </tr>
 <tr id="text-spacing" valign="top">
@@ -1194,16 +1192,16 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/860">Issue 860</a>, <a href="https://github.com/percussion/percussioncms/issues/861">Issue 861</a></li></ul>
-<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/862">Issue 862</a></li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/863">Issue 863</a></li></ul>
-<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/864">Issue 864</a></li></ul>
-<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/866">Issue 866</a>, <a href="https://github.com/percussion/percussioncms/issues/865">Issue 865</a></li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/867">Issue 867</a></li></ul>
-<ul><li>Editor-supports</li></ul>
-<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/868">Issue 868</a></li></ul>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Widget Builder</li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
 </td>
 </tr>
 <tr id="multiple-ways" valign="top">
@@ -1397,16 +1395,16 @@ Tables 1 and 2 also document conformance with:
 <li>504.2 (Authoring Tool)</li>
 <li>602.3 (Support Docs)</li>
 </ul></td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/870">Issue 870</a></li></ul>
+<ul><li>Design</li></ul>
 <ul><li>Publish</li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/871">Issue 871</a></li></ul>
-<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/872">Issue 872</a></li></ul>
-<ul><li>Home see <a href="https://github.com/percussion/percussioncms/issues/876">Issue 876</a></li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/877">Issue 877</a></li></ul>
-<ul><li>Editor see <a href="https://github.com/percussion/percussioncms/issues/878">Issue 878</a></li></ul>
-<ul><li>Navigation see <a href="https://github.com/percussion/percussioncms/issues/879">Issue 879</a></li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Widget Builder</li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
 </td>
 </tr>
 <tr id="error-prevention-legal-financial-data" valign="top">
@@ -1446,16 +1444,16 @@ Tables 1 and 2 also document conformance with:
 </ul>
 <em>Revised Section 508 - does not apply</em>
 </td>
-<td>Partially Supports</td>
+<td>Supports</td>
 <td>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/873">Issue 873</a></li></ul>
+<ul><li>Design</li></ul>
 <ul><li>Publish</li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/874">Issue 874</a></li></ul>
+<ul><li>Admin</li></ul>
 <ul><li>Widget Builder </li></ul>
-<ul><li>Home-supports</li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/880">Issue 880</a></li></ul>
-<ul><li>Editor-supports</li></ul>
-<ul><li>Navigation-supports</li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
 </td>
 </tr>
 </tbody>
@@ -1574,16 +1572,16 @@ Notes: This product is a web software application and is not subject to the requ
 </tr>
 <tr>
 <td headers="502-services chap-5-criteria">502.3.3 Row, Column, and Headers</td>
-<td headers="502-services chap-5-conformance">Partially Supports</td>
+<td headers="502-services chap-5-conformance">Supports</td>
 <td headers="502-services chap-5-remarks">
-<ul><li>Home-supports</li></ul>
-<ul><li>Dashboard see <a href="https://github.com/percussion/percussioncms/issues/887">Issue 887</a></li></ul>
-<ul><li>Editor-supports</li></ul>
-<ul><li>Navigation-supports</li></ul>
-<ul><li>Design see <a href="https://github.com/percussion/percussioncms/issues/882">Issue 882</a></li></ul>
-<ul><li>Publish see <a href="https://github.com/percussion/percussioncms/issues/883">Issue 883</a></li></ul>
-<ul><li>Admin see <a href="https://github.com/percussion/percussioncms/issues/884">Issue 884</a></li></ul>
-<ul><li>Widget Builder see <a href="https://github.com/percussion/percussioncms/issues/885">Issue 885</a></li></ul>
+<ul><li>Home</li></ul>
+<ul><li>Dashboard</li></ul>
+<ul><li>Editor</li></ul>
+<ul><li>Navigation</li></ul>
+<ul><li>Design</li></ul>
+<ul><li>Publish</li></ul>
+<ul><li>Admin</li></ul>
+<ul><li>Widget Builder</li></ul>
 </td>
 </tr>
 <tr>
