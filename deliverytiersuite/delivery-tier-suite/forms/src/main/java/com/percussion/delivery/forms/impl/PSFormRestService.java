@@ -30,7 +30,6 @@ import com.percussion.security.PSEncryptionException;
 import com.percussion.security.PSEncryptor;
 import com.percussion.utils.io.PathUtils;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.lang.StringUtils;
@@ -95,7 +94,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      * The form data joiner initialized by constructor. Used to merge forms data
      * and generate a CSV file. Never <code>null</code>.
      */
-    private PSFormDataJoiner formDataJoiner;
+    private final PSFormDataJoiner formDataJoiner;
 
     /* Form field param constants */
     private static final String FORM_NAME_KEY = "perc_formName";
@@ -118,7 +117,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
 
     private  static final String FORM_PROCESSORTYPE = "perc_processorType";
 
-    private final String USER_AGENT = "Mozilla/5.0";
+    private static final String USER_AGENT = "Mozilla/5.0";
 
     /**
      * Logger for this class.
@@ -203,10 +202,10 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             for (Entry<String, List<String>> param : params.entrySet())
             {
 
-                String[] sl = param.getValue().toArray(new String[param.getValue().size()]);
+                String[] sl = param.getValue().toArray(new String[0]);
                 String key = param.getKey();
 
-                // this form was submitted by a spam bot and has the hidden field populated
+                // this form was submitted by a spambot and has the hidden field populated
                 if(key.equals("topyenoh") && param.getValue().toString().length() > 2) {
                     isSpamBot = true;
                     log.debug("headers getRequestHeaders: {}", header.getRequestHeaders());
@@ -237,32 +236,32 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
             String formName;
 
             String[] encryptUrl = percFields.get(FORM_URL_ENCRYPT_KEY);
-            if (encryptUrl != null && encryptUrl[0] != null && encryptUrl[0].trim().length() > 0
+            if (encryptUrl != null && encryptUrl[0] != null && !encryptUrl[0].trim().isEmpty()
                     && encryptUrl[0].equalsIgnoreCase("true"))
             {
                 encryptExist = true;
             }
 
             String[] errorUrl = percFields.get(FORM_ERROR_URL_KEY);
-            if (errorUrl != null && errorUrl[0] != null && errorUrl[0].trim().length() > 0)
+            if (errorUrl != null && errorUrl[0] != null && !errorUrl[0].trim().isEmpty())
             {
                 errorRedirect = errorUrl[0];
             }
 
             String[] hostUrl = percFields.get(FORM_HOST_REDIRECT);
-            if (hostUrl != null && hostUrl[0] != null && hostUrl[0].trim().length() > 0)
+            if (hostUrl != null && hostUrl[0] != null && !hostUrl[0].trim().isEmpty())
             {
                 hostRedirect = hostUrl[0];
             }
 
             String[] successUrl = percFields.get(FORM_SUCCESS_URL_KEY);
-            if (successUrl != null && successUrl[0] != null && successUrl[0].trim().length() > 0)
+            if (successUrl != null && successUrl[0] != null && !successUrl[0].trim().isEmpty())
             {
                 successRedirect = successUrl[0];
             }
 
             String[] formNameValues = percFields.get(FORM_NAME_KEY);
-            if (formNameValues == null || formNameValues[0] == null || formNameValues[0].trim().length() == 0)
+            if (formNameValues == null || formNameValues[0] == null || formNameValues[0].trim().isEmpty())
             {
                 log.error("Supplied form missing {} field.", FORM_NAME_KEY);
                 WebApplicationException webEx = new WebApplicationException(new IllegalArgumentException(
@@ -281,7 +280,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                 emailNotifToVals = percFields.get(EMAIL_FORM_TO);
             }
 
-            if (emailNotifToVals != null && emailNotifToVals[0] != null && emailNotifToVals[0].trim().length() > 0)
+            if (emailNotifToVals != null && emailNotifToVals[0] != null && !emailNotifToVals[0].trim().isEmpty())
             {
                 try {
                     emailNotifTo = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),emailNotifToVals[0]);
@@ -306,7 +305,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                 emailNotifSubjectVals = formFields.get("email-subject");
             }
 
-            if (emailNotifSubjectVals != null && emailNotifSubjectVals[0] != null && emailNotifSubjectVals[0].trim().length() > 0 && !isFormEmail)
+            if (emailNotifSubjectVals != null && emailNotifSubjectVals[0] != null && !emailNotifSubjectVals[0].trim().isEmpty() && !isFormEmail)
             {
                 try {
                     emailNotifSubject = PSEncryptor.decryptString(PathUtils.getRxDir().getAbsolutePath().concat(PSEncryptor.SECURE_DIR),emailNotifSubjectVals[0]);
@@ -318,8 +317,9 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                                     PathUtils.getRxDir(null).getAbsolutePath().concat(PSEncryptor.SECURE_DIR)
                             ).DEFAULT_KEY(),null);
                 }
-            } else if(isFormEmail) {
-                emailNotifSubject = emailNotifSubjectVals[0];
+            } else if(isFormEmail && (emailNotifSubjectVals != null)) {
+                    emailNotifSubject = emailNotifSubjectVals[0];
+
             }
 
             //If it is an email form and key fields are null log the errors
@@ -344,10 +344,11 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                 if(captchaResponse == null){
                     missingCaptcha = true;
 
-                    if(formName==null)
+                    if(formName==null || formName.isEmpty())
                         formName="<not set>";
 
-                    log.error("recaptcha.on=true in configured properties, but form post is missing reCaptcha response. Post will be treated as a bot, verify that reCaptcha field is present on form: " + formName);
+                    log.error("recaptcha.on=true in configured properties, but form post is missing reCaptcha response. Post will be treated as a bot, verify that reCaptcha field is present on form: {}",
+                            formName);
                 }
                 if(!missingCaptcha && StringUtils.isNotEmpty(captchaResponse[0])){
                     isSpamBot = !formService.getRecaptchaService().verify(captchaResponse[0]);
@@ -384,14 +385,12 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
 
                     HttpClient client = new HttpClient( );
                     PostMethod post = new PostMethod(processorUrl);
-                    List<NameValuePair> data = new ArrayList<>();
-                    String urlParameters = "";
                     //Loop through form parameters and set up for re-posting
-                    for(String key : params.keySet()){
-                        for(String value:params.get(key)){
-                            post.addParameter(key,value);
+                    params.keySet().forEach(key -> {
+                        for (String value : params.get(key)) {
+                            post.addParameter(key, value);
                         }
-                    }
+                    });
 
                     boolean success=false;
 
@@ -412,10 +411,8 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                     post.releaseConnection();
                     if(success) {
                         handleRedirect(successRedirect, encryptExist, hostRedirect, resp);
-                        return;
                     }else{
                         handleError(header, resp, null, hostRedirect, errorRedirect, encryptExist);
-                        return;
                     }
 
 
@@ -424,7 +421,6 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                     WebApplicationException webEx = new WebApplicationException(new IllegalArgumentException(
                             "Invalid form submitted"), Response.serverError().build());
                     handleError(header, resp, webEx, hostRedirect, errorRedirect, encryptExist);
-                    return;
                 }
 
             }else{
@@ -480,7 +476,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
      * @param successRedirect The success redirect page to decrypt
      * @param encryptExist if the success page is encrypted
      * @param hostRedirect the host url for the prefix of the redirect
-     * @param resp
+     * @param resp the servlet response
      */
     private void handleRedirect(String successRedirect, boolean encryptExist, String hostRedirect, @Context HttpServletResponse resp) throws IOException {
         if (successRedirect != null)
@@ -499,7 +495,14 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
                 }
 
             successRedirect = successRedirect.startsWith("/") ? successRedirect : "/" + successRedirect;
-            resp.sendRedirect(hostRedirect + successRedirect);
+
+                //Check if the success redirect url is absolute or not - if absolute - just redirect there.
+            if(successRedirect.startsWith("http://") || successRedirect.startsWith("https://")){
+                resp.sendRedirect(successRedirect);
+            }else {
+                //If it is relative pre-pernd the host
+                resp.sendRedirect(hostRedirect + successRedirect);
+            }
         }
         else
         {
@@ -590,8 +593,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
     {
         try
         {
-            List<String> formNames = new ArrayList<>();
-            formNames.addAll(formService.findDistinctFormNames());
+            List<String> formNames = new ArrayList<>(formService.findDistinctFormNames());
 
             PSFormSummaries formResult = new PSFormSummaries();
             for (String name : formNames)
@@ -632,11 +634,11 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
         try
         {
-            List<IPSFormData> forms = new ArrayList<>();
+            List<IPSFormData> forms;
             forms = formService.findFormsByName(formName);
 
             if(log.isDebugEnabled()){
-                log.debug("Forms by name({}) : {}", formName, forms.toString());
+                log.debug("Forms by name({}) : {}", formName, forms);
             }
             
 
@@ -694,6 +696,7 @@ public class PSFormRestService extends PSAbstractRestService implements IPSFormR
         }
     }
 
+    @Override
     public String getVersion() {
 
         String version = super.getVersion();
