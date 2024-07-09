@@ -2378,7 +2378,7 @@
       </choice>
       <choice id="398">
         <description/>
-        <label>EST5EDT</label>
+        <label>EST/EDT</label>
         <sequence>397</sequence>
         <value>EST5EDT</value>
       </choice>
