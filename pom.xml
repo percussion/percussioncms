@@ -138,7 +138,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <activemq.version>5.16.7</activemq.version><!-- 5.17.x and up require Java 11 -->
-       <spring.version>5.3.27</spring.version>
+       <spring.version>6.0.15</spring.version>
        <hibernate.version>5.6.10.Final</hibernate.version>
        <hibernate.validator.version>6.2.3.Final</hibernate.validator.version>
        <ehcache.version>2.10.6</ehcache.version>
