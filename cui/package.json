@@ -11,7 +11,7 @@
     "jquery-ui": "^1.13.2",
     "lodash": ">=4.17.21",
     "pubsub-js": "^1.9.4",
-    "requirejs": "^2.3.6",
+    "requirejs": "^2.3.7",
     "requirejs-text": "^2.0.16",
     "jquery": "^3.6.0",
     "knockout": "^3.5.1"
