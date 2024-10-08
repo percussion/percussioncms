@@ -125,3 +125,4 @@ fabric.properties
 /modules/redirect-tool/iis-rewrites.config
 /modules/redirect-tool/apache-redirects.conf
 /modules/redirect-tool/redirects.json
+/cui/package-lock.json
