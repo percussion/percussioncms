@@ -718,8 +718,7 @@ public class PSLocationUtils extends PSJexlUtilBase
       }
       else if (site_default_templates.size() > 0)
       {
-         ms_log.debug("Using the set of default page templates associated "
-               + "with the given content type and site.");
+         ms_log.debug("Using the set of default page templates associated with the given content type: {} and site: {}" ,ctype, siteid);
          rvalues = site_default_templates;
       }
       else if (siteid != null)
@@ -733,9 +732,9 @@ public class PSLocationUtils extends PSJexlUtilBase
       }
       else if (ct_default_templates.size() > 0)
       {
-         ms_log.warn("Site Id not specified in locating default templates.");
+         ms_log.warn("Site Id not specified in locating default templates for the given content type: {} and path: {}", ctype, item.getPath());
          ms_log.debug("Using the set of default page templates "
-               + "just associated with given content type.");
+               + "just associated with given content type: {}" ,ctype);
          rvalues = ct_default_templates;
       }
       else
@@ -781,9 +780,8 @@ public class PSLocationUtils extends PSJexlUtilBase
          {
             template_names.add(t.getName());
          }
-         String choosen_template = template_names.get(0);
-         ms_log.warn("Found multiple templates: " + template_names.toString()
-               + " picking: " + choosen_template);
+          ms_log.warn("Found multiple templates: {} picking: {}"
+                  ,template_names, template_names.get(0));
       }
 
       return rvalues.iterator().next();
@@ -1043,13 +1041,11 @@ public class PSLocationUtils extends PSJexlUtilBase
          {
             try
             {
-               ms_log.error("Problem getting property: " + prop + " on item "
-                     + item.getUUID(), e);
+               ms_log.error("Problem getting property: {} on item {} {}" , prop , item.getUUID(),e);
             }
             catch (Exception e1)
             {
-               ms_log.error("Serious problem while reporting "
-                     + e.getLocalizedMessage(), e1);
+               ms_log.error("Serious problem while reporting {} {}" , e.getLocalizedMessage(), e1);
             }
          }
       }
