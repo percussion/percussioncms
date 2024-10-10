@@ -111,7 +111,7 @@ public class PSMatchers
                 {
                     stream = IOUtils.toInputStream(item, "UTF-8");
                 }
-                catch (IOException e)
+                catch (Exception e)
                 {
                     // TODO Auto-generated catch block
                     throw new RuntimeException(e);
