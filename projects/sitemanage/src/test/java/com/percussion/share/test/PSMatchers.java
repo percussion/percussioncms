@@ -104,14 +104,22 @@ public class PSMatchers
             private Collection<SAXParseException> errors = new ArrayList<SAXParseException>();
             
             @Override
-            public boolean matchesSafely(String item) throws UnsupportedCharsetException
+            public boolean matchesSafely(String item)
             {
                 PSXhtmlValidator validator = new PSXhtmlValidator();
                 InputStream stream;
-                stream = IOUtils.toInputStream(item, "UTF-8");
+                try
+                {
+                    stream = IOUtils.toInputStream(item, "UTF-8");
+                }
+                catch (UnsupportedCharsetException e)
+                {
+                    throw new UnsupportedCharsetException("Exception in method matchesSafely(): "+e.getMessage());
+                }
                 boolean valid = validator.isValid(stream);
                 errors = validator.getErrors();
                 return valid;
+
             }
 
             @Override
