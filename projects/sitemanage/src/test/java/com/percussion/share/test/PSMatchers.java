@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.regex.Pattern;
@@ -103,23 +104,14 @@ public class PSMatchers
             private Collection<SAXParseException> errors = new ArrayList<SAXParseException>();
             
             @Override
-            public boolean matchesSafely(String item)
+            public boolean matchesSafely(String item) throws UnsupportedCharsetException
             {
                 PSXhtmlValidator validator = new PSXhtmlValidator();
                 InputStream stream;
-                try
-                {
-                    stream = IOUtils.toInputStream(item, "UTF-8");
-                }
-                catch (Exception e)
-                {
-                    // TODO Auto-generated catch block
-                    throw new RuntimeException(e);
-                }
+                stream = IOUtils.toInputStream(item, "UTF-8");
                 boolean valid = validator.isValid(stream);
                 errors = validator.getErrors();
                 return valid;
-                
             }
 
             @Override
