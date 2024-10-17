@@ -38,6 +38,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -240,10 +241,12 @@ public class PSDeliveryInfoLoaderTest
     {
         // Copy mixed passwords to temp directory
         File tempConfigFile = File.createTempFile("deliveryServers", ".xml");
-        OutputStream out = new FileOutputStream(tempConfigFile);
-        InputStream in = baseConfigFile;
-        
-        IOUtils.copy(in, out);
+        OutputStream out = Files.newOutputStream(tempConfigFile.toPath());
+        try {
+            IOUtils.copy(baseConfigFile, out);
+        } catch (Exception e){
+            return tempConfigFile;
+    }
         
         return tempConfigFile;
     }
