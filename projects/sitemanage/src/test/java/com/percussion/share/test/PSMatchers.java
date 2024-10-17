@@ -19,6 +19,7 @@ package com.percussion.share.test;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.apache.commons.lang.StringUtils.isEmpty;
 
+import com.percussion.cms.IPSConstants;
 import com.percussion.share.test.xml.PSXhtmlValidator;
 
 import java.io.IOException;
@@ -31,6 +32,8 @@ import java.util.Collection;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -53,6 +56,7 @@ import org.xml.sax.SAXParseException;
  */
 public class PSMatchers
 {
+    private static final Logger log = LogManager.getLogger(IPSConstants.TEST_LOG);
 
 
     /**
@@ -102,7 +106,7 @@ public class PSMatchers
         {
 
             private Collection<SAXParseException> errors = new ArrayList<SAXParseException>();
-            
+
             @Override
             public boolean matchesSafely(String item)
             {
@@ -114,7 +118,8 @@ public class PSMatchers
                 }
                 catch (UnsupportedCharsetException e)
                 {
-                    throw new UnsupportedCharsetException("Exception in method matchesSafely(): "+e.getMessage());
+                    log.error("Exception in method matchesSafely(): "+e.getMessage());
+                    return false;
                 }
                 boolean valid = validator.isValid(stream);
                 errors = validator.getErrors();
