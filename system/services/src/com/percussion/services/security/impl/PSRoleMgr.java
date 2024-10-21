@@ -149,8 +149,7 @@ public class PSRoleMgr implements IPSRoleMgr
          PSSecurityProviderPool.getAllDirectoryCatalogers();
       for (IPSDirectoryCataloger cataloger : catalogers)
       {
-         if ((specifiedName) && (!(cataloger.getName().startsWith(catalogerName) &&
-            cataloger.getCatalogerType().equals(type))))
+         if ((specifiedName) && (!(cataloger.getCatalogerType().equals(type))))
          {
             continue;
          }
@@ -444,8 +443,7 @@ public class PSRoleMgr implements IPSRoleMgr
          PSSecurityProviderPool.getAllDirectoryCatalogers();
       for (IPSDirectoryCataloger cataloger : catalogers)
       {
-         if ((specifiedName) && (!(cataloger.getName().equals(catalogerName) && 
-            cataloger.getCatalogerType().equals(type))))
+         if ((specifiedName) && (!(cataloger.getCatalogerType().equals(type))))
          {
             continue;
          }
@@ -548,8 +546,7 @@ public class PSRoleMgr implements IPSRoleMgr
          PSSecurityProviderPool.getAllDirectoryCatalogers();
       for (IPSDirectoryCataloger cataloger : catalogers)
       {
-         if (!(cataloger.getName().equals(catalogerName) && 
-            cataloger.getCatalogerType().equals(type)))
+         if (!(cataloger.getCatalogerType().equals(type)))
          {
             continue;
          }
