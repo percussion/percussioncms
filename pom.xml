@@ -202,7 +202,7 @@
        <tinymce.version>5.10.3</tinymce.version>
        <jfx.version>11.0.2</jfx.version>
        <twelvemonkeys.version>3.9.4</twelvemonkeys.version>
-       <commons.beanutils.version>1.9.4</commons.beanutils.version>
+       <commons.beanutils.version>1.11.0</commons.beanutils.version>
        <xstream.version>1.4.20</xstream.version>
        <log4j2.version>2.18.0</log4j2.version>
        <guava.version>32.0.1-jre</guava.version>
