@@ -156,9 +156,7 @@ public class PSCommentsService implements IPSCommentsService {
    * .util.List)
    */
   public void approveComments(Collection<String> commentIds) {
-    if (commentIds == null) {
-      throw new IllegalArgumentException("commentIds cannot be null");
-    }
+    Validate.notNull(commentIds);
 
     if (commentIds.isEmpty()) return;
 
@@ -174,9 +172,7 @@ public class PSCommentsService implements IPSCommentsService {
    * .util.List)
    */
   public void rejectComments(Collection<String> commentIds) {
-    if (commentIds == null) {
-      throw new IllegalArgumentException("commentIds cannot be null");
-    }
+    Validate.notNull(commentIds);
 
     if (commentIds.isEmpty()) return;
 
@@ -214,9 +210,7 @@ public class PSCommentsService implements IPSCommentsService {
    * .util.List)
    */
   public void deleteComments(Collection<String> commentIds) {
-    if (commentIds == null) {
-      throw new IllegalArgumentException("commentIds cannot be null");
-    }
+    Validate.notNull(commentIds);
 
     if (commentIds.size() == 0) {
       log.info("Comment IDs list is empty.");
@@ -316,9 +310,7 @@ public class PSCommentsService implements IPSCommentsService {
    */
   @SuppressWarnings("unchecked")
   public PSPageSummaries getPagesWithComments(String site, int maxResults, int startIndex) {
-    if (site == null || site.isEmpty()) {
-      throw new IllegalArgumentException("site cannot be null or empty");
-    }
+    Validate.notEmpty(site);
 
     log.info(
         "Getting all pages with comments for site: {}, maxResults: {}, startIndex: {}",
