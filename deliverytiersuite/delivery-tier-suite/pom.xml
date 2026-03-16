@@ -67,7 +67,7 @@
         <awssdk.version>1.11.731</awssdk.version>
         <bc.version>1.74</bc.version>
         <spotbugs.plugin.version>4.2.0</spotbugs.plugin.version>
-        <jackson.version>2.14.2</jackson.version>
+        <jackson.version>2.15.0</jackson.version>
         <jackson.data.version>2.14.2</jackson.data.version>
         <jsoup.version>1.15.3</jsoup.version>
         <json.version>20240303</json.version>
